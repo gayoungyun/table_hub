@@ -6,9 +6,9 @@
 </head>
 <body>
 <h1>
-	Hello world!  
+	Hello world!
 </h1>
-
+<button type="button" onclick="main">main</button>
 <P>  The time on the server is ${serverTime}. </P>
 </body>
 </html>
