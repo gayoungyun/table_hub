@@ -1,0 +1,85 @@
+@charset "UTF-8";
+body {
+	background-color: #e8e8e8;
+}
+#bodyWrapper {
+	display: flex;
+	margin: auto;
+	width: 1000px;
+	justify-content: space-between;
+}
+#loginWrapper {
+	background-color: white;
+	width: 490px;
+	text-align: center;
+	border-radius: 15px;
+}
+h1 {
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+#registerWrapper {
+	background-color: white;	
+	width: 490px;
+	text-align: center;
+	border-radius: 15px;
+}
+#inputField {
+	margin: auto;
+	width: 300px;
+}
+#loginWrapper #inputField input {
+	width: 300px;
+	height: 40px;
+	font-size: 18px;
+	font-weight: bold;
+	border-top : 0;
+	border-left : 0;
+	border-right : 0;
+	margin-bottom: 20px;
+}
+#loginWrapper #inputField input ::placeholder {
+	color: #e8e8e8;
+}
+#inputField h2 {
+	text-align: left;
+	margin-bottom: 10px;
+}
+
+#inputId {
+	
+}
+
+#loginBtn {
+	margin-top: 60px;
+	margin-bottom: 100px;
+	width: 100px;
+	height: 50px;
+	font-size: 20px;
+	border: 0;
+	border-radius: 5px;
+	background-color: #bcbcbc;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+#infoMsg {
+	min-height: 40px;
+	text-align: left;
+	color: #ff5b5b;
+	font-size: 14px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
