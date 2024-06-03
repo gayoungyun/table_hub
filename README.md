@@ -14,6 +14,6 @@
 
 - src/main/resources - mappers- 각자 폴더이름 : 각자폴더Mapper.xml 그대로 사용
 
-- src - main - webapp- resources : 안의 css, img, js사용시 폴더안에 각자폴더 만들어서 사용
+- src - main - webapp- resources : 안의 css, img, js사용시 폴더안에 각자폴더 만들어서 사용(기본 hub.css, hub.xml, hub.js무시)
 
 - views - 각자폴더 - 폴더이름.jsp : jsp파일 무시
