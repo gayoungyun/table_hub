@@ -1,0 +1,712 @@
+﻿-- 테이블 순서는 관계를 고려하여 한 번에 실행해도 에러가 발생하지 않게 정렬되었습니다.
+
+-- member_info Table Create SQL
+-- 테이블 생성 SQL - member_info
+CREATE TABLE member_info
+(
+    id             VARCHAR2(30)     NOT NULL, 
+    pwd            VARCHAR2(50)     NOT NULL, 
+    nick           VARCHAR2(20)     NOT NULL, 
+    email          VARCHAR2(50)     NOT NULL, 
+    phone          VARCHAR2(13)     NOT NULL, 
+    birth          DATE             NOT NULL, 
+    gender         INT              NOT NULL, 
+    img            VARCHAR2(100)    NULL, 
+    status         VARCHAR2(100)    NULL, 
+    date_create    DATE             NOT NULL, 
+    admin          INT              NOT NULL, 
+     PRIMARY KEY (id)
+);
+
+-- 테이블 Comment 설정 SQL - member_info
+COMMENT ON TABLE member_info IS '회원정보';
+
+-- 컬럼 Comment 설정 SQL - member_info.id
+COMMENT ON COLUMN member_info.id IS '아이디';
+
+-- 컬럼 Comment 설정 SQL - member_info.pwd
+COMMENT ON COLUMN member_info.pwd IS '비밀번호';
+
+-- 컬럼 Comment 설정 SQL - member_info.nick
+COMMENT ON COLUMN member_info.nick IS '닉네임';
+
+-- 컬럼 Comment 설정 SQL - member_info.email
+COMMENT ON COLUMN member_info.email IS '이메일';
+
+-- 컬럼 Comment 설정 SQL - member_info.phone
+COMMENT ON COLUMN member_info.phone IS '핸드폰번호';
+
+-- 컬럼 Comment 설정 SQL - member_info.birth
+COMMENT ON COLUMN member_info.birth IS '생년월일';
+
+-- 컬럼 Comment 설정 SQL - member_info.gender
+COMMENT ON COLUMN member_info.gender IS '성별';
+
+-- 컬럼 Comment 설정 SQL - member_info.img
+COMMENT ON COLUMN member_info.img IS '프로필이미지';
+
+-- 컬럼 Comment 설정 SQL - member_info.status
+COMMENT ON COLUMN member_info.status IS '상태메세지';
+
+-- 컬럼 Comment 설정 SQL - member_info.date_create
+COMMENT ON COLUMN member_info.date_create IS '가입일자';
+
+-- 컬럼 Comment 설정 SQL - member_info.admin
+COMMENT ON COLUMN member_info.admin IS '권한';
+
+
+-- board Table Create SQL
+-- 테이블 생성 SQL - board
+CREATE TABLE board
+(
+    id             INT               NOT NULL, 
+    title          VARCHAR2(50)      NOT NULL, 
+    content        VARCHAR2(1000)    NOT NULL, 
+    date_create    DATE              NOT NULL, 
+    date_modify    DATE              NULL, 
+    mem_id         VARCHAR2(30)      NOT NULL, 
+    view           INT               NOT NULL, 
+     PRIMARY KEY (id)
+);
+
+-- Auto Increment를 위한 Sequence 추가 SQL - board.id
+CREATE SEQUENCE board_SEQ
+START WITH 1
+INCREMENT BY 1;
+
+-- Auto Increment를 위한 Trigger 추가 SQL - board.id
+CREATE OR REPLACE TRIGGER board_AI_TRG
+BEFORE INSERT ON board 
+REFERENCING NEW AS NEW FOR EACH ROW 
+BEGIN 
+    SELECT board_SEQ.NEXTVAL
+    INTO :NEW.id
+    FROM DUAL;
+END;
+
+-- DROP TRIGGER board_AI_TRG; 
+
+-- DROP SEQUENCE board_SEQ; 
+
+-- 테이블 Comment 설정 SQL - board
+COMMENT ON TABLE board IS '게시판';
+
+-- 컬럼 Comment 설정 SQL - board.id
+COMMENT ON COLUMN board.id IS '게시글id';
+
+-- 컬럼 Comment 설정 SQL - board.title
+COMMENT ON COLUMN board.title IS '제목';
+
+-- 컬럼 Comment 설정 SQL - board.content
+COMMENT ON COLUMN board.content IS '내용';
+
+-- 컬럼 Comment 설정 SQL - board.date_create
+COMMENT ON COLUMN board.date_create IS '등록일';
+
+-- 컬럼 Comment 설정 SQL - board.date_modify
+COMMENT ON COLUMN board.date_modify IS '수정일';
+
+-- 컬럼 Comment 설정 SQL - board.mem_id
+COMMENT ON COLUMN board.mem_id IS '작성자아이디';
+
+-- 컬럼 Comment 설정 SQL - board.view
+COMMENT ON COLUMN board.view IS '조회수';
+
+-- Foreign Key 설정 SQL - board(mem_id) -> member_info(id)
+ALTER TABLE board
+    ADD CONSTRAINT FK_board_mem_id_member_info_id FOREIGN KEY (mem_id)
+        REFERENCES member_info (id) ;
+
+-- Foreign Key 삭제 SQL - board(mem_id)
+-- ALTER TABLE board
+-- DROP CONSTRAINT FK_board_mem_id_member_info_id;
+
+
+-- store_info Table Create SQL
+-- 테이블 생성 SQL - store_info
+CREATE TABLE store_info
+(
+    id                VARCHAR2(10)     NOT NULL, 
+    pwd               VARCHAR2(50)     NOT NULL, 
+    email             VARCHAR2(50)     NOT NULL, 
+    store_phone       VARCHAR2(20)     NOT NULL, 
+    main_phone        VARCHAR2(13)     NOT NULL, 
+    name              VARCHAR2(30)     NOT NULL, 
+    zip               VARCHAR2(5)      NULL, 
+    add               VARCHAR2(50)     NULL, 
+    add_info          VARCHAR2(50)     NULL, 
+    category          VARCHAR2(50)     NULL, 
+    amenities         VARCHAR2(200)    NULL, 
+    note              VARCHAR2(200)    NULL, 
+    introduce         VARCHAR2(500)    NULL, 
+    max_person        INT              NULL, 
+    booking_rule      VARCHAR2(500)    NULL, 
+    max_team          INT              NULL, 
+    business_hours    VARCHAR2(200)    NULL, 
+    open_status       INT              NULL, 
+     PRIMARY KEY (id)
+);
+
+-- 테이블 Comment 설정 SQL - store_info
+COMMENT ON TABLE store_info IS '사업자정보';
+
+-- 컬럼 Comment 설정 SQL - store_info.id
+COMMENT ON COLUMN store_info.id IS '사업자번호';
+
+-- 컬럼 Comment 설정 SQL - store_info.pwd
+COMMENT ON COLUMN store_info.pwd IS '비밀번호';
+
+-- 컬럼 Comment 설정 SQL - store_info.email
+COMMENT ON COLUMN store_info.email IS '이메일';
+
+-- 컬럼 Comment 설정 SQL - store_info.store_phone
+COMMENT ON COLUMN store_info.store_phone IS '가게전화번호';
+
+-- 컬럼 Comment 설정 SQL - store_info.main_phone
+COMMENT ON COLUMN store_info.main_phone IS '대표전화번호';
+
+-- 컬럼 Comment 설정 SQL - store_info.name
+COMMENT ON COLUMN store_info.name IS '가게이름';
+
+-- 컬럼 Comment 설정 SQL - store_info.zip
+COMMENT ON COLUMN store_info.zip IS '우편번호';
+
+-- 컬럼 Comment 설정 SQL - store_info.add
+COMMENT ON COLUMN store_info.add IS '주소';
+
+-- 컬럼 Comment 설정 SQL - store_info.add_info
+COMMENT ON COLUMN store_info.add_info IS '상세주소';
+
+-- 컬럼 Comment 설정 SQL - store_info.category
+COMMENT ON COLUMN store_info.category IS '가게종류';
+
+-- 컬럼 Comment 설정 SQL - store_info.amenities
+COMMENT ON COLUMN store_info.amenities IS '가게편의시설';
+
+-- 컬럼 Comment 설정 SQL - store_info.note
+COMMENT ON COLUMN store_info.note IS '특이사항';
+
+-- 컬럼 Comment 설정 SQL - store_info.introduce
+COMMENT ON COLUMN store_info.introduce IS '소개글';
+
+-- 컬럼 Comment 설정 SQL - store_info.max_person
+COMMENT ON COLUMN store_info.max_person IS '수용인원';
+
+-- 컬럼 Comment 설정 SQL - store_info.booking_rule
+COMMENT ON COLUMN store_info.booking_rule IS '예약규정';
+
+-- 컬럼 Comment 설정 SQL - store_info.max_team
+COMMENT ON COLUMN store_info.max_team IS '최대팀';
+
+-- 컬럼 Comment 설정 SQL - store_info.business_hours
+COMMENT ON COLUMN store_info.business_hours IS '영업시간';
+
+-- 컬럼 Comment 설정 SQL - store_info.open_status
+COMMENT ON COLUMN store_info.open_status IS '영업상태정보';
+
+
+-- board_review Table Create SQL
+-- 테이블 생성 SQL - board_review
+CREATE TABLE board_review
+(
+    id             INT              NOT NULL, 
+    board_id       INT              NOT NULL, 
+    mem_id         VARCHAR2(30)     NOT NULL, 
+    content        VARCHAR2(500)    NOT NULL, 
+    date_create    DATE             NOT NULL, 
+     PRIMARY KEY (id)
+);
+
+-- Auto Increment를 위한 Sequence 추가 SQL - board_review.id
+CREATE SEQUENCE board_review_SEQ
+START WITH 1
+INCREMENT BY 1;
+
+-- Auto Increment를 위한 Trigger 추가 SQL - board_review.id
+CREATE OR REPLACE TRIGGER board_review_AI_TRG
+BEFORE INSERT ON board_review 
+REFERENCING NEW AS NEW FOR EACH ROW 
+BEGIN 
+    SELECT board_review_SEQ.NEXTVAL
+    INTO :NEW.id
+    FROM DUAL;
+END;
+
+-- DROP TRIGGER board_review_AI_TRG; 
+
+-- DROP SEQUENCE board_review_SEQ; 
+
+-- 컬럼 Comment 설정 SQL - board_review.id
+COMMENT ON COLUMN board_review.id IS '댓글id';
+
+-- 컬럼 Comment 설정 SQL - board_review.board_id
+COMMENT ON COLUMN board_review.board_id IS '게시글id';
+
+-- 컬럼 Comment 설정 SQL - board_review.mem_id
+COMMENT ON COLUMN board_review.mem_id IS '작성자아이디';
+
+-- 컬럼 Comment 설정 SQL - board_review.content
+COMMENT ON COLUMN board_review.content IS '내용';
+
+-- 컬럼 Comment 설정 SQL - board_review.date_create
+COMMENT ON COLUMN board_review.date_create IS '등록일자';
+
+-- Foreign Key 설정 SQL - board_review(board_id) -> board(id)
+ALTER TABLE board_review
+    ADD CONSTRAINT FK_board_review_board_id_board_id FOREIGN KEY (board_id)
+        REFERENCES board (id) ;
+
+-- Foreign Key 삭제 SQL - board_review(board_id)
+-- ALTER TABLE board_review
+-- DROP CONSTRAINT FK_board_review_board_id_board_id;
+
+-- Foreign Key 설정 SQL - board_review(mem_id) -> member_info(id)
+ALTER TABLE board_review
+    ADD CONSTRAINT FK_board_review_mem_id_member_info_id FOREIGN KEY (mem_id)
+        REFERENCES member_info (id) ;
+
+-- Foreign Key 삭제 SQL - board_review(mem_id)
+-- ALTER TABLE board_review
+-- DROP CONSTRAINT FK_board_review_mem_id_member_info_id;
+
+
+-- store_review Table Create SQL
+-- 테이블 생성 SQL - store_review
+CREATE TABLE store_review
+(
+    num            INT              NOT NULL, 
+    store_id       VARCHAR2(10)     NOT NULL, 
+    mem_id         VARCHAR2(30)     NOT NULL, 
+    body           VARCHAR2(500)    NOT NULL, 
+    date_create    DATE             NOT NULL, 
+    score          INT              NOT NULL, 
+     PRIMARY KEY (num)
+);
+
+-- Auto Increment를 위한 Sequence 추가 SQL - store_review.num
+CREATE SEQUENCE store_review_SEQ
+START WITH 1
+INCREMENT BY 1;
+
+-- Auto Increment를 위한 Trigger 추가 SQL - store_review.num
+CREATE OR REPLACE TRIGGER store_review_AI_TRG
+BEFORE INSERT ON store_review 
+REFERENCING NEW AS NEW FOR EACH ROW 
+BEGIN 
+    SELECT store_review_SEQ.NEXTVAL
+    INTO :NEW.num
+    FROM DUAL;
+END;
+
+-- DROP TRIGGER store_review_AI_TRG; 
+
+-- DROP SEQUENCE store_review_SEQ; 
+
+-- 테이블 Comment 설정 SQL - store_review
+COMMENT ON TABLE store_review IS '가게 리뷰';
+
+-- 컬럼 Comment 설정 SQL - store_review.num
+COMMENT ON COLUMN store_review.num IS '리뷰번호';
+
+-- 컬럼 Comment 설정 SQL - store_review.store_id
+COMMENT ON COLUMN store_review.store_id IS '사업자번호';
+
+-- 컬럼 Comment 설정 SQL - store_review.mem_id
+COMMENT ON COLUMN store_review.mem_id IS '작성자아이디';
+
+-- 컬럼 Comment 설정 SQL - store_review.body
+COMMENT ON COLUMN store_review.body IS '내용';
+
+-- 컬럼 Comment 설정 SQL - store_review.date_create
+COMMENT ON COLUMN store_review.date_create IS '작성일';
+
+-- 컬럼 Comment 설정 SQL - store_review.score
+COMMENT ON COLUMN store_review.score IS '평점';
+
+-- Foreign Key 설정 SQL - store_review(store_id) -> store_info(id)
+ALTER TABLE store_review
+    ADD CONSTRAINT FK_store_review_store_id_store_info_id FOREIGN KEY (store_id)
+        REFERENCES store_info (id) ;
+
+-- Foreign Key 삭제 SQL - store_review(store_id)
+-- ALTER TABLE store_review
+-- DROP CONSTRAINT FK_store_review_store_id_store_info_id;
+
+-- Foreign Key 설정 SQL - store_review(mem_id) -> member_info(id)
+ALTER TABLE store_review
+    ADD CONSTRAINT FK_store_review_mem_id_member_info_id FOREIGN KEY (mem_id)
+        REFERENCES member_info (id) ;
+
+-- Foreign Key 삭제 SQL - store_review(mem_id)
+-- ALTER TABLE store_review
+-- DROP CONSTRAINT FK_store_review_mem_id_member_info_id;
+
+
+-- store_img Table Create SQL
+-- 테이블 생성 SQL - store_img
+CREATE TABLE store_img
+(
+    store_id    VARCHAR2(10)     NOT NULL, 
+    root        VARCHAR2(500)    NOT NULL, 
+    main        INT              NOT NULL
+);
+
+-- 테이블 Comment 설정 SQL - store_img
+COMMENT ON TABLE store_img IS '가게 사진';
+
+-- 컬럼 Comment 설정 SQL - store_img.store_id
+COMMENT ON COLUMN store_img.store_id IS '사업자번호';
+
+-- 컬럼 Comment 설정 SQL - store_img.root
+COMMENT ON COLUMN store_img.root IS '사진경로';
+
+-- 컬럼 Comment 설정 SQL - store_img.main
+COMMENT ON COLUMN store_img.main IS '대표사진';
+
+-- Foreign Key 설정 SQL - store_img(store_id) -> store_info(id)
+ALTER TABLE store_img
+    ADD CONSTRAINT FK_store_img_store_id_store_info_id FOREIGN KEY (store_id)
+        REFERENCES store_info (id) ;
+
+-- Foreign Key 삭제 SQL - store_img(store_id)
+-- ALTER TABLE store_img
+-- DROP CONSTRAINT FK_store_img_store_id_store_info_id;
+
+
+-- store_review_img Table Create SQL
+-- 테이블 생성 SQL - store_review_img
+CREATE TABLE store_review_img
+(
+    num         INT              NOT NULL, 
+    image       VARCHAR2(500)    NULL, 
+    store_id    VARCHAR2(10)     NOT NULL
+);
+
+-- 테이블 Comment 설정 SQL - store_review_img
+COMMENT ON TABLE store_review_img IS '가게 리뷰 사진';
+
+-- 컬럼 Comment 설정 SQL - store_review_img.num
+COMMENT ON COLUMN store_review_img.num IS '리뷰번호';
+
+-- 컬럼 Comment 설정 SQL - store_review_img.image
+COMMENT ON COLUMN store_review_img.image IS '사진경로';
+
+-- 컬럼 Comment 설정 SQL - store_review_img.store_id
+COMMENT ON COLUMN store_review_img.store_id IS '사업자번호';
+
+-- Foreign Key 설정 SQL - store_review_img(store_id) -> store_info(id)
+ALTER TABLE store_review_img
+    ADD CONSTRAINT FK_store_review_img_store_id_store_info_id FOREIGN KEY (store_id)
+        REFERENCES store_info (id) ;
+
+-- Foreign Key 삭제 SQL - store_review_img(store_id)
+-- ALTER TABLE store_review_img
+-- DROP CONSTRAINT FK_store_review_img_store_id_store_info_id;
+
+-- Foreign Key 설정 SQL - store_review_img(num) -> store_review(num)
+ALTER TABLE store_review_img
+    ADD CONSTRAINT FK_store_review_img_num_store_review_num FOREIGN KEY (num)
+        REFERENCES store_review (num) ;
+
+-- Foreign Key 삭제 SQL - store_review_img(num)
+-- ALTER TABLE store_review_img
+-- DROP CONSTRAINT FK_store_review_img_num_store_review_num;
+
+
+-- store_menu Table Create SQL
+-- 테이블 생성 SQL - store_menu
+CREATE TABLE store_menu
+(
+    store_id    VARCHAR2(10)    NOT NULL, 
+    img         VARCHAR2(50)    NOT NULL, 
+    name        VARCHAR2(30)    NOT NULL, 
+    price       INT             NOT NULL, 
+    detail      VARCHAR2(50)    NULL, 
+    category    VARCHAR2(20)    NOT NULL
+);
+
+-- 테이블 Comment 설정 SQL - store_menu
+COMMENT ON TABLE store_menu IS '가게 메뉴';
+
+-- 컬럼 Comment 설정 SQL - store_menu.store_id
+COMMENT ON COLUMN store_menu.store_id IS '사업자번호';
+
+-- 컬럼 Comment 설정 SQL - store_menu.img
+COMMENT ON COLUMN store_menu.img IS '사진';
+
+-- 컬럼 Comment 설정 SQL - store_menu.name
+COMMENT ON COLUMN store_menu.name IS '메뉴 이름';
+
+-- 컬럼 Comment 설정 SQL - store_menu.price
+COMMENT ON COLUMN store_menu.price IS '가격';
+
+-- 컬럼 Comment 설정 SQL - store_menu.detail
+COMMENT ON COLUMN store_menu.detail IS '상세설명';
+
+-- 컬럼 Comment 설정 SQL - store_menu.category
+COMMENT ON COLUMN store_menu.category IS '카테고리';
+
+-- Foreign Key 설정 SQL - store_menu(store_id) -> store_info(id)
+ALTER TABLE store_menu
+    ADD CONSTRAINT FK_store_menu_store_id_store_info_id FOREIGN KEY (store_id)
+        REFERENCES store_info (id) ;
+
+-- Foreign Key 삭제 SQL - store_menu(store_id)
+-- ALTER TABLE store_menu
+-- DROP CONSTRAINT FK_store_menu_store_id_store_info_id;
+
+
+-- store_bookmark Table Create SQL
+-- 테이블 생성 SQL - store_bookmark
+CREATE TABLE store_bookmark
+(
+    store_id    VARCHAR2(10)    NOT NULL, 
+    mem_id      VARCHAR2(30)    NOT NULL
+);
+
+-- 컬럼 Comment 설정 SQL - store_bookmark.store_id
+COMMENT ON COLUMN store_bookmark.store_id IS '사업자번호';
+
+-- 컬럼 Comment 설정 SQL - store_bookmark.mem_id
+COMMENT ON COLUMN store_bookmark.mem_id IS '유저아이디';
+
+-- Foreign Key 설정 SQL - store_bookmark(store_id) -> store_info(id)
+ALTER TABLE store_bookmark
+    ADD CONSTRAINT FK_store_bookmark_store_id_store_info_id FOREIGN KEY (store_id)
+        REFERENCES store_info (id) ;
+
+-- Foreign Key 삭제 SQL - store_bookmark(store_id)
+-- ALTER TABLE store_bookmark
+-- DROP CONSTRAINT FK_store_bookmark_store_id_store_info_id;
+
+-- Foreign Key 설정 SQL - store_bookmark(mem_id) -> member_info(id)
+ALTER TABLE store_bookmark
+    ADD CONSTRAINT FK_store_bookmark_mem_id_member_info_id FOREIGN KEY (mem_id)
+        REFERENCES member_info (id) ;
+
+-- Foreign Key 삭제 SQL - store_bookmark(mem_id)
+-- ALTER TABLE store_bookmark
+-- DROP CONSTRAINT FK_store_bookmark_mem_id_member_info_id;
+
+
+-- booking_info Table Create SQL
+-- 테이블 생성 SQL - booking_info
+CREATE TABLE booking_info
+(
+    store_id        VARCHAR2(10)    NOT NULL, 
+    mem_id          VARCHAR2(30)    NOT NULL, 
+    date_booking    DATE            NOT NULL, 
+    time            VARCHAR2(30)    NOT NULL, 
+    person          INT             NOT NULL, 
+    phone           VARCHAR2(11)    NOT NULL, 
+    status          INT             NOT NULL
+);
+
+-- 컬럼 Comment 설정 SQL - booking_info.store_id
+COMMENT ON COLUMN booking_info.store_id IS '사업자번호';
+
+-- 컬럼 Comment 설정 SQL - booking_info.mem_id
+COMMENT ON COLUMN booking_info.mem_id IS '유저아이디';
+
+-- 컬럼 Comment 설정 SQL - booking_info.date_booking
+COMMENT ON COLUMN booking_info.date_booking IS '날짜';
+
+-- 컬럼 Comment 설정 SQL - booking_info.time
+COMMENT ON COLUMN booking_info.time IS '시간';
+
+-- 컬럼 Comment 설정 SQL - booking_info.person
+COMMENT ON COLUMN booking_info.person IS '인원';
+
+-- 컬럼 Comment 설정 SQL - booking_info.phone
+COMMENT ON COLUMN booking_info.phone IS '전화번호';
+
+-- 컬럼 Comment 설정 SQL - booking_info.status
+COMMENT ON COLUMN booking_info.status IS '상태정보';
+
+-- Foreign Key 설정 SQL - booking_info(store_id) -> store_info(id)
+ALTER TABLE booking_info
+    ADD CONSTRAINT FK_booking_info_store_id_store_info_id FOREIGN KEY (store_id)
+        REFERENCES store_info (id) ;
+
+-- Foreign Key 삭제 SQL - booking_info(store_id)
+-- ALTER TABLE booking_info
+-- DROP CONSTRAINT FK_booking_info_store_id_store_info_id;
+
+-- Foreign Key 설정 SQL - booking_info(mem_id) -> member_info(id)
+ALTER TABLE booking_info
+    ADD CONSTRAINT FK_booking_info_mem_id_member_info_id FOREIGN KEY (mem_id)
+        REFERENCES member_info (id) ;
+
+-- Foreign Key 삭제 SQL - booking_info(mem_id)
+-- ALTER TABLE booking_info
+-- DROP CONSTRAINT FK_booking_info_mem_id_member_info_id;
+
+
+-- payment_info Table Create SQL
+-- 테이블 생성 SQL - payment_info
+CREATE TABLE payment_info
+(
+    store_id    VARCHAR2(10)    NOT NULL, 
+    date_pay    DATE            NOT NULL, 
+    item        VARCHAR2(50)    NOT NULL, 
+    price       VARCHAR2(50)    NOT NULL, 
+     PRIMARY KEY (store_id)
+);
+
+-- 테이블 Comment 설정 SQL - payment_info
+COMMENT ON TABLE payment_info IS '결제내역';
+
+-- 컬럼 Comment 설정 SQL - payment_info.store_id
+COMMENT ON COLUMN payment_info.store_id IS '사업자번호';
+
+-- 컬럼 Comment 설정 SQL - payment_info.date_pay
+COMMENT ON COLUMN payment_info.date_pay IS '결제날짜';
+
+-- 컬럼 Comment 설정 SQL - payment_info.item
+COMMENT ON COLUMN payment_info.item IS '내역';
+
+-- 컬럼 Comment 설정 SQL - payment_info.price
+COMMENT ON COLUMN payment_info.price IS '가격';
+
+-- Foreign Key 설정 SQL - payment_info(store_id) -> store_info(id)
+ALTER TABLE payment_info
+    ADD CONSTRAINT FK_payment_info_store_id_store_info_id FOREIGN KEY (store_id)
+        REFERENCES store_info (id) ;
+
+-- Foreign Key 삭제 SQL - payment_info(store_id)
+-- ALTER TABLE payment_info
+-- DROP CONSTRAINT FK_payment_info_store_id_store_info_id;
+
+
+-- board_file Table Create SQL
+-- 테이블 생성 SQL - board_file
+CREATE TABLE board_file
+(
+    id             INT              NOT NULL, 
+    board_id       INT              NOT NULL, 
+    file           VARCHAR2(100)    NOT NULL, 
+    date_create    DATE             NOT NULL, 
+     PRIMARY KEY (id)
+);
+
+-- Auto Increment를 위한 Sequence 추가 SQL - board_file.id
+CREATE SEQUENCE board_file_SEQ
+START WITH 1
+INCREMENT BY 1;
+
+-- Auto Increment를 위한 Trigger 추가 SQL - board_file.id
+CREATE OR REPLACE TRIGGER board_file_AI_TRG
+BEFORE INSERT ON board_file 
+REFERENCING NEW AS NEW FOR EACH ROW 
+BEGIN 
+    SELECT board_file_SEQ.NEXTVAL
+    INTO :NEW.id
+    FROM DUAL;
+END;
+
+-- DROP TRIGGER board_file_AI_TRG; 
+
+-- DROP SEQUENCE board_file_SEQ; 
+
+-- 테이블 Comment 설정 SQL - board_file
+COMMENT ON TABLE board_file IS '게시판 파일';
+
+-- 컬럼 Comment 설정 SQL - board_file.id
+COMMENT ON COLUMN board_file.id IS '파일id';
+
+-- 컬럼 Comment 설정 SQL - board_file.board_id
+COMMENT ON COLUMN board_file.board_id IS '게시글id';
+
+-- 컬럼 Comment 설정 SQL - board_file.file
+COMMENT ON COLUMN board_file.file IS '파일경로';
+
+-- 컬럼 Comment 설정 SQL - board_file.date_create
+COMMENT ON COLUMN board_file.date_create IS '등록일자';
+
+-- Foreign Key 설정 SQL - board_file(board_id) -> board(id)
+ALTER TABLE board_file
+    ADD CONSTRAINT FK_board_file_board_id_board_id FOREIGN KEY (board_id)
+        REFERENCES board (id) ;
+
+-- Foreign Key 삭제 SQL - board_file(board_id)
+-- ALTER TABLE board_file
+-- DROP CONSTRAINT FK_board_file_board_id_board_id;
+
+
+-- board_review2 Table Create SQL
+-- 테이블 생성 SQL - board_review2
+CREATE TABLE board_review2
+(
+    review_id      VARCHAR2(50)     NOT NULL, 
+    mem_id         VARCHAR2(30)     NOT NULL, 
+    content        VARCHAR2(500)    NOT NULL, 
+    date_create    DATE             NOT NULL
+);
+
+-- 컬럼 Comment 설정 SQL - board_review2.review_id
+COMMENT ON COLUMN board_review2.review_id IS '댓글id';
+
+-- 컬럼 Comment 설정 SQL - board_review2.mem_id
+COMMENT ON COLUMN board_review2.mem_id IS '작성자아이디';
+
+-- 컬럼 Comment 설정 SQL - board_review2.content
+COMMENT ON COLUMN board_review2.content IS '내용';
+
+-- 컬럼 Comment 설정 SQL - board_review2.date_create
+COMMENT ON COLUMN board_review2.date_create IS '등록일자';
+
+-- Foreign Key 설정 SQL - board_review2(review_id) -> board_review(id)
+ALTER TABLE board_review2
+    ADD CONSTRAINT FK_board_review2_review_id_board_review_id FOREIGN KEY (review_id)
+        REFERENCES board_review (id) ;
+
+-- Foreign Key 삭제 SQL - board_review2(review_id)
+-- ALTER TABLE board_review2
+-- DROP CONSTRAINT FK_board_review2_review_id_board_review_id;
+
+-- Foreign Key 설정 SQL - board_review2(mem_id) -> member_info(id)
+ALTER TABLE board_review2
+    ADD CONSTRAINT FK_board_review2_mem_id_member_info_id FOREIGN KEY (mem_id)
+        REFERENCES member_info (id) ;
+
+-- Foreign Key 삭제 SQL - board_review2(mem_id)
+-- ALTER TABLE board_review2
+-- DROP CONSTRAINT FK_board_review2_mem_id_member_info_id;
+
+
+-- board_hit Table Create SQL
+-- 테이블 생성 SQL - board_hit
+CREATE TABLE board_hit
+(
+    board_id    INT             NOT NULL, 
+    mem_id      VARCHAR2(30)    NOT NULL
+);
+
+-- 테이블 Comment 설정 SQL - board_hit
+COMMENT ON TABLE board_hit IS '추천';
+
+-- 컬럼 Comment 설정 SQL - board_hit.board_id
+COMMENT ON COLUMN board_hit.board_id IS '게시글id';
+
+-- 컬럼 Comment 설정 SQL - board_hit.mem_id
+COMMENT ON COLUMN board_hit.mem_id IS '추천한아이디';
+
+-- Foreign Key 설정 SQL - board_hit(board_id) -> board(id)
+ALTER TABLE board_hit
+    ADD CONSTRAINT FK_board_hit_board_id_board_id FOREIGN KEY (board_id)
+        REFERENCES board (id) ;
+
+-- Foreign Key 삭제 SQL - board_hit(board_id)
+-- ALTER TABLE board_hit
+-- DROP CONSTRAINT FK_board_hit_board_id_board_id;
+
+-- Foreign Key 설정 SQL - board_hit(mem_id) -> member_info(id)
+ALTER TABLE board_hit
+    ADD CONSTRAINT FK_board_hit_mem_id_member_info_id FOREIGN KEY (mem_id)
+        REFERENCES member_info (id) ;
+
+-- Foreign Key 삭제 SQL - board_hit(mem_id)
+-- ALTER TABLE board_hit
+-- DROP CONSTRAINT FK_board_hit_mem_id_member_info_id;
+
+
