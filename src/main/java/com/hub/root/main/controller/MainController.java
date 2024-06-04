@@ -11,4 +11,12 @@ public class MainController {
 	public String main() {
 		return "main/mainPage1";
 	}
+	@GetMapping("flex")
+	public String flex() {
+		return "main/flex";
+	}
+	@GetMapping("flex1")
+	public String flex1() {
+		return "main/flex1";
+	}
 }
