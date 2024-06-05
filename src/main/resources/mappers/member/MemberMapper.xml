@@ -5,7 +5,6 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hub.root.member.mybatis.MemberMapper">
 	<resultMap type="com.hub.root.member.dto.MemberDTO" id="member">
-<<<<<<< HEAD
 		<id property="id" column="member_id" />
 		<result property="pwd" column="member_pwd"/>
 		<result property="nick" column="member_nick"/>
@@ -31,23 +30,4 @@
 	<select id="mailChk" resultMap="member">
 		select * from member_info where member_email=#{email}
 	</select>
-=======
-		<id property="id" column="id" />
-		<result property="pwd" column="pwd"/>
-		<result property="nick" column="nick"/>
-		<result property="email" column="email"/>
-		<result property="phone" column="phone"/>
-		<result property="birth" column="birth"/>
-		<result property="gender" column="gender"/>
-		<result property="img" column="img"/>
-		<result property="status" column="status"/>
-		<result property="date_create" column="date_create"/>
-		<result property="admin" column="admin"/>
-	</resultMap>
-
-	<select id="loginChk" resultMap="member">
-		select id,pwd,admin from member_info where id=#{id}
-	</select>
-
->>>>>>> branch 'guhyeon' of git@github.com:gayoungyun/table_hub.git
 </mapper>

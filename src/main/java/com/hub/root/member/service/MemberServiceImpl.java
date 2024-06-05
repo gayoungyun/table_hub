@@ -12,7 +12,6 @@ import com.hub.root.member.mybatis.MemberMapper;
 
 @Service
 public class MemberServiceImpl implements MemberService{
-<<<<<<< HEAD
 	
 
 	@Autowired MemberMapper mapper;
@@ -89,46 +88,5 @@ public class MemberServiceImpl implements MemberService{
 		return result;
 	}
 	
-	
-=======
-	@Autowired MemberMapper mapper;
-	@Autowired JavaMailSender sender;
-
-	@Override
-	public int loginChk(String id, String pwd) {
-		MemberDTO dto = mapper.loginChk(id, pwd);
-		String msg;
-		if (dto != null) {
-			if (pwd.equals(dto.getPwd())) {
-				if (dto.getAdmin() == 1) {
-					return 2;
-				}
-				return 1;
-			}
-		}
-		
-		return 0;
-	}
-	
-	public String sendMsg(String msg, String url) {
-		String message = "<script>alert('"+msg+"');";
-		message += "location.href='"+url+"'</script>";
-		return message;
-	}
-	
-	public void sendMail(String to, String subject, String body) {
-		MimeMessage message = sender.createMimeMessage();
-		
-		try {
-			MimeMessageHelper h = new MimeMessageHelper(message, true, "UTF-8");
-			h.setSubject(subject);
-			h.setTo(to);
-			h.setText(body);
-			sender.send(message);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
->>>>>>> branch 'guhyeon' of git@github.com:gayoungyun/table_hub.git
 
 }

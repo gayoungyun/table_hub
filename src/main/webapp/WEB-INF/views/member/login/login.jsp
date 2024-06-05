@@ -55,7 +55,6 @@
 			dataType : "json",
 			contentType : "application/json; charset=utf-8",
 			success : function ( result ) {
-<<<<<<< HEAD
 					$("#emailInfoMsg").html( result.result );
 // 					$("#codeSendBtn").prop("disabled", true);
 			},
@@ -132,75 +131,6 @@
 				<br>
 				<input type="button" value="회원 가입" onclick="register()"  id="registerBtn">
 				<p id="registerBtnInfoMsg"></p>
-=======
-					$("#emailInfoMsg").html( result.result );	
-			},
-			error : function () {
-				alert("문제 발생!!!")
-			}
-		})
-	}
-	
-	function register() {
-		let code = $("#authCode").val()
-		let form = {code : code};
-		$.ajax({
-			url : "register",
-			type : "post",
-			data : JSON.stringify(form),
-			dataType : "json",
-			contentType : "application/json; charset=utf-8",
-			success : function ( result ) {
-				console.log("result : ", result.result)
-					if (result.result == 1) {
-						location.href="registerUser"
-					} else {
-						$("#emailInfoMsg").html( "코드가 올바르지 않습니다." );
-					}
-			},
-			error : function () {
-				alert("문제 발생!!!")
-			}
-		})
-	}
-		
-
-</script>
-
-</head>
-<body>
-
-	<div id="bodyWrapper">
-		<div id="loginWrapper">
-			<h1>회원 로그인</h1>
-			<div id="inputField">
-				<h2>아이디</h2>
-				<input type="text" id="inputId" name="id" placeholder="아이디를 입력하세요">
-				<h2>비밀번호</h2>
-				<input type="password" id="inputPwd" name="pwd" placeholder="비밀번호를 입력하세요">
-				<div id="infoMsg"></div>
-			</div>
-			<input id="loginBtn" type="button" onclick="loginChk()" value="로그인">
-		</div>
-		<div id="registerWrapper">
-			<h1>회원가입</h1>
-			<div id="inputField">
-				<input type="text" placeholder="이메일 주소 입력" id="emailLocal">
-				<b>@</b>
-				<select id="emailDomain">
-					<option>naver.com
-					<option>daum.net
-					<option>google.com
-				</select>
-				<input type="button" value="인증코드 전송" onclick="sendMail()">
-				<br>
-				<br>
-				<div id="emailInfoMsg"></div>
-				<input type="text" id="authCode" placeholder="인증코드 입력">
-				<br>
-				<br>
-				<input type="button" value="회원 가입" onclick="register()"  id="registerBtn">
->>>>>>> branch 'guhyeon' of git@github.com:gayoungyun/table_hub.git
 				<hr>
 				<br><br>
 				<div id="naver_id_login">
