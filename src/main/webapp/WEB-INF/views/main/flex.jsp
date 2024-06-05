@@ -10,8 +10,7 @@
 		padding:10px;
 		background:lightgray;
 		display:flex;
-		<!-- justify-content:space-between; -->
-		height:100vh;
+		justify-content:space-between;
 	}
 	.flex-item{
 		padding:10px;
