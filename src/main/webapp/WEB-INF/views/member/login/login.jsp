@@ -55,7 +55,8 @@
 			dataType : "json",
 			contentType : "application/json; charset=utf-8",
 			success : function ( result ) {
-					$("#emailInfoMsg").html( result.result );	
+					$("#emailInfoMsg").html( result.result );
+// 					$("#codeSendBtn").prop("disabled", true);
 			},
 			error : function () {
 				alert("문제 발생!!!")
@@ -64,26 +65,33 @@
 	}
 	
 	function register() {
-		let code = $("#authCode").val()
-		let form = {code : code};
-		$.ajax({
-			url : "register",
-			type : "post",
-			data : JSON.stringify(form),
-			dataType : "json",
-			contentType : "application/json; charset=utf-8",
-			success : function ( result ) {
-				console.log("result : ", result.result)
-					if (result.result == 1) {
-						location.href="registerUser"
-					} else {
-						$("#emailInfoMsg").html( "코드가 올바르지 않습니다." );
-					}
-			},
-			error : function () {
-				alert("문제 발생!!!")
-			}
-		})
+// 		console.log($("#codeSendBtn").prop("disabled"))
+// 		if ($("#codeSendBtn").prop("disabled")) {
+			$("#registerBtnInfoMsg").html("")
+			let code = $("#authCode").val()
+			let form = {code : code};
+			$.ajax({
+				url : "register",
+				type : "post",
+				data : JSON.stringify(form),
+				dataType : "json",
+				contentType : "application/json; charset=utf-8",
+				success : function ( result ) {
+					console.log("result : ", result.result)
+						if (result.result == 1) {
+							location.href="registerUser"
+						} else {
+							$("#emailInfoMsg").html( "코드가 올바르지 않습니다." );
+						}
+				},
+				error : function () {
+					alert("문제 발생!!!")
+				}
+			})
+// 		} else {
+// 			$("#registerBtnInfoMsg").html("이메일 인증을 진행하여 인증코드를 입력해주세요")
+// 		}
+
 	}
 		
 
@@ -114,7 +122,7 @@
 					<option>daum.net
 					<option>google.com
 				</select>
-				<input type="button" value="인증코드 전송" onclick="sendMail()">
+				<input type="button" value="인증코드 전송" onclick="sendMail()" id="codeSendBtn">
 				<br>
 				<br>
 				<div id="emailInfoMsg"></div>
@@ -122,6 +130,7 @@
 				<br>
 				<br>
 				<input type="button" value="회원 가입" onclick="register()"  id="registerBtn">
+				<p id="registerBtnInfoMsg"></p>
 				<hr>
 				<br><br>
 				<div id="naver_id_login">

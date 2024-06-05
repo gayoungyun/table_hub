@@ -1,5 +1,7 @@
 package com.hub.root.member.controller;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +35,18 @@ public class MemberController {
 		return "member/login/registerNaver";
 	}
 	@GetMapping("registerUser")
-	public String registerUser() {
-		
+	public String registerUser(HttpServletRequest req, Model model) {
+		Cookie[] Cookies = req.getCookies();
+		String email = "";
+		if (Cookies != null) {
+			for(Cookie c : Cookies) {
+				if (c.getName().equals("email")) {
+					email = c.getValue();
+				}
+			}			
+		}
+//		String emailLocal[] = email.split("@");
+		model.addAttribute("email", email);
 		return "member/login/registerUser";
 	}
 

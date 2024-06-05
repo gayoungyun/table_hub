@@ -12,6 +12,8 @@ import com.hub.root.member.mybatis.MemberMapper;
 
 @Service
 public class MemberServiceImpl implements MemberService{
+	
+
 	@Autowired MemberMapper mapper;
 	@Autowired JavaMailSender sender;
 
@@ -50,5 +52,42 @@ public class MemberServiceImpl implements MemberService{
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	public int idChk(String id) {
+		MemberDTO dto = mapper.idChk(id);
+		int result;
+		if (dto == null) {
+			result = 0;
+		} else {
+			result = 1;
+		}
+		return result;
+	}
+	@Override
+	public int nickChk(String nick) {
+		MemberDTO dto = mapper.nickChk(nick);
+		int result;
+		if (dto == null) {
+			result = 0;
+		} else {
+			result = 1;
+		}
+		return result;
+	}
+
+	@Override
+	public int mailChk(String email) {
+		MemberDTO dto = mapper.mailChk(email);
+		int result;
+		if (dto == null) {
+			result = 0;
+		} else {
+			result = 1;
+		}
+		return result;
+	}
+	
+	
 
 }
