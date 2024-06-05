@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+*{
+	margin: 0;
+	padding: 0;
+	
+}
+
+#layout_body {
+	background-color: #FFFBF4;
+	position: relative;
+}
+
+.table {
+	width: 200px;
+	height: 100px;
+	position: absolute;
+	background-color: white;
+	border: 1px solid black;
+	border-radius: 5px;
+}

@@ -1,0 +1,38 @@
+@charset "UTF-8";
+@font-face {
+	font-family: "Hanna";
+	src: url("font/BMHANNA_11yrs_ttf.ttf");
+}
+
+*{
+	margin: 0px;
+}
+
+#pos_header {
+	background-color: #191E36;
+	display: flex;
+	justify-content: space-between;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.header_tab_wrapper {
+	background-color: white;
+	margin-right: 15px;
+	border-radius: 5px;
+	padding: 7px;
+}
+
+.header_tab{
+	display: inline-block;
+	font-family: "Hanna"
+}
+
+.header_tab_left{
+	border-radius: 5px 0px 0px 5px;	
+}
+
+.header_tab_right{
+	border-radius: 0px 5px 5px 0px;	
+}
+
+
