@@ -208,12 +208,16 @@
 		    <artifactId>javax.mail</artifactId>
 		    <version>1.5.3</version>
 		</dependency>
+<<<<<<< HEAD
 		<!-- SMS사용을 위한 라이브러리 -->
 		<dependency>
 		    <groupId>net.nurigo</groupId>
 		    <artifactId>sdk</artifactId>
 		    <version>4.3.0</version>
 		</dependency>
+=======
+				
+>>>>>>> branch 'guhyeon' of git@github.com:gayoungyun/table_hub.git
 		
 		        
 	</dependencies>
