@@ -15,9 +15,9 @@ public class MainController {
 	public String flex() {
 		return "main/flex";
 	}
-	@GetMapping("flex1")
-	public String flex1() {
-		return "main/flex1";
+	@GetMapping("flex6")
+	public String flex2() {
+		return "main/flex6";
 	}
 	@GetMapping("header")
 	public String header() {
