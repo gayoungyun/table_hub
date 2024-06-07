@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hub.root.member.dto.MemberDTO;
 import com.hub.root.member.service.MemberService;
 
 import net.nurigo.sdk.NurigoApp;
@@ -119,9 +120,12 @@ public class MemberRestController {
 			Cookie cookie = new Cookie("email", email);
 			cookie.setMaxAge(5 * 60); // 5분
 			res.addCookie(cookie);
-//		ms.sendMail(email, "이메일 테스트중입니다.", "1234");
-			// 받는사람 이메일, 제목, 내용 순으로 넘겨준다.
-			session.setAttribute(email, "1234");
+	    	int code = randomNumber();
+	    	String msg = "인증번호는 [" + code + "] 입니다.\n 해당 코드를 입력해주세요";
+			ms.sendMail(email, "인증번호를 확인해주세요", msg);
+//			 받는사람 이메일, 제목, 내용 순으로 넘겨준다.
+			String codeKey = String.valueOf(code);
+			session.setAttribute(email, codeKey);
 			
 			map.put("result", "인증 코드가 전송되었습니다.");
 			model.addAttribute(session);			
@@ -142,6 +146,7 @@ public class MemberRestController {
 			for(Cookie c : Cookies) {
 				if (c.getName().equals("email")) {
 					email = c.getValue();
+					break;
 				}
 			}			
 		}
@@ -159,6 +164,8 @@ public class MemberRestController {
 	@GetMapping(value="idChk", produces = "application/json; charset=utf-8")
 	public int idChk(@RequestParam String id) {
 		int result = ms.idChk(id);
+		System.out.println("id : " + id);
+		System.out.println("result : " + result);
 		
 		return result;
 	}
@@ -166,6 +173,33 @@ public class MemberRestController {
 	public int nickChk(@RequestParam String nick) {
 		int result = ms.nickChk(nick);
 		
+		return result;
+	}
+	
+	
+	@PostMapping(value="registerChk", produces = "application/json; charset=utf-8")
+	public int registerChk(@RequestBody Map<String, Object> map) {
+		System.out.println("id : " + (String)map.get("id"));
+		System.out.println("pwd : " + (String)map.get("pwd"));
+		System.out.println("nick : " + (String)map.get("nick"));
+		System.out.println("phone : " + (String)map.get("phone"));
+		System.out.println("email : " + (String)map.get("email"));
+		System.out.println("birth : " + (String)map.get("birth"));
+		System.out.println("gender : " + (Integer)map.get("gender"));
+		MemberDTO dto = new MemberDTO();
+		dto.setId((String)map.get("id"));
+		if (map.get("pwd") == null) {
+			dto.setPwd("none");
+		} else {
+			dto.setPwd((String)map.get("pwd"));			
+		}
+		dto.setNick((String)map.get("nick"));
+		dto.setPhone((String)map.get("phone"));
+		dto.setEmail((String)map.get("email"));
+		dto.setBirth((String)map.get("birth"));
+		dto.setGender((Integer)map.get("gender"));
+		int result = ms.register(dto);
+		System.out.println("result : " + result);
 		return result;
 	}
 	

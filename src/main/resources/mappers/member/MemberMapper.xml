@@ -30,4 +30,27 @@
 	<select id="mailChk" resultMap="member">
 		select * from member_info where member_email=#{email}
 	</select>
+	<insert id="register">
+		insert into member_info(
+			member_id, member_pwd, member_nick, 
+			member_email, member_phone, member_birth, 
+			member_gender, member_date_create, member_admin,
+			member_img, member_status
+		) values (
+			#{id}, #{pwd}, #{nick}, 
+			#{email}, #{phone}, #{birth}, 
+			#{gender}, #{dateCreate}, 0,
+			#{img}, #{status} )
+	</insert>
 </mapper>
+
+
+
+
+
+
+
+
+
+
+

@@ -126,7 +126,7 @@
 				<br>
 				<br>
 				<div id="emailInfoMsg"></div>
-				<input type="text" id="authCode" placeholder="인증코드 입력">
+				<input type="number" id="authCode" placeholder="인증코드 입력">
 				<br>
 				<br>
 				<input type="button" value="회원 가입" onclick="register()"  id="registerBtn">
@@ -144,7 +144,7 @@
   	naver_id_login.setButton("white", 3,40);
   	naver_id_login.setDomain("http://localhost:8080/root/member/login");
   	naver_id_login.setState(state);
-  	naver_id_login.setPopup();
+//   	naver_id_login.setPopup();
   	naver_id_login.init_naver_id_login();
 </script>
 </body>

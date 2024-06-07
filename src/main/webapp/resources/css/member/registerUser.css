@@ -29,10 +29,11 @@ th {
 	border-bottom: 1px solid #e0e0e0;
 }
 td {
-	text-align: left;
+/* 	text-align: left; */
 	vertical-align: bottom;
 	padding-bottom: 5px;
 	border-bottom: 1px solid #e0e0e0;
+	width: 100%;
 }
 #inputId, #inputNick, #inputPwd, #inputPwdChk, #phoneCode
 , #phone1, #phone2, #inputCode, #year, #month, #day {
@@ -47,20 +48,29 @@ td {
 	font-size: 18px;
 	
 }
+select option {
+	text-align: center;
+	font-size: 16px;
+	font-weight: normal;
+	overflow: hidden;
+}
 #year, #month, #day {
 	width: 26%;
 	text-align: center;
 }
 #genderMan, #genderWoman {
-	width: 50%;
+	width: 212px;
 	display: inline-block;
 	padding: 0;
 	margin: 0;
+	margin-right: -6px;
 	border: 0;
 	height: 40px;
 	font-size: 20px;
 	font-weight: bold;
 	border: 0;
+	align-content: left;
+	line-height: 20px;
 }
 #inputId, #inputNick, #inputPwd, #inputPwdChk {
 	width: 410px;
@@ -70,6 +80,14 @@ td {
 	text-align: center;
 	
 }
+#registerBtn {
+	width: 150px;
+	margin: auto;
+	text-align: center;
+}
+
+
+
 input[type=number]::-webkit-outer-spin-button,
         input[type=number]::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -77,7 +95,7 @@ input[type=number]::-webkit-outer-spin-button,
         }
 p {
 	font-size: 11px;
-	color: #ff6868;
+/* 	color: #ff6868; */
 	margin: 0;
 	text-align: left;
 	height: 10px;
@@ -87,3 +105,28 @@ p {
 ::placeholder {
 	color: #d0d0d0;
 }
+
+
+/* #year1 { */
+/* 	display: none; */
+/* 	position: absolute; */
+/* 	width: 100px; */
+/* 	height: 200px; */
+/* 	background-color: white; */
+/* 	border: 1px solid; */
+/* 	overflow-y: auto; */
+/* 	list-style-type: none; */
+/* 	text-align: center; */
+/* 	margin: 0; */
+/* 	padding: 0; */
+/* } */
+/* .yearOptions { */
+/* 	cursor: pointer; */
+/* } */
+/* .open + #year1 { */
+/*     display: block; */
+/* } */
+
+
+
+

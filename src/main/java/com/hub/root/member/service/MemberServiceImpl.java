@@ -1,10 +1,14 @@
 package com.hub.root.member.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.hub.root.member.dto.MemberDTO;
@@ -16,13 +20,17 @@ public class MemberServiceImpl implements MemberService{
 
 	@Autowired MemberMapper mapper;
 	@Autowired JavaMailSender sender;
+	
+	BCryptPasswordEncoder en;
+	public MemberServiceImpl () {
+		en = new BCryptPasswordEncoder();
+	}
 
 	@Override
 	public int loginChk(String id, String pwd) {
 		MemberDTO dto = mapper.loginChk(id, pwd);
-		String msg;
 		if (dto != null) {
-			if (pwd.equals(dto.getPwd())) {
+			if (en.matches(pwd, dto.getPwd())) {
 				if (dto.getAdmin() == 1) {
 					return 2;
 				}
@@ -86,6 +94,25 @@ public class MemberServiceImpl implements MemberService{
 			result = 1;
 		}
 		return result;
+	}
+	
+	public int register(MemberDTO dto) {
+		System.out.println("서비스시작asdf");
+		dto.setPwd(en.encode(dto.getPwd()));
+		dto.setDateCreate(setTime());
+		dto.setImg("default.img");
+		dto.setStatus("안녕하세요 저는 "+dto.getNick()+" 입니다.");
+		System.out.println(dto.getStatus());
+		int result = mapper.register(dto);
+		return result;
+	}
+	
+	public String setTime() {
+		LocalDateTime currentTime = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedTime = currentTime.format(formatter);
+		
+        return formattedTime;
 	}
 	
 

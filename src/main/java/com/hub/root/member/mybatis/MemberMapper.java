@@ -9,4 +9,5 @@ public interface MemberMapper {
 	public MemberDTO idChk( String id );
 	public MemberDTO nickChk( String nick );
 	public MemberDTO mailChk( String email );
+	public int register(MemberDTO dto);
 }
