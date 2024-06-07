@@ -8,16 +8,16 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="${path}/resources/css/default/header.css"/>
+<link rel="stylesheet" href="${path}/resources/css/default/header.css?after"/>
 </head>
 <body>
 	<div class="flex-container">
 		<div class="flex-sub-container-1">
 			<div class="flex-item">
-				<a href="#">tag1</a>
+				<a href="#">Profile</a>
 			</div>
 			<div class="flex-item">
-				<a href="#">tag2</a>
+				<a href="#">Board</a>
 			</div>
 		</div>
 		<div class="flex-item-title">
@@ -25,7 +25,7 @@
 		</div>
 		<div class="flex-sub-container-2">
 			<div class="flex-item">
-				<a href="#">tag3</a>
+				<a href="#">Login</a>
 			</div>
 			<div class="search">
 				<input type="text" placeholder="search for..">

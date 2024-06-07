@@ -2,106 +2,25 @@
     pageEncoding="UTF-8"%>
  <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="path" value="<%= request.getContextPath() %>" />
- <%@ include file="./header.jsp" %> 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="${path}/resources/css/main/mainPage1.css?after"/>
+<script  type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/main/image_slid.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3/dist/js/splide.min.js"></script>
 
-<style type="text/css">
-	.page{
-		display:flex;
-		flex-direction:column;
-		min-height: 100vh;
-	}
-	.content1{
-		flex:1;
-		padding:2.5rem;
-		position: relative;
-		height: 80vh;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	.main-img{
-		flex:1;
-		padding:6.5rem;
-		position: relative;
-		width: 100%;
-		height: 80vh;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	.main-img div{
-		width: 100%;
-		height: 100%;
-		object-fit: contain;
-	}
-	.main-img div img {
-		width: 100%;
-		height: 100%;
-		object-fit: contain;
-	}
-	.intro-hub{
-		dispaly:flex;
-		justify-content: center;
-		align-items: center;
-		text-align: center;
-	}
-	.first-line {
-		text-align: center;
-		font-size: 30px;
-		font-family: "Love Ya Like A Sister",cursive;
-	}
-	.rest-line {
-		text-align: center;
-		font-size: 20px;
-		margin-top: -40px;
-		font-family: "Love Ya Like A Sister",cursive;
-	}
-	.content2{
-
-		padding:9.5rem;
-		height: 80vh;
-		display: flex;
-		justify-content: center;
-        align-items: center;
-	}
-	.menu-img { 
-		width: 100%;
-		height: 100%;
-		display: flex;
-		justify-content: space-between;
-	}
-	.food-img {
-		width: 30%;
-		text-align: center;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		text-decoration: none;
-		float: left;
-		height: 60%;
-	}
-	.food-img img {
-		width: 100%;
-		height: 60%;
-		object-fit: contain;
-	}
-	.food-tagname{
-		margin-top: 10px;
-	}
-</style>
+ <%@ include file="./header.jsp" %> 
 </head>
 <body>
 	<div class="page">
 		<div class="content1">
 			<div class="main-img">
 				<div>
-					<img src="${path}/resources/img/main/맛집02.jpg">
+					<img src="${path}/resources/img/main/test8.jpg">
 				</div>
 			</div>
 		</div>
@@ -112,34 +31,140 @@
 					qwerqwer qwerqwerqwerqwer qwerqwer</p>
 				</div>
 			</section>
+			
 			<div class="content2">
 				<div class="menu-img">
-					<a href="#" class="food-img">
-						<img src="${path}/resources/img/main/맛집03.jpg" width="225"><br>
-						<div class="food-tagname">
+					<ul class="image-slid">
+				
+				
+				
+					<li class="food-img">
+						<img class="out" src="${path}/resources/img/main/맛집03.jpg" width="225"><br>
+							<div class="food-tagname">
 							#한식 
-							<button type="button">자세히보기</button>
-						</div>
-					</a>
-					<a href="#" class="food-img">
-						<img src="${path}/resources/img/main/맛집04.jpg" width="225"><br>
-						<div class="food-tagname">
+								<button type="button">자세히보기</button>
+							</div>
+					</li>>
+					<li class="food-img">
+						<img class="on" src="${path}/resources/img/main/맛집04.jpg" width="225"><br>
+							<div class="food-tagname">
 							#일식
-							<button type="button">자세히보기</button>
-						</div>
-					</a>
-					<a href="#" class="food-img">
+								<button type="button">자세히보기</button>
+							</div>
+					</li>>
+					<li class="food-img">
 						<img src="${path}/resources/img/main/맛집05.jpg" width="225"><br>
-						<div class="food-tagname">
+							<div class="food-tagname">
 							#양식 
-							<button type="button">자세히보기</button>
-						</div>
-					</a>
+								<button type="button">자세히보기</button>
+							</div>
+					</li>>
+					<li class="food-img">
+						<img src="${path}/resources/img/main/맛집05.jpg" width="225"><br>
+							<div class="food-tagname">
+							#양식 
+								<button type="button">자세히보기</button>
+							</div>
+					</li>>
+					<li class="food-img">
+						<img src="${path}/resources/img/main/맛집05.jpg" width="225"><br>
+							<div class="food-tagname">
+							#양식 
+								<button type="button">자세히보기</button>
+							</div>
+					</li>>
+					</ul>
+				</div>
+				
+				<div class="menu-img1">
+					<ul class="image-slid">
+				
+				
+				
+					<li class="food-img">
+						<img class="out" src="${path}/resources/img/main/맛집03.jpg" width="225"><br>
+							<div class="food-tagname">
+							#한식 
+								<button type="button">자세히보기</button>
+							</div>
+					</li>>
+					<li class="food-img">
+						<img class="on" src="${path}/resources/img/main/맛집04.jpg" width="225"><br>
+							<div class="food-tagname">
+							#일식
+								<button type="button">자세히보기</button>
+							</div>
+					</li>>
+					<li class="food-img">
+						<img src="${path}/resources/img/main/맛집05.jpg" width="225"><br>
+							<div class="food-tagname">
+							#양식 
+								<button type="button">자세히보기</button>
+							</div>
+					</li>>
+					<li class="food-img">
+						<img src="${path}/resources/img/main/맛집05.jpg" width="225"><br>
+							<div class="food-tagname">
+							#양식 
+								<button type="button">자세히보기</button>
+							</div>
+					</li>>
+					<li class="food-img">
+						<img src="${path}/resources/img/main/맛집05.jpg" width="225"><br>
+							<div class="food-tagname">
+							#양식 
+								<button type="button">자세히보기</button>
+							</div>
+					</li>>
+					</ul>
+				</div>
+				
+				<div class="menu-img2">
+					<ul class="image-slid">
+				
+				
+				
+					<li class="food-img">
+						<img class="out" src="${path}/resources/img/main/맛집03.jpg" width="225"><br>
+							<div class="food-tagname">
+							#한식 
+								<button type="button">자세히보기</button>
+							</div>
+					</li>>
+					<li class="food-img">
+						<img class="on" src="${path}/resources/img/main/맛집04.jpg" width="225"><br>
+							<div class="food-tagname">
+							#일식
+								<button type="button">자세히보기</button>
+							</div>
+					</li>>
+					<li class="food-img">
+						<img src="${path}/resources/img/main/맛집05.jpg" width="225"><br>
+							<div class="food-tagname">
+							#양식 
+								<button type="button">자세히보기</button>
+							</div>
+					</li>>
+					<li class="food-img">
+						<img src="${path}/resources/img/main/맛집05.jpg" width="225"><br>
+							<div class="food-tagname">
+							#양식 
+								<button type="button">자세히보기</button>
+							</div>
+					</li>>
+					<li class="food-img">
+						<img src="${path}/resources/img/main/맛집05.jpg" width="225"><br>
+							<div class="food-tagname">
+							#양식 
+								<button type="button">자세히보기</button>
+							</div>
+					</li>>
+					</ul>
 				</div>
 			</div>
 	</div>
-<%@ include file="./footer.jsp" %>
 </body>
+ <%@ include file="./footer.jsp" %> 
 </html>
 
 
