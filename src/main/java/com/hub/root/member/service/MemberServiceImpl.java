@@ -2,6 +2,7 @@ package com.hub.root.member.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import javax.mail.internet.MimeMessage;
 
@@ -28,7 +29,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public int loginChk(String id, String pwd) {
-		MemberDTO dto = mapper.loginChk(id, pwd);
+		MemberDTO dto = mapper.loginChk(id);
 		if (dto != null) {
 			if (en.matches(pwd, dto.getPwd())) {
 				if (dto.getAdmin() == 1) {
@@ -72,6 +73,20 @@ public class MemberServiceImpl implements MemberService{
 		}
 		return result;
 	}
+	
+	
+	
+	
+	@Override
+	public int snsLoginChk(String id) {
+		MemberDTO dto = mapper.loginChk(id);
+		if (dto == null) {
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+
 	@Override
 	public int nickChk(String nick) {
 		MemberDTO dto = mapper.nickChk(nick);
@@ -86,9 +101,12 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public int mailChk(String email) {
-		MemberDTO dto = mapper.mailChk(email);
+		System.out.println("11");
+		System.out.println("email : " + email);
+		ArrayList<MemberDTO> list = mapper.mailChk(email);
+		System.out.println("22");
 		int result;
-		if (dto == null) {
+		if (list.isEmpty()) {
 			result = 0;
 		} else {
 			result = 1;

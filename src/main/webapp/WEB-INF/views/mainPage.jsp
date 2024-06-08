@@ -20,6 +20,7 @@
 			<a href="/root/member/login">로그인</a>
 		</c:otherwise>
 	</c:choose>	
+	<hr>
 <br>
 </body>
 </html>

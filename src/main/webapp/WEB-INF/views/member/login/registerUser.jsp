@@ -7,13 +7,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="<%= request.getContextPath() %>/resources/css/member/registerUser.css" rel="stylesheet"/>
+<link href="<%= request.getContextPath() %>/resources/css/member/registerUser.css?after" rel="stylesheet"/>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 </head>
 <body>
 	<div id="bodyWrapper">
-		<div id="registerInputWrapper">
+		<div id="registerInputWrapper"><br>
 			<h1>회원 정보 입력</h1>
 			<form action="register" id="registerForm" method="post">
 				<table>
@@ -75,7 +75,7 @@
 					</tr>
 					<tr>
 						<th>생년월일</th>
-						<td>
+						<td style="padding-bottom: 20px;">
 							<select id="year">
 								<% 
 								int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -128,6 +128,13 @@
 	
 	
 	<script type="text/javascript">
+		console.log("email : " , '${email}')
+		if('${email}' == "") {
+			alert("잘못된 접근입니다. \n이메일 인증을 다시 진행해주세요")
+			location.href="login"
+		} else {
+			console.log("이메일 있음")
+		}
 		let idPass = false;
 		let pwdPass = false;
 		let nickPass = false;
@@ -144,10 +151,12 @@
 				$("#idInfoMsg").css("color", "#ff6868")
 				idPass = false;
 			} else {
+				console.log("inputId : ", inputId)
 				$.ajax({
-					url : "idChk?id="+inputId,
-					type : "get",
+					url : "idChk",
+					type : "post",
 					dataType : "text",
+					data : JSON.stringify(form),
 					contentType : "application/json; charset=utf-8",
 					success : function ( result ) {
 						if (result == 0) {
@@ -213,11 +222,14 @@
 			const pwdChk = $("#inputPwdChk").val();
 			const regex1 = /[^a-zA-Z0-9\s]/;
 			const regex2 = /[A-Z]/;
-			if (inputPwd.length < 6) {
+			if (inputPwd.length < 6 && inputPwd.length > 1) {
 				$("#pwdInfoMsg").html("6자 이상 입력하세요")
 				$("#pwdInfoMsg").css("color", "#ff6868")
 				pwdPass = false;
-			}else {
+			} else if ( inputPwd.length == 0) {
+				$("#pwdChkInfoMsg").html("비밀번호를 입력해주세요")
+				$("#pwdChkInfoMsg").css("color", "#ff6868")
+			} else {
 				if (regex1.test(inputPwd) && regex2.test(inputPwd)) {
 					$("#pwdInfoMsg").html("사용 가능한 패스워드 입니다.")
 					$("#pwdInfoMsg").css("color", "#6262ff")
@@ -251,24 +263,36 @@
 			const phoneCode = $("#phoneCode").val()
 			const phone1 = $("#phone1").val()
 			const phone2 = $("#phone2").val()
-			inputPhone = phoneCode + phone1 + phone2
-			let form = {phoneNumber : inputPhone}
-			$.ajax({
-				url : "sendMessage",
-				type : "post",
-				data : JSON.stringify(form),
-				dataType : "text",
-				contentType : "application/json; charset=utf-8",
-				success : function ( result ) {
-					$("#phoneInfoMsg").html(result);
-					$("#phoneInfoMsg").css("color", "#6262ff")
-					$("#codeChkBtn").prop("disabled", false)
-					
-				},
-				error : function (e) {
-					console.log("문제 발생!!!")
-				}
-			})
+			console.log(phone1.length)
+			if (phone1.length < 4) {
+				$("#phoneInfoMsg").html("휴대폰 번호를 제대로 입력해주세요");
+				$("#phoneInfoMsg").css("color", "#ff6868");
+				$("#phone1").focus();
+			} else if (phone2.length < 4) {
+				$("#phoneInfoMsg").html("휴대폰 번호를 제대로 입력해주세요");
+				$("#phoneInfoMsg").css("color", "#ff6868");
+				$("#phone2").focus();
+			}
+				else {
+				inputPhone = phoneCode + phone1 + phone2
+				let form = {phoneNumber : inputPhone}
+				$.ajax({
+					url : "sendMessage",
+					type : "post",
+					data : JSON.stringify(form),
+					dataType : "text",
+					contentType : "application/json; charset=utf-8",
+					success : function ( result ) {
+						$("#phoneInfoMsg").html(result);
+						$("#phoneInfoMsg").css("color", "#6262ff")
+						$("#codeChkBtn").prop("disabled", false)
+						
+					},
+					error : function (e) {
+						console.log("문제 발생!!!")
+					}
+				})				
+			}
 		}
 		
 		$("#phone1").on("input", function() {
@@ -295,46 +319,52 @@
 		
 		codeChk = () => {
 			let inputCode = $("#inputCode").val()
-			let form = {inputCode : inputCode}
-			$.ajax({
-				url : "codeChk",
-				type : "post",
-				data : JSON.stringify(form),
-				dataType : "text",
-				contentType : "application/json; charset=utf-8",
-				success : function ( result ) {
-					if (result == 1) {
-						$("#phoneChkInfoMsg").html("인증되었습니다.");
-						$("#phoneChkInfoMsg").css("color", "#6262ff")
-						phonePass = true;
-					} else {
-						$("#phoneChkInfoMsg").html("인증코드를 확인해주세요");
-						$("#phoneChkInfoMsg").css("color", "#ff6868")
-						phonePass = false;
+			if (inputCode.length < 4) {
+				$("#phoneChkInfoMsg").html("인증코드를 정확히 입력해주세요");
+				$("#phoneChkInfoMsg").css("color", "#ff6868")
+				$("#inputCode").focus();
+			} else {
+				let form = {inputCode : inputCode}
+				$.ajax({
+					url : "codeChk",
+					type : "post",
+					data : JSON.stringify(form),
+					dataType : "text",
+					contentType : "application/json; charset=utf-8",
+					success : function ( result ) {
+						if (result == 1) {
+							$("#phoneChkInfoMsg").html("인증되었습니다.");
+							$("#phoneChkInfoMsg").css("color", "#6262ff")
+							phonePass = true;
+						} else {
+							$("#phoneChkInfoMsg").html("인증코드를 확인해주세요");
+							$("#phoneChkInfoMsg").css("color", "#ff6868")
+							phonePass = false;
+						}
+					},
+					error : function (e) {
+						console.log("문제 발생!!!")
 					}
-				},
-				error : function (e) {
-					console.log("문제 발생!!!")
-				}
-			}).then( () => {
-				registerChk();				
-			})
+				}).then( () => {
+					registerChk();				
+				})				
+			}
 		}
 		
 		$("#genderMan").click( () => {
 			var man = document.getElementById("genderMan");
 			var woman = document.getElementById("genderWoman");
 			$("#radioMan").click();
-			man.style.backgroundColor = "#8d8d8d";
-			woman.style.backgroundColor = "#c0c0c0";
+			man.style.backgroundColor = "#7596ec";
+			woman.style.backgroundColor = "#b6c8f5";
 			inputGender = 0;
 		})
 		$("#genderWoman").click( () => {
 			var man = document.getElementById("genderMan");
 			var woman = document.getElementById("genderWoman");
 			$("#radioWoman").click();
-			man.style.backgroundColor = "#c0c0c0";
-			woman.style.backgroundColor = "#8d8d8d";
+			man.style.backgroundColor = "#b6c8f5";
+			woman.style.backgroundColor = "#7596ec";
 			inputGender = 1;
 		})
 	

@@ -90,21 +90,33 @@ public class MemberRestController {
 	@PostMapping(value="loginChk", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public Map<String, Object> loginChk(@RequestBody Map<String, Object> map, Model model, HttpSession session) {
+		System.out.println("service");
 		String id = (String)map.get("id");
-		String pwd = (String)map.get("pwd");
-		int result = ms.loginChk(id, pwd);
-		
-		
-		if (result == 1 || result == 2) {
+		String ids[] = id.toString().split(":");
+		System.out.println(ids[0]);
+		if (ids[0].equals("N") || ids[0].equals("K")) {
+			System.out.println("if문실행");
+			map.put("result", ms.snsLoginChk(id));
 			session.setAttribute("userId", id);
-			map.put("result", null);
-			if (result == 2) {
-				session.setAttribute("isAdmin", 1);
-			}
 			model.addAttribute(session);
-		} else {
-			map.put("result", "입력 정보가 일치하지 않습니다. <br>아이디 또는 비밀번호를 확인해주세요");
+		}else {
+			System.out.println("else문 실행");
+			String pwd = (String)map.get("pwd");
+			int result = ms.loginChk(id, pwd);
+
+			if (result == 1 || result == 2) {
+				System.out.println("else 안에 if문실행");
+				session.setAttribute("userId", id);
+				map.put("result", null);
+				if (result == 2) {
+					session.setAttribute("isAdmin", 1);
+				}
+				model.addAttribute(session);
+			} else {
+				map.put("result", "입력 정보가 일치하지 않습니다. <br>아이디 또는 비밀번호를 확인해주세요");
+			}			
 		}
+		
 		return map;
 	}
 	
@@ -115,7 +127,8 @@ public class MemberRestController {
 		String email = (String)map.get("email");
 		int result = ms.mailChk(email);
 		if (result == 1) {
-			map.put("result", "이미 등록되어있는 주소입니다. 로그인 또는 아이디 찾기를 진행해주세요");
+			map.put("msg", "이미 등록되어있는 주소입니다. <br>로그인 또는 아이디 찾기를 진행해주세요");
+			map.put("result", 1);
 		} else {
 			Cookie cookie = new Cookie("email", email);
 			cookie.setMaxAge(5 * 60); // 5분
@@ -127,7 +140,8 @@ public class MemberRestController {
 			String codeKey = String.valueOf(code);
 			session.setAttribute(email, codeKey);
 			
-			map.put("result", "인증 코드가 전송되었습니다.");
+			map.put("msg", "인증 코드가 전송되었습니다.");
+			map.put("result", 0);
 			model.addAttribute(session);			
 		}
 		
@@ -161,11 +175,10 @@ public class MemberRestController {
 		return map;
 	}
 	
-	@GetMapping(value="idChk", produces = "application/json; charset=utf-8")
-	public int idChk(@RequestParam String id) {
-		int result = ms.idChk(id);
-		System.out.println("id : " + id);
-		System.out.println("result : " + result);
+	@PostMapping(value="idChk", produces = "application/json; charset=utf-8")
+	public int idChk(@RequestBody Map<String, Object> map) {
+		System.out.println("map : " + map);
+		int result = ms.idChk((String)map.get("id"));
 		
 		return result;
 	}

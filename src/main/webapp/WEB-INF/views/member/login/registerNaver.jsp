@@ -38,15 +38,17 @@
 		let email = naver_id_login.getProfileData("email");
 		let phone = naver_id_login.getProfileData("mobile");
 		let gender = naver_id_login.getProfileData("gender");
+		let form = {id : inputId}
 		$.ajax({
-			url : "idChk?id="+inputId,
-			type : "get",
+			url : "idChk",
+			type : "post",
 			dataType : "text",
+			data : JSON.stringify(form),
 			contentType : "application/json; charset=utf-8",
 			success : function ( result ) {
 				if (result == 1) {
-					alert("이미 가입된 계정입니다.\n 로그인 후 메인페이지로 이동합니다.")
-					let form = {phoneNumber : inputPhone}
+// 					alert("이미 가입된 계정입니다.\n로그인 후 메인페이지로 이동합니다.")
+					let form = {id : inputId}
 						$.ajax({
 							url : "loginChk",
 							type : "post",
@@ -54,15 +56,7 @@
 							data : JSON.stringify(form),
 							contentType : "application/json; charset=utf-8",
 							success : function ( result ) {
-								if (result == 0) {
-									$("#nickInfoMsg").html("사용 가능한 닉네임 입니다.");
-									$("#nickInfoMsg").css("color", "#6262ff")
-									nickPass = true;
-								} else {
-									$("#nickInfoMsg").html("중복되는 닉네임 입니다. 다른 닉네임을 입력해주세요");
-									$("#nickInfoMsg").css("color", "#ff6868")
-									nickPass = false;
-								}
+								location.href="/root";
 							},
 							error : function (e) {
 								console.log("문제 발생!!!")

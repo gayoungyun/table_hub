@@ -9,4 +9,5 @@ public interface MemberService {
 	public int nickChk(String nick);
 	public int mailChk(String email);
 	public int register(MemberDTO dto);
+	public int snsLoginChk(String id);
 }
