@@ -10,47 +10,66 @@
 	ul, li{
 		list-style: none;
 	}
-	.image-slid{
+	.image-slide{
 	    position: relative;
-		width: 100%;
+		/*width: 100%;
 	    height: 100%;
+		*/
+	    width: 380px;
+	   
+	    height: 350px;
 	    overflow: hidden;
 	}
-	.image-slid > li{
+	.image-slide > li{
 	    display: none;
 	    position: absolute;
-	    width: 100%;
-	    height: 100%;
+	    
+	    left:0;
+	    top:0;
+	    
+	    /*width: 100%;
+	    height: 100%;*/
+	    opacity: 0; /*초기에 투병도를 0으로 설정해서 숨김 */
+	    transition: opacity 1s ease-in-out; /* 부드러운 전환 */
+	    width: 350px;
+	    height: 350px;
 	}
-	.image-slid > li > .food-img{
+	.image-slide > li > .food-img{
 	    width: 380px;
 	    height: 350px;
 	}
-	.image-slid > li.on{
+	.image-slide > li.on{
 	    display: block;
-	    animation: slider1 1s;
+	    transform: translateX(100%);
+	    animation: slider1 3s;
 	    animation-fill-mode: forwards;
+	    opacity: 1;
 	}
-	.image-slid > li.out{
+	.image-slide > li.out{
 	    display: block;
-	    animation: slider2 1s;
+	    transform: translateX(0);
+	  	animation: slider2 3s;
 	    animation-fill-mode: forwards;
+	    opacity: 1;
 	}
+	
 @keyframes slider1{
 	    from{
-	        transform: translateX(+100%);
+	       transform: translateX(100%);
 	    } to{
-	        left:0px;
+	       transform: translateX(0);
 	    } 
 	}
 
 @keyframes slider2{
 	    from{
-	        left:0;
+	        transform: translateX(0);
 	    } to{
 	        transform: translateX(-100%);
 	    } 
 	}
+
+	
 
 	/* image slide css end */
 	
@@ -93,7 +112,7 @@
 	/* 소개글 css */
 	
 	.intro-hub{
-		dispaly:flex;
+		display:flex;
 		justify-content: center;
 		align-items: center;
 		text-align: center;
@@ -113,44 +132,35 @@
 	/* 소개글 css end */
 	
 	/* menu image css */
+
+	.content_wrapper {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-beteween;	
+		margin-left: 170px;
+	}
 	
 	.content2{
 		display: flex;
-		padding:15rem;
+		flex-wrap: wrap;
+		padding:3rem;
+		
 		justify-content: center;
         align-items: center;
-        margin-top: -100px;
+        
+        /*width: 350px;*/
+		height: 350px;
 	}
+
 	.menu-img { 
 		display: flex;
 		flex-wrap: wrap;
-		width: 350px;
-		height: 350px;
-		margin-left: 40px;
-		gap: 100px;
-		position: relative;
-		overflow: hidden;
-		justify-content: center;
-		line-height: 0;
-	}
-	.menu-img1 { 
-		display: flex;
-		flex-wrap: wrap;
-		width: 350px;
-		height: 350px;
-		margin-left: 40px;
-		gap: 100px;
-		position: relative;
-		overflow: hidden;
-		justify-content: center;
-		line-height: 0;
-	}
-	.menu-img2 { 
-		display: flex;
-		flex-wrap: wrap;
-		width: 350px;
-		height: 350px;
-		margin-left: 40px;
+		/*width: 350px;
+		height: 350px;*/
+		width: 100%;
+		height: 100%;
+		/*margin-left: 40px;*/
 		gap: 100px;
 		position: relative;
 		overflow: hidden;
@@ -158,13 +168,13 @@
 		line-height: 0;
 	}
 
-	
-	
 	.food-img {
 		display: flex;
 		flex-direction: column;
-		width: 350px;
-		height: 350px;
+		/*width: 350px;
+		height: 350px;*/
+		width: 100%;
+		height: 100%;
 		float: left;
 		align-items: center;
 		text-align: center;
@@ -179,6 +189,8 @@
 		object-fit: cover;
 	}
 	
+	
+
 	/* menu image css end */
 	
 	/* menu image tagname css */
@@ -186,11 +198,13 @@
 	.food-tagname{
 		display: flex;
 		width: 95%;
+		margin-top: 20px;
 		justify-content: space-between;
 		font-family: "Love Ya Like A Sister",cursive;
 	}
 	.food-tagname button{
 		border: none;
+		margin-top: -10px;
 		background-color: darkgray;
 		color: white;
 	}

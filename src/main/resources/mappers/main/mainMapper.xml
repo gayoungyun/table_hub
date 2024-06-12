@@ -4,5 +4,25 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hub.root.main.mybatis.mainMapper">
+<resultMap type="com.hub.root.main.dto.MainDTO" id="main">
+	<id property="store_id" column="store_id"/>
+	<result property="store_menu_img" column="store_menu_img"/>
+	<result property="store_menu_name" column="store_menu_name"/>
+	<result property="store_menu_detail" column="store_menu_detail"/>
+	<result property="store_menu_category" column="store_menu_category"/>
+	<result property="store_menu_price" column="store_menu_price"/>
+</resultMap>
+<insert id="inputInfo">
+	insert into store_menu(store_id, store_menu_img, store_menu_name, store_menu_price,
+		store_menu_detail, store_menu_category) values(#{store_id},#{store_menu_img},
+		#{store_menu_name},#{store_menu_price},#{store_menu_detail},#{store_menu_category})
+</insert>
+<select id="mainPage1" resultMap="main">
+	select * from store_menu
+</select>
 
 </mapper>
+
+
+
+
