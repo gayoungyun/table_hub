@@ -12,4 +12,5 @@ public interface MemberMapper {
 	public MemberDTO nickChk( String nick );
 	public ArrayList<MemberDTO> mailChk( String email );
 	public int register(MemberDTO dto);
+	public MemberDTO getMemberInfo(String id);
 }

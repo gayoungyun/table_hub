@@ -42,6 +42,9 @@
 			#{gender}, #{dateCreate}, 0,
 			#{img}, #{status} )
 	</insert>
+	<select id="getMemberInfo" resultMap="member">
+		select * from member_info where member_id=#{id}
+	</select>
 </mapper>
 
 

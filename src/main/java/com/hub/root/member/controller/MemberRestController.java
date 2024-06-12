@@ -184,6 +184,7 @@ public class MemberRestController {
 	}
 	@GetMapping(value="nickChk", produces = "application/json; charset=utf-8")
 	public int nickChk(@RequestParam String nick) {
+		System.out.println("nickChk 컨트롤러 연동");
 		int result = ms.nickChk(nick);
 		
 		return result;

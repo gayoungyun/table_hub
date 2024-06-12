@@ -171,7 +171,7 @@
 				<select id="emailDomain">
 					<option>naver.com
 					<option>daum.net
-					<option>google.com
+					<option>gmail.com
 				</select><br>
 				<input type="button" value="인증코드 전송" onclick="sendMail()" id="codeSendBtn">
 				<div id="emailInfoMsg"></div>

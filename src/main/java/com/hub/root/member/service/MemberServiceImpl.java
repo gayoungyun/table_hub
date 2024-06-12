@@ -118,7 +118,7 @@ public class MemberServiceImpl implements MemberService{
 		System.out.println("서비스시작asdf");
 		dto.setPwd(en.encode(dto.getPwd()));
 		dto.setDateCreate(setTime());
-		dto.setImg("default.img");
+		dto.setImg("default.jpg");
 		dto.setStatus("안녕하세요 저는 "+dto.getNick()+" 입니다.");
 		System.out.println(dto.getStatus());
 		int result = mapper.register(dto);
@@ -132,6 +132,14 @@ public class MemberServiceImpl implements MemberService{
 		
         return formattedTime;
 	}
+
+	@Override
+	public MemberDTO getMemberInfo(String id) {
+		MemberDTO dto = mapper.getMemberInfo(id);
+		return dto;
+	}
+	
+	
 	
 
 }

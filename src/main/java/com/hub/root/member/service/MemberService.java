@@ -10,4 +10,5 @@ public interface MemberService {
 	public int mailChk(String email);
 	public int register(MemberDTO dto);
 	public int snsLoginChk(String id);
+	public MemberDTO getMemberInfo(String id);
 }

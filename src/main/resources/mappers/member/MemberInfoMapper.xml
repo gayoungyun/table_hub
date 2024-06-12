@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hub.root.member.mybatis.MemberInfoMapper">
+	<resultMap type="com.hub.root.member.dto.MemberDTO" id="member">
+		<id property="id" column="member_id" />
+		<result property="pwd" column="member_pwd"/>
+		<result property="nick" column="member_nick"/>
+		<result property="email" column="member_email"/>
+		<result property="phone" column="member_phone"/>
+		<result property="birth" column="member_birth"/>
+		<result property="gender" column="member_gender"/>
+		<result property="img" column="member_img"/>
+		<result property="status" column="member_status"/>
+		<result property="dateCreate" column="member_date_create"/>
+		<result property="admin" column="member_admin"/>
+	</resultMap>
+
+	<update id="memberImgModify">
+		update member_info set member_img=#{fileName} where member_id=#{id}
+	</update>
+	<update id="memberImgDelete">
+		update member_info set member_img='default.jpg' where member_id=#{id}
+	</update>
+	<update id="memberNickModify">
+		update member_info set member_nick=#{nick} where member_id=#{id}
+	</update>
+	<update id="memberStatusModify">
+		update member_info set member_status=#{status} where member_id=#{id}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

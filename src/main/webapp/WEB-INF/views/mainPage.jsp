@@ -15,6 +15,7 @@
 	<c:choose>
 		<c:when test="${userId != null}">
 			<a href="/root/member/logout">로그아웃</a>
+			<a href="/root/member/myPage/info">마이 페이지</a>
 		</c:when>
 		<c:otherwise>
 			<a href="/root/member/login">로그인</a>

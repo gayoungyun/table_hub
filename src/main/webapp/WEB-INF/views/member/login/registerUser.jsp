@@ -265,11 +265,11 @@
 			const phone2 = $("#phone2").val()
 			console.log(phone1.length)
 			if (phone1.length < 4) {
-				$("#phoneInfoMsg").html("휴대폰 번호를 제대로 입력해주세요");
+				$("#phoneInfoMsg").html("휴대폰 번호를 입력해주세요");
 				$("#phoneInfoMsg").css("color", "#ff6868");
 				$("#phone1").focus();
 			} else if (phone2.length < 4) {
-				$("#phoneInfoMsg").html("휴대폰 번호를 제대로 입력해주세요");
+				$("#phoneInfoMsg").html("휴대폰 번호를 입력해주세요");
 				$("#phoneInfoMsg").css("color", "#ff6868");
 				$("#phone2").focus();
 			}
