@@ -8,10 +8,11 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM.css?after">
+<script src="${path}/resources/js/businessM.js"></script>
 </head>
 <body>
 
-<a href="registerFinish">마무리로</a>
+
 <div class="skill-box">
 	<div class="skill-bar">
 		<span class="per04">
@@ -20,20 +21,20 @@
 	</div>
 </div>
 
-<h1>예약정보 입력하기</h1>
-	<form action="register04" method="post">
-		<input type="textfild" name="introduce" placeholder="소개글을 입력해주세요"><br>
-		<textarea name="category">소개글</textarea><br>
-		<input type="text" name="category">가게종류<br>
-		<input type="text" name="businessHours">영업시간
-		<button type="button" onclick="">영업시간 선택</button><br>
-		<textarea name="amenities">편의시설</textarea><br>
-		<input type="text" name="mainPhone">가게전화번호<br>
-		<input type="text" name="phone">사장전화번호<br>
-		<input type="text" name="note" placehoder="예) 주차장이 협소합니다. 8인 이상예약은 전화 부탁트립니다">특이사항
-		<button type="submit">다음</button>
+<div class="center-box">
+<h1>예약정보 입력하기</h1><br>
+	<form action="registerFinish" method="post">
+	
+		사업자번호*로그인 아이디<input type="text" value ="storeId 값 불러오기" readonly><br>
+		비밀번호*로그인 비밀번호<input type="text" name="storePwd"><br>
+		이메일<input type="text" name="storeEmail">
+		<hr>
+		<div style="display: flex; justify-content: space-between;">
+			<button type="button" onclick=" window.history.back()">이전</button>
+			<button type="submit">다음</button>
+		</div>
 	</form>
-		<button onclick="goBack()">뒤로가기</button>
+</div>
 
 </body>
 </html>

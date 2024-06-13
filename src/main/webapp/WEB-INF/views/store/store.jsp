@@ -21,7 +21,7 @@
 		<button class="button1 btn1Fade" style="visibility: hidden;"></button>
 	</div>
 	<img src="resources/img/로고.png" 
-		onclick="window.location.href='http://localhost:8080/root/'">
+		onclick="window.location.href='/'">
 	<div>
 		<button class="button1 btn1Fade" onclick="">예약하기</button>
 		<button class="button2 btn2Fade" onclick="">찜하기</button>

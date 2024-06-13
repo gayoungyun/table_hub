@@ -17,11 +17,3 @@ function daumPost(){
         }
     }).open();
 }
-
-
-function goBack() {
-            window.history.back();
-        }
-
-        // 페이지 로드 시 이전 페이지의 URL을 저장
-        var previousPageUrl = document.referrer;

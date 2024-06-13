@@ -8,10 +8,10 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM.css?after">
+<script src="${path}/resources/js/businessM.js"></script>
 </head>
 <body>
 
-<a href="register01">1단계 돌아가기</a>
 <div class="skill-box">
 	<div class="skill-bar">
 		<span class="per05">
@@ -19,8 +19,21 @@
 		</span>
 	</div>
 </div>
-<img src="resources/img/로고.png" width="100px"
-		onclick="window.location.href='http://localhost:8080/root/'">
+
+<div class="center-box">
+	<div style="display:flex; flex-direction: row; align-items: center;">
+		<img src="resources/img/폭죽.png" width="80px">
+		<h1>내 가게가 등록 되었습니다!</h1>
+		<img src="resources/img/폭죽.png" width="80px">
+	</div>
+	<br>
+	<div style="display:grid; justify-items: center;">
+		<button type="button" onclick="">메뉴 등록 하기</button><br>
+		<button type="button" onclick="">사진 등록 하기</button><br>
+		<button type="button" onclick="window.location.href='http://localhost:8080/root/'">메인 화면</button><br>
+		<button type="button" onclick="window.location.href='http://localhost:8080/root/storeInfo'">내 가게 정보보기</button>
+	</div>
+</div>
 
 </body>
 </html>

@@ -8,10 +8,11 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM.css?after">
+<script src="${path}/resources/js/businessM.js"></script>
 </head>
 <body>
 
-<a href="register02">2단계로</a>
+
 <div class="skill-box">
 	<div class="skill-bar">
 		<span class="per01">
@@ -19,14 +20,19 @@
 		</span>
 	</div>
 </div>
-<h1>가게 등록하기</h1>
-<form action="register01" method="post">
-		<input type="text" name="storeName" placeholder="가게 이름을 입력해주세요"><br>
-		<input type="text" name="businessNumber" placeholder="사업자번호를 입력해주세요"><br>
-		<button type="submit">다음</button>
-	</form>
-	<a href="javascript:history.back()">이전</a>
 
+<div class="center-box">
+<h1>가게 등록하기</h1><br>
+<form action="register02" method="post">
+		가게 이름 <input type="text" name="storeName" placeholder="가게 이름을 입력해주세요"><br>
+		사업자 번호 <input type="text" name="storeId" placeholder="사업자번호를 입력해주세요">
+		<hr>
+		<div style="display: flex; justify-content: space-between;">
+			<button type="button" onclick=" window.history.back()">이전</button>
+			<button type="submit">다음</button>
+		</div>
+	</form>
+</div>
 
 
 </body>

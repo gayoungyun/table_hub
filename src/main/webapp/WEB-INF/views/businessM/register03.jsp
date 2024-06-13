@@ -8,10 +8,11 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM.css?after">
+<script src="${path}/resources/js/businessM.js"></script>
 </head>
 <body>
 
-<a href="register04">4단계로</a>
+
 <div class="skill-box">
 	<div class="skill-bar">
 		<span class="per03">
@@ -20,19 +21,28 @@
 	</div>
 </div>
 
-<h1>상세정보 입력하기</h1>
-	<form action="register03" method="post">
-		<textarea name="introduce" placeholder="소개글을 입력해주세요">소개글</textarea><br>
-		<input type="text" name="category">가게종류<br>
-		<input type="text" name="businessHours">영업시간
+<div class="center-box">
+<h1>상세정보 입력하기</h1><br>
+	<form action="register04" method="post">
+		소개글 <textarea name="storeIntroduce" placeholder="소개글을 입력해주세요"></textarea><br>
+		가게 종류 <input type="text" name="storeCategory"><br>
+		영업 시간<input type="text" name="storeBusinessHours">
 		<button type="button" onclick="">영업시간 선택</button><br>
-		<input type="text" name="amenities">편의시설<br>
-		<input type="text" name="mainPhone">가게전화번호<br>
-		<input type="text" name="phone">사장전화번호<br>
-		<textarea name="note" placeholder="예) 주차장이 협소합니다. 8인 이상예약은 전화 부탁트립니다">특이사항</textarea>
-		<button type="submit">다음</button>
+		편의 시설<input type="text" name="storeAmenities"><br>
+		가게 전화번호<input type="text" name="storeMainPhone"><br>
+		사장 전화번호<input type="text" name="storePhone"><br>
+		특이사항 <textarea name="note" 
+		placeholder="예) 주차장이 협소합니다. 8인 이상예약은 전화 부탁트립니다"></textarea><br>
+		최대 수용 인원 <input type="text" name="storeMaxPerson"><br>
+		예약 규정 <textarea name="storeNote" 
+		placeholder="예) 예약시간 10분 지각 시 예약이 취소됩니다"></textarea>
+		<hr>
+		<div style="display: flex; justify-content: space-between;">
+			<button type="button" onclick=" window.history.back()">이전</button>
+			<button type="submit">다음</button>
+		</div>
 	</form>
-		<button onclick="goBack()">뒤로가기</button>
+</div>
 
 </body>
 </html>

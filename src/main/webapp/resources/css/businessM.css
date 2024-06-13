@@ -3,11 +3,24 @@
 	user-select: none;
 }
 
-.skill-box{
+br {
+   margin: 0 0 10px;
+}
+
+.center-box{
 	width: 1500px;
 	display: flex;
+ 	flex-direction: column;
+  	align-items: center;
+	margin: 10px auto;
+	
+}
+
+.skill-box{
+	width: 1000px;
+	display: flex;
  	justify-content: center;
-	margin: 0 auto 15px;
+	margin: 50px auto 15px;
 	
 }
 .skill-bar{
@@ -67,7 +80,7 @@
 
 @keyframes per01 {
 	0%{
-		width:0%;
+		width:5%;
 	}
 	100%{
 		width:25%;
@@ -109,7 +122,7 @@
 
 .tooltip01{
 	position: absolute;
-	right: -4%;
+	right: -5.7%;
 	top: -28px;
 	font-size: 10px;
 	font-weight: bolder;
@@ -133,7 +146,7 @@
 
 .tooltip02{
 	position: absolute;
-	right: -2%;
+	right: -3%;
 	top: -28px;
 	font-size: 10px;
 	font-weight: bolder;
@@ -157,7 +170,7 @@
 
 .tooltip03{
 	position: absolute;
-	right: -1.3%;
+	right: -2%;
 	top: -28px;
 	font-size: 10px;
 	font-weight: bolder;
@@ -181,7 +194,7 @@
 
 .tooltip04{
 	position: absolute;
-	right: -1%;
+	right: -1.5%;
 	top: -28px;
 	font-size: 10px;
 	font-weight: bolder;
@@ -205,7 +218,7 @@
 
 .tooltip05{
 	position: absolute;
-	right: -1.2%;
+	right: -2%;
 	top: -28px;
 	font-size: 10px;
 	font-weight: bolder;
