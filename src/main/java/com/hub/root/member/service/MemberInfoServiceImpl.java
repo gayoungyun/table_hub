@@ -1,8 +1,11 @@
 package com.hub.root.member.service;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -12,6 +15,11 @@ import com.hub.root.member.mybatis.MemberInfoMapper;
 @Service
 public class MemberInfoServiceImpl implements MemberInfoService{
 	@Autowired MemberInfoMapper mapper;
+	
+	BCryptPasswordEncoder en;
+	public MemberInfoServiceImpl () {
+		en = new BCryptPasswordEncoder();
+	}
 	
 	@Override
 	public int memberImgModify(MultipartHttpServletRequest file, String id, String imgName) {
@@ -97,6 +105,64 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 		}
 		return msg;
 	}
+
+
+	@Override
+	public String memberPhoneModify(String phone, String id) {
+		int result = mapper.memberPhoneModify(phone, id);
+		String msg;
+		if (result == 1) {
+			msg = "변경이 완료되었습니다.";
+		} else {
+			msg = "문제가 발생하였습니다. 새로고침 후 다시 시도해주세요";
+		}
+		return msg;
+	}
+
+
+	@Override
+	public Map<String, Object> memberEmailModify(String email, String id) {
+		Map<String, Object> map = new HashMap<>();
+		int result = mapper.memberEmailModify(email, id);
+		String msg;
+		if (result == 1) {
+			msg = "변경이 완료되었습니다.";
+		} else {
+			msg = "문제가 발생하였습니다. 새로고침 후 다시 시도해주세요";
+		}
+		map.put("msg", msg);
+		map.put("result", result);
+		return map;
+	}
+
+
+	@Override
+	public Map<String, Object> memberPasswordModify(String currentPwd, String changePwd, String id) {
+		String pwd = mapper.memberPasswordChk(id);
+		Map<String, Object> map = new HashMap<String, Object>();
+		int result;
+		String msg;
+		if (en.matches(currentPwd, pwd)) {
+			String p = en.encode(changePwd);
+			result = mapper.memberPasswordModify(p, id);
+			if (result == 1) {
+				msg = "비밀번호가 변경되었습니다. 로그인페이지로 이동합니다.";
+			} else {
+				msg = "문제가 발생하였습니다. 새로고침 후 다시 시도해주세요";
+			}
+		} else {
+			result = -1;
+			msg = "기존 비밀번호가 일치하지 않습니다. 확인 후 다시 시도해주세요";
+		}
+		map.put("result", result);
+		map.put("msg", msg);
+		return map;
+	}
+	
+	
+	
+	
+	
 	
 	
 	

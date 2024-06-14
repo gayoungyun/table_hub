@@ -2,10 +2,13 @@ package com.hub.root.member.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -57,5 +60,53 @@ public class MemberInfoRestController {
     	
     	return msg;
     }
+    @PatchMapping(value="memberPhone", produces="application/json; charset=utf-8")
+    public String memberPhone(@RequestBody Map<String, Object> map, HttpSession session) {
+    	System.out.println(map.get("phone"));
+    	
+    	String msg = ms.memberPhoneModify((String)map.get("phone"), (String)session.getAttribute("userId"));
+    	return msg;
+    }
+    
+    @PatchMapping(value="memberEmail", produces="application/json; charset=utf-8")
+    public Map<String, Object> memberEmail(@RequestBody Map<String, Object> map, HttpSession session, HttpServletRequest req) {
+    	
+    	Cookie[] cookie = req.getCookies();
+		String code = (String)map.get("code");
+
+		String email = "";
+		if (cookie != null) {
+			for(Cookie c : cookie) {
+				if (c.getName().equals("email")) {
+					email = c.getValue();
+					break;
+				}
+			}			
+		}
+		String ses = (String)session.getAttribute(email);
+		int result;
+		if (code.equals(ses)) {
+	    	map = ms.memberEmailModify((String)map.get("email"), (String)session.getAttribute("userId"));
+		} else {
+			map.put("result", -1);
+			map.put("msg", "인증코드가 일치하지 않습니다. 다시 확인해주세요");
+		}
+		
+    	return map;
+    }
+    
+    @PatchMapping(value="memberPassword", produces="application/json; charset=utf-8")
+    public Map<String, Object> memberPassword (@RequestBody Map<String, Object> map, HttpSession session) {
+    	String currentPwd = (String)map.get("currentPwd");
+    	String changePwd = (String)map.get("changePwd");
+    	map = ms.memberPasswordModify(currentPwd, changePwd, (String)session.getAttribute("userId"));
+    	if ((int)map.get("result") == 1) {
+    		session.invalidate();
+    	}
+    	return map;
+    }
+    
+    
+    
 	
 }

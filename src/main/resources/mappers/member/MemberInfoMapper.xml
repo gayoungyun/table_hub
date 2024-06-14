@@ -30,6 +30,18 @@
 	<update id="memberStatusModify">
 		update member_info set member_status=#{status} where member_id=#{id}
 	</update>
+	<update id="memberPhoneModify">
+		update member_info set member_phone=#{phone} where member_id=#{id}
+	</update>
+	<update id="memberEmailModify">
+		update member_info set member_email=#{email} where member_id=#{id}
+	</update>
+	<select id="memberPasswordChk" resultType="String">
+		select member_pwd from member_info where member_id = #{id}
+	</select>
+	<update id="memberPasswordModify">
+		update member_info set member_pwd=#{pwd} where member_id=#{id}
+	</update>
 </mapper>
 
 

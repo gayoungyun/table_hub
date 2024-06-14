@@ -56,4 +56,34 @@ public class MemberInfoController {
 			in.close();			
 		}
 	}
+	
+	@GetMapping("myBooking")
+	public String myBooking() {
+		
+		return "member/info/myBooking";
+	}
+	
+	@GetMapping("deleteUser")
+	public String deleteUser() {
+		
+		return "member/info/deleteUser";
+	}
+	
+	@GetMapping("myReview")
+	public String myReview() {
+		
+		return "member/info/myReview";
+	}
+	
+	@GetMapping("myBoard")
+	public String myBoard() {
+		
+		return "member/info/myBoard";
+	}
+	
+	@GetMapping("myReply")
+	public String myReply() {
+		
+		return "member/info/myReply";
+	}
 }

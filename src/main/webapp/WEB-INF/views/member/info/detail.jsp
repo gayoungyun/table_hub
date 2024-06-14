@@ -15,6 +15,7 @@
 		
 		$("#detail").css("font-weight", "bold");
 		$("#detail").css("border-bottom", "2px solid #006ad5")
+		$("#detail").css("margin-bottom", "6px")
 		let email = '${dto.email}'.split("@");
 		let emailLocal = email[0]
 		let emailDomain = email[1]
@@ -308,33 +309,34 @@
 		});
 		
 		
-		sendMessage = () => {
-			const phoneCode = $("#phoneCode").val()
-			const phone1 = $("#phone1").val()
-			const phone2 = $("#phone2").val()
+		$("#infoPhoneBtn").on("click", function () {
+			const phoneCode = $("#infoPhoneCode").val()
+			const phoneArea = $("#infoPhoneArea").val()
+			const phone1 = $("#infoPhone1").val()
+			const phone2 = $("#infoPhone2").val()
 			console.log(phone1.length)
 			if (phone1.length < 4) {
-				$("#phoneInfoMsg").html("휴대폰 번호를 입력해주세요");
-				$("#phoneInfoMsg").css("color", "#ff6868");
-				$("#phone1").focus();
+				$("#infoPhoneMsg").html("휴대폰 번호를 입력해주세요");
+				$("#infoPhoneMsg").css("color", "#ff6868");
+				$("#infoPhone1").focus();
 			} else if (phone2.length < 4) {
-				$("#phoneInfoMsg").html("휴대폰 번호를 입력해주세요");
-				$("#phoneInfoMsg").css("color", "#ff6868");
-				$("#phone2").focus();
+				$("#infoPhoneMsg").html("휴대폰 번호를 입력해주세요");
+				$("#infoPhoneMsg").css("color", "#ff6868");
+				$("#infoPhone2").focus();
 			}
 				else {
 				inputPhone = phoneCode + phone1 + phone2
 				let form = {phoneNumber : inputPhone}
 				$.ajax({
-					url : "sendMessage",
+					url : "/root/member/sendMessage",
 					type : "post",
 					data : JSON.stringify(form),
 					dataType : "text",
 					contentType : "application/json; charset=utf-8",
 					success : function ( result ) {
-						$("#phoneInfoMsg").html(result);
-						$("#phoneInfoMsg").css("color", "#6262ff")
-						$("#codeChkBtn").prop("disabled", false)
+						$("#infoPhoneMsg").html(result);
+						$("#infoPhoneMsg").css("color", "#6262ff")
+						$("#infoPhoneCodeBtn").prop("disabled", false)
 						
 					},
 					error : function (e) {
@@ -342,31 +344,52 @@
 					}
 				})				
 			}
-		}
+		})
 		
-		codeChk = () => {
-			let inputCode = $("#inputCode").val()
+		$("#infoPhoneCodeBtn").on("click", function() {
+			let inputCode = $("#infoPhoneCode").val()
 			if (inputCode.length < 4) {
-				$("#phoneChkInfoMsg").html("인증코드를 정확히 입력해주세요");
-				$("#phoneChkInfoMsg").css("color", "#ff6868")
-				$("#inputCode").focus();
+				$("#infoPhoneCodeMsg").html("인증코드를 정확히 입력해주세요");
+				$("#infoPhoneCodeMsg").css("color", "#ff6868")
+				$("#infoPhoneCode").focus();
 			} else {
 				let form = {inputCode : inputCode}
 				$.ajax({
-					url : "codeChk",
+					url : "/root/member/codeChk",
 					type : "post",
 					data : JSON.stringify(form),
 					dataType : "text",
 					contentType : "application/json; charset=utf-8",
 					success : function ( result ) {
+						const phoneArea = $("#infoPhoneArea").val()
+						const phone1 = $("#infoPhone1").val()
+						const phone2 = $("#infoPhone2").val()
+						var phone = phoneArea + phone1 + phone2;
 						if (result == 1) {
-							$("#phoneChkInfoMsg").html("인증되었습니다.");
-							$("#phoneChkInfoMsg").css("color", "#6262ff")
-							phonePass = true;
+							$.ajax({
+								url : "memberPhone",
+								type : "patch",
+								data : JSON.stringify({
+									phone : phone,
+								}),
+								dataType : "text",
+								contentType : "application/json; charset=utf-8",
+								success : function ( result ) {
+									$("#infoPhoneCodeMsg").html(result);
+									$("#infoPhoneCodeMsg").css("color", "#6262ff")
+									$("#infoPhoneCodeBtn").prop("disabled", true);
+									$("#infoPhoneMsg").html(" ");
+									$("#infoPhoneBtn").prop("disabled", true);
+									$("#infoPhoneCode").val("");
+								}, 
+								error : function (e) {
+									
+								}
+							})
 						} else {
-							$("#phoneChkInfoMsg").html("인증코드를 확인해주세요");
-							$("#phoneChkInfoMsg").css("color", "#ff6868")
-							phonePass = false;
+							$("#infoPhoneCodeMsg").html("인증코드가 올바르지 않습니다. 확인 후 입력해주세요");
+							$("#infoPhoneCodeMsg").css("color", "#ff6868")
+							$("#infoPhoneCodeBtn").prop("disabled", false);
 						}
 					},
 					error : function (e) {
@@ -376,8 +399,207 @@
 					registerChk();				
 				})				
 			}
+		})
+		
+		$("#infoEmailLocal").on("input", function () {
+			console.log('${dto.email}'.split("@")[0])
+			console.log($(this).val())
+			if ('${dto.email}'.split("@")[0] == $(this).val()) {
+				$("#infoEmailCodeSendBtn").prop("disabled", true);
+			} else {
+				$("#infoEmailCodeSendBtn").prop("disabled", false);
+			}
+		})
+	
+		$("#infoEmailCodeSendBtn").on("click", function () {
+			let local = $("#infoEmailLocal").val();
+			let domain = $("#infoEmailDomain").val();
+			$("#codeSendBtn").prop("disabled", true);
+			var koreanPattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+			if (local == "") {
+				$("#infoEmailMsg").html("이메일 주소를 입력해주세요");
+				$("#infoEmailMsg").css("color", "#ff6868")
+				$("#infoEmailLocal").focus();
+				$("#infoEmailCodeSendBtn").prop("disabled", false);
+			} else if (koreanPattern.test(local)) {
+				$("#infoEmailMsg").html( "한글은 입력할 수 없습니다." );
+				$("#infoEmailMsg").css("color", "#ff6868")
+				$("#infoEmailCodeSendBtn").prop("disabled", false);
+			} else {
+				let email = $("#infoEmailLocal").val() + "@" + $("#infoEmailDomain").val(); 
+				let form = {email : email};
+				$("#infoEmailMsg").html( "인증 코드가 전송되었습니다." );
+				$("#infoEmailMsg").css("color", "#6262ff")
+				$("#infoEmailCodeSendBtn").prop("disabled", true);
+				$.ajax({
+					url : "/root/member/sendMail",
+					type : "post",
+					data : JSON.stringify(form),
+					dataType : "json",
+					contentType : "application/json; charset=utf-8",
+					success : function ( result ) {
+						$("#infoEmailMsg").html( result.msg );
+						if (result.result == 1) {
+							$("#infoEmailMsg").html( "사용중인 이메일 주소입니다. 다른 이메일 주소를 입력해주세요" );
+							$("#infoEmailMsg").css("color", "#ff6868")
+							$("#infoEmailCodeSendBtn").prop("disabled", false);
+						}
+					},
+					error : function () {
+						alert("문제 발생!!!")
+					}
+				})
+			}
+		})
+		
+		
+		$("#infoEmailCodeInput").on("input", function() {
+			let authCode = $(this).val();
+			if (authCode.length >= 4) {
+				$("#infoEmailCodeChk").prop("disabled", false);
+				$("#infoEmailCodeChk").focus();
+				$(this).val($(this).val().substring(0, 4));
+			}
+		});
+		
+		
+		$("#infoEmailCodeChk").on("click", function () {
+			if ($("#infoEmailCodeSendBtn").prop("disabled")) {
+				$("#infoEmailCodeChkMsg").html("")
+				let code = $("#infoEmailCodeInput").val()
+				let email = $("#infoEmailLocal").val() + "@" + $("#infoEmailDomain").val();
+				let form = {
+					code : code,
+					email : email
+				};
+				$.ajax({
+					url : "memberEmail",
+					type : "patch",
+					data : JSON.stringify(form),
+					dataType : "json",
+					contentType : "application/json; charset=utf-8",
+					success : function ( result ) {
+								$("#infoEmailCodeChkMsg").html( result.msg );
+							if (result.result == 1) {
+								$("#infoEmailCodeChkMsg").css("color", "#6262ff")
+								$("#infoEmailCodeInput").val("")
+								$("#infoEmailMsg").html("")
+								$("#infoEmailCodeChk").prop("disabled", true);
+							} else {
+								$("#infoEmailCodeChkMsg").css("color", "#ff6868")
+							}
+					},
+					error : function () {
+						alert("문제 발생!!!")
+					}
+				})
+			} else {
+				$("#registerBtnInfoMsg").html("이메일 인증을 진행하여 인증코드를 입력해주세요")
+				$("#registerBtnInfoMsg").css("color", "#ff6868")
+			}
+
+		})
+		
+		
+		let curPwd = false;
+		let chgPwd = false;
+		$("#currentPwd").on("input", function() {
+			if ($(this).val() != "") {
+				curPwd = true;
+			} else {
+				curPwd = false;
+			}
+			pwdModify();
+		})
+		
+		pwdChk = () => {
+			const changePwd = $("#changePwd").val();
+			const changePwdAgain = $("#changePwdAgain").val();
+			const regex1 = /[^a-zA-Z0-9\s]/;
+			const regex2 = /[A-Z]/;
+			if (changePwd.length < 6 && changePwd.length > 0) {
+				$("#changePwdMsg").html("6자 이상 입력하세요")
+				$("#changePwdMsg").css("color", "#ff6868")
+				chgPwd = false;
+			} else if ( changePwd.length == 0) {
+				$("#changePwdMsg").html("비밀번호를 입력해주세요")
+				$("#changePwdMsg").css("color", "#ff6868")
+			} else {
+				if (regex1.test(changePwd) && regex2.test(changePwd)) {
+					$("#changePwdMsg").html("사용 가능한 패스워드 입니다.")
+					$("#changePwdMsg").css("color", "#6262ff")
+					if (changePwd == changePwdAgain) {
+						$("#changePwdMsg").html("일치합니다.")
+						$("#changePwdMsg").css("color", "#6262ff")
+						chgPwd = true;
+					} else {
+						$("#changePwdMsg").html("비밀번호를 다시 한번 입력해주세요")
+						$("#changePwdMsg").css("color", "#ff6868")
+						chgPwd = false;
+					}
+				} else {
+					if (regex1.test(changePwd)) {
+						$("#changePwdMsg").html("대문자가 하나 이상 필요합니다.")
+						chgPwd = false;
+					} else if (regex2.test(changePwd)){
+						$("#changePwdMsg").html("특수문자가 하나 이상 필요합니다.")
+						chgPwd = false;
+					} else if (!regex1.test(changePwd) || !regex2.test(changePwd)){
+						$("#changePwdMsg").html("특수문자 또는 대문자가 하나 이상씩 필요합니다.")
+						chgPwd = false;
+					}
+					$("#changePwdMsg").css("color", "#ff6868")
+				}
+			}
+			pwdModify();
 		}
 		
+		pwdModify = () => {
+			if (curPwd == true && chgPwd == true) {
+				$("#changePwdBtn").prop("disabled", false);
+			} else {
+				$("#changePwdBtn").prop("disabled", true);
+			}
+		}
+		
+		
+		$("#changePwdBtn").on("click", function () {
+			let currentPwd = $("#currentPwd").val();
+			let changePwd = $("#changePwd").val();
+			let changePwdAgain = $("#changePwdAgain").val();
+			
+			$.ajax({
+				url : "memberPassword",
+				type : "patch",
+				data : JSON.stringify( {
+					currentPwd : currentPwd,
+					changePwd : changePwd
+				}),
+				dataType : 'json',
+				contentType : "application/json; charset=utf-8",
+				success : function ( result ) {
+					console.log(result.result)
+					if (result.result == 1) {
+						alert(result.msg)
+						location.href="/root/member/login"
+					} else if (result.result == 0) {
+						$("#changePwdMsg").html(result.msg);
+						$("#currentPwdMsg").html("");
+						$("#changePwdMsg").css("color", "#ff6868")
+					} else if (result.result == -1) {
+						$("#currentPwdMsg").html(result.msg);
+						$("#changePwdMsg").html("");
+						$("#currentPwdMsg").css("color", "#ff6868")
+					} else {
+						console.log("아뭄ㄴㅇㄹㅁㄴㅇㄹ")
+					}
+				},
+				error : function (e) {
+					console.log(e);
+				}
+			})
+			
+		})
 		
 		
 		
@@ -405,25 +627,25 @@
 <%@ include file="../../mainPage.jsp" %>
 </head>
 <body>
-	<div id="infoWrapper">
-		<div id="infoMenuWrapper">
+	<div id="myPageWrapper">
+		<div id="myPageMenuWrapper">
 			<div id="infoMenu">
 				<h3>마이페이지</h3>
 				<hr>
 				<b class="title">회원정보 관리</b><br>
 				<a class="content" id="detail" href="info">내 정보 확인 및 수정</a><br>
-				<a class="content" href="myBooking">예약 정보 확인</a><br>
-				<a class="content" href="deleteUser">회원 탈퇴</a>
+				<a class="content" id="myBooking" href="myBooking">예약 정보 확인</a><br>
+				<a class="content" id="deleteUser" href="deleteUser">회원 탈퇴</a>
 				<br>
 				<br>
 				<hr>
 				<b class="title">내 활동 관리</b><br>
-				<a class="content" href="myReview">내가 작성한 리뷰</a><br>
-				<a class="content" href="myBoard">내가 작성한 게시글</a><br>
-				<a class="content" href="myReply">내가 남긴 댓글</a><br>
+				<a class="content" id="myReview" href="myReview">내가 작성한 리뷰</a><br>
+				<a class="content" id="myBoard" href="myBoard">내가 작성한 게시글</a><br>
+				<a class="content" id="myReply" href="myReply">내가 남긴 댓글</a><br>
 			</div>
 		</div>
-		<div id="infoContentWrapper">
+		<div id="myPageContentWrapper">
 			<table id="infoContent">
 				<tr>
 					<th>프로필 사진</th>
@@ -474,9 +696,10 @@
 						<input type="text" id="infoPhone1"><b class="phoneDash">-</b>
 						<input type="text" id="infoPhone2">
 						<input type="button" id="infoPhoneBtn" value="인증코드 전송" disabled><br>
-						<input type="text" id="infoPhoneCode">
+						<label class="infoMsg" id="infoPhoneMsg">번호 변경 후 인증코드 전송 버튼을 눌러주세요</label><br>
+						<input type="number" id="infoPhoneCode">
 						<input type="button" id="infoPhoneCodeBtn" value="번호 수정" disabled><br>
-						<label class="infoMsg">다른사용자에게 보여집니다.</label>
+						<label class="infoMsg" id="infoPhoneCodeMsg">전달받은 코드를 입력후 번호 수정을 눌러주세요</label>
 					</td>
 				</tr>
 				<tr>
@@ -490,21 +713,21 @@
 							<option>daum.net
 						</select>
 						<input type="button" id="infoEmailCodeSendBtn" value="인증코드 전송" disabled><br>
-						<input type="text" id="infoEmailCodeInput" placeholder="전달 받은 인증코드 입력">
+						<label class="infoMsg" id="infoEmailMsg">이메일 변경을 위해서는 인증이 필요합니다.</label><br>
+						<input type="number" id="infoEmailCodeInput" placeholder="전달 받은 인증코드 입력">
 						<input type="button" id="infoEmailCodeChk" value="인증코드 확인" disabled><br>
-						<label class="infoMsg">이메일 변경을 위해서는 인증이 필요합니다.</label>
+						<label class="infoMsg" id="infoEmailCodeChkMsg">전달받은 코드를 입력후 번호 수정을 눌러주세요</label>
 					</td>
 				</tr>
 				<tr>
 					<th>비밀번호</th>
 					<td>
-						<input type="text" id="currentPwd" placeholder="현재 비밀번호 입력">
-						<input type="button" id="currentPwdChk" value="비밀번호 확인" disabled><br>
-						<label class="infoMsg">확인되었습니다.</label><br><br>
-						<input type="text" id="changePwd" placeholder="변경할 비밀번호 입력"><br>
-						<input type="text" id="changePwdAgain" placeholder="변경할 비밀번호 입력 확인">
-						<input type="button" id="changePwdChk" value="비밀번호 변경" disabled><br>
-						<label class="infoMsg">비밀번호가 일치하지 않습니다.</label>
+						<input type="password" id="currentPwd" placeholder="현재 비밀번호 입력"><br>
+						<label class="infoMsg" id="currentPwdMsg">비밀번호를 변경하면 로그인 페이지로 이동합니다.</label><br><br>
+						<input type="password" id="changePwd" oninput="pwdChk()" placeholder="변경할 비밀번호 입력"><br>
+						<input type="password" id="changePwdAgain" oninput="pwdChk()" placeholder="변경할 비밀번호 입력 확인">
+						<input type="button" id="changePwdBtn" value="비밀번호 변경" disabled><br>
+						<label class="infoMsg" id="changePwdMsg"></label>
 					</td>
 				</tr>
 			</table>

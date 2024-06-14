@@ -152,6 +152,9 @@
 				<input type="password" id="inputPwd" name="pwd" placeholder="비밀번호를 입력하세요">
 				<div id="infoMsg"></div>
 				<input id="loginBtn" type="button" onclick="loginChk()" value="로그인">
+				<br>
+				<a id="searchId" onclick="location.href='login/searchId'">아이디 찾기</a>&nbsp;&nbsp;/&nbsp;
+				<a id="searchPwd" onclick="location.href='login/searchPwd'">비밀번호 찾기</a>
 			</div>
 			<hr width="350" class="fieldHr"><br>
 			<h2>SNS로 시작하기</h2><br><br>

@@ -27,13 +27,13 @@ h1 {
 #inputField {
 	margin: auto;
 	width: 350px;
-	height: 350px;
+	height: 400px;
 }
 
 #registerField {
 	margin: auto;
 	width: 350px;
-	height: 350px;
+	height: 400px;
 }
 #loginWrapper #inputField #inputId,#inputPwd {
 	width: 350px;
@@ -73,6 +73,12 @@ h1 {
 	cursor: pointer;
 }
 
+#searchId, #searchPwd {
+	font-size: 12px;
+	cursor: pointer;
+	color: #00006a;
+	font-weight: bold;
+}
 
 #infoMsg {
 	min-height: 40px;
