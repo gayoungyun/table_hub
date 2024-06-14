@@ -2,15 +2,42 @@
 
 *{
 	margin: 0;
-	padding: 0;
-	
+	padding: 0;	
 }
 
-#layout_body {
+input {
+	width: 80px;
+}
+
+#layout_main {
+	display: flex;
+}
+.if_tableClick {
+	display: none;
+}
+
+.drow_area{
+	display: inline-block;
 	background-color: #FFFBF4;
-	position: relative;
+	position: relative;	
+	overflow: auto;
 }
-
+.menu {
+	display:flex;
+	flex-direction: column;
+	height: 100%;
+	width: 240px;
+	background-color: #ff8d54;
+	overflow: auto;
+}
+.menu_detail{
+	display:flex;
+	flex-direction: column;
+	height: 100%;
+	width: 240px;
+	background-color: #ff8d54;	
+	overflow: auto;	
+}
 .table {
 	width: 200px;
 	height: 100px;
@@ -18,4 +45,8 @@
 	background-color: white;
 	border: 1px solid black;
 	border-radius: 5px;
+}
+
+.z_index {
+	z-index: 10;
 }

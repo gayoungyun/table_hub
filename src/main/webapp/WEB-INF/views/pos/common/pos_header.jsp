@@ -26,8 +26,15 @@
 	</div>
 </body>
 
-<script
-	src="<%=request.getContextPath()%>/resources/js/pos/pos_header.js"
-	type="text/javascript"></script>
 
+<script type="text/javascript">
+	const header_tab = document.querySelector(".header_tab_wrapper");
+	header_tab.addEventListener('click', function(e) {
+		// 나중에 경로 추가
+		if (e.target.innerHTML === "주문 관리")
+			location.href="<%=request.getContextPath()%>/pos/order";
+		if (e.target.innerHTML === "매장 관리")
+			location.href="<%=request.getContextPath()%>/pos/set";
+	})
+</script>
 </html>

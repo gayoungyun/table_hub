@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="<%=request.getContextPath()%>/resources/css/pos/setting.css"
+<link href="<%=request.getContextPath()%>/resources/css/pos/setting.css?after"
 	rel="stylesheet">
 </head>
 <body id="setting_body">
@@ -18,9 +18,15 @@
 			<div class="setting tab" data-id="3"><span>설정</span></div>
 		</div>
 		<div class="right_sidebar">
-			<div class="set_store_layout">
+			<div class="set_store_setting">
 				<span>가게 배치도</span>
 				<button type="button" onclick="goSetLayout()">설정하기</button>
+				<span>가게 배치도 등록하기</span>
+				<form action="upload" method="post" enctype="multipart/form-data">
+					<input type="hidden" name="id">
+					<input type="file" id="myFile" name="myFile">
+					<button type="submit">업로드</button>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -31,14 +37,15 @@
 				var parent = event.target;
 				for(let i = 0; i < 2; i ++)
 				{
-					console.log(parent.dataset.id);	
 					if(parent.dataset.id === undefined)
 					{
 						parent = parent.parentElement;
-						console.log(parent);
+						if(parent.dataset.id === '3')
+						{
+							document.querySelector(".set_store_setting").style.display ="block";
+						}
 					}
 				}
-				
 			})
 		
 			function goSetLayout() {
