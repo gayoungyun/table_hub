@@ -1,5 +1,8 @@
 package com.hub.root.main.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -39,19 +42,20 @@ public class MainController {
 	public String header() {
 		return "main/header";
 	}
-	@RequestMapping("inputInfo_form")
-	public String inputInfo_form() {
+	@RequestMapping("inputInfo")
+	public String inputInfo() {
 		return "main/inputInfo";
 	}
-	@RequestMapping("inputInfo")
-	public String inputInfo(MainDTO dto
-							
-							) throws Exception{
-		System.out.println("regi img : "+dto.getStore_menu_img());
-		int result = ms.inputInfo(dto);
-		if(result == 1)
-			return "redirect:/main/mainPage1";
-		return "redirect:/main/inputInfo_form";
+	@RequestMapping("infoSave")
+	public void infoSave(@RequestParam("store_menu_img") MultipartFile mul,
+							HttpServletResponse res,
+							@RequestParam String store_id,
+							@RequestParam String store_menu_name,
+							@RequestParam int store_menu_price,
+							@RequestParam String store_menu_detail,
+							@RequestParam String store_menu_category) throws IOException{
+		ms.infoSave(mul,store_id,store_menu_name,store_menu_price,store_menu_detail,store_menu_category);
+		
 	}
 	
 }

@@ -5,6 +5,6 @@ import java.util.ArrayList;
 import com.hub.root.main.dto.MainDTO;
 
 public interface mainMapper {
-	public int inputInfo(MainDTO dto);
+	public int infoSave(MainDTO dto);
 	public ArrayList<MainDTO> mainPage1();
 }

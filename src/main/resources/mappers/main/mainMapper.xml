@@ -12,7 +12,7 @@
 	<result property="store_menu_category" column="store_menu_category"/>
 	<result property="store_menu_price" column="store_menu_price"/>
 </resultMap>
-<insert id="inputInfo">
+<insert id="infoSave">
 	insert into store_menu(store_id, store_menu_img, store_menu_name, store_menu_price,
 		store_menu_detail, store_menu_category) values(#{store_id},#{store_menu_img},
 		#{store_menu_name},#{store_menu_price},#{store_menu_detail},#{store_menu_category})

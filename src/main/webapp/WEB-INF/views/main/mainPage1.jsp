@@ -7,10 +7,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="${path}/resources/css/main/mainPage1.css?after"/>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 <script  type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
+<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/main/image_slide.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3/dist/js/splide.min.js"></script>
 
  <%@ include file="./header.jsp" %> 
@@ -36,36 +36,38 @@
 			<div class="content2">
 				<div class="menu-img" id="slider1">
 					<ul class="image-slide">
-				
+					
+					<c:forEach var="dto" items="${dtoList}">
 					<li class="food-img">
-						<img class="out" src="${store_menu_img}" >
+						<img class="out" width="380px" height="350px"
+						src="download?fileName=${dto.store_menu_img}" >
 							<div class="food-tagname">
 							#한식 
 								<button type="button">자세히보기</button>
 							</div>
 					</li>>
 					<li class="food-img">
-						<img class="on" src="${store_menu_img}">
+						<img class="on"  width="380px" height="350px">${dto.store_menu_img}
 							<div class="food-tagname">
 							#일식
 								<button type="button">자세히보기</button>
 							</div>
 					</li>>
 					<li class="food-img">
-						<img src="${store_menu_img}">
+						${dto.store_menu_img}
 							<div class="food-tagname">
 							#양식 
 								<button type="button">자세히보기</button>
 							</div>
 					</li>>
 					<li class="food-img">
-						<img src="${store_menu_img}">
+						${dto.store_menu_img}
 							<div class="food-tagname">
 							#양식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>>
-					
+					</li>
+					</c:forEach>
 					</ul>
 				</div>
 			</div>
@@ -229,49 +231,6 @@
 
 	</div>
 </body>
-	<script type="text/javascript">
-	document.addEventListener('DOMContentLoaded', function() {
-	    var sliders = document.querySelectorAll('.menu-img');
-	    
-	    sliders.forEach(function(slider) {
-	    
-	    	var index = 0;
-	        var li = slider.querySelectorAll('ul.image-slide > li');
-	        var liLength = li.length;
-			
-	        function updateSlider() {
-	            var onNum = (index + 1) % liLength;
-
-	            for (var i = 0; i < liLength; i++) {
-	                li[i].classList.remove('on', 'out');
-	                if (i == index) {
-	                    li[i].classList.add('on');
-	                } else if (i == onNum) {
-	                    li[i].classList.add('out');
-	                }
-	            }
-
-	            index = (index + 1) % liLength;
-	        }
-
-	        setInterval(updateSlider, 3000);
-	        
-	        
-	        //버튼 클릭 이벤트 핸들러
-	        var buttons = slider.querySelectorAll('.food-tagname button');
-	         // 각 버튼에 클릭 이벤트를 추가
-	        buttons.forEach(function(button) {
-	            button.addEventListener('click', function() {
-	                window.location.href = '/root/main/inputInfo'; 
-	            });
-	        });
-	        
-	    });
-	});
-
-	
-	
-	</script>
  <%@ include file="./footer.jsp" %> 
 </html>
 

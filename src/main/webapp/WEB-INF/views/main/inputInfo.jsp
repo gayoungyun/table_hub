@@ -13,16 +13,17 @@
 </script>
 </head>
 <body>
-	<form action="${pageContext.request.contextPath}/main/inputInfo" method="post" enctype="multipart/form-data">
-		<input type="text" name="store_id" value="${login }" placeholder="사업자아이디">
-		<input type="file" name="store_menu_img" onchange="readURL(this)"><br>
-		<img id="preview" src="" width="100" height="100" alt=""><br>
-		<input type="text" name="store_menu_name" placeholder="메뉴이름" >
-		<input type="text" name="store_menu_price" placeholder="메뉴가격" >
-		<input type="text" name="store_menu_detail" placeholder="상세설명" >
-		<input type="text" name="store_menu_category" placeholder="카테고리" >
-		<input type="submit" value="등록"
-			onClick="location.href='${contextPath}/main/mainPage1'">
+	<form action="infoSave" method="post" enctype="multipart/form-data">
+		<input type="text" name="store_id" value="${login }" placeholder="사업자아이디" />
+		<input type="file" name="store_menu_img" onchange="readURL(this)" /><br>
+		<img id="preview" src="" width="100" height="100" alt="선택이미지X" /><br>
+		<input type="text" name="store_menu_name" placeholder="메뉴이름" />
+		<input type="text" name="store_menu_price" placeholder="메뉴가격" />
+		<input type="text" name="store_menu_detail" placeholder="상세설명" />
+		<input type="text" name="store_menu_category" placeholder="카테고리" />
+		<input type="submit" value="등록"/>
+		<input type=button value="메인"
+			onClick="location.href='${path}/main/mainPage1'">
 	</form>
 </body>
 </html>
