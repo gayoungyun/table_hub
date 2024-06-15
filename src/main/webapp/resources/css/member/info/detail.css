@@ -1,26 +1,4 @@
 @charset "UTF-8";
-
-body {
-	background-color: #e8e8e8;
-}
-#myPageWrapper {
-	display: flex;
-	width: 1000px;
-	margin: auto;
-	justify-content: space-between;
-}
-
-#myPageMenuWrapper {
-	width: 215px;
-	background-color: white;
-	border-radius: 10px;
-	height: 400px;
-}
-#infoMenu {
-	margin: auto;
-	width: 200px;
-}
-
 #myPageContentWrapper {
 	width: 770px;
 	background-color: white;
@@ -33,23 +11,6 @@ body {
 	border-spacing: none;
 	border-collapse: collapse;
 }
-
-
-
-.title {
-	margin-bottom: 8px;
-	display: inline-block;
-	text-decoration: none;
-}
-.content {
-	display: inline-block;
-	margin-left: 15px;
-	margin-bottom: 8px;
-	text-decoration: none;
-	color: #1d1d1d;
-	font-size: 14px;
-}
-
 th, td{
 	border-bottom: 1px solid #bbbbbb;	
 }
