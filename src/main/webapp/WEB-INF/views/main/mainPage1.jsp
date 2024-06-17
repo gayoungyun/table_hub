@@ -39,42 +39,18 @@
 					
 					<c:forEach var="dto" items="${dtoList}">
 					<li class="food-img">
-						<img class="out" width="380px" height="350px"
+						<img width="380px" height="350px"
 						src="download?fileName=${dto.store_menu_img}" >
 							<div class="food-tagname">
 							#한식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>>
-					<li class="food-img">
-						<img class="on"  width="380px" height="350px">${dto.store_menu_img}
-							<div class="food-tagname">
-							#일식
-								<button type="button">자세히보기</button>
-							</div>
-					</li>>
-					<li class="food-img">
-						${dto.store_menu_img}
-							<div class="food-tagname">
-							#양식 
-								<button type="button">자세히보기</button>
-							</div>
-					</li>>
-					<li class="food-img">
-						${dto.store_menu_img}
-							<div class="food-tagname">
-							#양식 
-								<button type="button">자세히보기</button>
-							</div>
 					</li>
+					
 					</c:forEach>
 					</ul>
 				</div>
 			</div>
-			
-			
-			
-
 		
 		<div class="content2">
 				<div class="menu-img" id="slider2">
@@ -86,28 +62,28 @@
 							#한식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>>
+					</li>
 					<li class="food-img">
 						<img class="on" src="${path}/resources/img/main/맛집04.jpg" alt="음식사진">
 							<div class="food-tagname">
 							#일식
 								<button type="button">자세히보기</button>
 							</div>
-					</li>>
+					</li>
 					<li class="food-img">
 						<img src="${path}/resources/img/main/맛집05.jpg" alt="음식사진">
 							<div class="food-tagname">
 							#양식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>>
+					</li>
 					<li class="food-img">
 						<img src="${path}/resources/img/main/맛집01.jpg" alt="음식사진">
 							<div class="food-tagname">
 							#양식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>>
+					</li>
 					
 					</ul>
 				</div>
@@ -124,28 +100,28 @@
 							#한식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>>
+					</li>
 					<li class="food-img">
 						<img class="on" src="${path}/resources/img/main/맛집04.jpg" alt="음식사진">
 							<div class="food-tagname">
 							#일식
 								<button type="button">자세히보기</button>
 							</div>
-					</li>>
+					</li>
 					<li class="food-img">
 						<img src="${path}/resources/img/main/맛집05.jpg" alt="음식사진">
 							<div class="food-tagname">
 							#양식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>>
+					</li>
 					<li class="food-img">
 						<img src="${path}/resources/img/main/맛집01.jpg" alt="음식사진">
 							<div class="food-tagname">
 							#양식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>>
+					</li>
 					
 					</ul>
 				</div>
@@ -161,28 +137,28 @@
 							#한식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>>
+					</li>
 					<li class="food-img">
 						<img class="on" src="${path}/resources/img/main/맛집04.jpg" alt="음식사진">
 							<div class="food-tagname">
 							#일식
 								<button type="button">자세히보기</button>
 							</div>
-					</li>>
+					</li>
 					<li class="food-img">
 						<img src="${path}/resources/img/main/맛집05.jpg" alt="음식사진">
 							<div class="food-tagname">
 							#양식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>>
+					</li>
 					<li class="food-img">
 						<img src="${path}/resources/img/main/맛집01.jpg" alt="음식사진">
 							<div class="food-tagname">
 							#양식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>>
+					</li>
 					
 					</ul>
 				</div>
@@ -198,28 +174,28 @@
 							#한식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>>
+					</li>
 					<li class="food-img">
 						<img class="on" src="${path}/resources/img/main/맛집04.jpg" alt="음식사진">
 							<div class="food-tagname">
 							#일식
 								<button type="button">자세히보기</button>
 							</div>
-					</li>>
+					</li>
 					<li class="food-img">
 						<img src="${path}/resources/img/main/맛집05.jpg" alt="음식사진">
 							<div class="food-tagname">
 							#양식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>>
+					</li>
 					<li class="food-img">
 						<img src="${path}/resources/img/main/맛집01.jpg" alt="음식사진">
 							<div class="food-tagname">
 							#양식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>>
+					</li>
 					
 					</ul>
 				</div>

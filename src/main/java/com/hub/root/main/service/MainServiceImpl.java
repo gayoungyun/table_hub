@@ -1,5 +1,8 @@
 package com.hub.root.main.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -60,9 +63,23 @@ public class MainServiceImpl implements MainService{
 		return message;
 	}
 	*/
-	public void mainPage1(Model model) {
-		model.addAttribute("dtoList", mapper.mainPage1());
+	public List<MainDTO> mainPage1(Model model) {
+		String store_id = "123";
+		List<MainDTO> dtoList = mapper.mainPage1(store_id);
+		model.addAttribute("dtoList", dtoList);
+		return dtoList;
 	}
+	/*
+	public void search(List<String> store_id_list, Model model) {
+		model.addAttribute("searchResults", mapper.search(store_id_list));
+	}
+	*/
+	public void search(String store_id, String store_menu_name, String store_menu_category, Model model) {
+		List<MainDTO> dtoList =  mapper.search(store_id, store_menu_name, store_menu_category);
+		model.addAttribute("dtoList", dtoList);
+		//return mapper.search(store_menu_name, store_menu_category)
+	}
+		
 }
 
 

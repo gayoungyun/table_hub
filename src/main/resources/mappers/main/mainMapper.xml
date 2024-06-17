@@ -20,8 +20,36 @@
 <select id="mainPage1" resultMap="main">
 	select * from store_menu
 </select>
-
+<!-- 
+<select id="search" resultMap="main">
+	select * from store_menu where store_id in
+	<foreach item="id" collection="list" open="(" separator="," close=")">
+		#{id}
+	</foreach>
+</select>
+ -->
+ <select id="search" resultMap="main">
+ 	select * from store_menu
+ 	<where>
+ 	        <if test="store_id != null and store_id != ''">
+            and store_id = #{store_id}
+        </if>
+        <if test="store_menu_name != null and store_menu_name != ''">
+            and store_menu_name like CONCAT('%', #{store_menu_name}, '%')
+        </if>
+        <if test="store_menu_category != null and store_menu_category != ''">
+            and store_menu_category = #{store_menu_category}
+        </if>
+ 	</where>
+ </select>
 </mapper>
+
+
+
+
+
+
+
 
 
 
