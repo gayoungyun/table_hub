@@ -20,28 +20,58 @@
 <select id="mainPage1" resultMap="main">
 	select * from store_menu
 </select>
-<!-- 
+<!-- 아이디 검색시 성공
 <select id="search" resultMap="main">
-	select * from store_menu where store_id in
+	select * from store_menu where store_menu_name in
 	<foreach item="id" collection="list" open="(" separator="," close=")">
 		#{id}
 	</foreach>
 </select>
  -->
- <select id="search" resultMap="main">
- 	select * from store_menu
- 	<where>
- 	        <if test="store_id != null and store_id != ''">
-            and store_id = #{store_id}
+ <!-- 메뉴이름만 검색할때의 쿼리 성공 
+<select id="search" resultMap="main">
+    SELECT * FROM store_menu
+    <where>
+        <if test="store_menu_name != null and store_menu_name.size() > 0">
+            AND store_menu_name IN
+            <foreach item="name" collection="store_menu_name" open="(" separator="," close=")">
+                #{name}
+            </foreach>
         </if>
-        <if test="store_menu_name != null and store_menu_name != ''">
-            and store_menu_name like CONCAT('%', #{store_menu_name}, '%')
+    </where>
+</select>
+-->
+<!-- 메뉴이름 또는 종류검색시 검색 성공 쿼리
+<select id="search" resultMap="main">
+    SELECT * FROM store_menu
+    <where>
+        <if test="keyword != null and keyword != ''">
+            (store_menu_name LIKE '%' || #{keyword} || '%'
+            OR store_menu_category LIKE '%' || #{keyword} || '%')
         </if>
-        <if test="store_menu_category != null and store_menu_category != ''">
-            and store_menu_category = #{store_menu_category}
-        </if>
- 	</where>
- </select>
+    </where>
+</select>
+ -->
+ <!-- 전체, 메뉴이름 또는 종류검색시 검색 (드롭다운을 통한) 성공 쿼리  -->
+<select id="search" resultMap="main">
+        SELECT * FROM store_menu
+        <where>
+            <if test="params.keyword != null and params.keyword != ''">
+                <choose>
+                    <when test="params.searchType == 'menu_name'">
+                        store_menu_name LIKE '%' || #{params.keyword} || '%'
+                    </when>
+                    <when test="params.searchType == 'menu_category'">
+                        store_menu_category LIKE '%' || #{params.keyword} || '%'
+                    </when>
+                    <otherwise>
+                        store_menu_name LIKE '%' || #{params.keyword} || '%'
+                        OR store_menu_category LIKE '%' || #{params.keyword} || '%'
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+    </select>
 </mapper>
 
 

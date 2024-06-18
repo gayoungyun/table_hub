@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,29 +34,19 @@ public class MainController {
 	// 메인 페이지 요청 처리===================================
 	@GetMapping("mainPage1")
 	public String main(Model model) {
-		String store_id = "123";
+		//String store_id = "123";
 		ms.mainPage1(model);
 		return "main/mainPage1";
 	}
 	// 메인 페이지 검색 기능===================================
 	@GetMapping("search")
-	public String search(@RequestParam(required=false) String store_menu_name, 
-						 @RequestParam(required=false) String store_menu_category, 
-						//MainDTO mainDTO,
+	public String search(@RequestParam(required=false) String keyword, 
+						 @RequestParam(required=false) String searchType ,
 						Model model) {
-		//List<String> storeIds = Arrays.asList(store_id.split(","));
-		//store_id를 쉼표로 구분된 문자열로 받아서 List로 변환하고, 이를 MyBatis 매퍼에 전달하여 검색
-		String store_id = "123";
-		ms.search(store_id, store_menu_name, store_menu_category, model);
-		//ms.search(mainDTO.getStore_menu_name(), mainDTO.getStore_menu_category(), model);
+		List<MainDTO> dtoList = ms.search(keyword,searchType);
+		model.addAttribute("dtoList", dtoList);
 		return "main/search";
 	}
-	/*
-	@GetMapping("flex6")
-	public String flex2() {
-		return "main/flex6";
-	}
-	*/
 	// 헤더 페이지 요청 처리===================================
 	@GetMapping("header")
 	public String header() {
@@ -103,6 +94,12 @@ public class MainController {
             res.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
         }
 	}
+	/*
+	@GetMapping("flex6")
+	public String flex2() {
+		return "main/flex6";
+	}
+	*/
 }
 
 

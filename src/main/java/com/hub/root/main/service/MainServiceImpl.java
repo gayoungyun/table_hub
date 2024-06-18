@@ -1,7 +1,10 @@
 package com.hub.root.main.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,30 +57,19 @@ public class MainServiceImpl implements MainService{
 			msg = "문제가 발생되었습니다!";
 			url = "/main/mainPage1";
 		}
-		//return getMessage(msg, url);
 	}
-	/*
-	private String getMessage(String msg, String url) {
-		String message= "<script>alert('"+msg+"');";
-		message += "location.href='/root"+url+"';</script>";//root앞에 /없으면 상대경로라서 경로를 잘못인식
-		return message;
-	}
-	*/
 	public List<MainDTO> mainPage1(Model model) {
-		String store_id = "123";
-		List<MainDTO> dtoList = mapper.mainPage1(store_id);
+		//String store_id = "123";
+		List<MainDTO> dtoList = mapper.mainPage1();
 		model.addAttribute("dtoList", dtoList);
 		return dtoList;
 	}
-	/*
-	public void search(List<String> store_id_list, Model model) {
-		model.addAttribute("searchResults", mapper.search(store_id_list));
-	}
-	*/
-	public void search(String store_id, String store_menu_name, String store_menu_category, Model model) {
-		List<MainDTO> dtoList =  mapper.search(store_id, store_menu_name, store_menu_category);
-		model.addAttribute("dtoList", dtoList);
-		//return mapper.search(store_menu_name, store_menu_category)
+	public List<MainDTO> search(String keyword, String searchType) {
+		Map<String, Object> params = new HashMap<>();
+	    params.put("keyword", keyword);
+	    params.put("searchType", searchType);
+
+	    return mapper.search(params);   
 	}
 		
 }

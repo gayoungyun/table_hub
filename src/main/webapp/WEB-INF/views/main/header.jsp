@@ -28,11 +28,18 @@
 				<a href="#">Login</a>
 			</div>
 			<div class="search">
-				<input type="text" id="store_menu_name" name="store_menu_name" placeholder="search for..">
-				<input type="text" id="store_menu_category" name="store_menu_category" placeholder="category..">
-				<button type="button" class="search-icon" onclick="submitSearch()">
-					<img class="icon" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png">
-				</button>
+			
+				<select id="search_category" name="search_category">
+					<option value="">ALL</option>
+					<option value="menu_name">Menu Name</option>
+					<option value="menu_category">Menu Category</option>
+				</select>
+				
+				<input type="text" id="search_keyword" name="search_keyword" placeholder="search for..">
+				<div type="button" class="search-icon" onclick="submitSearch()">
+					<img class="icon" 
+					src="https://media.istockphoto.com/id/663931836/ko/%EB%B2%A1%ED%84%B0/%EB%8F%8B%EB%B3%B4%EA%B8%B0-%EB%AA%A8%EC%96%91%EC%9D%98-%EA%B2%80%EC%83%89-%EC%95%84%EC%9D%B4%EC%BD%98-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-%EB%A0%88%EC%9D%B4-%EC%85%98-%EB%94%94%EC%9E%90%EC%9D%B8.jpg?s=612x612&w=0&k=20&c=UyX-bsNA_IZZBjNFzoCHqLSRZqV5O6XgVJ9icR1LtlY=">
+				</div>
 			</div>
 		</div>
 		
@@ -41,21 +48,18 @@
 
 <script>
 function submitSearch() {
-    var searchText = document.getElementById('store_menu_name').value.trim(); // 메뉴 이름 가져오기
-    var category = document.getElementById('store_menu_category').value.trim(); // 카테고리 가져오기
+    var category = document.getElementById('search_category').value;
+    var keyword = document.getElementById('search_keyword').value.trim();
 
     // 검색어가 유효한 경우에만 검색 실행
-    if (searchText !== '' || category !== '') {
+    if (keyword !== '') {
         var path = '<%= request.getContextPath() %>';
-        var url = path + '/main/search?store_id=123';
+        var url = path + '/main/search';
 
-        // 검색어가 있는 경우에만 파라미터 추가
-        if (searchText !== '') {
-            url += '&store_menu_name=' + encodeURIComponent(searchText);
-        }
-        // 카테고리가 있는 경우에만 파라미터 추가
         if (category !== '') {
-            url += '&store_menu_category=' + encodeURIComponent(category);
+            url += '?searchType=' + category + '&keyword=' + encodeURIComponent(keyword);
+        } else {
+            url += '?keyword=' + encodeURIComponent(keyword);
         }
 
         window.location.href = url; // 검색 결과 페이지로 이동

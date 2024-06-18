@@ -22,10 +22,12 @@
 		        <tbody>
 		            <!-- 검색 결과를 반복하여 표시 -->
 		            <c:forEach var="search" items="${dtoList}">
-		                <tr>
-		                    <td>${search.store_menu_name}</td>
-		                    <td>${search.store_menu_category}</td>
-		                </tr>
+		               
+                        <tr>
+                            <td>${search.store_menu_name}</td>
+                            <td>${search.store_menu_category}</td>
+                        </tr>
+              
 		            </c:forEach>
 		        </tbody>
 		    </table>
@@ -34,6 +36,7 @@
     		<p>검색 결과가 없습니다.</p>
     	</c:otherwise>
     </c:choose>
+    <a href="/root/main/mainPage1">메인페이지</a>
 </body>
 </html>
 
