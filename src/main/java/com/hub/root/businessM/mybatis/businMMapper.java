@@ -1,5 +1,7 @@
 package com.hub.root.businessM.mybatis;
 
-public class businMMapper {
+import com.hub.root.businessM.DTO.businMDTO;
 
+public interface businMMapper {
+	public int register(businMDTO dto);
 }

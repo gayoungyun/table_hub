@@ -3,10 +3,6 @@
 	user-select: none;
 }
 
-br {
-   margin: 0 0 10px;
-}
-
 .center-box{
 	width: 1500px;
 	display: flex;
@@ -240,3 +236,13 @@ br {
 	transform: translateX(-50%) rotate(45deg);
 }
 
+ #map {
+            height: 400px;
+            width: 100%;
+            display: none; /* 초기에는 숨김 상태 */
+        }
+        
+.checkbox-group {
+            display: flex;
+            flex-direction: column;
+        }

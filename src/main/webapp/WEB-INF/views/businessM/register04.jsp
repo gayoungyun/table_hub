@@ -22,16 +22,16 @@
 </div>
 
 <div class="center-box">
-<h1>예약정보 입력하기</h1><br>
-	<form action="registerFinish" method="post">
+<h1>영업시간 선택하기</h1><br>
+
 	
-		사업자번호*로그인 아이디<input type="text" value ="storeId 값 불러오기" readonly><br>
-		비밀번호*로그인 비밀번호<input type="text" name="storePwd"><br>
-		이메일<input type="text" name="storeEmail">
+		이메일<input type="text" name="store_email">
+		인증번호<input type="text" name="AuthenticNum"><br>
+		<button type="button">인증</button>
 		<hr>
 		<div style="display: flex; justify-content: space-between;">
 			<button type="button" onclick=" window.history.back()">이전</button>
-			<button type="submit">다음</button>
+			<button type="submit">가게 등록 완료</button>
 		</div>
 	</form>
 </div>

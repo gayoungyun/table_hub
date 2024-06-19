@@ -24,9 +24,10 @@
 <div class="center-box">
 <h1>가게 등록하기</h1><br>
 <form action="register02" method="post">
-		가게 이름 <input type="text" name="storeName" placeholder="가게 이름을 입력해주세요"><br>
-		사업자 번호 <input type="text" name="storeId" placeholder="사업자번호를 입력해주세요">
+		가게 이름 <input type="text" name="store_name" placeholder="가게이름 정보 띄우기" readonly><br>
+		사업자 번호 <input type="text" name="store_id" placeholder="사업자번호 정보 띄우기" readonly>
 		<hr>
+		회원정보가 올바르다면 다음 버튼을, 틀리다면 <b>회원정보 수정을 위해 <a href="">여기</a></b>를 눌러주세요.
 		<div style="display: flex; justify-content: space-between;">
 			<button type="button" onclick=" window.history.back()">이전</button>
 			<button type="submit">다음</button>
