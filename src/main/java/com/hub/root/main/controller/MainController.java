@@ -31,12 +31,17 @@ import com.hub.root.main.service.MainService;
 @RequestMapping("main")//main이라는 경로에 대한 요청
 public class MainController {
 	@Autowired MainService ms;
-	// 메인 페이지 요청 처리===================================
+	// 메인 페이지1 요청 처리===================================
 	@GetMapping("mainPage1")
 	public String main(Model model) {
 		//String store_id = "123";
 		ms.mainPage1(model);
 		return "main/mainPage1";
+	}
+	// 메인 페이지 요청 처리===================================
+	@GetMapping("mainPage2")
+	public String main() {
+		return "main/mainPage2";
 	}
 	// 메인 페이지 검색 기능===================================
 	@GetMapping("search")

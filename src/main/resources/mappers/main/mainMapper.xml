@@ -52,7 +52,7 @@
     </where>
 </select>
  -->
- <!-- 전체, 메뉴이름 또는 종류검색시 검색 (드롭다운을 통한) 성공 쿼리  -->
+ <!-- 전체, 메뉴이름 또는 종류검색시 검색 (드롭다운을 통한) 성공 쿼리  
 <select id="search" resultMap="main">
         SELECT * FROM store_menu
         <where>
@@ -72,6 +72,42 @@
             </if>
         </where>
     </select>
+    -->
+<!-- 카테고리 필터링 -->
+<select id="search" resultMap="main">
+    SELECT * FROM store_menu
+    <where>
+        <if test="params.keyword != null and params.keyword != ''">
+            <choose>
+            	<!-- 검색유형 메뉴이름일 경우 -->
+                <when test="params.searchType == 'menu_name'">
+                	<!-- store_menu_name 컬럼이 검색 키워드를 포함하는 레코드 찾음 -->
+                    store_menu_name LIKE '%' || #{params.keyword} || '%'
+                </when>
+                <!-- 검색유형 메뉴 카테고리일 경우 -->
+                <when test="params.searchType == 'menu_category'">
+                    EXISTS (
+                        <!-- store_menu_category 컬러의 값을 '/'로 구분하여 각 부분을 검색 키워드와 비교 -->
+                        SELECT 1 FROM dual
+                        <!-- store_menu_category 값을 '/'로 구분하여 각 부분을 추출 -->
+                        WHERE REGEXP_SUBSTR(store_menu_category, '[^/]+', 1, LEVEL) = #{params.keyword}
+                        <!-- oracle sql의 쿼리 구조를 사용하여 '/'로 구분된 모든 부분을 순차적으로 비교 -->
+                        CONNECT BY REGEXP_SUBSTR(store_menu_category, '[^/]+', 1, LEVEL) IS NOT NULL
+                    )
+                </when>
+                <!-- 검색유형이 지정되지 않았거나 다른 경우 -->
+                <otherwise>
+                    store_menu_name LIKE '%' || #{params.keyword} || '%'
+                    OR EXISTS (
+                        SELECT 1 FROM dual
+                        WHERE REGEXP_SUBSTR(store_menu_category, '[^/]+', 1, LEVEL) = #{params.keyword}
+                        CONNECT BY REGEXP_SUBSTR(store_menu_category, '[^/]+', 1, LEVEL) IS NOT NULL
+                    )
+                </otherwise>
+            </choose>
+        </if>
+    </where>
+</select>
 </mapper>
 
 

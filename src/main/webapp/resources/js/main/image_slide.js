@@ -34,7 +34,7 @@
 	         // 각 버튼에 클릭 이벤트를 추가
 	        buttons.forEach(function(button) {
 	            button.addEventListener('click', function() {
-	                window.location.href = '/root/main/inputInfo'; 
+	                window.location.href = '/root/main/mainPage2'; 
 	            });
 	        });
 	        

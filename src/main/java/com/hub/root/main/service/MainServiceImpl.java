@@ -68,7 +68,6 @@ public class MainServiceImpl implements MainService{
 		Map<String, Object> params = new HashMap<>();
 	    params.put("keyword", keyword);
 	    params.put("searchType", searchType);
-
 	    return mapper.search(params);   
 	}
 		

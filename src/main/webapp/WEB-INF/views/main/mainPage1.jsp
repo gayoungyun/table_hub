@@ -17,6 +17,8 @@
 </head>
 <body>
 	<div class="page">
+	
+		<!-- ===== main img 부분 ===== -->
 		<div class="content1">
 			<div class="main-img">
 				<div>
@@ -24,6 +26,8 @@
 				</div>
 			</div>
 		</div>
+		
+		<!-- ===== 소개글 부분 ===== -->
 		<section class="intro-hub">
 			<div>
 				<p class="first-line">WELCOME!</p><br>
@@ -32,97 +36,81 @@
 			</div>
 		</section>
 		
+		<!-- ===== 태그별 img-slide 부분 ===== -->
 		<div class="content_wrapper">
 			<div class="content2">
 				<div class="menu-img" id="slider1">
 					<ul class="image-slide">
-					
-					<c:forEach var="dto" items="${dtoList}">
-					<li class="food-img">
-						<img width="380px" height="350px"
-						src="download?fileName=${dto.store_menu_img}" >
-							<div class="food-tagname">
-							#한식 
-								<button type="button">자세히보기</button>
-							</div>
-					</li>
-					
-					</c:forEach>
+						<c:forEach var="dto" items="${dtoList}">
+							<li class="food-img">
+								<img width="380px" height="350px" src="download?fileName=${dto.store_menu_img}" >
+								<div class="food-tagname">#한식 
+									<button type="button">자세히보기</button>
+								</div>
+							</li>
+						</c:forEach>
 					</ul>
 				</div>
 			</div>
 		
-		<div class="content2">
+			<div class="content2">
 				<div class="menu-img" id="slider2">
 					<ul class="image-slide">
-				
-					<li class="food-img">
-						<img class="out" src="${path}/resources/img/main/맛집03.jpg" width="225">
-							<div class="food-tagname">
-							#한식 
+						<li class="food-img">
+							<img class="out" src="${path}/resources/img/main/맛집03.jpg" width="225">
+							<div class="food-tagname">#한식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>
-					<li class="food-img">
-						<img class="on" src="${path}/resources/img/main/맛집04.jpg" alt="음식사진">
-							<div class="food-tagname">
-							#일식
+						</li>
+						<li class="food-img">
+							<img class="on" src="${path}/resources/img/main/맛집04.jpg" alt="음식사진">
+							<div class="food-tagname">#일식
 								<button type="button">자세히보기</button>
 							</div>
-					</li>
-					<li class="food-img">
-						<img src="${path}/resources/img/main/맛집05.jpg" alt="음식사진">
-							<div class="food-tagname">
-							#양식 
+						</li>
+						<li class="food-img">
+							<img src="${path}/resources/img/main/맛집05.jpg" alt="음식사진">
+							<div class="food-tagname">#양식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>
-					<li class="food-img">
-						<img src="${path}/resources/img/main/맛집01.jpg" alt="음식사진">
-							<div class="food-tagname">
-							#양식 
+						</li>
+						<li class="food-img">
+							<img src="${path}/resources/img/main/맛집01.jpg" alt="음식사진">
+							<div class="food-tagname">#양식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>
-					
+						</li>
 					</ul>
 				</div>
 			</div>
 			
-			
 			<div class="content2">
 				<div class="menu-img" id="slider3">
 					<ul class="image-slide">
-				
-					<li class="food-img">
-						<img class="out" src="${path}/resources/img/main/맛집03.jpg" width="225">
-							<div class="food-tagname">
-							#한식 
+						<li class="food-img">
+							<img class="out" src="${path}/resources/img/main/맛집03.jpg" width="225">
+							<div class="food-tagname">#한식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>
-					<li class="food-img">
-						<img class="on" src="${path}/resources/img/main/맛집04.jpg" alt="음식사진">
-							<div class="food-tagname">
-							#일식
+						</li>
+						<li class="food-img">
+							<img class="on" src="${path}/resources/img/main/맛집04.jpg" alt="음식사진">
+							<div class="food-tagname">#일식
 								<button type="button">자세히보기</button>
 							</div>
-					</li>
-					<li class="food-img">
-						<img src="${path}/resources/img/main/맛집05.jpg" alt="음식사진">
-							<div class="food-tagname">
-							#양식 
+						</li>
+						<li class="food-img">
+							<img src="${path}/resources/img/main/맛집05.jpg" alt="음식사진">
+							<div class="food-tagname">#양식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>
-					<li class="food-img">
-						<img src="${path}/resources/img/main/맛집01.jpg" alt="음식사진">
-							<div class="food-tagname">
-							#양식 
+						</li>
+						<li class="food-img">
+							<img src="${path}/resources/img/main/맛집01.jpg" alt="음식사진">
+							<div class="food-tagname">#양식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>
-					
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -130,36 +118,30 @@
 			<div class="content2">
 				<div class="menu-img" id="slider4">
 					<ul class="image-slide">
-				
-					<li class="food-img">
-						<img class="out" src="${path}/resources/img/main/맛집03.jpg" width="225">
-							<div class="food-tagname">
-							#한식 
+						<li class="food-img">
+							<img class="out" src="${path}/resources/img/main/맛집03.jpg" width="225">
+							<div class="food-tagname">#한식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>
-					<li class="food-img">
-						<img class="on" src="${path}/resources/img/main/맛집04.jpg" alt="음식사진">
-							<div class="food-tagname">
-							#일식
+						</li>
+						<li class="food-img">
+							<img class="on" src="${path}/resources/img/main/맛집04.jpg" alt="음식사진">
+							<div class="food-tagname">#일식
 								<button type="button">자세히보기</button>
 							</div>
-					</li>
-					<li class="food-img">
-						<img src="${path}/resources/img/main/맛집05.jpg" alt="음식사진">
-							<div class="food-tagname">
-							#양식 
+						</li>
+						<li class="food-img">
+							<img src="${path}/resources/img/main/맛집05.jpg" alt="음식사진">
+							<div class="food-tagname">#양식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>
-					<li class="food-img">
-						<img src="${path}/resources/img/main/맛집01.jpg" alt="음식사진">
-							<div class="food-tagname">
-							#양식 
+						</li>
+						<li class="food-img">
+							<img src="${path}/resources/img/main/맛집01.jpg" alt="음식사진">
+							<div class="food-tagname">#양식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>
-					
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -167,44 +149,35 @@
 			<div class="content2">
 				<div class="menu-img" id="slider5">
 					<ul class="image-slide">
-				
-					<li class="food-img">
-						<img class="out" src="${path}/resources/img/main/맛집03.jpg" width="225">
-							<div class="food-tagname">
-							#한식 
+						<li class="food-img">
+							<img class="out" src="${path}/resources/img/main/맛집03.jpg" width="225">
+							<div class="food-tagname">#한식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>
-					<li class="food-img">
-						<img class="on" src="${path}/resources/img/main/맛집04.jpg" alt="음식사진">
-							<div class="food-tagname">
-							#일식
+						</li>
+						<li class="food-img">
+							<img class="on" src="${path}/resources/img/main/맛집04.jpg" alt="음식사진">
+							<div class="food-tagname">#일식
 								<button type="button">자세히보기</button>
 							</div>
-					</li>
-					<li class="food-img">
-						<img src="${path}/resources/img/main/맛집05.jpg" alt="음식사진">
-							<div class="food-tagname">
-							#양식 
+						</li>
+						<li class="food-img">
+							<img src="${path}/resources/img/main/맛집05.jpg" alt="음식사진">
+							<div class="food-tagname">#양식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>
-					<li class="food-img">
-						<img src="${path}/resources/img/main/맛집01.jpg" alt="음식사진">
-							<div class="food-tagname">
-							#양식 
+						</li>
+						<li class="food-img">
+							<img src="${path}/resources/img/main/맛집01.jpg" alt="음식사진">
+							<div class="food-tagname">#양식 
 								<button type="button">자세히보기</button>
 							</div>
-					</li>
-					
+						</li>
 					</ul>
 				</div>
 			</div>
 			
-					</div>
 		</div>
-			
-
 	</div>
 </body>
  <%@ include file="./footer.jsp" %> 

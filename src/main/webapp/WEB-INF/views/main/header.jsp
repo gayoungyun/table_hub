@@ -7,11 +7,19 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="${path}/resources/css/default/header.css?after"/>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+<script  type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript">
+    var contextPath = '<%= request.getContextPath() %>';
+</script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/default/header.js"></script>
+
 </head>
 <body>
 	<div class="flex-container">
+	
+		<!-- ===== item1 ===== -->
 		<div class="flex-sub-container-1">
 			<div class="flex-item">
 				<a href="#">Profile</a>
@@ -20,21 +28,25 @@
 				<a href="#">Board</a>
 			</div>
 		</div>
+		
+		<!-- ===== Title 부분 ===== -->
 		<div class="flex-item-title">
 			<a href="/root/main/mainPage1">Tabel HUB</a>
 		</div>
+		
+		<!-- ===== item2 ===== -->
 		<div class="flex-sub-container-2">
 			<div class="flex-item">
 				<a href="#">Login</a>
 			</div>
-			<div class="search">
 			
+			<!-- ===== 검색 부분 ===== -->
+			<div class="search">
 				<select id="search_category" name="search_category">
 					<option value="">ALL</option>
 					<option value="menu_name">Menu Name</option>
 					<option value="menu_category">Menu Category</option>
 				</select>
-				
 				<input type="text" id="search_keyword" name="search_keyword" placeholder="search for..">
 				<div type="button" class="search-icon" onclick="submitSearch()">
 					<img class="icon" 
@@ -42,33 +54,8 @@
 				</div>
 			</div>
 		</div>
-		
 	</div>
 </body>
-
-<script>
-function submitSearch() {
-    var category = document.getElementById('search_category').value;
-    var keyword = document.getElementById('search_keyword').value.trim();
-
-    // 검색어가 유효한 경우에만 검색 실행
-    if (keyword !== '') {
-        var path = '<%= request.getContextPath() %>';
-        var url = path + '/main/search';
-
-        if (category !== '') {
-            url += '?searchType=' + category + '&keyword=' + encodeURIComponent(keyword);
-        } else {
-            url += '?keyword=' + encodeURIComponent(keyword);
-        }
-
-        window.location.href = url; // 검색 결과 페이지로 이동
-    } else {
-        alert('검색어를 입력하세요.');
-    }
-}
-</script>
-
 </html>
 
 

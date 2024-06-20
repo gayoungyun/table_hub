@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="path" value="<%= request.getContextPath() %>" />
 <!DOCTYPE html>
 <html>
@@ -21,13 +22,39 @@
 		        </thead>
 		        <tbody>
 		            <!-- 검색 결과를 반복하여 표시 -->
-		            <c:forEach var="search" items="${dtoList}">
-		               
+		             <c:forEach var="search" items="${dtoList}">
                         <tr>
                             <td>${search.store_menu_name}</td>
-                            <td>${search.store_menu_category}</td>
+                            <td>
+                                <c:set var="seenCategories" value="" />
+                                <!-- 특정 카테고리로 검색 시 -->
+                                <c:forEach var="category" items="${fn:split(search.store_menu_category, '/')}">
+                                    <c:if test="${fn:contains(category, param.keyword)}">
+                                        <c:if test="${not fn:contains(seenCategories, category)}">
+                                            <c:if test="${!empty seenCategories}">
+                                                /
+                                            </c:if>
+                                            ${category}
+                                            <c:set var="seenCategories" value="${seenCategories}${category}/" />
+                                        </c:if>
+                                    </c:if>
+                                </c:forEach>
+                                
+                                <!-- "ALL" 또는 메뉴 이름으로 검색 시 모든 카테고리 출력 -->
+                                <c:if test="${param.searchType == 'menu_name' || param.searchType == '' || param.searchType == null}">
+                                    <c:forEach var="category" items="${fn:split(search.store_menu_category, '/')}">
+                                        <c:if test="${not fn:contains(seenCategories, category)}">
+                                            <c:if test="${!empty seenCategories}">
+                                                /
+                                            </c:if>
+                                            ${category}
+                                            <c:set var="seenCategories" value="${seenCategories}${category}/" />
+                                        </c:if>
+                                    </c:forEach>
+                                </c:if>
+                                
+                            </td>
                         </tr>
-              
 		            </c:forEach>
 		        </tbody>
 		    </table>
