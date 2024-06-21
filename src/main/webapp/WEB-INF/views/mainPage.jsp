@@ -5,6 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript">
+	function goMainPage(){
+		window.location.href='main/mainPage1'
+	}
+</script>
 </head>
 <body>
 	<h1>
@@ -13,5 +18,6 @@
 <button type="button" onclick="main">main</button>
 <a href="store">store</a><br>
 <a href="register01">사업자회원가입 1단계</a>
+<button type="button" onclick="goMainPage()">main</button>
 </body>
 </html>
