@@ -4,26 +4,27 @@ import java.util.List;
 
 public class businMDTO {
 	String store_id, store_pwd, store_email, store_phone, store_main_phone, store_name,
-	store_zip, store_add, store_add_info, store_note,
+	store_zip, store_add, store_add_info, store_note, store_category, store_amenities,
 	store_introduce, store_booking_rule, store_business_hours;
 	
+
 	int store_max_person, store_max_team, store_open_status;
 	
-	List<String> store_category, store_amenities;
 
-	public List<String> getStore_category() {
+
+	public String getStore_category() {
 		return store_category;
 	}
 
-	public void setStore_category(List<String> store_category) {
+	public void setStore_category(String store_category) {
 		this.store_category = store_category;
 	}
-	
-	public List<String> getStore_amenities() {
+
+	public String getStore_amenities() {
 		return store_amenities;
 	}
 
-	public void setStore_amenities(List<String> store_amenities) {
+	public void setStore_amenities(String store_amenities) {
 		this.store_amenities = store_amenities;
 	}
 

@@ -27,7 +27,7 @@
 	<form action="register04" method="post" onsubmit="return inputcheck02()">
 		*소개글 <textarea id="store_introduce" name="store_introduce" placeholder="소개글을 입력해주세요"></textarea><br>
 		
-		<div id="storeCategory">
+		<div id="store_category">
 		*가게 종류<br>
 		<label><input type="checkbox" name="store_category" value="한식"> 한식</label>&nbsp;
         <label><input type="checkbox" name="store_category" value="양식"> 양식</label>&nbsp;
