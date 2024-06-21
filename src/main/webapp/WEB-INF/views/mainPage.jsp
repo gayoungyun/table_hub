@@ -15,8 +15,8 @@
 	<h1>
 	Hello world! main 페이지 입니다!
 </h1>
+<button type="button" onclick="goMainPage()">main</button>
 <a href="store">store</a><br>
 <a href="register01">사업자회원가입 1단계</a><br>
-<button type="button" onclick="goMainPage()">main</button>
 </body>
 </html>
