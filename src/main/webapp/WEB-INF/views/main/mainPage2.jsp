@@ -44,11 +44,12 @@
 		display: flex;
 		flex-grow: 1;
 		height: 100%;
+		flex-direction: column;
 	}
 	.left-item{
 		flex-basis: 70%;
 		max-width: 50%;
-		height: 70px;
+		height: 100%;
 		display: flex;
 	    flex-direction: column;
 	}
@@ -64,7 +65,7 @@
 		align-items: center;
 		margin-right: 70px;
 		padding: 10px;
-		width: 100%;
+		width: calc(50% - 35px);
 		height: 35px;
 		border-radius: 10px;
 		background: black;
@@ -92,6 +93,61 @@
 	/* left side ===== db span end */
 	
 	/* left side ===== detail view */
+	.menu-detail{
+		max-width: 60%;
+		display: flex;
+		flex-grow: 1;
+		/* height: 500px; */
+		flex-direction: row;
+		position: relative;
+		width: 100%;
+		padding-top: 10%;
+	}
+	.detail-container-left{
+		display: flex;
+		flex-direction: column;
+		width: 1200px;
+	}
+	.menu-detail-imgBig{
+		display: flex;
+		flex: 1;
+		width: 100%;
+		height: 100%;
+		position: relative;
+		margin-bottom: 10px;
+	}
+	.imgBig{
+		max-width: 450px;
+		max-height: 100%;
+		/* object-fit: contain; */
+	}
+	.menu-detail-imgSmall{
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+	}
+	.imgSmall1, .imgSmall2, .imgSmall3{
+		width: 32%;
+		/* height: 100px; */
+		height: auto;
+		background-color: #f0f0f0;
+		display: flex;
+		align-items: center;
+		justify-content:center;
+	}
+	.imgSmall{
+		width: 100%;
+		height: 100%;
+		object-position: fill;
+	}
+	.detail-container-right{
+		display: flex;
+		width: 70%;
+		/* margin-right: 90px; */
+		flex-direction: column;
+		word-wrap: break-word;
+		margin-left: 20px;
+	}
 	
 	
 	/* left side ===== detail view end */
@@ -103,7 +159,7 @@
 	.right-itme{
 		flex-basis: 30%;
 		max-width: 50%;
-		position: relative;
+		/* position: sticky; */
 	}
 	.map-api{
 		top: 0;
@@ -123,9 +179,10 @@
 <body>
 	<div class="page">
 		<div class="main-container">
-			<!-- left side -->
+			<!-- ===== left side ===== -->
 			<div class="main-items left-item">
-			
+				
+				<!-- ===== navbar ===== -->
 				<div class="nav-container">
 					<nav class="nav-main">
 						<div class="nav-item">인기순(평점)</div>
@@ -135,12 +192,88 @@
 					</nav>
 				</div>
 				
+				<!-- ===== 위치가져오기, 상세보기 부분 ===== -->
 				<div class="location-condition">
 					<span>서울 종로구 계동 #한식</span>
 					<span>상세조건</span>
 				</div>
 				
-				<
+				<!-- ===== 메뉴 상세보기 부분 ===== -->
+				<div class="menu-detail">
+					<div class="detail-container-left">
+						<div class="menu-detail-imgBig">
+							<img class="imgBig" src="${path }/resources/img/main/car01.png">
+						</div>
+						<div class="menu-detail-imgSmall">
+							<div class="imgSmall1">
+								<img class="imgSmall" src="${path }/resources/img/main/맛집01.jpg">
+							</div>
+							<div class="imgSmall2">
+								<img class="imgSmall" src="${path }/resources/img/main/맛집02.jpg">
+							</div>
+							<div class="imgSmall3">
+								<img class="imgSmall" src="${path }/resources/img/main/맛집03.jpg">
+							</div>
+						</div>
+					</div>
+					<div class="detail-container-right">
+						<span>음식이름aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbb
+						aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+						aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+						aaaaaaaaaaaaaaaaaaaa</span>
+					</div>
+				</div>
+			
+			
+				<div class="menu-detail">
+					<div class="detail-container-left">
+						<div class="menu-detail-imgBig">
+							<img class="imgBig" src="${path }/resources/img/main/car01.png">
+						</div>
+						<div class="menu-detail-imgSmall">
+							<div class="imgSmall1">
+								<img class="imgSmall" src="${path }/resources/img/main/맛집01.jpg">
+							</div>
+							<div class="imgSmall2">
+								<img class="imgSmall" src="${path }/resources/img/main/맛집02.jpg">
+							</div>
+							<div class="imgSmall3">
+								<img class="imgSmall" src="${path }/resources/img/main/맛집03.jpg">
+							</div>
+						</div>
+					</div>
+					<div class="detail-container-right">
+						<span>음식이름aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbb
+						aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+						aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+						aaaaaaaaaaaaaaaaaaaa</span>
+					</div>
+				</div>
+			
+				<div class="menu-detail">
+					<div class="detail-container-left">
+						<div class="menu-detail-imgBig">
+							<img class="imgBig" src="${path }/resources/img/main/car01.png">
+						</div>
+						<div class="menu-detail-imgSmall">
+							<div class="imgSmall1">
+								<img class="imgSmall" src="${path }/resources/img/main/맛집01.jpg">
+							</div>
+							<div class="imgSmall2">
+								<img class="imgSmall" src="${path }/resources/img/main/맛집02.jpg">
+							</div>
+							<div class="imgSmall3">
+								<img class="imgSmall" src="${path }/resources/img/main/맛집03.jpg">
+							</div>
+						</div>
+					</div>
+					<div class="detail-container-right">
+						<span>음식이름aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbb
+						aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+						aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+						aaaaaaaaaaaaaaaaaaaa</span>
+					</div>
+				</div>
 			</div>
 			
 			<!-- right side -->
