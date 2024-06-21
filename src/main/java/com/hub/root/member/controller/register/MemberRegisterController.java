@@ -28,7 +28,6 @@ public class MemberRegisterController {
 				}
 			}			
 		}
-//		String emailLocal[] = email.split("@");
 		model.addAttribute("email", email);
 		return "member/register/user";
 	}

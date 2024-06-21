@@ -1,12 +1,10 @@
 @charset "UTF-8";
-body {
-	background-color: #e8e8e8;
-}
 #bodyWrapper {
 	display: flex;
 	margin: auto;
 	width: 1000px;
 	justify-content: space-between;
+	
 }
 #loginWrapper {
 	background-color: white;

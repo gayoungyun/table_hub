@@ -3,16 +3,16 @@
 #bookContentReadyWrapper {
 	width: 770px;
 	background-color: white;
-	border-radius: 10px;
 	margin-bottom: 20px;
-/* 	height: 1000px; */
+	min-height: 380px;
+	border: 1px solid #b5b5b5;
 }
 #bookContentAlreadyWrapper {
 	width: 770px;
 	background-color: white;
-	border-radius: 10px;
 	margin-bottom: 20px;
-/* 	height: 1000px; */
+	min-height: 380px;
+	border: 1px solid #b5b5b5;
 }
 #totalReadyPageMenu {
 	height: 30px;
@@ -224,10 +224,19 @@
 }
 
 .contentTitle{
-	margin: 0;
-	padding: 20px 0 10px 20px;
+	display: inline-block;
+	font-size: 26px;
+	font-weight: bold;
+	font-family: fantasy;
+	margin: 20px 0 10px 20px;
 }
-
+.contentNothing {
+	font-size: 30px;
+	width: 730px;
+	text-align: center;
+	height: 270px;
+	line-height: 270px;
+}
 
 
 

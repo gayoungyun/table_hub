@@ -10,6 +10,7 @@
 <link href="<%= request.getContextPath() %>/resources/css/member/register/registerUser.css?after" rel="stylesheet"/>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<%@ include file="../../main/header.jsp" %>
 </head>
 <body>
 	<div id="bodyWrapper">
@@ -432,4 +433,5 @@
 		$("#genderMan").click();
 	</script>
 </body>
+<%@ include file="../../main/footer.jsp" %>
 </html>

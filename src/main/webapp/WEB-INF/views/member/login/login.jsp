@@ -99,7 +99,7 @@
 				contentType : "application/json; charset=utf-8",
 				success : function ( result ) {
 					if (result.result == null) {
-						location.href="/root"
+						location.href="/root/main/mainPage1"
 					} else {
 						$("#infoMsg").html( result.result );					
 					}
@@ -388,7 +388,7 @@
 	}	
 
 </script>
-<%@ include file="../../mainPage.jsp" %>
+<%@ include file="../../main/header.jsp" %>
 
 </head>
 <body>
@@ -515,4 +515,5 @@
   	
 </script>
 </body>
+<%@ include file="../../main/footer.jsp" %>
 </html>

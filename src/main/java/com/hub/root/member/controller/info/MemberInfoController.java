@@ -30,12 +30,12 @@ public class MemberInfoController {
 	public String memberInfo(HttpSession session, Model model) {
 		System.out.println(session.getAttribute("userId") == null);
 		if (session.getAttribute("userId") == null) {
-			return "/mainPage";
+			return "/main/mainPage1";
 		} else {
 			MemberDTO dto = mis.getMemberInfo((String)session.getAttribute("userId"));
 			model.addAttribute(session);
 			model.addAttribute("dto", dto);
-			return "member/info/detail";			
+			return "member/info/detail";
 		}
 	}
 	

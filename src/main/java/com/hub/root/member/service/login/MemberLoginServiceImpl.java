@@ -67,7 +67,7 @@ public class MemberLoginServiceImpl implements MemberLoginService{
 			h.setSubject(subject);
 			h.setTo(to);
 			h.setText(body);
-			sender.send(message);
+//			sender.send(message);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

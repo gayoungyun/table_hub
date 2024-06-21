@@ -1,7 +1,5 @@
 package com.hub.root.member.controller.info;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.hub.root.member.dto.BookingDTO;
 import com.hub.root.member.service.info.MemberInfoService;
 
 @RestController

@@ -131,7 +131,7 @@
 		                $(".readyPageBtn").eq(readyCurrentPage%10-1).css("border-bottom", "2px solid #7777ff")
 		            });
 				} else {
-					$("#readyContent").html("예약내역이 없습니다.");
+	            	$("#readyContent").html("<label class='contentNothing'>예약 내역이 없습니다</label>"); 
 				}
 	        },
 	        error: function(error) {
@@ -162,7 +162,7 @@
 						let promise = $.ajax({
 							url : "getStoreName?storeId="+item.storeId,
 							type : "get",
-							async : false,
+							async : false, 
 							dataType : "text"
 						}).then(function (result) {
 							console.log("result : ", result)
@@ -246,7 +246,7 @@
 		                $(".alreadyPageBtn").eq(alreadyCurrentPage%10-1).css("border-bottom", "2px solid #7777ff")
 		            });
 	            } else {
-	            	$("#alreadyContent").html("예약 기록이 없습니다."); 
+	            	$("#alreadyContent").html("<label class='contentNothing'>예약 기록이 없습니다</label>"); 
 	            }
 			},
 			error : function (error) {
@@ -305,7 +305,7 @@
 
 </script>
 
-<%@ include file="../../mainPage.jsp" %>
+<%@ include file="../../main/header.jsp" %>
 </head>
 <body>
 	<div id="myPageWrapper">
@@ -314,7 +314,7 @@
 	
 		<div id="myPageContentWrapper">
 			<div id="bookContentReadyWrapper">
-				<h3 class="contentTitle">방문 대기중인 예약</h3>
+				<label class="contentTitle">방문 대기중인 예약</label>
 				<hr class="contentHr">
 				<div id="readyContent">
 				
@@ -330,4 +330,5 @@
 		</div>
 	</div>
 </body>
+<%@ include file="../../main/footer.jsp" %>
 </html>
