@@ -23,6 +23,7 @@ public class PosController {
 	@Autowired
 	PosService service;
 	
+
 	@GetMapping("login")
 	public String pos() {
 		return "pos/pos_login";
@@ -35,10 +36,13 @@ public class PosController {
 	public String layout() {
 		return "pos/pos_layout";
 	}
-	
 	@GetMapping("order")
 	public String order() {
 		return "pos/pos_order";
+	}
+	@GetMapping("wait")
+	public String wait1() {
+		return "pos/pos_wait";
 	}
 	
 	@PostMapping("pos_login_chk")
@@ -47,7 +51,6 @@ public class PosController {
 					@RequestParam String pwd) {
 		int result = service.login_chk(req, id, pwd);
 
-		
 		if(result == 1)
 			return "redirect:/pos/order";
 		
@@ -66,5 +69,4 @@ public class PosController {
 		return "redirect:/pos/set";
 		
 	}
-	
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.hub.root.pos.posDTO.BookingDTO;
+import com.hub.root.pos.posService.PosService;
 import com.hub.root.pos.posService.SseService;
 
 @RestController
@@ -20,6 +21,9 @@ public class SseController {
 	
 	@Autowired
 	SseService sseService;
+	
+	@Autowired
+	PosService service;
 	
 	@GetMapping(value="connect", produces=MediaType.TEXT_EVENT_STREAM_VALUE)
 	public ResponseEntity<SseEmitter> connect(@RequestParam("articleId") String articleId){
@@ -30,6 +34,8 @@ public class SseController {
 	
 	@PostMapping("/book")
 	public ResponseEntity<Void> sendComment(@RequestBody BookingDTO bookingDTO) {
+		service.register_booking(bookingDTO);
+		
 	    sseService.booking(bookingDTO);
 	    return ResponseEntity.ok().build();
 	}

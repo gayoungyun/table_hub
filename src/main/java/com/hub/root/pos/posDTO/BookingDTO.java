@@ -1,14 +1,21 @@
 package com.hub.root.pos.posDTO;
 
 public class BookingDTO {
-	
+	private int  booking_id;
 	private String store_id;
 	private String member_id;
 	private String booking_date_booking;
 	private String booking_time;
-	private String booking_person;
-	private String phone;
-	private String booking_status;
+	private int booking_person;
+	private String booking_phone;
+	private int booking_status;
+	
+	public int getBooking_id() {
+		return booking_id;
+	}
+	public void setBooking_id(int booking_id) {
+		this.booking_id = booking_id;
+	}
 	
 	@Override
 	public String toString() {
@@ -38,22 +45,22 @@ public class BookingDTO {
 	public void setBooking_time(String booking_time) {
 		this.booking_time = booking_time;
 	}
-	public String getBooking_person() {
+	public int getBooking_person() {
 		return booking_person;
 	}
-	public void setBooking_person(String booking_person) {
+	public void setBooking_person(int booking_person) {
 		this.booking_person = booking_person;
 	}
-	public String getPhone() {
-		return phone;
+	public String getBooking_phone() {
+		return booking_phone;
 	}
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setBooking_phone(String booking_phone) {
+		this.booking_phone = booking_phone;
 	}
-	public String getBooking_status() {
+	public int getBooking_status() {
 		return booking_status;
 	}
-	public void setBooking_status(String booking_status) {
+	public void setBooking_status(int booking_status) {
 		this.booking_status = booking_status;
 	}
 }

@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.annotation.PostConstruct;
@@ -14,31 +16,32 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEventBuilder;
 
+import com.fasterxml.jackson.annotation.JacksonInject.Value;
 import com.hub.root.pos.posDTO.BookingDTO;
+import com.hub.root.pos.posDTO.SseDTO;
 
 @Service
 public class SseService {
 	
-	private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
-	private final List<String> userId = new CopyOnWriteArrayList<>();
+	private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
 	
 	public SseEmitter connect(final String articleId) {
 		SseEmitter sseEmitter = new SseEmitter(300_000L);
-
+		
 		final SseEventBuilder sseEventBuilder = SseEmitter.event().name("connect").data("connected!")
 				.reconnectTime(0);
 
 		sendEvent(sseEmitter, sseEventBuilder);
 		
-		this.emitters.add(sseEmitter);
-		this.userId.add(articleId);
-		
-
 		sseEmitter.onCompletion(() -> {
-			int index = emitters.indexOf(sseEmitter);
-			emitters.remove(sseEmitter);
-			userId.remove(index);
+			emitters.remove(articleId);
 		});
+		sseEmitter.onError((ex) -> {
+			emitters.remove(articleId);
+		});
+		
+		emitters.put(articleId, sseEmitter);
+		
 		return sseEmitter;
 	}
 
@@ -55,28 +58,30 @@ public class SseService {
 
 	public void booking(final BookingDTO bookingDTO) {
 		
-		int si = emitters.size();
-		
-		for(int i = 0; i < si - 1; i++)
-		{
-			if(emitters.get(i) == emitters.get(i + 1))
-			{
-				emitters.remove(i);
-				userId.remove(i);
-			}
-		}
-		
 		final SseEventBuilder sseEventBuilder = SseEmitter.event().name("newBooking").data(bookingDTO)
 				.reconnectTime(0);
 					
-		emitters.forEach((value) -> {
-			int index = emitters.indexOf(value);
-			if(bookingDTO.getStore_id().equals(userId.get(index))) {
-				sendEvent(value, sseEventBuilder);	
-			}
-		});
+		SseEmitter sse = findStore(bookingDTO.getStore_id());
+		
+		
+		
+		
+		if( sse != null)
+		{
+			sendEvent(sse, sseEventBuilder);
+		}
 	}
 	
-	//private void check
+	private SseEmitter findStore(String store_id) {
+		
+		if(emitters.get(store_id) != null)
+		{
+			return emitters.get(store_id);
+		}
+		else
+		{
+			return null;
+		}
+	}
 	
 }

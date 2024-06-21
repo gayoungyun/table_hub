@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hub.root.pos.mybatis.PosMapper;
+import com.hub.root.pos.posDTO.BookingDTO;
 import com.hub.root.pos.posDTO.PosDTO;
 
 @Service
@@ -52,6 +53,14 @@ public class PosServiceImpl implements PosService {
 			}
 			
 		}
+		
+		return 0;
+	}
+
+	@Override
+	public int register_booking(BookingDTO bookingDTO) {
+		
+		int result = mapper.register_booking(bookingDTO);
 		
 		return 0;
 	}
