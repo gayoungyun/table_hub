@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 <script type="text/javascript">
 	function goMainPage(){
-		window.location.href='main/mainPage1'
+		window.location.href='/root/main/mainPage1'
 	}
 </script>
 </head>
