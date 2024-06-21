@@ -1,4 +1,4 @@
-package com.hub.root.member.controller;
+package com.hub.root.member.controller.login;
 
 import java.util.Map;
 import java.util.Random;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hub.root.member.dto.MemberDTO;
-import com.hub.root.member.service.MemberService;
+import com.hub.root.member.service.login.MemberLoginService;
 
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
@@ -29,8 +29,8 @@ import net.nurigo.sdk.message.service.DefaultMessageService;
 
 @RestController
 @RequestMapping("member")
-public class MemberRestController {
-	@Autowired MemberService ms;
+public class MemberLoginRestController {
+	@Autowired MemberLoginService ms;
 	
 	DefaultMessageService messageService = null;
 
@@ -87,6 +87,33 @@ public class MemberRestController {
     	
     }
 
+	@PostMapping(value="register", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public Map<String, Object> register(@RequestBody Map<String, Object> map, HttpServletRequest req, HttpServletResponse res, HttpSession session,
+			Model model) {
+		String code = (String)map.get("code");
+		
+		Cookie[] Cookies = req.getCookies();
+		String email = "";
+		if (Cookies != null) {
+			for(Cookie c : Cookies) {
+				if (c.getName().equals("email")) {
+					email = c.getValue();
+					break;
+				}
+			}			
+		}
+		String ses = (String)session.getAttribute(email);
+		int result;
+		if (code.equals(ses)) {
+		 	result = 1;
+		} else {
+			result = 0;
+		}
+		map.put("result", result);
+		return map;
+	}
+
 	@PostMapping(value="loginChk", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public Map<String, Object> loginChk(@RequestBody Map<String, Object> map, Model model, HttpSession session) {
@@ -120,6 +147,25 @@ public class MemberRestController {
 		return map;
 	}
 	
+	@PostMapping(value="storeLoginChk", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public Map<String, Object> storeLoginChk(@RequestBody Map<String, Object> map, Model model, HttpSession session) {
+		System.out.println("conteoller실행");
+		String id = (String)map.get("id");
+		String pwd = (String)map.get("pwd");
+		int result = ms.storeLoginChk(id, pwd);
+
+		if (result == 1) {
+			session.setAttribute("storeId", id);
+			map.put("result", null);
+			model.addAttribute(session);
+		} else {
+			map.put("result", "입력 정보가 일치하지 않습니다. <br>아이디 또는 비밀번호를 확인해주세요");
+		}
+	
+		return map;
+	}
+	
 	@PostMapping(value="sendMail", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public Map<String, Object> sendMail(@RequestBody Map<String, Object> map, HttpServletRequest req, HttpServletResponse res, HttpSession session,
@@ -148,73 +194,41 @@ public class MemberRestController {
 		
 		return map;
 	}
-	@PostMapping(value="register", produces = "application/json; charset=utf-8")
-	@ResponseBody
-	public Map<String, Object> register(@RequestBody Map<String, Object> map, HttpServletRequest req, HttpServletResponse res, HttpSession session,
-			Model model) {
-		String code = (String)map.get("code");
-		
-		Cookie[] Cookies = req.getCookies();
-		String email = "";
-		if (Cookies != null) {
-			for(Cookie c : Cookies) {
-				if (c.getName().equals("email")) {
-					email = c.getValue();
-					break;
-				}
-			}			
-		}
-		String ses = (String)session.getAttribute(email);
-		int result;
-		if (code.equals(ses)) {
-		 	result = 1;
-		} else {
-			result = 0;
-		}
-		map.put("result", result);
+	
+	@PostMapping(value="storeNumChk", produces = "application/json; charset=utf-8")
+	public Map<String, Object> storeNumChk(@RequestBody Map<String, Object> map) {
+		System.out.println("id : " + map.get("storeId"));
+		String storeId = (String)map.get("storeId");
+		map = ms.storeNumChk(storeId);
 		return map;
 	}
 	
-	@PostMapping(value="idChk", produces = "application/json; charset=utf-8")
-	public int idChk(@RequestBody Map<String, Object> map) {
-		System.out.println("map : " + map);
-		int result = ms.idChk((String)map.get("id"));
-		
-		return result;
-	}
-	@GetMapping(value="nickChk", produces = "application/json; charset=utf-8")
-	public int nickChk(@RequestParam String nick) {
-		System.out.println("nickChk 컨트롤러 연동");
-		int result = ms.nickChk(nick);
-		
-		return result;
-	}
-	
-	
-	@PostMapping(value="registerChk", produces = "application/json; charset=utf-8")
-	public int registerChk(@RequestBody Map<String, Object> map) {
-		System.out.println("id : " + (String)map.get("id"));
-		System.out.println("pwd : " + (String)map.get("pwd"));
-		System.out.println("nick : " + (String)map.get("nick"));
-		System.out.println("phone : " + (String)map.get("phone"));
-		System.out.println("email : " + (String)map.get("email"));
-		System.out.println("birth : " + (String)map.get("birth"));
-		System.out.println("gender : " + (Integer)map.get("gender"));
-		MemberDTO dto = new MemberDTO();
-		dto.setId((String)map.get("id"));
-		if (map.get("pwd") == null) {
-			dto.setPwd("none");
+	@PostMapping(value="storeSendMail", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public Map<String, Object> storeSendMail(@RequestBody Map<String, Object> map, HttpServletRequest req, HttpServletResponse res, HttpSession session,
+			Model model) {
+		String email = (String)map.get("email");
+		int result = ms.storeMailChk(email);
+		if (result != 0) {
+			map.put("msg", "이미 등록되어있는 이메일 주소입니다.");
+			map.put("result", 1);
 		} else {
-			dto.setPwd((String)map.get("pwd"));			
+			Cookie cookie = new Cookie("storeEmail", email);
+			cookie.setMaxAge(5 * 60); // 5분
+			res.addCookie(cookie);
+	    	int code = randomNumber();
+//	    	String msg = "인증번호는 [" + code + "] 입니다.\n 해당 코드를 입력해주세요";
+//			ms.sendMail(email, "인증번호를 확인해주세요", msg);
+//			 받는사람 이메일, 제목, 내용 순으로 넘겨준다.
+			String codeKey = String.valueOf(code);
+			session.setAttribute(email, codeKey);
+			
+			map.put("msg", "인증 코드가 전송되었습니다.");
+			map.put("result", 0);
+			model.addAttribute(session);			
 		}
-		dto.setNick((String)map.get("nick"));
-		dto.setPhone((String)map.get("phone"));
-		dto.setEmail((String)map.get("email"));
-		dto.setBirth((String)map.get("birth"));
-		dto.setGender((Integer)map.get("gender"));
-		int result = ms.register(dto);
-		System.out.println("result : " + result);
-		return result;
+		
+		
+		return map;
 	}
-	
 }

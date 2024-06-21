@@ -42,9 +42,26 @@
 			#{gender}, #{dateCreate}, 0,
 			#{img}, #{status} )
 	</insert>
-	<select id="getMemberInfo" resultMap="member">
-		select * from member_info where member_id=#{id}
+	<select id="storeLoginChk" resultType="string">
+		select store_pwd from store_info where store_id=#{id}
 	</select>
+	<select id="storeChk" resultType="int">
+		select count(*) from store_info where store_id=#{storeId}
+	</select>
+	<select id="storeNumChk" resultType="int">
+		select count(*) from business_number where store_id=#{storeId}
+	</select>
+	<select id="storeMailChk" resultType="int">
+		select count(*) from store_info where store_email=#{email}
+	</select>
+	<insert id="storeRegisterChk">
+		insert into store_info(
+			store_id, store_pwd, store_name, store_email,
+			store_main_phone, store_phone
+		) values (
+			#{id}, #{pwd}, #{name}, #{email},
+			#{mainPhone}, #{phone})
+	</insert>
 </mapper>
 
 

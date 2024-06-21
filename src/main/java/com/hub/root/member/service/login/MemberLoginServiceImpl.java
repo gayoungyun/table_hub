@@ -1,8 +1,10 @@
-package com.hub.root.member.service;
+package com.hub.root.member.service.login;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
 
@@ -13,17 +15,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.hub.root.member.dto.MemberDTO;
+import com.hub.root.member.dto.StoreDTO;
 import com.hub.root.member.mybatis.MemberMapper;
 
 @Service
-public class MemberServiceImpl implements MemberService{
+public class MemberLoginServiceImpl implements MemberLoginService{
 	
-
 	@Autowired MemberMapper mapper;
 	@Autowired JavaMailSender sender;
 	
 	BCryptPasswordEncoder en;
-	public MemberServiceImpl () {
+	public MemberLoginServiceImpl () {
 		en = new BCryptPasswordEncoder();
 	}
 
@@ -41,11 +43,20 @@ public class MemberServiceImpl implements MemberService{
 		
 		return 0;
 	}
-	
-	public String sendMsg(String msg, String url) {
-		String message = "<script>alert('"+msg+"');";
-		message += "location.href='"+url+"'</script>";
-		return message;
+
+	@Override
+	public int mailChk(String email) {
+		System.out.println("11");
+		System.out.println("email : " + email);
+		ArrayList<MemberDTO> list = mapper.mailChk(email);
+		System.out.println("22");
+		int result;
+		if (list.isEmpty()) {
+			result = 0;
+		} else {
+			result = 1;
+		}
+		return result;
 	}
 	
 	public void sendMail(String to, String subject, String body) {
@@ -62,20 +73,6 @@ public class MemberServiceImpl implements MemberService{
 		}
 	}
 	
-	@Override
-	public int idChk(String id) {
-		MemberDTO dto = mapper.idChk(id);
-		int result;
-		if (dto == null) {
-			result = 0;
-		} else {
-			result = 1;
-		}
-		return result;
-	}
-	
-	
-	
 	
 	@Override
 	public int snsLoginChk(String id) {
@@ -85,33 +82,6 @@ public class MemberServiceImpl implements MemberService{
 		} else {
 			return 1;
 		}
-	}
-
-	@Override
-	public int nickChk(String nick) {
-		MemberDTO dto = mapper.nickChk(nick);
-		int result;
-		if (dto == null) {
-			result = 0;
-		} else {
-			result = 1;
-		}
-		return result;
-	}
-
-	@Override
-	public int mailChk(String email) {
-		System.out.println("11");
-		System.out.println("email : " + email);
-		ArrayList<MemberDTO> list = mapper.mailChk(email);
-		System.out.println("22");
-		int result;
-		if (list.isEmpty()) {
-			result = 0;
-		} else {
-			result = 1;
-		}
-		return result;
 	}
 	
 	public int register(MemberDTO dto) {
@@ -134,9 +104,42 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public MemberDTO getMemberInfo(String id) {
-		MemberDTO dto = mapper.getMemberInfo(id);
-		return dto;
+	public int storeLoginChk(String inputId, String inputPwd) {
+		System.out.println("서비스실행");
+		String pwd = mapper.storeLoginChk(inputId);
+		System.out.println(pwd);
+		int result = 0;
+		if (en.matches(inputPwd, pwd)) {
+			result = 1;
+		}
+		return result;
+	}
+
+	@Override
+	public Map<String, Object> storeNumChk(String storeId) {
+		System.out.println("storeId : " + storeId);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("result", mapper.storeChk(storeId));
+		System.out.println("result : "+ map.get("result"));
+		if ((int)map.get("result") == 1) {
+			map.put("msg", "이미 등록되어있는 사업자번호입니다.");
+		} else {
+			int result = mapper.storeNumChk(storeId);
+			if (result != 1) {
+				map.put("result", -1);
+				map.put("msg", "등록되어있지 않는 사업자번호입니다.");
+			} else {
+				map.put("result", 0);
+				map.put("msg", "가입 가능한 사업자번호입니다. <br>이메일 인증후 회원가입 진행해주세요");
+			}
+		}
+		return map;
+	}
+
+	@Override
+	public int storeMailChk(String email) {
+		int result = mapper.storeMailChk(email);
+		return result;
 	}
 	
 	

@@ -36,8 +36,13 @@ td {
 	border-bottom: 1px solid #d3defa;
 	width: 100%;
 }
-#inputId, #inputNick, #inputPwd, #inputPwdChk, #phoneCode
-, #phone1, #phone2, #inputCode, #year, #month, #day {
+#inputStoreId1, #inputStoreId2, #inputStoreId3 {
+	width: 100px;
+	text-align: center;
+}
+#inputStoreId1, #inputStoreId2, #inputStoreId3, #inputName, #inputPwd, 
+#inputPwdChk, #phoneCode, #phone1, #phone2, #inputCode, #year, #month, 
+#day, #storePhoneCode, #storePhone1, #storePhone2 {
 	border-top : 0;
 	border-left : 0;
 	border-right : 0;
@@ -47,6 +52,7 @@ td {
 	border-radius: 0;
 	border-bottom: 1px solid #006ad5;
 	font-size: 20px;
+	
 }
 #inputCode {
 	width: 280px;
@@ -76,13 +82,21 @@ select option {
 	color: white;
 	margin-bottom: 13px;
 }
-#inputId, #inputNick, #inputPwd, #inputPwdChk {
+#inputId, #inputName, #inputPwd, #inputPwdChk {
 	width: 410px;
 }
-#phone1, #phone2 {
+#phone1, #phone2  {
 	width: 80px;
 	text-align: center;
 	
+}
+#storePhone1, #storePhone2 {
+	width: 128px;
+	text-align: center;
+}
+#storePhoneCode {
+	width: 95px;
+	text-align: center;
 }
 #registerBtn {
 	margin-top: 30px;
@@ -145,28 +159,6 @@ p {
 ::placeholder {
 	color: #d0d0d0;
 }
-
-
-/* #year1 { */
-/* 	display: none; */
-/* 	position: absolute; */
-/* 	width: 100px; */
-/* 	height: 200px; */
-/* 	background-color: white; */
-/* 	border: 1px solid; */
-/* 	overflow-y: auto; */
-/* 	list-style-type: none; */
-/* 	text-align: center; */
-/* 	margin: 0; */
-/* 	padding: 0; */
-/* } */
-/* .yearOptions { */
-/* 	cursor: pointer; */
-/* } */
-/* .open + #year1 { */
-/*     display: block; */
-/* } */
-
 
 
 

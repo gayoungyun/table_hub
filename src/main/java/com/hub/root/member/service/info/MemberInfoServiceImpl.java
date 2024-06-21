@@ -1,7 +1,8 @@
-package com.hub.root.member.service;
+package com.hub.root.member.service.info;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.hub.root.member.dto.BookingDTO;
+import com.hub.root.member.dto.MemberDTO;
 import com.hub.root.member.mybatis.MemberInfoMapper;
 
 @Service
@@ -158,6 +161,74 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 		map.put("msg", msg);
 		return map;
 	}
+
+	@Override
+	public MemberDTO getMemberInfo(String id) {
+		MemberDTO dto = mapper.getMemberInfo(id);
+		return dto;
+	}
+	@Override
+	public String getStoreName(String storeId) {
+		
+		return mapper.getStoreName(storeId);
+	}
+
+	@Override
+	public Map<String, Object> getReadyBooking(String page, String id) {
+		int totalCount = mapper.getBookingReadyCount(id);
+		Map<String, Object> map = pageCalc(Integer.parseInt(page), totalCount);
+		System.out.println("totalCount :  " + totalCount);
+		System.out.println("page : " + page);
+		System.out.println("startNum : " + map.get("startNum"));
+		System.out.println("endNum : " + map.get("endNum"));
+		List<BookingDTO> list = mapper.getBookingReadyContent(
+								id, (int)map.get("startNum"),
+								(int)map.get("endNum"));
+		map.put("list", list);
+		return map;
+	}
+
+	@Override
+	public Map<String, Object> getAlreadyBooking(String page, String id) {
+		int totalCount = mapper.getBookingAlreadyCount(id);
+		Map<String, Object> map = pageCalc(Integer.parseInt(page), totalCount);
+		System.out.println("totalCount :  " + totalCount);
+		System.out.println("page : " + page);
+		System.out.println("startNum : " + map.get("startNum"));
+		System.out.println("endNum : " + map.get("endNum"));
+		List<BookingDTO> list = mapper.getBookingAlreadyContent(
+								id, (int)map.get("startNum"),
+								(int)map.get("endNum"));
+		map.put("list", list);
+		return map;
+	}
+	
+	public Map<String, Object> pageCalc(int page, int count) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		int pageContent = 6;
+		int totalPage = count / 6;
+		if (count % 6 != 0) {
+			totalPage += 1;
+		}
+		int startNum = page * pageContent - 5;
+		int endNum = page * pageContent;
+		map.put("page", page);
+		map.put("count", count);
+		map.put("startNum", startNum);
+		map.put("endNum", endNum);
+		map.put("totalPage", totalPage);
+		return map;
+	}
+
+	@Override
+	public int deleteBooking(int bookId) {
+		int result = mapper.deleteBooking(bookId);
+		
+		return result;
+	}
+	
+	
+	
 	
 	
 	

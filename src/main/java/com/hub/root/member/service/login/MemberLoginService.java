@@ -1,14 +1,16 @@
-package com.hub.root.member.service;
+package com.hub.root.member.service.login;
+
+import java.util.Map;
 
 import com.hub.root.member.dto.MemberDTO;
 
-public interface MemberService {
+public interface MemberLoginService {
 	public int loginChk(String id, String pwd);
-	public void sendMail(String to, String subject, String body);
-	public int idChk(String id);
-	public int nickChk(String nick);
 	public int mailChk(String email);
-	public int register(MemberDTO dto);
+	public void sendMail(String to, String subject, String body);
 	public int snsLoginChk(String id);
-	public MemberDTO getMemberInfo(String id);
+	
+	public int storeLoginChk(String id, String pwd);
+	public Map<String, Object> storeNumChk(String storeId);
+	public int storeMailChk(String email);
 }

@@ -19,9 +19,9 @@
 			<br>
 			<hr>
 			<b class="title">내 활동 관리</b><br>
-			<a class="content" id="myReview" href="myReview">내가 작성한 리뷰</a><br>
 			<a class="content" id="myBoard" href="myBoard">내가 작성한 게시글</a><br>
 			<a class="content" id="myReply" href="myReply">내가 남긴 댓글</a><br>
+			<a class="content" id="myReview" href="myReview">내가 작성한 리뷰</a><br>
 		</div>
 	</div>
 

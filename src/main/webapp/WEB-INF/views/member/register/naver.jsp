@@ -50,7 +50,7 @@
 // 					alert("이미 가입된 계정입니다.\n로그인 후 메인페이지로 이동합니다.")
 					let form = {id : inputId}
 						$.ajax({
-							url : "loginChk",
+							url : "/root/member/loginChk",
 							type : "post",
 							dataType : "text",
 							data : JSON.stringify(form),

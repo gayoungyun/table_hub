@@ -1,9 +1,11 @@
-package com.hub.root.member.controller;
+package com.hub.root.member.controller.info;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URLEncoder;
+import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -15,14 +17,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.hub.root.member.dto.BookingDTO;
 import com.hub.root.member.dto.MemberDTO;
-import com.hub.root.member.service.MemberInfoService;
-import com.hub.root.member.service.MemberService;
+import com.hub.root.member.service.info.MemberInfoService;
 
 @Controller
 @RequestMapping("member/myPage")
 public class MemberInfoController {
-	@Autowired MemberService ms;
+	@Autowired MemberInfoService mis;
 
 	@GetMapping("info")
 	public String memberInfo(HttpSession session, Model model) {
@@ -30,7 +32,7 @@ public class MemberInfoController {
 		if (session.getAttribute("userId") == null) {
 			return "/mainPage";
 		} else {
-			MemberDTO dto = ms.getMemberInfo((String)session.getAttribute("userId"));
+			MemberDTO dto = mis.getMemberInfo((String)session.getAttribute("userId"));
 			model.addAttribute(session);
 			model.addAttribute("dto", dto);
 			return "member/info/detail";			
@@ -58,8 +60,8 @@ public class MemberInfoController {
 	}
 	
 	@GetMapping("myBooking")
-	public String myBooking() {
-		
+	public String myBooking(Model model, HttpSession session) {
+		model.addAttribute(session);
 		return "member/info/myBooking";
 	}
 	

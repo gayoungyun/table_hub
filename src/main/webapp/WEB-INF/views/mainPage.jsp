@@ -13,9 +13,13 @@
 </h1>
 <button type="button" onclick="main">main</button>
 	<c:choose>
-		<c:when test="${userId != null}">
+		<c:when test="${userId != null }">
 			<a href="/root/member/logout">로그아웃</a>
 			<a href="/root/member/myPage/info">마이 페이지</a>
+		</c:when>
+		<c:when test="${ storeId != null }">
+			<a href="/root/member/logout">로그아웃</a>
+			<a href="/root/store/myPage">스토어 관리</a>
 		</c:when>
 		<c:otherwise>
 			<a href="/root/member/login">로그인</a>

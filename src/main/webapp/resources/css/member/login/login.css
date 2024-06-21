@@ -13,21 +13,37 @@ body {
 	width: 490px;
 	text-align: center;
 	border-radius: 15px;
+	height: 820px;
 }
-h1 {
+.title {
 	margin-top: 50px;
 	margin-bottom: 50px;
 }
 #registerWrapper {
-	background-color: white;	
+	background-color: white;
 	width: 490px;
 	text-align: center;
 	border-radius: 15px;
+	height: 825px;
 }
-#inputField {
+.inputField {
 	margin: auto;
 	width: 350px;
-	height: 400px;
+/* 	height: 400px; */
+}
+.loginToggleBtn, .registerToggleBtn {
+	margin: auto 0 0 0;
+	padding: 10px 0;
+	border-radius: 0 0 15px 15px;
+	width: 100%;
+	background-color: #bfbfbf;
+	color: #5d5d5d;
+	cursor: pointer;
+	transition: border-radius 0.5s ease-out;
+}
+.registerToggleBtn {
+	margin-top: 231px;
+	transition: margin-top 0.5s ease-out;
 }
 
 #registerField {
@@ -35,7 +51,7 @@ h1 {
 	width: 350px;
 	height: 400px;
 }
-#loginWrapper #inputField #inputId,#inputPwd {
+#loginWrapper .inputField #inputId,#inputPwd, #inputStorePwd {
 	width: 350px;
 	height: 40px;
 	font-size: 18px;
@@ -46,10 +62,33 @@ h1 {
 	border-bottom: 1px solid #004284;
 	margin-bottom: 20px;
 }
-#loginWrapper #inputField input ::placeholder {
+#inputStoreId1, #inputStoreId2, #inputStoreId3 {
+	width: 100px;
+	height: 40px;
+	font-size: 18px;
+	font-weight: bold;
+	border-top : 0;
+	border-left : 0;
+	border-right : 0;
+	border-bottom: 1px solid #004284;
+	margin-bottom: 20px;
+	text-align: center;
+}
+#regisInputStoreId1, #regisInputStoreId2, #regisInputStoreId3 {
+	width: 100px;
+	height: 40px;
+	font-size: 18px;
+	font-weight: bold;
+	border-top : 0;
+	border-left : 0;
+	border-right : 0;
+	border-bottom: 1px solid #004284;
+	text-align: center;
+}
+#loginWrapper .inputField input ::placeholder {
 	color: #e8e8e8;
 }
-#inputField h2 {
+.inputField h2 {
 	text-align: left;
 	margin-bottom: 10px;
 	margin-left: -10px;
@@ -59,7 +98,7 @@ h1 {
 	margin-bottom: 10px;
 	margin-left: -10px;
 }
-#loginBtn {
+#loginBtn, #StoreLoginBtn, #storeRegisterBtn {
 	margin-top: 10px;
 	margin-bottom: 50px;
 	width: 300px;
@@ -72,8 +111,11 @@ h1 {
 	font-weight: bold;
 	cursor: pointer;
 }
+#infoStoreRegisterMsg {
+	color: #ff6868;
+}
 
-#searchId, #searchPwd {
+#searchId, #searchPwd, #searchStorePwd {
 	font-size: 12px;
 	cursor: pointer;
 	color: #00006a;
@@ -87,7 +129,18 @@ h1 {
 	font-size: 14px;
 }
 
-#registerField #emailLocal,#emailDomain {
+#emailLocal,#emailDomain {
+	width: 150px;
+	height: 40px;
+	font-size: 18px;
+	font-weight: bold;
+	border-top : 0;
+	border-left : 0;
+	border-right : 0;
+	padding: 0;
+	border-bottom: 1px solid #004284;
+}
+#storeEmailLocal,#storeEmailDomain {
 	width: 150px;
 	height: 40px;
 	font-size: 18px;
@@ -110,8 +163,19 @@ h1 {
 	border-bottom: 1px solid #004284;
 	text-align: center;
 }
+#storeAuthCode {
+	width: 180px;
+	height: 40px;
+	font-size: 18px;
+	font-weight: bold;
+	border-top : 0;
+	border-left : 0;
+	border-right : 0;
+	border-bottom: 1px solid #004284;
+	text-align: center;
+}
 
-#codeSendBtn {
+#codeSendBtn, #storeRegisterCodeSendBtn { 
 	margin-top: 20px;
 	width: 300px;
 	height: 40px;
@@ -123,6 +187,19 @@ h1 {
 	cursor: pointer;
 	font-weight: bold;
 }
+#storeRegisterChkBtn {
+	margin-bottom: 10px;
+	width: 300px;
+	height: 40px;
+	font-size: 18px;
+	border: 0;
+	border-radius: 5px;
+	background-color: #4874e6;
+	color: white;
+	cursor: pointer;
+	font-weight: bold;
+	
+}
 #emailInfoMsg {
 	margin-top: 10px;
 	margin-bottom: 20px;
@@ -130,6 +207,18 @@ h1 {
 	font-size: 14px;
 }
 #registerBtn {
+	margin-top: 20px;
+	width: 160px;
+	height: 40px;
+	font-size: 18px;
+	border: 0;
+	border-radius: 5px;
+	background-color: #4874e6;
+	color: white;
+	cursor: pointer;
+	font-weight: bold;
+}
+#storeRegisterBtn {
 	margin-top: 20px;
 	width: 160px;
 	height: 40px;
@@ -170,8 +259,16 @@ input[type=number]::-webkit-outer-spin-button,
 ::placeholder {
 	color: #d0d0d0;
 }
+#regisInputStoreId1:disabled, #regisInputStoreId2:disabled, #regisInputStoreId3:disabled {
+	color: gray;
+	background-color: #f6f6f6;
+} 
 
+#storeRegisterChkBtn:disabled, #storeRegisterCodeSendBtn:disabled {
+	background-color: #b6c8f5;
+}
 
-
-
+#storeLogin, #storeRegister {
+	display: none;
+}
 

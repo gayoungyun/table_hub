@@ -1,5 +1,7 @@
-package com.hub.root.member.controller;
+package com.hub.root.member.controller.info;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -7,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,19 +20,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.hub.root.member.service.MemberInfoService;
+import com.hub.root.member.dto.BookingDTO;
+import com.hub.root.member.service.info.MemberInfoService;
 
 @RestController
 @RequestMapping("member/myPage")
 public class MemberInfoRestController {
-	@Autowired MemberInfoService ms;
+	@Autowired MemberInfoService mis;
 	
 	
     @PostMapping(value="memberImgModify", produces = "application/json; charset=utf-8")
 	public String memberImgModify(MultipartHttpServletRequest file, HttpSession session) {
 		String msg;
 		System.out.println("memberImgModify 컨트롤러 실행");
-		int result = ms.memberImgModify(file, (String)session.getAttribute("userId"), file.getParameter("imgName"));
+		int result = mis.memberImgModify(file, (String)session.getAttribute("userId"), file.getParameter("imgName"));
 		if (result == 1) {
 			msg = "저장이 완료되었습니다.";
 		} else {
@@ -42,21 +46,21 @@ public class MemberInfoRestController {
     @PostMapping(value="memberImgDelete", produces = "application/json;charset=utf-8")
     public String memberImgDelete(@RequestBody Map<String, Object> map) {
     	System.out.println("MemberImgDelete 컨트롤러 실행");
-    	String msg = ms.memberImgDelete((String)map.get("imgName"), (String)map.get("id"));
+    	String msg = mis.memberImgDelete((String)map.get("imgName"), (String)map.get("id"));
     	return msg;
     }
     
     @PutMapping(value="memberNickModify", produces="application/json; charset=utf-8")
     public String memberNickModify(@RequestBody Map<String, Object> map, HttpSession session) {
     	System.out.println("memberNickModify 컨트롤러 실행");
-    	String msg = ms.memberNickModify( (String)map.get("nick"), (String)session.getAttribute("userId"));
+    	String msg = mis.memberNickModify( (String)map.get("nick"), (String)session.getAttribute("userId"));
     	return msg;
     }
     @PutMapping(value="memberStatusModify", produces="application/json; charset=utf-8")
     public String memberStatusModify(@RequestBody Map<String, Object> map, HttpSession session) {
     	System.out.println("memberStatusChk 실행 status : " + map.get("status"));
     	
-    	String msg = ms.memberStatusModify((String)map.get("status"), (String)session.getAttribute("userId"));
+    	String msg = mis.memberStatusModify((String)map.get("status"), (String)session.getAttribute("userId"));
     	
     	return msg;
     }
@@ -64,7 +68,7 @@ public class MemberInfoRestController {
     public String memberPhone(@RequestBody Map<String, Object> map, HttpSession session) {
     	System.out.println(map.get("phone"));
     	
-    	String msg = ms.memberPhoneModify((String)map.get("phone"), (String)session.getAttribute("userId"));
+    	String msg = mis.memberPhoneModify((String)map.get("phone"), (String)session.getAttribute("userId"));
     	return msg;
     }
     
@@ -86,7 +90,7 @@ public class MemberInfoRestController {
 		String ses = (String)session.getAttribute(email);
 		int result;
 		if (code.equals(ses)) {
-	    	map = ms.memberEmailModify((String)map.get("email"), (String)session.getAttribute("userId"));
+	    	map = mis.memberEmailModify((String)map.get("email"), (String)session.getAttribute("userId"));
 		} else {
 			map.put("result", -1);
 			map.put("msg", "인증코드가 일치하지 않습니다. 다시 확인해주세요");
@@ -99,13 +103,45 @@ public class MemberInfoRestController {
     public Map<String, Object> memberPassword (@RequestBody Map<String, Object> map, HttpSession session) {
     	String currentPwd = (String)map.get("currentPwd");
     	String changePwd = (String)map.get("changePwd");
-    	map = ms.memberPasswordModify(currentPwd, changePwd, (String)session.getAttribute("userId"));
+    	map = mis.memberPasswordModify(currentPwd, changePwd, (String)session.getAttribute("userId"));
     	if ((int)map.get("result") == 1) {
     		session.invalidate();
     	}
     	return map;
     }
     
+     
+    
+    
+    @GetMapping(value="bookingReady", produces="application/json; charset=utf-8")
+    public Map<String, Object> bookingReady(HttpSession session, @RequestParam String page) {
+    	String id = (String)session.getAttribute("userId");
+    	Map<String, Object> map = mis.getReadyBooking(page, id);
+    	
+    	return map;
+    }
+    @GetMapping(value="bookingAlready", produces="application/json; charset=utf-8")
+    public Map<String, Object> bookingAlready(HttpSession session, @RequestParam String page) {
+    	String id = (String)session.getAttribute("userId");
+    	Map<String, Object> map = mis.getAlreadyBooking(page, id);
+    	
+    	return map;
+    }
+    
+    @GetMapping(value="getStoreName", produces="application/json; charset=utf-8")
+    public String getStoreName (@RequestParam String storeId) {
+    	return mis.getStoreName(storeId);
+    }
+    
+    @DeleteMapping(value={"readyBooking", "alreadyBooking"}, produces="application/json; charset=utf-8")
+    public String booking(@RequestParam int bookId) {
+    	System.out.println("test");
+    	System.out.println("bookId : " + bookId);
+    	int result = mis.deleteBooking(bookId);
+    	
+    	
+    	return null;
+    }
     
     
 	

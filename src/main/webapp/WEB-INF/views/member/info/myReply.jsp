@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link href="<%= request.getContextPath() %>/resources/css/member/info/common.css?after" rel="stylesheet"/>
-<link href="<%= request.getContextPath() %>/resources/css/member/info/myBooking.css?after" rel="stylesheet"/>
+<link href="<%= request.getContextPath() %>/resources/css/member/info/myReply.css?after" rel="stylesheet"/>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 <script>
@@ -15,7 +15,10 @@
 		$("#myReply").css("font-weight", "bold");
 		$("#myReply").css("border-bottom", "2px solid #006ad5")
 		$("#myReply").css("margin-bottom", "6px")
-		
+		$("#myContentMyReply").css("font-weight", "bold");
+		$("#myContentMyReply").css("border-bottom", "2px solid #006ad5")
+		$("#myContentMyReply").css("margin-bottom", "6px")
+
 	})
 
 
@@ -26,7 +29,10 @@
 <body>
 	<div id="myPageWrapper">
 		<%@ include file="./myPageMenu.jsp" %>
-		<div class="myPageContentWrapper">
+		<div id="myPageContentWrapper">
+			<div id="myContentWrapper">
+				<%@ include file="./myContentMyInfo.jsp" %>
+			</div>
 		</div>
 	</div>
 </body>

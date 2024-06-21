@@ -1,29 +1,19 @@
-package com.hub.root.member.controller;
+package com.hub.root.member.controller.login;
 
-import java.util.Map;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.hub.root.member.dto.MemberDTO;
-import com.hub.root.member.service.MemberService;
-
-import oracle.jdbc.proxy.annotation.Post;
+import com.hub.root.member.service.login.MemberLoginService;
 
 @Controller
 @RequestMapping("member")
-public class MemberController {
-	@Autowired MemberService ms;
+public class MemberLoginController {
+	@Autowired MemberLoginService ms;
 
 	@GetMapping("login")
 	public String login(Model model, HttpSession session) {
@@ -32,31 +22,11 @@ public class MemberController {
 		model.addAttribute(session);
 		return "member/login/login";
 	}
+	
 	@GetMapping("logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/";
 	}
-	@GetMapping("registerNaver")
-	public String snsNaver() {
-		
-		return "member/login/registerNaver";
-	}
-	@GetMapping("registerUser")
-	public String registerUser(HttpServletRequest req, Model model) {
-		Cookie[] Cookies = req.getCookies();
-		String email = "";
-		if (Cookies != null) {
-			for(Cookie c : Cookies) {
-				if (c.getName().equals("email")) {
-					email = c.getValue();
-				}
-			}			
-		}
-//		String emailLocal[] = email.split("@");
-		model.addAttribute("email", email);
-		return "member/login/registerUser";
-	}
-
 
 }
