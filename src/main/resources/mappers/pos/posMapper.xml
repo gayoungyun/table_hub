@@ -23,12 +23,19 @@
 		select store_id, store_name from store_info where store_id=#{id} and store_pwd =#{pwd} 
 	</select>
 	<select id="todayReservation" resultMap="bookingDTO">
-		select * from booking_info where store_id = #{store_id} and booking_date_booking = TO_CHAR(sysdate, 'yy/mm/dd') ORDER BY booking_time
+		select * from booking_info where store_id = #{store_id} and booking_date_booking = TO_CHAR(SYSDATE, 'YYYY/MM/DD') ORDER BY booking_time
 	</select>
 	
 	<insert id="register_booking">
-		insert into BOOKING_INFO(booking_id, store_id, member_id, booking_date_booking, booking_time, booking_person, booking_phone, booking_status) values(BOOKING_INFO_SEQ.nextval, #{store_id}, #{member_id}, #{booking_date_booking}, #{booking_time}, #{booking_person}, #{booking_phone}, #{booking_status})
+		 insert into BOOKING_INFO(booking_id, store_id, member_id, booking_date_booking, booking_time, booking_person, booking_phone, booking_status) values(BOOKING_INFO_SEQ.nextval, #{store_id}, #{member_id}, #{booking_date_booking}, #{booking_time}, #{booking_person}, #{booking_phone}, #{booking_status})
 	</insert>
+
+	<select id="check_booking_maxNum" resultType="int">
+		select A.booking_id from(select * from booking_info order by booking_id DESC)A where rownum = 1
+	</select>
 	
+	<update id="bookingStatus">
+		update booking_info set booking_status = #{booking_status} where booking_id = #{booking_id}
+	</update>
 	
 </mapper>

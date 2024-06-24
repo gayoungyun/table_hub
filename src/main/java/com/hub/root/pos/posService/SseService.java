@@ -63,9 +63,6 @@ public class SseService {
 					
 		SseEmitter sse = findStore(bookingDTO.getStore_id());
 		
-		
-		
-		
 		if( sse != null)
 		{
 			sendEvent(sse, sseEventBuilder);

@@ -11,6 +11,42 @@
 	margin: 0;
 	padding: 0;
 }
+
+.showIn {
+	animation-duration: 2s;
+	animation-name: slidein;
+}
+
+.showOut {
+	animation-duration: 2s;
+	animation-name: slideout;
+}
+
+@keyframes slidein {
+	from {
+		margin-left: 100vw;
+		width: 80%;
+	}
+	
+	to {
+		margin-left: 0vw;
+		width: 80%;
+	}
+}
+
+@keyframes slideout {
+	from {
+		margin-left: 0vw;
+		width: 80%;
+	}
+	
+	to {
+		margin-left: 200vw;
+		width: 80%;
+	}
+}
+
+
 .booking_button {
 	width: 65px;
 	height: 30px;
@@ -39,6 +75,7 @@
 	display: inline-block;
 	width: 100%;
 	position: relative;	
+	overflow-x: hidden;
 }
 .side_bar {
 	display: flex;
@@ -176,7 +213,6 @@
 		
 		sse.addEventListener('newBooking', (e) => {
 			let data = JSON.parse(e.data);
-			console.log(data);
 			
 			const div_booking_wrapper = document.createElement('div');
 			
@@ -189,7 +225,7 @@
 			p_booking_id.innerText = "예약번호 : " + data.booking_id;
 			p_booking_date.innerText ="예약일 : " + data.booking_date_booking;
 			p_booking_person.innerText ="인원 : " + data.booking_person;
-			p_booking_phone.innerText = "전화번호 : " + data.phone;
+			p_booking_phone.innerText = "전화번호 : " + data.booking_phone;
 			p_member_id.innerText = "아이디 : " + data.member_id;
 			
 			const button_wrapper = document.createElement('div');
@@ -201,10 +237,13 @@
 			accept_button.innerText = "저장하기";
 			cancel_button.innerText = "취소하기";
 			
-			
+			accept_button.setAttribute('data-value', data.booking_id);
+			cancel_button.setAttribute('data-value', data.booking_id);
 			// 클래스 추가
 			accept_button.classList.add("booking_button");
+			accept_button.classList.add("accept");
 			cancel_button.classList.add("booking_button");
+			cancel_button.classList.add("cancel");
 			
 			accept_button.classList.add("border_radius");
 			cancel_button.classList.add("border_radius");
@@ -224,6 +263,8 @@
 			div_booking_wrapper.setAttribute("data-id", data.booking_id);
 			
 			const new_wrapper = document.querySelector(".new_wrapper");
+			
+			div_booking_wrapper.classList.add("showIn");
 			
 			new_wrapper.appendChild(div_booking_wrapper);
 			
@@ -281,21 +322,182 @@
 				{
 					break;	
 				}
+				else if(parent.classList.contains("accept"))
+				{
+					acceptBooking(parent.getAttribute("data-value"));
+					
+					break;
+				}
+				else if(parent.classList.contains("cancel"))
+				{
+					console.log("취소 실행");
+					cancelBooking(parent.getAttribute("data-value"));
+					parent = parent.parentElement;
+					parent = parent.parentElement;
+					
+					parent.classList.add("showOut");
+					
+					setTimeout(function() {
+						parent.remove();
+					}, 1500);
+					
+					break;
+				}
+				else if(parent.classList.contains("management"))
+				{
+						
+				}
 				else{
 					parent = parent.parentElement;
 				}
 			}
-			
-			
 		})
 		
+		// 가게에서 예약 수락시
+		function acceptBooking(booking_id) {	
+			fetch("http://localhost:8080/root/api/bookingStatus", {
+				method : "PATCH",
+				headers : {"Content-Type": "application/json",},
+				body : JSON.stringify({
+					"booking_id" : booking_id,
+					"booking_status": 3
+				})
+			})
+			.then((response) => response.json())
+			.then((data) => {
+				if(data == 1) 
+				{
+					const save_wrapper = document.querySelector(".save_wrapper");
+					const arr_booking_wrapper = document.querySelectorAll(".booking_wrapper");
+					
+					for(let i = 0; i < arr_booking_wrapper.length; i++)
+					{
+						if(arr_booking_wrapper[i].getAttribute("data-id") === booking_id && arr_booking_wrapper[i].parentElement.classList.contains("new_wrapper"))
+						{
+							arr_booking_wrapper[i].classList.add("showOut");
+							setTimeout(function() {
+								arr_booking_wrapper[i].classList.remove("showOut");
+								arr_booking_wrapper[i].classList.add("showIn");
+								save_wrapper.appendChild(arr_booking_wrapper[i]);	
+								
+							}, 1500);
+						}
+					}
+				}
+				else{
+					console.log("실패 3");
+				}
+			})
+		}
+		// 가게에서 예약 취소시
+		function cancelBooking(data) {
+			fetch("http://localhost:8080/root/api/bookingStatus", {
+				method : "PATCH",
+				headers : {"Content-Type": "application/json",},
+				body : JSON.stringify({
+					"booking_id" : data,
+					"booking_status": -1
+				})
+			})
+			.then((response) => response.json())
+			.then((data) => {
+				if(data == 1) 
+				{
+					console.log("성공 -1");	
+				}
+				else{
+					console.log("실패 -1");
+				}
+			})	
+		}
 		// 오늘 예약 가져오기
 		function todayReservation() {
 			fetch("http://localhost:8080/root/api/todayReservation")
 			.then((response) => response.json())
 			.then((data) => {
-				console.log(data);
+				
+				for(let i = 0; i < data.length; i++)
+				{
+					if(data[i].booking_status == 0)
+					{
+						Reservation(data[i], 0);
+					}
+					else if(data[i].booking_status == 3) {
+						Reservation(data[i], 1);	
+					}	
+				}
+				
 			})
+		}
+		
+		// 신규 예약 쪽에 DOM객체로 생성
+		function Reservation(data, num) {
+			const div_booking_wrapper = document.createElement('div');
+			
+			const p_booking_id = document.createElement('p');
+			const p_booking_date = document.createElement('p');
+			const p_booking_person = document.createElement('p');
+			const p_booking_phone = document.createElement('p');
+			const p_member_id = document.createElement('p');
+			
+			p_booking_id.innerText = "예약번호 : " + data.booking_id;
+			p_booking_date.innerText ="예약일 : " + data.booking_date_booking;
+			p_booking_person.innerText ="인원 : " + data.booking_person;
+			p_booking_phone.innerText = "전화번호 : " + data.booking_phone;
+			p_member_id.innerText = "아이디 : " + data.member_id;
+			
+			const button_wrapper = document.createElement('div');
+			const accept_button = document.createElement('button');
+			const cancel_button = document.createElement('button');
+			
+			button_wrapper.classList.add("button_wrapper");
+			
+			if(num == 0)
+			{
+				accept_button.innerText = "저장하기";
+				accept_button.classList.add("accept");
+			}
+			else
+			{
+				accept_button.innerText = "예약관리";				
+				accept_button.classList.add("management");
+			}
+			
+			cancel_button.innerText = "취소하기";
+			
+			accept_button.setAttribute('data-value', data.booking_id);
+			cancel_button.setAttribute('data-value', data.booking_id);
+			// 클래스 추가
+			accept_button.classList.add("booking_button");
+			cancel_button.classList.add("booking_button");
+			cancel_button.classList.add("cancel");
+			
+			accept_button.classList.add("border_radius");
+			cancel_button.classList.add("border_radius");
+		
+			button_wrapper.appendChild(accept_button);
+			button_wrapper.appendChild(cancel_button);
+				
+			div_booking_wrapper.appendChild(p_booking_id);
+			div_booking_wrapper.appendChild(p_booking_date);
+			div_booking_wrapper.appendChild(p_booking_person);
+			div_booking_wrapper.appendChild(p_booking_phone);
+			div_booking_wrapper.appendChild(p_member_id);
+			
+			div_booking_wrapper.appendChild(button_wrapper);
+				
+			div_booking_wrapper.classList.add('booking_wrapper');
+			div_booking_wrapper.setAttribute("data-id", data.booking_id);
+			
+			const new_wrapper = document.querySelector(".new_wrapper");
+			const save_wrapper = document.querySelector(".save_wrapper");
+			
+			console.log(num);
+			
+			if(num === 0)
+				new_wrapper.appendChild(div_booking_wrapper);
+			else 
+				save_wrapper.appendChild(div_booking_wrapper);
 		}
 		
 	</script>

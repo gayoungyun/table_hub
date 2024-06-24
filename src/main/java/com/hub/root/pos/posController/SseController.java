@@ -34,9 +34,15 @@ public class SseController {
 	
 	@PostMapping("/book")
 	public ResponseEntity<Void> sendComment(@RequestBody BookingDTO bookingDTO) {
-		service.register_booking(bookingDTO);
+		int booking_id = service.register_booking(bookingDTO);
 		
-	    sseService.booking(bookingDTO);
+		if(booking_id != 0)
+		{
+			int check_booking_maxNum = service.check_booking_maxNum();
+					
+			bookingDTO.setBooking_id(check_booking_maxNum);
+			sseService.booking(bookingDTO);
+		}
 	    return ResponseEntity.ok().build();
 	}
 	

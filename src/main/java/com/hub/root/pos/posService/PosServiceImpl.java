@@ -62,7 +62,15 @@ public class PosServiceImpl implements PosService {
 		
 		int result = mapper.register_booking(bookingDTO);
 		
-		return 0;
+		return result;
+	}
+
+	@Override
+	public int check_booking_maxNum() {
+		int result = mapper.check_booking_maxNum();
+		
+		
+		return result;
 	}
 	
 }
