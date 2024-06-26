@@ -5,6 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link href="<%= request.getContextPath() %>/resources/css/member/info/common.css?after" rel="stylesheet"/>
+<link href="<%= request.getContextPath() %>/resources/css/member/info/myBoard.css?after" rel="stylesheet"/>
 </head>
 <body>
 	<div id="myPageMenuWrapper">
@@ -12,7 +14,7 @@
 			<h3>마이페이지</h3>
 			<hr>
 			<b class="title">회원정보 관리</b><br>
-			<a class="content" id="detail" href="info">내 정보 확인 및 수정</a><br>
+			<a class="content" id="detail" href="detail">내 정보 확인 및 수정</a><br>
 			<a class="content" id="myBooking" href="myBooking">예약 정보 확인</a><br>
 			<a class="content" id="deleteUser" href="deleteUser">회원 탈퇴</a>
 			<br>

@@ -1,10 +1,10 @@
 package com.hub.root.member.mybatis;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.hub.root.member.dto.BoardDTO;
 import com.hub.root.member.dto.BookingDTO;
 import com.hub.root.member.dto.MemberDTO;
 
@@ -30,4 +30,9 @@ public interface MemberInfoMapper {
 			@Param("start") int start, 
 			@Param("end") int end);
 	public int deleteBooking(int bookId);
+	public String pwdCheck(@Param("id") String id);
+	public int deleteUser(String id);
+	public int getBoardCount(String id);
+	public List<BoardDTO> getBoard(@Param("id") String id, @Param("start") int startNum,
+									@Param("end") int endNum);
 }

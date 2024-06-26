@@ -23,10 +23,10 @@
 		<div class="flex-sub-container-1">
 			<div class="flex-item">
 				<c:if test="${userId != null }">
-					<a href="/root/member/myPage/info">Profile</a>
+					<a href="/root/member/myPage/detail">Profile</a>
 				</c:if>
 				<c:if test="${storeId != null }">
-					<a href="/root/member/myPage/info">Profile</a>
+					<a href="/root/member/myPage/detail">Profile</a>
 				</c:if>
 			</div>
 			<div class="flex-item">

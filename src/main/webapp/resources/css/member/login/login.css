@@ -4,25 +4,36 @@
 	margin: auto;
 	width: 1000px;
 	justify-content: space-between;
+	text-align: center;
+	margin-top: 50px;
+	margin-bottom: 50px;
 	
 }
 #loginWrapper {
+	display: flex;
+	flex-direction: column;
 	background-color: white;
 	width: 490px;
-	text-align: center;
-	border-radius: 15px;
+	background-color: white;
+	border: 1px solid #b5b5b5;
 	height: 820px;
+	margin-bottom: 20px;
+	box-sizing: border-box;
 }
 .title {
 	margin-top: 50px;
 	margin-bottom: 50px;
 }
 #registerWrapper {
+	display: flex;
+	flex-direction: column;
 	background-color: white;
 	width: 490px;
-	text-align: center;
-	border-radius: 15px;
-	height: 825px;
+	background-color: white;
+	border: 1px solid #b5b5b5;
+	height: 820px;
+	margin-bottom: 20px;
+	box-sizing: border-box;
 }
 .inputField {
 	margin: auto;
@@ -32,15 +43,24 @@
 .loginToggleBtn, .registerToggleBtn {
 	margin: auto 0 0 0;
 	padding: 10px 0;
-	border-radius: 0 0 15px 15px;
 	width: 100%;
 	background-color: #bfbfbf;
 	color: #5d5d5d;
 	cursor: pointer;
 	transition: border-radius 0.5s ease-out;
+	border: 1px solid #b5b5b5;
+	box-sizing: border-box;
+}
+#slideLoginToggle {
+	transition: margin-top 2s ease-out;
+	margin-top: auto;
+}
+#slideRegisterToggle {
+	transition: margin-top 2s ease-out;
+	margin-top: auto;
+	
 }
 .registerToggleBtn {
-	margin-top: 231px;
 	transition: margin-top 0.5s ease-out;
 }
 
@@ -149,6 +169,19 @@
 	padding: 0;
 	border-bottom: 1px solid #004284;
 }
+#userLogin {
+	margin-bottom: auto;
+}
+#storeLogin {
+	margin-bottom: auto;
+}
+#userRegister {
+	margin-bottom: auto;
+	height: 740px;
+}
+#storeRegister {
+	margin-bottom: auto;
+}
 
 #authCode {
 	width: 180px;
@@ -240,7 +273,7 @@
 	display: inline-block;	
 }
 #kakao_id_login {
-	margin-bottom: 30px;	
+/* 	margin-bottom: 23px;	 */
 	display: inline-block;		
 }
 

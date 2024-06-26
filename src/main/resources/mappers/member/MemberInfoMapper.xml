@@ -27,6 +27,15 @@
 		<result property="phone" column="booking_phone"/>
 		<result property="status" column="booking_status"/>
 	</resultMap>
+	<resultMap type="com.hub.root.member.dto.BoardDTO" id="board">
+		<id property="id" column="board_id" />
+		<result property="title" column="board_title" />
+		<result property="content" column="board_content" />
+		<result property="create" column="board_date_create" />
+		<result property="modify" column="board_date_modify" />
+		<result property="memId" column="board_mem_id" />
+		<result property="view" column="board_view_num" />
+	</resultMap>
 
 	<update id="memberImgModify">
 		update member_info set member_img=#{fileName} where member_id=#{id}
@@ -82,8 +91,10 @@
 		        ROW_NUMBER() over( order by trunc(booking_date_booking) desc, booking_time asc) as rn
 		    from booking_info
 		    where member_id=#{id} 
-		        and trunc(booking_date_booking) &lt; trunc(SYSDATE + INTERVAL '9' HOUR) 
-		        or (TRUNC(booking_date_booking) = TRUNC(SYSDATE + INTERVAL '9' HOUR) ANd booking_time &lt; TO_CHAR(SYSDATE + INTERVAL '9' HOUR, 'HH24:MI'))
+		        and ( 
+		        	trunc(booking_date_booking) &lt; trunc(SYSDATE + INTERVAL '9' HOUR) 
+		        	or (TRUNC(booking_date_booking) = TRUNC(SYSDATE + INTERVAL '9' HOUR) ANd booking_time &lt; TO_CHAR(SYSDATE + INTERVAL '9' HOUR, 'HH24:MI'))
+		        )
 		order by  TRUNC(booking_date_booking) desc, booking_time asc
 		) order by rn
 	</select>
@@ -110,8 +121,10 @@
 		        ROW_NUMBER() over( order by trunc(booking_date_booking) desc, booking_time asc) as rn
 		    from booking_info
 		    where member_id=#{id} 
-		        and trunc(booking_date_booking) &lt; trunc(SYSDATE + INTERVAL '9' HOUR) 
-		        or (TRUNC(booking_date_booking) = TRUNC(SYSDATE + INTERVAL '9' HOUR) ANd booking_time &lt; TO_CHAR(SYSDATE + INTERVAL '9' HOUR, 'HH24:MI'))
+		        and (
+		        	trunc(booking_date_booking) &lt; trunc(SYSDATE + INTERVAL '9' HOUR) 
+		        	or (TRUNC(booking_date_booking) = TRUNC(SYSDATE + INTERVAL '9' HOUR) ANd booking_time &lt; TO_CHAR(SYSDATE + INTERVAL '9' HOUR, 'HH24:MI'))
+		        )
 		order by  TRUNC(booking_date_booking) desc, booking_time asc
 		)
 		where rn between #{start} and #{end}
@@ -120,6 +133,21 @@
 	<delete id="deleteBooking">
 		delete from booking_info where booking_id = #{id}
 	</delete>
+	<select id="pwdCheck" resultType="String">
+		select member_pwd from member_info where member_id = #{id}
+	</select>
+	<delete id="deleteUser">
+		delete member_info where member_id = #{id}
+	</delete>
+	<select id="getBoardCount" resultType="int">
+		select count(*) from board where board_mem_id = #{id}
+	</select>
+	<select id="getBoard" resultMap="board">
+		select B.* from (
+			select rownum rn, A.*  from (
+				select * from board where board_mem_id = #{id} order by board_id ) A ) B 
+		where rn between #{start} and #{end}
+	</select>
 </mapper>
 
 

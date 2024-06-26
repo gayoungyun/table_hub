@@ -151,7 +151,9 @@
 			success : function ( data ) {
 				var content = "";
 	            let promises = []; // 모든 AJAX 요청을 관리하기 위한 배열을 선언합니다.
+	            console.log("count : ", data.count)
 	            if (data.count != 0) {
+	            	console.log("1")
 					data.list.forEach(function(item, index) {
 						let date = new Date( item.date );
 						let bookingDate = (date.getFullYear() + '년 ') + 
@@ -192,6 +194,7 @@
 	
 		            // 모든 AJAX 요청이 완료된 후에 UI를 업데이트합니다.
 		            $.when.apply($, promises).then(function() {
+		            	console.log("2")
 		                $("#alreadyContent").html(content); // content를 readyContent에 추가합니다.
 	
 		                let alreadyWrapper = $("#bookContentAlreadyWrapper");
