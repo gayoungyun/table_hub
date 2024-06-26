@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hub.root.main.dto.MainDTO;
+import com.hub.root.main.dto.MainMapDTO;
 import com.hub.root.main.mybatis.mainMapper;
 
 @Service
@@ -38,9 +39,6 @@ public class MainServiceImpl implements MainService{
 		dto.setStore_menu_img("nan");
 		
 		if(!mul.isEmpty()) {
-			System.out.println("dto : "+dto);
-			System.out.println("mfs : "+mfs);
-			System.out.println("mul : "+mul);
 			dto.setStore_menu_img(mfs.saveFile(mul));//이미지 있을경우 처리
 		}
 		int result = 0;
@@ -68,7 +66,33 @@ public class MainServiceImpl implements MainService{
 		Map<String, Object> params = new HashMap<>();
 	    params.put("keyword", keyword);
 	    params.put("searchType", searchType);
+	    
+	    
 	    return mapper.search(params);   
+	}
+	public List<MainMapDTO> getStoreInfo() {
+		List<MainMapDTO> storeList = mapper.getStoreInfo();
+		System.out.println("storeList : "+storeList);
+		return storeList;
+	}
+	public void storeSave(String store_id,String store_pwd,String store_email,String store_phone,String store_main_phone,String store_name,String store_add,
+			String store_add_info,String store_category,String store_note,String store_introduce,String store_business_hours) {
+		MainMapDTO dto = new MainMapDTO();
+		dto.setStore_id(store_id);
+		dto.setStore_pwd(store_pwd);
+		dto.setStore_email(store_email);
+		dto.setStore_phone(store_phone);
+		dto.setStore_main_phone(store_main_phone);
+		dto.setStore_name(store_name);
+		dto.setStore_add(store_add_info);
+		dto.setStore_add_info(store_add_info);
+		dto.setStore_category(store_category);
+		dto.setStore_note(store_note);
+		dto.setStore_introduce(store_introduce);
+		dto.setStore_business_hours(store_business_hours);
+		
+		mapper.storeSave(dto);
+		
 	}
 		
 }
