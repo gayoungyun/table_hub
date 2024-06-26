@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +8,7 @@
 <title>Insert title here</title>
 <script type="text/javascript">
 	function goMainPage(){
-		window.location.href='main/mainPage1'
+		window.location.href='/root/main/mainPage1'
 	}
 </script>
 </head>
@@ -16,5 +17,23 @@
 	Hello world! main 페이지 입니다!
 </h1>
 <button type="button" onclick="goMainPage()">main</button>
+<a href="store">store</a><br>
+<a href="register01">사업자회원가입 1단계</a><br>
+<button type="button" onclick="goMainPage()">main</button>
+	<c:choose>
+		<c:when test="${userId != null }">
+			<a href="/root/member/logout">로그아웃</a>
+			<a href="/root/member/myPage/info">마이 페이지</a>
+		</c:when>
+		<c:when test="${ storeId != null }">
+			<a href="/root/member/logout">로그아웃</a>
+			<a href="/root/store/myPage">스토어 관리</a>
+		</c:when>
+		<c:otherwise>
+			<a href="/root/member/login">로그인</a>
+		</c:otherwise>
+	</c:choose>	
+	<hr>
+<br>
 </body>
 </html>

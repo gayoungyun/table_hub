@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hub.root.member.mybatis.MemberInfoMapper">
+	<resultMap type="com.hub.root.member.dto.MemberDTO" id="member">
+		<id property="id" column="member_id" />
+		<result property="pwd" column="member_pwd"/>
+		<result property="nick" column="member_nick"/>
+		<result property="email" column="member_email"/>
+		<result property="phone" column="member_phone"/>
+		<result property="birth" column="member_birth"/>
+		<result property="gender" column="member_gender"/>
+		<result property="img" column="member_img"/>
+		<result property="status" column="member_status"/>
+		<result property="dateCreate" column="member_date_create"/>
+		<result property="admin" column="member_admin"/>
+	</resultMap>
+	<resultMap type="com.hub.root.member.dto.BookingDTO" id="booking">
+		<id property="id" column="booking_id" />
+		<result property="storeId" column="store_id"/>
+		<result property="memberId" column="member_id"/>
+		<result property="date" column="booking_date_booking"/>
+		<result property="time" column="booking_time"/>
+		<result property="person" column="booking_person"/>
+		<result property="phone" column="booking_phone"/>
+		<result property="status" column="booking_status"/>
+	</resultMap>
+
+	<update id="memberImgModify">
+		update member_info set member_img=#{fileName} where member_id=#{id}
+	</update>
+	<update id="memberImgDelete">
+		update member_info set member_img='default.jpg' where member_id=#{id}
+	</update>
+	<update id="memberNickModify">
+		update member_info set member_nick=#{nick} where member_id=#{id}
+	</update>
+	<update id="memberStatusModify">
+		update member_info set member_status=#{status} where member_id=#{id}
+	</update>
+	<update id="memberPhoneModify">
+		update member_info set member_phone=#{phone} where member_id=#{id}
+	</update>
+	<update id="memberEmailModify">
+		update member_info set member_email=#{email} where member_id=#{id}
+	</update>
+	<select id="memberPasswordChk" resultType="String">
+		select member_pwd from member_info where member_id = #{id}
+	</select>
+	<update id="memberPasswordModify">
+		update member_info set member_pwd=#{pwd} where member_id=#{id}
+	</update>
+	<select id="getMemberInfo" resultMap="member">
+		select * from member_info where member_id=#{id}
+	</select>
+	<select id="getMyBooking" resultMap="booking">
+		select * from booking_info where member_id=#{id} and booking_date_booking > sysdate order by  TRUNC(booking_date_booking) desc, booking_time desc	
+	</select>
+	<select id="getStoreName" resultType="String">
+		select store_name from store_info where store_id=#{storeId}
+	</select>
+	<select id="getBookingReadyCount" resultType="int">
+		select count(*)
+		from (
+		    select 
+		        booking_info.*,
+		        ROW_NUMBER() over( order by trunc(booking_date_booking) desc, booking_time asc) as rn
+		    from booking_info
+		    where member_id=#{id} 
+		        and trunc(booking_date_booking) > trunc(SYSDATE + INTERVAL '9' HOUR) 
+		        or (TRUNC(booking_date_booking) = TRUNC(SYSDATE + INTERVAL '9' HOUR) ANd booking_time > TO_CHAR(SYSDATE + INTERVAL '9' HOUR, 'HH24:MI'))
+		order by  TRUNC(booking_date_booking) desc, booking_time asc
+		) order by rn
+	</select>
+	<select id="getBookingAlreadyCount" resultType="int">
+		select count(*)
+		from (
+		    select 
+		        booking_info.*,
+		        ROW_NUMBER() over( order by trunc(booking_date_booking) desc, booking_time asc) as rn
+		    from booking_info
+		    where member_id=#{id} 
+		        and trunc(booking_date_booking) &lt; trunc(SYSDATE + INTERVAL '9' HOUR) 
+		        or (TRUNC(booking_date_booking) = TRUNC(SYSDATE + INTERVAL '9' HOUR) ANd booking_time &lt; TO_CHAR(SYSDATE + INTERVAL '9' HOUR, 'HH24:MI'))
+		order by  TRUNC(booking_date_booking) desc, booking_time asc
+		) order by rn
+	</select>
+	<select id="getBookingReadyContent" resultMap="booking">
+		select * 
+		from (
+		    select 
+		        booking_info.*,
+		        ROW_NUMBER() over( order by trunc(booking_date_booking) desc, booking_time asc) as rn
+		    from booking_info
+		    where member_id=#{id} 
+		        and trunc(booking_date_booking) > trunc(SYSDATE + INTERVAL '9' HOUR) 
+		        or (TRUNC(booking_date_booking) = TRUNC(SYSDATE + INTERVAL '9' HOUR) ANd booking_time > TO_CHAR(SYSDATE + INTERVAL '9' HOUR, 'HH24:MI'))
+		order by  TRUNC(booking_date_booking) desc, booking_time asc
+		)
+		where rn between #{start} and #{end}
+		order by rn
+	</select>
+	<select id="getBookingAlreadyContent" resultMap="booking">
+		select * 
+		from (
+		    select 
+		        booking_info.*,
+		        ROW_NUMBER() over( order by trunc(booking_date_booking) desc, booking_time asc) as rn
+		    from booking_info
+		    where member_id=#{id} 
+		        and trunc(booking_date_booking) &lt; trunc(SYSDATE + INTERVAL '9' HOUR) 
+		        or (TRUNC(booking_date_booking) = TRUNC(SYSDATE + INTERVAL '9' HOUR) ANd booking_time &lt; TO_CHAR(SYSDATE + INTERVAL '9' HOUR, 'HH24:MI'))
+		order by  TRUNC(booking_date_booking) desc, booking_time asc
+		)
+		where rn between #{start} and #{end}
+		order by rn
+	</select>
+	<delete id="deleteBooking">
+		delete from booking_info where booking_id = #{id}
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

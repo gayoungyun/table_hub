@@ -35,4 +35,7 @@
 		<mybatis-spring:scan base-package="com.hub.root.member.mybatis"/>
 		<mybatis-spring:scan base-package="com.hub.root.pos.mybatis"/>
 		<mybatis-spring:scan base-package="com.hub.root.store.mybatis"/>
+		<mybatis-spring:scan base-package="com.hub.root.businessM.mybatis"/>
+
+    
 </beans>
