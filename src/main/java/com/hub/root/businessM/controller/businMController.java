@@ -1,6 +1,7 @@
 package com.hub.root.businessM.controller;
 
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +27,26 @@ public class businMController {
 		}
 		
 		@GetMapping("register01")//단순 첫째 페이지 보여주기
-		public String register01() {
+		public String register01(HttpServletRequest request) {
+	        HttpSession session = request.getSession(false); // getSession(false)로 세션이 없으면 null 반환
+
+	        if (session != null) {
+	            // 세션에 저장된 특정 속성을 가져오거나 전체 속성을 확인할 수 있습니다.
+	            Object attributeValue = session.getAttribute("attributeName"); // attributeName에 해당하는 속성값 가져오기
+	            Enumeration<String> attributeNames = session.getAttributeNames(); // 모든 세션 속성명 확인하기
+
+	            // 속성값 출력 예시
+	            System.out.println("세션 속성 attributeName의 값: " + attributeValue);
+
+	            // 모든 세션 속성 출력
+	            while (attributeNames.hasMoreElements()) {
+	                String attributeName = attributeNames.nextElement();
+	                Object attribute = session.getAttribute(attributeName);
+	                System.out.println("세션 속성 " + attributeName + "의 값: " + attribute);
+	            }
+	        } else {
+	            System.out.println("세션이 없습니다.");
+	        }
 			return "businessM/register01";
 		}
 		
