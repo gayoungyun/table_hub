@@ -177,7 +177,7 @@
 				else {
 					console.log("1 : ", infoNick.length)
 					$.ajax({
-						url : "/root/member/nickChk?nick="+infoNick,
+						url : "/root/member/register/nickChk?nick="+infoNick,
 						type : "get",
 						dataType : "text",
 						contentType : "application/json; charset=utf-8",
@@ -625,13 +625,15 @@
 		}
 	});
 </script>
-<%@ include file="../../mainPage.jsp" %>
+<%@ include file="../../main/header.jsp" %>
 </head>
 <body>
 	<div id="myPageWrapper">
 		<%@ include file="./myPageMenu.jsp" %>
 		<div id="myPageContentWrapper">
 			<div id="infoContentWrapper">
+			<label id="infoContentTitle">내 정보 확인</label>
+			<hr class="contentHr">
 				<table id="infoContent">
 					<tr>
 						<th>프로필 사진</th>
@@ -651,14 +653,14 @@
 					<tr>
 						<th>아이디</th>
 						<td>
-							<input type="text" id="infoId" placeholder="${dto.id }" disabled><br>
+							<input type="text" class="inputText" id="infoId" placeholder="${dto.id }" disabled><br>
 							<label class="infoMsg">아이디는 변경이 불가능합니다.</label>
 						</td>
 					</tr>
 					<tr>
 						<th>닉네임</th>
 						<td>
-							<input type="text" id="infoNick" value="${dto.nick }">
+							<input type="text" class="inputText" id="infoNick" value="${dto.nick }">
 							<input type="button" id="infoNickBtn" value="수정" disabled><br>
 							<label class="infoMsg" id="infoNickMsg">닉네임은 게시글 또는 리뷰에서 사용됩니다.</label>
 						</td>
@@ -675,15 +677,15 @@
 					<tr>
 						<th>휴대폰번호</th>
 						<td>
-							<select id="infoPhoneArea">
+							<select id="infoPhoneArea" class="inputText">
 								<option>010
 								<option>011
 							</select><b class="phoneDash">-</b>
-							<input type="text" id="infoPhone1"><b class="phoneDash">-</b>
-							<input type="text" id="infoPhone2">
+							<input type="text" class="inputText" id="infoPhone1"><b class="phoneDash">-</b>
+							<input type="text" class="inputText" id="infoPhone2">
 							<input type="button" id="infoPhoneBtn" value="인증코드 전송" disabled><br>
 							<label class="infoMsg" id="infoPhoneMsg">번호 변경 후 인증코드 전송 버튼을 눌러주세요</label><br>
-							<input type="number" id="infoPhoneCode">
+							<input type="number" class="inputText" id="infoPhoneCode">
 							<input type="button" id="infoPhoneCodeBtn" value="번호 수정" disabled><br>
 							<label class="infoMsg" id="infoPhoneCodeMsg">전달받은 코드를 입력후 번호 수정을 눌러주세요</label>
 						</td>
@@ -691,16 +693,16 @@
 					<tr>
 						<th>이메일</th>
 						<td>
-							<input type="text" id="infoEmailLocal" value="${dto.email }">
+							<input type="text" class="inputText" id="infoEmailLocal" value="${dto.email }">
 							<b id="infoEmailAt">@</b>
-							<select id="infoEmailDomain">
+							<select id="infoEmailDomain" class="inputText">
 								<option>naver.com
 								<option>gmail.com
 								<option>daum.net
 							</select>
 							<input type="button" id="infoEmailCodeSendBtn" value="인증코드 전송" disabled><br>
 							<label class="infoMsg" id="infoEmailMsg">이메일 변경을 위해서는 인증이 필요합니다.</label><br>
-							<input type="number" id="infoEmailCodeInput" placeholder="전달 받은 인증코드 입력">
+							<input type="number" class="inputText" id="infoEmailCodeInput" placeholder="전달 받은 인증코드 입력">
 							<input type="button" id="infoEmailCodeChk" value="인증코드 확인" disabled><br>
 							<label class="infoMsg" id="infoEmailCodeChkMsg">전달받은 코드를 입력후 번호 수정을 눌러주세요</label>
 						</td>
@@ -708,10 +710,10 @@
 					<tr>
 						<th>비밀번호</th>
 						<td>
-							<input type="password" id="currentPwd" placeholder="현재 비밀번호 입력"><br>
+							<input type="password" class="inputText" id="currentPwd" placeholder="현재 비밀번호 입력"><br>
 							<label class="infoMsg" id="currentPwdMsg">비밀번호를 변경하면 로그인 페이지로 이동합니다.</label><br><br>
-							<input type="password" id="changePwd" oninput="pwdChk()" placeholder="변경할 비밀번호 입력"><br>
-							<input type="password" id="changePwdAgain" oninput="pwdChk()" placeholder="변경할 비밀번호 입력 확인">
+							<input type="password" class="inputText" id="changePwd" oninput="pwdChk()" placeholder="변경할 비밀번호 입력"><br>
+							<input type="password" class="inputText" id="changePwdAgain" oninput="pwdChk()" placeholder="변경할 비밀번호 입력 확인">
 							<input type="button" id="changePwdBtn" value="비밀번호 변경" disabled><br>
 							<label class="infoMsg" id="changePwdMsg"></label>
 						</td>
@@ -721,4 +723,5 @@
 		</div>
 	</div>
 </body>
+<%@ include file="../../main/footer.jsp" %>
 </html>

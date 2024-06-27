@@ -1,31 +1,52 @@
 @charset "UTF-8";
 #myPageContentWrapper {
+/* 	border-radius: 10px; */
+/* 	box-shadow:  */
+/* 	    1px 1px 6px rgba(0, 0, 0, 0.1), */
+/* 	    -1px 1px 6px rgba(0, 0, 0, 0.1), */
+/* 	    1px -1px 6px rgba(0, 0, 0, 0.1), */
+/* 	    -1px -1px 6px rgba(0, 0, 0, 0.1); */
+/* 	height: 1000px; */
+}
+#infoContentWrapper {
 	width: 770px;
 	background-color: white;
-	border-radius: 10px;
-/* 	height: 1000px; */
+	border: 1px solid #b5b5b5;
 }
 #infoContent {
 	margin: auto;
 	width: 710px;
 	border-spacing: none;
 	border-collapse: collapse;
+	margin-bottom: 40px;
+	margin-top: 20px;
+}
+#infoContentTitle {
+	display: inline-block;
+	font-size: 26px;
+	font-weight: bold;
+	font-family: fantasy;
+	margin: 20px 0 10px 20px;
+}
+.contentHr {
+	margin: 5px;
+}
+tr:first-child th, tr:first-child td {
+	border-top: 3px double #646464;
 }
 th, td{
 	border-bottom: 1px solid #bbbbbb;	
 }
 th {
-	width: 200px;
+	width: 180px;
 	font-size: 18px;
+	background-color: #f2f2ff;
 }
 td {
-	padding: 40px 0 15px 0;
+	padding: 40px 0 15px 20px;
 }
 #infoId {
 	width: 100%;
-}
-::placeholder {
-	color: #a8a8a8;
 }
 #infoNick {
 	width: 80%;
@@ -117,10 +138,9 @@ td {
 	margin-left: 5px;
 	margin-right: 1px;
 }
-input[type="text"],select, input[type="number"], input[type="password"] {
+.inputText {
 	height: 40px;
-	border: none;
-	border-bottom: 1px solid black;
+	border: 1px solid #c5c5c5;
 	background-color: #f7f7f7;
 	font-size: 18px;
 	padding: 0 0 0 15px;
@@ -129,10 +149,12 @@ input[type="text"],select, input[type="number"], input[type="password"] {
 	color: #363636;
 	vertical-align: middle;
 }
+.inputText::placeholder {
+	color: #a8a8a8;
+}
 #infoStatus {
 	height: 100px;
-	border: none;
-	border-bottom: 1px solid black;
+	border: 1px solid #c5c5c5;
 	background-color: #f7f7f7;
 	font-size: 18px;
 	padding: 0 0 0 15px;
@@ -149,13 +171,12 @@ input[type="text"],select, input[type="number"], input[type="password"] {
 	text-align: right;
 	width: 100px;
 }
-select {
+#infoPhoneArea, #infoEmailDomain {
 	padding-right:  10px;
 }
 input[type="button"] {
 	height: 40px;
-	border: none;
-	border-bottom: 1px solid gray;
+	border: 1px solid #c5c5c5;
 /* 	background-color: #4874e6; */
 	background-color: gray;
 	font-size: 18px;

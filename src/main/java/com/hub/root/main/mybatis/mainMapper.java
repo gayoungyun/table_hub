@@ -15,7 +15,7 @@ public interface mainMapper {
 	public List<MainDTO> mainPage1();
 	public List<MainDTO> search(@Param("params") Map<String, Object> params);
 	//public MainMapDTO getStoreInfo(String store_id);
-	public List<MainMapDTO> getStoreInfo();
+	public List<MainMapDTO> getStoreInfo(@Param("params") Map<String, Object> params);
 	public void mainPage2(MainMapDTO MapDTO);
 	public void storeSave(MainMapDTO dto);
 }

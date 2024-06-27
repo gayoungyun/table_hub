@@ -24,4 +24,7 @@ public interface MemberInfoService {
 	public Map<String, Object> getReadyBooking(String page, String id);
 	public Map<String, Object> getAlreadyBooking(String page, String id);
 	public int deleteBooking(int bookId);
+	public Map<String, Object> pwdCheck(String pwd, String id);
+	public Map<String, Object> deleteUser(String id);
+	public Map<String, Object> getBoard(String id, String page);
 }
