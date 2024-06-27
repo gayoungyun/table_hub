@@ -22,7 +22,7 @@
 		<!-- ===== item1 ===== -->
 		<div class="flex-sub-container-1">
 			<div class="flex-item">
-				<a href="#">Profile</a>
+				<a href="/root/member/myPage/info">Profile</a>
 			</div>
 			<div class="flex-item">
 				<a href="#">Board</a>
@@ -37,8 +37,15 @@
 		<!-- ===== item2 ===== -->
 		<div class="flex-sub-container-2">
 			<div class="flex-item">
-				<a href="#">Login</a>
-			</div>
+                <c:choose>
+                    <c:when test="${not empty sessionScope.userId}">
+                        <a href="/root/member/logout">Logout</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="/root/member/login">Login</a>
+                    </c:otherwise>
+                </c:choose>
+            </div>
 			
 			<!-- ===== 검색 부분 ===== -->
 			<div class="search">

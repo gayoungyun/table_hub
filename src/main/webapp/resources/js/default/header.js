@@ -5,7 +5,7 @@ function submitSearch() {
     // 검색어가 유효한 경우에만 검색 실행
     if (keyword !== '') {
         var path = contextPath;
-        var url = path + '/main/search';
+        var url = path + '/main/mainPage2';
 
         if (category !== '') {
             url += '?searchType=' + category + '&keyword=' + encodeURIComponent(keyword);

@@ -70,10 +70,12 @@ public class MainServiceImpl implements MainService{
 	    
 	    return mapper.search(params);   
 	}
-	public List<MainMapDTO> getStoreInfo() {
-		List<MainMapDTO> storeList = mapper.getStoreInfo();
-		System.out.println("storeList : "+storeList);
-		return storeList;
+	public List<MainMapDTO> getStoreInfo(String keyword, String searchType) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("keyword", keyword);
+		params.put("searchType", searchType);
+
+		return mapper.getStoreInfo(params);   
 	}
 	public void storeSave(String store_id,String store_pwd,String store_email,String store_phone,String store_main_phone,String store_name,String store_add,
 			String store_add_info,String store_category,String store_note,String store_introduce,String store_business_hours) {

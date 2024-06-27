@@ -37,21 +37,14 @@ public class MainController {
 	@Autowired MainService ms;
 	// 메인 페이지1 요청 처리===================================
 	@GetMapping("mainPage1")
-	public String main(Model model) {
-		//String store_id = "123";
+	public String main( HttpSession session,Model model) {
+		String user = (String) session.getAttribute("userId");
+		System.out.println("session id main : "+user);
+		if(user != null) {
+			model.addAttribute("user", user);
+		}
 		ms.mainPage1(model);
 		return "main/mainPage1";
-	}
-	// 메인 페이지 검색 기능===================================
-	@GetMapping("search")
-	public String search(@RequestParam(required=false) String keyword, 
-						 @RequestParam(required=false) String searchType ,
-						Model model) {
-		System.out.println(keyword);
-		
-		List<MainDTO> dtoList = ms.search(keyword,searchType);
-		model.addAttribute("dtoList", dtoList);
-		return "main/search";
 	}
 	// 헤더 페이지 요청 처리===================================
 	@GetMapping("header")
@@ -100,9 +93,22 @@ public class MainController {
             res.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
         }
 	}
+	// 메인 페이지 검색 기능===================================
+	@GetMapping("search")
+	public String search(@RequestParam(required=false) String keyword, 
+						 @RequestParam(required=false) String searchType ,
+						Model model) {
+		//System.out.println(keyword);
+		
+		List<MainDTO> dtoList = ms.search(keyword,searchType);
+		model.addAttribute("dtoList", dtoList);
+		return "main/search";
+	}
 	@RequestMapping("mainPage2")
-	public String mainPage2(Model model ) {
-		List<MainMapDTO> storeList = ms.getStoreInfo();
+	public String mainPage2(@RequestParam(required=false) String keyword, 
+			 				@RequestParam(required=false) String searchType ,
+			 				Model model) {
+		List<MainMapDTO> storeList = ms.getStoreInfo(keyword, searchType);
 		System.out.println("storeList controller : "+storeList);
 		model.addAttribute("storeList",storeList);
 		return "main/mainPage2";

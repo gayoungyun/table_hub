@@ -24,11 +24,11 @@
 		            <!-- 검색 결과를 반복하여 표시 -->
 		             <c:forEach var="search" items="${dtoList}">
                         <tr>
-                            <td>${search.store_menu_name}</td>
+                            <td>${search.store_name}</td>
                             <td>
                                 <c:set var="seenCategories" value="" />
                                 <!-- 특정 카테고리로 검색 시 -->
-                                <c:forEach var="category" items="${fn:split(search.store_menu_category, '/')}">
+                                <c:forEach var="category" items="${fn:split(search.store_category, '/')}">
                                     <c:if test="${fn:contains(category, param.keyword)}">
                                         <c:if test="${not fn:contains(seenCategories, category)}">
                                             <c:if test="${!empty seenCategories}">
@@ -40,9 +40,9 @@
                                     </c:if>
                                 </c:forEach>
                                 
-                                <!-- "ALL" 또는 메뉴 이름으로 검색 시 모든 카테고리 출력 -->
+                                <!-- "ALL" 또는  메뉴 이름으로 검색 시 모든 카테고리 출력 -->
                                 <c:if test="${param.searchType == 'menu_name' || param.searchType == '' || param.searchType == null}">
-                                    <c:forEach var="category" items="${fn:split(search.store_menu_category, '/')}">
+                                    <c:forEach var="category" items="${fn:split(search.store_category, '/')}">
                                         <c:if test="${not fn:contains(seenCategories, category)}">
                                             <c:if test="${!empty seenCategories}">
                                                 /
