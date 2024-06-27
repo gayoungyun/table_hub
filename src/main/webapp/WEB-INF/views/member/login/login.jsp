@@ -187,13 +187,13 @@
 			loginTog = 1;
 			$("#userLogin").slideUp();
 			$("#storeLogin").slideDown();
-			$(".loginToggleBtn").css("border-radius", "15px 15px 0 0")
 			$(".loginToggleBtn").html("회원 로그인")
+			$("#slideLoginToggle").css("margin-top", "0")
 		} else {
 			loginTog = 0;
 			$("#userLogin").slideDown();
 			$("#storeLogin").slideUp();
-			$(".loginToggleBtn").css("border-radius", "0 0 15px 15px")
+			$("#slideLoginToggle").css("margin-top", "auto")
 			$(".loginToggleBtn").html("사업자 로그인")
 		}
 	}
@@ -203,15 +203,13 @@
 			registerTog = 1;
 			$("#userRegister").slideUp();
 			$("#storeRegister").slideDown();
-			$(".registerToggleBtn").css("margin-top", "0")
-			$(".registerToggleBtn").css("border-radius", "15px 15px 0 0")
+			$("#slideRegisterToggle").css("margin-top", "0")
 			$(".registerToggleBtn").html("사용자 회원가입")
 		} else {
 			registerTog = 0;
 			$("#userRegister").slideDown();
 			$("#storeRegister").slideUp();
-			$(".registerToggleBtn").css("margin-top", "231px")
-			$(".registerToggleBtn").css("border-radius", "0 0 15px 15px")
+			$("#slideRegisterToggle").css("margin-top", "auto")
 			$(".registerToggleBtn").html("사업자 가입")
 		}
 	}
@@ -388,7 +386,7 @@
 	}	
 
 </script>
-<%@ include file="../../mainPage.jsp" %>
+<%@ include file="../../main/header.jsp" %>
 
 </head>
 <body>
@@ -515,4 +513,5 @@
   	
 </script>
 </body>
+<%@ include file="../../main/footer.jsp" %>
 </html>

@@ -22,7 +22,13 @@
 		<!-- ===== item1 ===== -->
 		<div class="flex-sub-container-1">
 			<div class="flex-item">
-				<a href="/root/member/myPage/info">Profile</a>
+				<c:if test="${userId != null }">
+					<a href="/root/member/myPage/detail">Profile</a>
+				</c:if>
+				<c:if test="${storeId != null }">
+					<a href="/root/member/myPage/detail">Profile</a>
+				</c:if>
+
 			</div>
 			<div class="flex-item">
 				<a href="#">Board</a>
@@ -37,15 +43,16 @@
 		<!-- ===== item2 ===== -->
 		<div class="flex-sub-container-2">
 			<div class="flex-item">
-                <c:choose>
-                    <c:when test="${not empty sessionScope.userId}">
-                        <a href="/root/member/logout">Logout</a>
-                    </c:when>
-                    <c:otherwise>
-                        <a href="/root/member/login">Login</a>
-                    </c:otherwise>
-                </c:choose>
-            </div>
+				<c:choose>
+					<c:when test="${userId != null || storeId != null }">
+						<a href="/root/member/logout">LOGOUT</a>
+					</c:when>
+					<c:otherwise>
+						<a href="/root/member/login">LOGIN</a>
+					</c:otherwise>
+				</c:choose>	
+			</div>
+
 			
 			<!-- ===== 검색 부분 ===== -->
 			<div class="search">

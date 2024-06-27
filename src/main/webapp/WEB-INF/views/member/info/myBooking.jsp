@@ -131,7 +131,7 @@
 		                $(".readyPageBtn").eq(readyCurrentPage%10-1).css("border-bottom", "2px solid #7777ff")
 		            });
 				} else {
-					$("#readyContent").html("예약내역이 없습니다.");
+	            	$("#readyContent").html("<label class='contentNothing'>예약 내역이 없습니다</label>"); 
 				}
 	        },
 	        error: function(error) {
@@ -151,7 +151,9 @@
 			success : function ( data ) {
 				var content = "";
 	            let promises = []; // 모든 AJAX 요청을 관리하기 위한 배열을 선언합니다.
+	            console.log("count : ", data.count)
 	            if (data.count != 0) {
+	            	console.log("1")
 					data.list.forEach(function(item, index) {
 						let date = new Date( item.date );
 						let bookingDate = (date.getFullYear() + '년 ') + 
@@ -162,7 +164,7 @@
 						let promise = $.ajax({
 							url : "getStoreName?storeId="+item.storeId,
 							type : "get",
-							async : false,
+							async : false, 
 							dataType : "text"
 						}).then(function (result) {
 							console.log("result : ", result)
@@ -192,6 +194,7 @@
 	
 		            // 모든 AJAX 요청이 완료된 후에 UI를 업데이트합니다.
 		            $.when.apply($, promises).then(function() {
+		            	console.log("2")
 		                $("#alreadyContent").html(content); // content를 readyContent에 추가합니다.
 	
 		                let alreadyWrapper = $("#bookContentAlreadyWrapper");
@@ -246,7 +249,7 @@
 		                $(".alreadyPageBtn").eq(alreadyCurrentPage%10-1).css("border-bottom", "2px solid #7777ff")
 		            });
 	            } else {
-	            	$("#alreadyContent").html("예약 기록이 없습니다."); 
+	            	$("#alreadyContent").html("<label class='contentNothing'>예약 기록이 없습니다</label>"); 
 	            }
 			},
 			error : function (error) {
@@ -305,7 +308,7 @@
 
 </script>
 
-<%@ include file="../../mainPage.jsp" %>
+<%@ include file="../../main/header.jsp" %>
 </head>
 <body>
 	<div id="myPageWrapper">
@@ -314,7 +317,7 @@
 	
 		<div id="myPageContentWrapper">
 			<div id="bookContentReadyWrapper">
-				<h3 class="contentTitle">방문 대기중인 예약</h3>
+				<label class="contentTitle">방문 대기중인 예약</label>
 				<hr class="contentHr">
 				<div id="readyContent">
 				
@@ -330,4 +333,5 @@
 		</div>
 	</div>
 </body>
+<%@ include file="../../main/footer.jsp" %>
 </html>

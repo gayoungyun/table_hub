@@ -20,10 +20,13 @@
 	display: inline-block;
 	height: 30px;
 }
-
+.myContentMenu:first-of-type {
+	margin-left: 20px;
+}
 .myContentMenu {
-	display: inline-block;
+	display: inline-block;	
 	margin: 10px -10px 5px 20px;
+	padding: 5px;
 	cursor: pointer;
 	text-decoration: none;
 	color: #1d1d1d;

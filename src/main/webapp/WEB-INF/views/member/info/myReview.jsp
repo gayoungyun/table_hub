@@ -23,7 +23,7 @@
 
 </script>
 
-<%@ include file="../../mainPage.jsp" %>
+<%@ include file="../../main/header.jsp" %>
 </head>
 <body>
 	<div id="myPageWrapper">
@@ -39,4 +39,5 @@
 		</div>
 	</div>
 </body>
+<%@ include file="../../main/footer.jsp" %>
 </html>

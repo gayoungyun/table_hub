@@ -14,7 +14,7 @@ public class MemberInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		HttpSession session = request.getSession();
-		System.out.println("interceptor 실행");
+		System.out.println("interceptor LoginChk 실행");
 		
 		if (session.getAttribute("userId") == null) {
 			response.setContentType("text/html; charset=utf-8");
