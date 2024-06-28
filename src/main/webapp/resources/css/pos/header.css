@@ -5,13 +5,16 @@
 }
 
 *{
-	margin: 0px;
+	margin: 0;
+	padding : 0;
+	box-sizing: border-box;
 }
 
 #pos_header {
 	background-color: #191E36;
 	display: flex;
 	justify-content: space-between;
+	height: 57px;
 	padding-top: 10px;
 	padding-bottom: 10px;
 }

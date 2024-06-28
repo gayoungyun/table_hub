@@ -13,4 +13,5 @@ public interface PosService {
 	public int upload_store_file(MultipartFile file, HttpSession session);
 	public int register_booking(BookingDTO bookingDTO);
 	public int check_booking_maxNum();
+	public int wait_keyCheck(HttpServletRequest req, String key);
 }

@@ -7,7 +7,12 @@
   margin: 0;
   padding: 0;
   background-color: #FFFBF4;
+  
+  display: block;
+  overflow: hidden;
 }
+  
+
 
 input {
   font-size: 19px;
@@ -27,7 +32,7 @@ input {
 
 #label {
 	font-weight: bold;
-	font-size: 20px;
+	font-size: 30px;
 	font-family: "Moi";
 }
 

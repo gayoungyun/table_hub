@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.hub.root.pos.mybatis.PosMapper;
 import com.hub.root.pos.posDTO.BookingDTO;
 import com.hub.root.pos.posDTO.PosDTO;
+import com.hub.root.pos.posDTO.keyDTO;
 
 @Service
 public class PosServiceImpl implements PosService {
@@ -71,6 +72,26 @@ public class PosServiceImpl implements PosService {
 		
 		
 		return result;
+	}
+
+	@Override
+	public int wait_keyCheck(HttpServletRequest req, String key) {
+		keyDTO result = mapper.wait_keyCheck(key);
+		
+		if(result != null)
+		{
+			HttpSession session = req.getSession();
+			session.setAttribute("store_id", result.getStore_id());
+			session.setAttribute("key", result.getStore_key());
+			update_keyStatus(key);
+			return 1;
+		}
+		
+		return 0;
+	}
+	
+	private void update_keyStatus(String key) {
+		mapper.update_keyStatus(key);
 	}
 	
 }

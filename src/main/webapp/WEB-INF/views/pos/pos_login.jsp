@@ -6,12 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="<%=request.getContextPath()%>/resources/css/pos/login.css"
-	rel="stylesheet">
-
+<link href="<%=request.getContextPath()%>/resources/css/pos/login.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 </head>
 <body id="login_body" style="display: none;">
-	<%@ include file="/WEB-INF/views/pos/common/pos_header.jsp"%>
 	<div class="main_wrapper">
 		<div class="form_wrapper">
 			<form method="post" action="<%=request.getContextPath()%>/pos/pos_login_chk">

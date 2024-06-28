@@ -1,5 +1,6 @@
 package com.hub.root.pos.posController;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -10,9 +11,11 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hub.root.pos.posDTO.BookingDTO;
+import com.hub.root.pos.posDTO.keyDTO;
 import com.hub.root.pos.posDTO.updateStatusDTO;
 import com.hub.root.pos.posService.APIService;
 
@@ -32,7 +35,6 @@ public class APIController {
 		{
 			today = apiService.todayReservation(userId);
 		}
-		
 		return today;	
 	}
 	
@@ -44,4 +46,28 @@ public class APIController {
 		
 		return result;
 	}
+	
+	@PostMapping("bookingCount")
+	public BookingDTO updateSseDTO(@RequestBody BookingDTO bookingDTO) {
+		BookingDTO dto = apiService.updateSseDTO(bookingDTO);
+		
+		return dto;
+	}
+	
+	@PostMapping("key")
+	public keyDTO key(@RequestBody keyDTO key){
+	
+		keyDTO result = apiService.key(key);
+		return result; 
+	}
+	
+	@GetMapping("key")
+	public List<keyDTO> key_list(@RequestParam String userId){
+		List<keyDTO> result = null;
+		
+		result = apiService.getAllKey(userId);
+		
+		return result;
+	}
+	
 }

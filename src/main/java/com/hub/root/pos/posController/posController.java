@@ -44,6 +44,10 @@ public class PosController {
 	public String wait1() {
 		return "pos/pos_wait";
 	}
+	@GetMapping("wait_login")
+	public String wait_login() {
+		return "pos/pos_wait_login";
+	}
 	
 	@PostMapping("pos_login_chk")
 	public String login_chk(HttpServletRequest req,
@@ -68,5 +72,15 @@ public class PosController {
 		
 		return "redirect:/pos/set";
 		
+	}
+	
+	@PostMapping("wait_keyCheck")
+	public String wait_keyCheck(HttpServletRequest req,
+								@RequestParam String key)
+	{
+		int result = service.wait_keyCheck(req, key);
+		
+		
+		return "redirect:/pos/wait";
 	}
 }

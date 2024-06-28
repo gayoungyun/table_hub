@@ -18,12 +18,18 @@
 		<result property="booking_phone" column="BOOKING_PHONE" />
 		<result property="booking_status" column="BOOKING_STATUS" />
 	</resultMap>
+	<resultMap type="com.hub.root.pos.posDTO.keyDTO" id="keyDTO">
+		<result property="store_id" column="store_id" />
+		<result property="store_key" column="store_key" />
+		<result property="key_status" column="key_status" />
+	</resultMap>
+	
 	
 	<select id="login_chk" resultMap="posDTO">
 		select store_id, store_name from store_info where store_id=#{id} and store_pwd =#{pwd} 
 	</select>
 	<select id="todayReservation" resultMap="bookingDTO">
-		select * from booking_info where store_id = #{store_id} and booking_date_booking = TO_CHAR(SYSDATE, 'YYYY/MM/DD') ORDER BY booking_time
+		select * from booking_info where store_id = #{store_id} and booking_date_booking = TO_CHAR(SYSDATE, 'YYYY/MM/DD') and (booking_status = 0 or booking_status = 3) ORDER BY booking_time
 	</select>
 	
 	<insert id="register_booking">
@@ -38,4 +44,23 @@
 		update booking_info set booking_status = #{booking_status} where booking_id = #{booking_id}
 	</update>
 	
+	<select id="totalRegisterCount" resultType="int">
+		select count(*) from booking_info where (BOOKING_STATUS = 1 or BOOKING_STATUS = 2) and store_id = #{store_id} and member_id = #{member_id}
+	</select>
+	
+	<insert id="key">
+		insert into store_key(STORE_ID, STORE_KEY, key_status) values(#{store_id}, #{store_key}, #{key_status})		
+	</insert>
+	
+	<select id="getAllKey" resultMap="keyDTO">
+		select * from store_key where store_id = #{userId}
+	</select>
+	
+	<select id="wait_keyCheck" resultMap="keyDTO">
+		select * from store_key where store_key = #{key}
+	</select>
+	
+	<update id="update_keyStatus">
+		update store_key set key_status= 1 where store_key = #{store_key} 
+	</update>
 </mapper>
