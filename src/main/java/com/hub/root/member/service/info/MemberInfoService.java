@@ -27,4 +27,11 @@ public interface MemberInfoService {
 	public Map<String, Object> pwdCheck(String pwd, String id);
 	public Map<String, Object> deleteUser(String id);
 	public Map<String, Object> getBoard(String id, String page);
+	public Map<String, Object> deleteBoard(int[] content);
+	public Map<String, Object> getReview(String id, String page);
+	public Map<String, Object> getReviewStoreName(String id);
+	public Map<String, Object> deleteReview(int storeNum);
+	public Map<String, Object> getReply(String memId, int page );
+	public Map<String, Object> getBoardInfo(int boardId);
+	public Map<String, Object> deleteReply(int[] content);
 }

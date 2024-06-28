@@ -6,6 +6,11 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link href="<%= request.getContextPath() %>/resources/css/member/info/myContentMyInfo.css?after" rel="stylesheet"/>
+<script>
+	$(document).ready = ( () => {
+		
+	})
+</script>
 </head>
 <body>
 	<h3 class="myContentTitle">내 활동 내역</h3>

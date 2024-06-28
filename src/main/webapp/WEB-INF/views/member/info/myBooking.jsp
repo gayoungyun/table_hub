@@ -26,6 +26,9 @@
 		
 		$(".alreadyPageBtnA:disabled").css("color", "red");
 	})
+	
+	var pageViewContent = 6;
+	
 	var readyCurrentPage = 1;
 	function getBookingReady(page) {
 		readyCurrentPage = page;
@@ -80,49 +83,78 @@
 		                if (data.totalPage != 1) {
 							let pageNum = Math.floor((readyCurrentPage-1) / 10);
 		                	
-		                    let totalPage = `<div id="totalReadyPageMenu">`;
-		                    totalPage += `<hr class="contentHr">`
-		                    if ( pageNum != 0 && pageNum == (Math.floor((data.totalPage) / 10) )) {
-		                    	console.log('asdf')
-		                    	let i = (pageNum*10 + 1)
-		                        totalPage += `<a class="readyPageBtnA" onclick="getBookingReady(`+(i-1)+`)">&lt;</a>`;
-			                    for ( ; i <= data.totalPage; i++) {
-			                        totalPage += `<a class="readyPageBtn" onclick="getBookingReady(`+i+`)">`+i+`</a>`;
+		                    let html = `<div id="totalReadyPageMenu">`;
+		                    html += `<hr class="contentHr">`
+			                    
+			                    // 현재 페이지라인이 마지막 페이지라인일경우
+			                    if ( pageNum != 0 && pageNum == (Math.floor((data.totalPage) / 10) )) {
+				                	console.log("2")
+			                    	let i = (pageNum*10 + 1)
+			                        html += `<a class="readyPageBtnA" onclick="getBookingReady(`+(readyCurrentPage-1)+`)">&lt;</a>`;
+			                        
+				                    for ( ; i <= data.totalPage; i++) {
+				                    	html += `<a class="readyPageBtn" onclick="getBookingReady(`+i+`)">`+i+`</a>`;
+				                    }
+				                    
+				                    if (data.totalPage == readyCurrentPage) {
+					                    html += `<a class="readyPageBtnDisabled">></a>`;			                    	
+				                    } else {
+				                    	html += `<a class="readyPageBtnB" onclick="getBookingReady(`+(readyCurrentPage+1)+`)">></a>`;		                    				                    	
+				                    }
+			                    } 
+			                    
+			                    // 현재 페이지가 첫번째가 아닐경우
+			                    else if (pageNum != 0) {
+				                	console.log("3")
+			                    	let i = (pageNum * 10 + 1)
+			                    	console.log("i : ", i)
+			                    	console.log("pageNum : ", pageNum)
+			                    	console.log("test : ", pageNum * pageViewContent + pageViewContent)
+			                        html += `<a class="readyPageBtnA" onclick="getBookingReady(`+(readyCurrentPage-1)+`)"><</a>`;
+			                        
+				                    for ( ; i <= (pageNum * 10 + 10); i++) {
+				                    	html += `<a class="readyPageBtn" onclick="getBookingReady(`+i+`)">`+i+`</a>`;
+				                    }
+				                    
+				                    if (data.totalPage == readyCurrentPage) {
+				                    	html += `<a class="readyPageBtnDisabled">></a>`;
+				                    } else {
+				                    	html += `<a class="readyPageBtnB" onclick="getBookingReady(`+(readyCurrentPage+1)+`)">></a>`;
+				                    }
+			                    } 
+			                    
+			                    // 현재 페이지라인이 첫번째일 경우
+			                    else {
+				                	console.log("4")
+			                    	let i = (pageNum + 1)
+			                    	
+			                    	console.log("readyCurrentPage : ", readyCurrentPage)
+			                    	console.log("data : ", data)
+			                    	
+			                    	if (readyCurrentPage == 1) {
+			                    		html += `<a class="readyPageBtnDisabled"><</a>`;		                    				                    		
+			                    	} else {
+			                    		html += `<a class="readyPageBtnA" onclick="getBookingReady(`+(readyCurrentPage-1)+`)"><</a>`;		                    		
+			                    	}
+			                        
+				                    for ( ; i <= data.totalPage; i++) {
+				                    	html += `<a class="readyPageBtn" onclick="getBookingReady(`+i+`)">`+i+`</a>`;
+				                        if (i == 10) break;
+				                    }
+				                    
+				                    console.log("data.totalPage : ", data.totalPage)
+				                    console.log("pageViewContent", pageViewContent)
+				                    
+			                    	if (data.totalPage == readyCurrentPage) {
+			                    		html += `<a class="readyPageBtnDisabled">></a>`;
+			                    	} else {
+			                    		html += `<a class="readyPageBtnB" onclick="getBookingReady(`+(readyCurrentPage+1)+`)">></a>`;		                    		
+			                    	}
 			                    }
-			                        totalPage += `<a class="readyPageBtnDisabled" disabled="true">></a>`;
-		                    } 
-		                    else if (pageNum != 0) {
-		                    	console.log('testestsetsetse')
-		                    	let i = (pageNum*10+1)
-		                        totalPage += `<a class="readyPageBtnA" onclick="getBookingReady(`+(i-1)+`)"><</a>`;
-			                    for ( ; i <= (pageNum * 10 + 10); i++) {
-			                        totalPage += `<a class="readyPageBtn" onclick="getBookingReady(`+i+`)">`+i+`</a>`;
-			                    }
-			                    if (data.totalPage > ((pageNum+1)*10)) {
-			                        totalPage += `<a class="readyPageBtnB" onclick="getBookingReady(`+(i)+`)">></a>`;
-			                    } else {
-			                        totalPage += `<a class="readyPageBtnDisabled" disabled="true">></a>`;
-			                    }
-		                    } 
 		                    
-		                    else {
-		                    	console.log("asdfasdfasdfasdf")
-		                    	let i = (pageNum + 1)
-			                        totalPage += `<a class="readyPageBtnDisabled" disabled="true"><</a>`;
-			                    for ( ; i <= data.totalPage; i++) {
-			                        totalPage += `<a class="readyPageBtn" onclick="getBookingReady(`+i+`)">`+i+`</a>`;
-			                        if (i == 10) break;
-			                    }
-		                    	if (data.totalPage > 10) {
-			                        totalPage += `<a class="readyPageBtnB" onclick="getBookingReady(`+(i+1)+`)">></a>`;		                    		
-		                    	} else {
-		                    		totalPage += `<a class="readyPageBtnDisabled" disabled="true">></a>`;
-		                    	}
-		                    }
 		                    
-		                    
-		                    totalPage += `</div>`;
-		                    readyWrapper.append(totalPage);
+		                    html += `</div>`;
+		                    readyWrapper.append(html);
 		                } else {
 		                	console.log("???")
 							 let pageNum = Math.floor(readyCurrentPage / 10);
@@ -194,55 +226,90 @@
 	
 		            // 모든 AJAX 요청이 완료된 후에 UI를 업데이트합니다.
 		            $.when.apply($, promises).then(function() {
-		            	console.log("2")
 		                $("#alreadyContent").html(content); // content를 readyContent에 추가합니다.
 	
 		                let alreadyWrapper = $("#bookContentAlreadyWrapper");
 		                alreadyWrapper.find("#totalAlreadyPageMenu").remove();
+		                
+		                // 데이터가 존재할때 제어문 실행
 		                if (data.totalPage != 1) {
+		                	console.log("1")
 							let pageNum = Math.floor((alreadyCurrentPage-1) / 10);
 		                	
-		                    let totalPage = `<div id="totalAlreadyPageMenu">`;
-		                    totalPage += `<hr class="contentHr">`
+		                    let html = `<div id="totalAlreadyPageMenu">`;
+		                    html += `<hr class="contentHr">`
+		                    
+		                    // 현재 페이지라인이 마지막 페이지라인일경우
 		                    if ( pageNum != 0 && pageNum == (Math.floor((data.totalPage) / 10) )) {
+			                	console.log("2")
 		                    	let i = (pageNum*10 + 1)
-		                        totalPage += `<a class="alreadyPageBtnA" onclick="getBookingAlready(`+(i-1)+`)">&lt;</a>`;
+		                        html += `<a class="alreadyPageBtnA" onclick="getBookingAlready(`+(alreadyCurrentPage-1)+`)">&lt;</a>`;
+		                        
 			                    for ( ; i <= data.totalPage; i++) {
-			                        totalPage += `<a class="alreadyPageBtn" onclick="getBookingAlready(`+i+`)">`+i+`</a>`;
+			                    	html += `<a class="alreadyPageBtn" onclick="getBookingAlready(`+i+`)">`+i+`</a>`;
 			                    }
-			                        totalPage += `<a class="alreadyPageBtnDisabled" disabled="true">></a>`;
-		                    } 
-		                    else if (pageNum != 0) {
-		                    	let i = (pageNum*10+1)
-		                        totalPage += `<a class="alreadyPageBtnA" onclick="getBookingAlready(`+(i-1)+`)"><</a>`;
-			                    for ( ; i <= (pageNum * 10 + 10); i++) {
-			                        totalPage += `<a class="alreadyPageBtn" onclick="getBookingAlready(`+i+`)">`+i+`</a>`;
-			                    }
-			                    if (data.totalPage > ((pageNum+1)*10)) {
-			                        totalPage += `<a class="alreadyPageBtnB" onclick="getBookingAlready(`+(i)+`)">></a>`;
+			                    
+			                    if (data.totalPage == alreadyCurrentPage) {
+				                    html += `<a class="alreadyPageBtnDisabled">></a>`;			                    	
 			                    } else {
-			                        totalPage += `<a class="alreadyPageBtnDisabled" disabled="true">></a>`;
+			                    	html += `<a class="alreadyPageBtnB" onclick="getBookingAlready(`+(alreadyCurrentPage+1)+`)">></a>`;		                    				                    	
 			                    }
 		                    } 
 		                    
+		                    // 현재 페이지가 첫번째가 아닐경우
+		                    else if (pageNum != 0) {
+			                	console.log("3")
+		                    	let i = (pageNum * 10 + 1)
+		                    	console.log("i : ", i)
+		                    	console.log("pageNum : ", pageNum)
+		                    	console.log("test : ", pageNum * pageViewContent + pageViewContent)
+		                        html += `<a class="alreadyPageBtnA" onclick="getBookingAlready(`+(alreadyCurrentPage-1)+`)"><</a>`;
+		                        
+			                    for ( ; i <= (pageNum * 10 + 10); i++) {
+			                    	html += `<a class="alreadyPageBtn" onclick="getBookingAlready(`+i+`)">`+i+`</a>`;
+			                    }
+			                    
+			                    if (data.totalPage == alreadyCurrentPage) {
+			                    	html += `<a class="alreadyPageBtnDisabled">></a>`;
+			                    } else {
+			                    	html += `<a class="alreadyPageBtnB" onclick="getBookingAlready(`+(alreadyCurrentPage+1)+`)">></a>`;
+			                    }
+		                    } 
+		                    
+		                    // 현재 페이지라인이 첫번째일 경우
 		                    else {
+			                	console.log("4")
 		                    	let i = (pageNum + 1)
-			                        totalPage += `<a class="alreadyPageBtnDisabled" disabled="true"><</a>`;
+		                    	
+		                    	console.log("alreadyCurrentPage : ", alreadyCurrentPage)
+		                    	console.log("data : ", data)
+		                    	
+		                    	if (alreadyCurrentPage == 1) {
+		                    		html += `<a class="alreadyPageBtnDisabled" disabled="true"><</a>`;		                    				                    		
+		                    	} else {
+		                    		html += `<a class="alreadyPageBtnA" onclick="getBookingAlready(`+(alreadyCurrentPage-1)+`)"><</a>`;		                    		
+		                    	}
+		                        
 			                    for ( ; i <= data.totalPage; i++) {
-			                        totalPage += `<a class="alreadyPageBtn" onclick="getBookingAlready(`+i+`)">`+i+`</a>`;
+			                    	html += `<a class="alreadyPageBtn" onclick="getBookingAlready(`+i+`)">`+i+`</a>`;
 			                        if (i == 10) break;
 			                    }
-		                    	if (data.totalPage > 10) {
-			                        totalPage += `<a class="alreadyPageBtnB" onclick="getBookingAlready(`+(i+1)+`)">></a>`;		                    		
+			                    
+			                    console.log("data.totalPage : ", data.totalPage)
+			                    console.log("pageViewContent", pageViewContent)
+			                    
+		                    	if (data.totalPage == alreadyCurrentPage) {
+		                    		html += `<a class="alreadyPageBtnDisabled">></a>`;
 		                    	} else {
-		                    		totalPage += `<a class="alreadyPageBtnDisabled" disabled="true">></a>`;
+		                    		html += `<a class="alreadyPageBtnB" onclick="getBookingAlready(`+(alreadyCurrentPage+1)+`)">></a>`;		                    		
 		                    	}
 		                    }
 		                    
 		                    
-		                    totalPage += `</div>`;
-		                    alreadyWrapper.append(totalPage);
+		                    html += `</div>`;
+		                    alreadyWrapper.append(html);
 		                } else {
+		                	console.log("5")
 							 let pageNum = Math.floor(alreadyCurrentPage / 10);
 		                }
 		                $(".alreadyPageBtn").eq(alreadyCurrentPage%10-1).css("color", "blue")
@@ -266,7 +333,17 @@
 				type : "delete",
 				dataType : "text",
 				success : function () {
-					getBookingReady(readyCurrentPage);
+					let readyContent = $(".readyContentInfo")
+					console.log("readyContent : ", readyContent.length)
+					if (readyContent.length == 1) {
+						if (readyCurrentPage == 1) {
+							getBookingReady(1);							
+						} else {
+							getBookingReady(readyCurrentPage-1);
+						}
+					} else {
+						getBookingReady(readyCurrentPage);						
+					}
 				},
 				error : function () {
 					

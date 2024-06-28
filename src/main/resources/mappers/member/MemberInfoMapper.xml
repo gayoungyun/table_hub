@@ -36,6 +36,21 @@
 		<result property="memId" column="board_mem_id" />
 		<result property="view" column="board_view_num" />
 	</resultMap>
+	<resultMap type="com.hub.root.member.dto.ReviewDTO" id="review">
+		<id property="num" column="store_review_num"/>
+		<result property="storeId" column="store_id"/>
+		<result property="memberId" column="member_id"/>
+		<result property="body" column="store_review_body"/>
+		<result property="create" column="store_review_date_create"/>
+		<result property="score" column="store_review_score"/>
+	</resultMap>
+	<resultMap type="com.hub.root.member.dto.ReplyDTO" id="reply">
+		<id property="reviewId" column="board_review_id"/>
+		<result property="boardId" column="board_id"/>
+		<result property="memberId" column="member_id"/>
+		<result property="reviewContent" column="board_review_content"/>
+		<result property="reviewCreate" column="board_review_date_create"/>
+	</resultMap>
 
 	<update id="memberImgModify">
 		update member_info set member_img=#{fileName} where member_id=#{id}
@@ -103,7 +118,7 @@
 		from (
 		    select 
 		        booking_info.*,
-		        ROW_NUMBER() over( order by trunc(booking_date_booking) desc, booking_time asc) as rn
+		        ROW_NUMBER() over( order by trunc(booking_date_booking) asc, booking_time asc) as rn
 		    from booking_info
 		    where member_id=#{id} 
 		        and trunc(booking_date_booking) > trunc(SYSDATE + INTERVAL '9' HOUR) 
@@ -118,12 +133,12 @@
 		from (
 		    select 
 		        booking_info.*,
-		        ROW_NUMBER() over( order by trunc(booking_date_booking) desc, booking_time asc) as rn
+		        ROW_NUMBER() over( order by trunc(booking_date_booking) desc, booking_time desc) as rn
 		    from booking_info
 		    where member_id=#{id} 
 		        and (
 		        	trunc(booking_date_booking) &lt; trunc(SYSDATE + INTERVAL '9' HOUR) 
-		        	or (TRUNC(booking_date_booking) = TRUNC(SYSDATE + INTERVAL '9' HOUR) ANd booking_time &lt; TO_CHAR(SYSDATE + INTERVAL '9' HOUR, 'HH24:MI'))
+		        	or (TRUNC(booking_date_booking) = TRUNC(SYSDATE + INTERVAL '9' HOUR) ANd booking_time &lt;= TO_CHAR(SYSDATE + INTERVAL '9' HOUR, 'HH24:MI'))
 		        )
 		order by  TRUNC(booking_date_booking) desc, booking_time asc
 		)
@@ -131,7 +146,7 @@
 		order by rn
 	</select>
 	<delete id="deleteBooking">
-		delete from booking_info where booking_id = #{id}
+		delete booking_info where booking_id = #{id}
 	</delete>
 	<select id="pwdCheck" resultType="String">
 		select member_pwd from member_info where member_id = #{id}
@@ -148,6 +163,48 @@
 				select * from board where board_mem_id = #{id} order by board_id ) A ) B 
 		where rn between #{start} and #{end}
 	</select>
+	<delete id="deleteBoard">
+		delete from board where board_id in 
+		<foreach collection="content" item="item" open="("
+		close=")" separator=",">
+		#{item}</foreach>
+	</delete>
+	<select id="getReviewCount" resultType="int">
+		select count(*) from store_review where member_id = #{id}
+	</select>
+	<select id="getReview" resultMap="review">
+		select B.* from (
+			select rownum rn, A.*  from (
+				select * from store_review where member_id = #{id} order by store_review_num ) A ) B 
+		where rn between #{start} and #{end}
+	</select>
+	<select id="getReviewStoreName" resultType="String">
+		select store_name from store_info where store_id = #{id}
+	</select>
+	<delete id="deleteReview">
+		delete store_review where store_review_num = #{storeNum}
+	</delete>
+	<select id="getReplyCount" resultType="int">
+		select count(*) from board_review where member_id = #{memId}
+	</select>
+	<select id="getReply" resultMap="reply">
+		select B.* from (
+			select rownum rn, A.*  from (
+				select * from board_review where member_id = #{memId} order by board_review_id desc ) A ) B 
+		where rn between #{start} and #{end}
+	</select>
+	<select id="getBoardInfo" resultType="map">
+		    SELECT 
+			    (SELECT COUNT(*) FROM board_review WHERE board_id = ${boardId}) AS count, 
+			    (SELECT board_title FROM board WHERE board_id = ${boardId}) AS board_title
+			FROM dual
+	</select>
+	<delete id="deleteReply">
+		delete from board_review where board_review_id in 
+		<foreach collection="content" item="item" open="("
+		close=")" separator=",">
+		#{item}</foreach>
+	</delete>
 </mapper>
 
 

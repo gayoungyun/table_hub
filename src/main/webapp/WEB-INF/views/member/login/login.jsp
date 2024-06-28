@@ -253,7 +253,7 @@
 				contentType : "application/json; charset=utf-8",
 				success : function ( result ) {
 					if (result.result == null) {
-						location.href="/root"
+						location.href="/root/main/mainPage1"
 					} else {
 						$("#infoStoreMsg").html( result.result );					
 					}

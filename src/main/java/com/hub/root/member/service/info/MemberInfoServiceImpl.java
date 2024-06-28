@@ -1,6 +1,10 @@
 package com.hub.root.member.service.info;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +18,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.hub.root.member.dto.BoardDTO;
 import com.hub.root.member.dto.BookingDTO;
 import com.hub.root.member.dto.MemberDTO;
+import com.hub.root.member.dto.ReplyDTO;
+import com.hub.root.member.dto.ReviewDTO;
 import com.hub.root.member.mybatis.MemberInfoMapper;
 
 @Service
@@ -181,7 +187,7 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	public Map<String, Object> getReadyBooking(String page, String id) {
     	System.out.println("memInfoSer getReadyBooking 실행");
 		int totalCount = mapper.getBookingReadyCount(id);
-		Map<String, Object> map = pageCalc(Integer.parseInt(page), totalCount);
+		Map<String, Object> map = pageCalc(Integer.parseInt(page), totalCount, 6);
 		List<BookingDTO> list = mapper.getBookingReadyContent(
 								id, (int)map.get("startNum"),
 								(int)map.get("endNum"));
@@ -193,29 +199,11 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	public Map<String, Object> getAlreadyBooking(String page, String id) {
     	System.out.println("memInfoSer getAlreadyBooking 실행");
 		int totalCount = mapper.getBookingAlreadyCount(id);
-		Map<String, Object> map = pageCalc(Integer.parseInt(page), totalCount);
+		Map<String, Object> map = pageCalc(Integer.parseInt(page), totalCount, 6);
 		List<BookingDTO> list = mapper.getBookingAlreadyContent(
 								id, (int)map.get("startNum"),
 								(int)map.get("endNum"));
 		map.put("list", list);
-		return map;
-	}
-	
-	public Map<String, Object> pageCalc(int page, int count) {
-    	System.out.println("memInfoSer pageCalc 실행");
-		Map<String, Object> map = new HashMap<String, Object>();
-		int pageContent = 6;
-		int totalPage = count / 6;
-		if (count % 6 != 0) {
-			totalPage += 1;
-		}
-		int startNum = page * pageContent - 5;
-		int endNum = page * pageContent;
-		map.put("page", page);
-		map.put("count", count);
-		map.put("startNum", startNum);
-		map.put("endNum", endNum);
-		map.put("totalPage", totalPage);
 		return map;
 	}
 
@@ -271,7 +259,7 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 		System.out.println("memInfoSer getBoard 실행");
 		int totalCount = mapper.getBoardCount(id);
 		
-		Map<String, Object> map = boardPageCalc(Integer.parseInt(page), totalCount);
+		Map<String, Object> map = pageCalc(Integer.parseInt(page), totalCount, 10);
 		System.out.println("page : " + map.get("page"));
 		System.out.println("count : " + map.get("count"));
 		System.out.println("startNum : " + map.get("startNum"));
@@ -288,17 +276,55 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 		}
 		return map;
 	}
+
+	@Override
+	public Map<String, Object> deleteBoard(int[] content) {
+    	System.out.println("memInfoSer deleteBoard 실행");
+		int result = mapper.deleteBoard(content);
+		Map<String, Object> map = new HashMap<String, Object>();
+		String msg = "";
+		if (result == content.length) {
+			msg = "선택한 항목이 삭제되었습니다.";
+		} else {
+			msg = "삭제하는 중 문제가 발생하였습니다.";
+		}
+		map.put("msg", msg);
+		map.put("result", result);
+		return map;
+	}
+
+	@Override
+	public Map<String, Object> getReview(String id, String page) {
+		System.out.println("memInfoSer getReview 실행");
+		int totalCount = mapper.getReviewCount(id);
+		
+		Map<String, Object> map = pageCalc(Integer.parseInt(page), totalCount, 5);
+		System.out.println("page : " + map.get("page"));
+		System.out.println("count : " + map.get("count"));
+		System.out.println("startNum : " + map.get("startNum"));
+		System.out.println("endNum : " + map.get("endNum"));
+		System.out.println("totalPage : " + map.get("totalPage"));
+		List<ReviewDTO> list = mapper.getReview(id,
+											(int)map.get("startNum"),
+											(int)map.get("endNum"));
+		if (!list.isEmpty()) {
+			map.put("result", 1);
+			map.put("list", list);
+		} else {
+			map.put("result", 0);
+		}
+		return map;
+	}
+
 	
-	
-	public Map<String, Object> boardPageCalc(int page, int count) {
+	public Map<String, Object> pageCalc(int page, int count, int pageContent) {
     	System.out.println("memInfoSer pageCalc 실행");
 		Map<String, Object> map = new HashMap<String, Object>();
-		int pageContent = 10;
 		int totalPage = count / pageContent;
 		if (count % pageContent != 0) {
 			totalPage += 1;
 		}
-		int startNum = page * pageContent - (pageContent-1);
+		int startNum = page * pageContent - (pageContent - 1);
 		int endNum = page * pageContent;
 		map.put("page", page);
 		map.put("count", count);
@@ -308,16 +334,75 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 		return map;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	public Map<String, Object> getReviewStoreName(String id) {
+		String name = mapper.getReviewStoreName(id);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("name", name);
+		return map;
+	}
+
+	@Override
+	public Map<String, Object> deleteReview(int storeNum) {
+		System.out.println("memInfoSer deleteReview 실행");
+		int result = mapper.deleteReview(storeNum);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("result", result);
+		String msg = "";
+		if (result == 1) {
+			msg = "삭제가 완료되었습니다.";
+		} else {
+			msg = "삭제중 문제가 발생하였습니다.\n새로고침 후 다시 시도해주세요\n문제가 지속될경우 관리지에게 문의해주세요";
+		}
+		map.put("msg", msg);
+		return map;
+	}
+
+	@Override
+	public Map<String, Object> getReply(String memId, int page) {
+		System.out.println("memInfoSer getReply 실행");
+		int totalCount = mapper.getReplyCount(memId);
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (totalCount > 0) {
+			map = pageCalc(page, totalCount, 6);
+			List<ReplyDTO> list = mapper.getReply(memId, 
+										(int)map.get("startNum"),
+										(int)map.get("endNum"));
+			map.put("result", 1);
+			map.put("list", list);
+		} else {
+			map.put("result", 0);
+		}
+		return map;
+	}
+
+	@Override
+	public Map<String, Object> getBoardInfo(int boardId) {
+		System.out.println("memInfoSer getBoardInfo 실행");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map = mapper.getBoardInfo(boardId);
+		map.put("result", 0);
+		return map;
+	}
+
+	@Override
+	public Map<String, Object> deleteReply(int[] content) {
+    	System.out.println("memInfoSer deleteReply 실행");
+		int result = mapper.deleteReply(content);
+		Map<String, Object> map = new HashMap<String, Object>();
+		String msg = "";
+		if (result == content.length) {
+			msg = "선택한 항목이 삭제되었습니다.";
+		} else {
+			msg = "삭제하는 중 문제가 발생하였습니다.";
+		}
+		map.put("msg", msg);
+		map.put("result", result);
+		return map;
+	}
 	
 	
 	
 
 }
+

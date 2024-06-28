@@ -1,6 +1,7 @@
 package com.hub.root.member.controller.info;
 
 import java.net.HttpCookie;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -125,7 +126,6 @@ public class MemberInfoRestController {
     	System.out.println("memInfoRestCont bookingAlready 실행");
     	String id = (String)session.getAttribute("userId");
     	Map<String, Object> map = mis.getAlreadyBooking(page, id);
-    	
     	return map;
     }
     
@@ -137,7 +137,7 @@ public class MemberInfoRestController {
     
     @DeleteMapping(value={"readyBooking", "alreadyBooking"}, produces="application/json; charset=utf-8")
     public String booking(@RequestParam int bookId) {
-    	System.out.println("memInfoRestCont readyBooking 실행");
+    	System.out.println("memInfoRestCont readyBooking 실행"); 
     	int result = mis.deleteBooking(bookId);
     	
     	return null;
@@ -167,5 +167,59 @@ public class MemberInfoRestController {
 		Map<String, Object> map = mis.getBoard((String)session.getAttribute("userId"), page);
 		return map;
 	}
+	
+	@DeleteMapping(value="board", produces="application/json; charset=utf-8")
+	public Map<String, Object> deleteBoard(@RequestBody Map<String, int[]> boards) {
+		System.out.println("memInfoRestCont deleteBoard 실행");
+		int[] boardsArr = boards.get("content");
+		Map<String, Object> map = mis.deleteBoard(boardsArr);
+		return map;
+	}
+	
+	@GetMapping(value="review", produces="application/json; charset=utf-8")
+	public Map<String, Object> getReview(HttpSession session, @RequestParam String page) {
+		System.out.println("memInfoRestCont getReview 실행");
+		Map<String, Object> map = mis.getReview((String)session.getAttribute("userId"), page);
+		return map;
+	}
+	
+	@GetMapping(value="review/storeName", produces="application/json; charset=utf-8")
+	public Map<String, Object> getReviewStoreName(@RequestParam String storeId) {
+		System.out.println("memInfoRestCont getReviewStoreName 실행");
+		Map<String, Object> map = mis.getReviewStoreName(storeId);
+		return map;
+	}
+	
+	@DeleteMapping(value="review", produces="application/json; charset=utf-8")
+	public Map<String, Object> deleteReview(@RequestBody Map<String, Object> map) {
+		System.out.println("memInfoRestCont deleteReview 실행");
+		System.out.println("storeNum : " + map.get("storeNum"));
+		map = mis.deleteReview((int)map.get("storeNum"));
+		return map;
+	}
+	
+	@GetMapping(value="reply", produces="application/json; charset=utf-8")
+	public Map<String, Object> getReply(@RequestParam int page, HttpSession session) {
+		System.out.println("memInfoRestCont getReply 실행");
+		Map<String, Object> map = mis.getReply((String)session.getAttribute("userId"), page);
+		return map;
+	}
+	@GetMapping(value="reply/board", produces="application/json; charset=utf-8")
+	public Map<String, Object> getBoardInfo(@RequestParam int boardId) {
+		System.out.println("memInfoRestCont getBoardInfo 실행");
+		Map<String, Object> map = mis.getBoardInfo(boardId);
+		return map;
+	}
+	
+	@DeleteMapping(value="reply", produces="application/json; charset=utf-8")
+	public Map<String, Object> deleteReply(@RequestBody Map<String, int[]> replys) {
+		System.out.println("memInfoRestCont deleteReply 실행");
+		int[] replysArr = replys.get("content");
+		Map<String, Object> map = mis.deleteReply(replysArr);
+		return map;
+	}
+	
+	
+	
 	
 }

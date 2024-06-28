@@ -22,15 +22,23 @@
 		let currentPage = 1;
 		
 		boardPage(1);
+		
 	})
+
+	var pageViewContent = 10; // 한 페이지에 몇개씩 보여줄지 기준
+	
+	lastPage = 1;
+	totalContent = 0;
 	function boardPage(page) {
+		deleteBoards = [];
 		currentPage = page;
 		$.ajax({
 			url : "/root/member/myPage/board?page="+page,
 			type : "get",
 			dataType : "json",
 			success : function ( data ) {
-				console.log("data : ", data)
+				lastPage = data.totalPage
+				totalContent = data.count
 				let html = "";
                 if (data.list != null) { // 불러온 데이터가 존재할 경우 실행
 	                html += `<tr>`
@@ -52,7 +60,7 @@
 		                // 테이블 값을 표현한다.
 						html += `<tr>`
 						html += `<td class="boardContent">`
-						html += `<input class="boardContentSelect" type="checkbox">`
+						html += `<input class="boardContentSelect" onchange="boardCheck(this,+`+ item.id+`)" type="checkbox">`
 						html += `</td>`
 						html += `<td class="boardContent">`
 						html += `<label class="boardContentNum" onclick="location.href='/root/board/`+item.id+`'">`+item.id+`</label>`
@@ -73,53 +81,53 @@
 					})
 					html += `<tr>`
 					html += `<td class="boardContent" colspan="6">`
-					console.log("totalPage : ", data.totalPage)
-					console.log("currentPage : ", currentPage)
-					let i = Math.floor((currentPage-1)/10)*10 + 1;
-					console.log("i : ", i)
-					let endNum = i + 9;
-					console.log("1 : ", Math.floor((currentPage) / 10))
-					console.log("2 : ", Math.floor(data.totalPage/10))
-					if (data.totalPage > 1) {
-						//현재 페이지 라인이 마지막 페이지라인인지 확인
-						if (Math.floor((currentPage-1) / 10) == Math.floor(data.totalPage/10)) {
-							console.log("마지막 페이지 라인")
-							html += `<a class="boardContentPage" onclick="boardPage(`+(currentPage-1)+`)"><</a>`
-							for ( ; i <= data.totalPage; i++) {
-								html += `<a class="boardContentPage" onclick="boardPage(`+i+`)">`+i+`</a>`
-							}
-							if (currentPage == data.totalPage) {
-								html += `<a class="boardContentPage pageDisabled">></a>`							
-							} else {
-								html += `<a class="boardContentPage" onclick="boardPage(`+(currentPage+1)+`)">></a>`														
-							}
-						} else {
-							if (currentPage == 1) {
-								html += `<a class="boardContentPage pageDisabled"><</a>`							
-							} else {
-								html += `<a class="boardContentPage" onclick="boardPage(`+(currentPage-1)+`)"><</a>`														
-							}
-							for ( ; i <= endNum; i++) {
-								html += `<a class="boardContentPage" onclick="boardPage(`+i+`)">`+i+`</a>`
-							}
-							html += `<a class="boardContentPage" onclick="boardPage(`+(currentPage+1)+`)">></a>`
-						} //페이징 if end
+					let i = Math.floor((currentPage-1)/pageViewContent)*pageViewContent + 1;
+					let endNum = i + (pageViewContent-1);
+					html += `<div id="tableBottomLeft">`
+					html += `<input type="checkbox" id="boardSelectAll" onclick="boardAllCheck()">`
+					html += `<label id="boardSelectAllMsg" for="boardSelectAll">&nbsp;전체 선택</label>`
+					html += `</div>`
+					html += `<div id="tableBottomMiddle">`
+					//현재 페이지 라인이 마지막 페이지라인인지 확인
+					
+					console.log("start : ", data.startNum)
+					
+					// 현재 페이지가 스타트 페이지이면 < 화살표 비활성화
+					if (currentPage == 1) {
+						html += `<a class="boardContentPageB pageDisabledA"><</a>`
 					} else {
-						if (currentPage == 1) {
-							html += `<a class="boardContentPage pageDisabled"><</a>`							
-						} else {
-							html += `<a class="boardContentPage" onclick="boardPage(`+(currentPage-1)+`)"><</a>`														
-						}
-						for ( ; i <= endNum; i++) {
+						html += `<a class="boardContentPageB" onclick="boardPage(`+(currentPage-1)+`)"><</a>`
+					}
+					
+					// 페이지의 마지막 라인에서 빈 버튼을 만들지 않기 위한 제어문
+					// 마지막 페이지일 경우 전달받은 최종페이지까지 버튼을 생성
+					if (Math.floor((currentPage-1) / pageViewContent) == Math.floor(data.totalPage/pageViewContent)) {
+						console.log("마지막 페이지 라인")
+						
+						// 1~마지막 페이지까지 페이지 표시
+						for ( ; i <= data.totalPage; i++) {
 							html += `<a class="boardContentPage" onclick="boardPage(`+i+`)">`+i+`</a>`
 						}
-						if (currentPage == data.totalPage) {
-							html += `<a class="boardContentPage pageDisabled">></a>`							
-						} else {
-							html += `<a class="boardContentPage" onclick="boardPage(`+(currentPage+1)+`)">></a>`
-						}
+					} else { // 현재 페이지 라인이 마지막 페이지 아니면 실행
+						console.log("1")
 						
+						// 1~마지막 페이지까지 페이지 표시
+						for ( ; i <= endNum; i++) {
+							html += `<a class="boardContentPage" onclick="boardPage(`+i+`)">`+i+`</a>`
+						} //페이징 if end
 					}
+					
+					//현재페이지가 마지막페이지이면 > 화살표 비활성화
+					if (currentPage == data.totalPage) {
+						html += `<a class="boardContentPageA pageDisabled">></a>`
+					} else {
+						html += `<a class="boardContentPageA" onclick="boardPage(`+(currentPage+1)+`)">></a>`								
+					}
+					
+					html += `</div>`
+					html += `<div id="tableBottomRight">`
+					html += `<input type="button" onclick="deleteBoard()" value="삭제">`
+					html += `</div>`
 					html += `</td>`
 					html += `</tr>`
                 } else {
@@ -127,12 +135,77 @@
                 }// if end
 				
 				$("#myBoardTable").html( html );
+                var curPageBold = currentPage - Math.floor((currentPage-1) / pageViewContent)*pageViewContent
+				$(".boardContentPage").eq(curPageBold-1).css("color", "black")
 			}, // success end
 			error : function ( error ) {
 				console.log("에러 발생")
 				console.log(error)
 			} // error end
 		}) // ajax end
+	} //boardPage function end
+	var deleteBoards = [];
+	function boardCheck(item, num) {
+		console.log("item : " , item)
+		console.log("num : " , num)
+		console.log("selected : ", item.checked)
+		if (item.checked) {
+			deleteBoards.push(num);
+		} else {
+			deleteBoards = deleteBoards.filter(function(item) {
+			    return item !== num;
+			});
+		}
+		console.log("checked : ", deleteBoards)
+	}
+	
+	function boardAllCheck() {
+		var content = document.getElementsByClassName("boardContentSelect")
+		$("#boardSelectAll").checked = true;
+		Array.from(content).forEach(function(item, index) {
+			if ($("#boardSelectAll").prop("checked") == !item.checked) {
+				item.click();
+			}
+		})
+	}
+	
+	function deleteBoard() {
+		if (deleteBoards == "") {
+			alert("삭제할 항목을 선택해주세요")
+		} else {
+			var lastPageBefore = lastPage;
+			$.ajax({
+				url : "/root/member/myPage/board",
+				type : "delete",
+				dataType : "json",
+				data : JSON.stringify ({
+					content : deleteBoards
+				}),
+				contentType : "application/json; charset=utf-8",
+				success : function ( result ) {
+					console.log("result : ", result)
+					alert(result.msg);
+					console.log("lastPageBefore : " , lastPageBefore)
+					console.log("lastPage : " , lastPage)
+					console.log("length : ", deleteBoards.length)
+					totalContent = totalContent - deleteBoards.length;
+					console.log("asdf : ", (lastPage-1)*pageViewContent);
+					console.log("fdsa : ", totalContent);
+					var test = ((lastPage-1) * pageViewContent) - totalContent;
+					console.log("test : ", test)
+					if (currentPage == lastPage && test == 0 ) {
+						console.log("11")
+						boardPage(currentPage-1);
+					} else {
+						console.log("22")
+						boardPage(currentPage);					
+					}
+				},
+				error : function ( error ) {
+					console.log("error : ", error)
+				}
+			})			
+		}
 	}
 
 </script>
