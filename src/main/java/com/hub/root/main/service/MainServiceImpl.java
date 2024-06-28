@@ -3,8 +3,10 @@ package com.hub.root.main.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,41 @@ public class MainServiceImpl implements MainService{
 	mainMapper mapper;
 	@Autowired
 	MainFileService mfs;
+	public List<MainDTO> mainPage1(Model model) {
+		List<MainDTO> dtoList = mapper.mainPage1();
+		model.addAttribute("dtoList", dtoList);
+		return dtoList;
+	}
+	public List<String> getAllCategories() {
+		List<String> categories = mapper.getAllCategories();
+	    Set<String> uniqueCategories = new HashSet<>();
+	    for (String category : categories) {
+	        String[] splitCategories = category.split("/");
+	        for (String splitCategory : splitCategories) {
+	            uniqueCategories.add(splitCategory.trim());
+	        }
+	    }
+	    return new ArrayList<>(uniqueCategories);
+	}
+	public List<MainDTO> getMenuByCategory(String category){
+		return mapper.getMenuByCategory(category);
+	}
+	public List<MainMapDTO> getStoreInfo(Map<String, Object> params) {
+		return mapper.getStoreInfo(params);
+	}
+	public List<MainMapDTO> getStoreInfoByCategory(String category) {
+	    List<MainMapDTO> storeList = mapper.getStoreInfoByCategory(category);
+	    return storeList;
+	}
+	public List<MainDTO> getMenuImage(Map<String, Object> params){
+		List<MainDTO> imgList = mapper.getMenuImage(params);
+	    for (MainDTO img : imgList) {
+	        System.out.println("Image File: " + img.getStore_menu_img());
+	    }
+	    return imgList;
+		//return mapper.getMenuImage(params);
+	}
+	
 	public int inputInfo(MainDTO dto) {
 		try {
 			return mapper.infoSave(dto);
@@ -56,29 +93,8 @@ public class MainServiceImpl implements MainService{
 			url = "/main/mainPage1";
 		}
 	}
-	public List<MainDTO> mainPage1(Model model) {
-		//String store_id = "123";
-		List<MainDTO> dtoList = mapper.mainPage1();
-		model.addAttribute("dtoList", dtoList);
-		return dtoList;
-	}
-	public List<MainDTO> search(String keyword, String searchType) {
-		Map<String, Object> params = new HashMap<>();
-	    params.put("keyword", keyword);
-	    params.put("searchType", searchType);
-	    
-	    
-	    return mapper.search(params);   
-	}
-	public List<MainMapDTO> getStoreInfo(String keyword, String searchType) {
-		Map<String, Object> params = new HashMap<>();
-		params.put("keyword", keyword);
-		params.put("searchType", searchType);
-
-		return mapper.getStoreInfo(params);   
-	}
 	public void storeSave(String store_id,String store_pwd,String store_email,String store_phone,String store_main_phone,String store_name,String store_add,
-			String store_add_info,String store_category,String store_note,String store_introduce,String store_business_hours) {
+			    String store_add_info,String store_category,String store_note,String store_introduce,String store_business_hours) {
 		MainMapDTO dto = new MainMapDTO();
 		dto.setStore_id(store_id);
 		dto.setStore_pwd(store_pwd);
@@ -92,9 +108,7 @@ public class MainServiceImpl implements MainService{
 		dto.setStore_note(store_note);
 		dto.setStore_introduce(store_introduce);
 		dto.setStore_business_hours(store_business_hours);
-		
 		mapper.storeSave(dto);
-		
 	}
 		
 }

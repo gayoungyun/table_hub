@@ -11,11 +11,14 @@ import com.hub.root.main.dto.MainDTO;
 import com.hub.root.main.dto.MainMapDTO;
 
 public interface mainMapper {
-	public int infoSave(MainDTO dto);
 	public List<MainDTO> mainPage1();
-	public List<MainDTO> search(@Param("params") Map<String, Object> params);
-	//public MainMapDTO getStoreInfo(String store_id);
-	public List<MainMapDTO> getStoreInfo(@Param("params") Map<String, Object> params);
+	public List<String> getAllCategories();
+	public List<MainDTO> getMenuByCategory(@Param("category") String category);
 	public void mainPage2(MainMapDTO MapDTO);
+	public List<MainMapDTO> getStoreInfo(@Param("params") Map<String, Object> params);
+	public List<MainMapDTO> getStoreInfoByCategory(@Param("category") String category);
+	public List<MainDTO> getMenuImage(Map<String, Object> params);
+	
+	public int infoSave(MainDTO dto);
 	public void storeSave(MainMapDTO dto);
 }

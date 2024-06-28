@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,10 +33,17 @@ import com.hub.root.main.dto.MainMapDTO;
 import com.hub.root.main.service.MainFileService;
 import com.hub.root.main.service.MainService;
 
+import retrofit2.http.GET;
+
 @Controller
 @RequestMapping("main")//main이라는 경로에 대한 요청
 public class MainController {
 	@Autowired MainService ms;
+	// 헤더 페이지 요청 처리===================================
+	@GetMapping("header")
+	public String header() {
+		return "main/header";
+	}
 	// 메인 페이지1 요청 처리===================================
 	@GetMapping("mainPage1")
 	public String main( HttpSession session,Model model) {
@@ -42,14 +51,44 @@ public class MainController {
 		System.out.println("session id main : "+user);
 		if(user != null) {
 			model.addAttribute("user", user);
-		}
-		ms.mainPage1(model);
+		}	
+		List<String> categories = ms.getAllCategories();
+		List<MainDTO> dtoList = ms.mainPage1(model);
+		model.addAttribute("categories", categories);
+		model.addAttribute("dtoList", dtoList);
 		return "main/mainPage1";
 	}
-	// 헤더 페이지 요청 처리===================================
-	@GetMapping("header")
-	public String header() {
-		return "main/header";
+	// mainPage1에 카테고리별 이미지 가져오기 =====================
+	@GetMapping("menuByCategory")
+	public String getMenuByCategory(@RequestParam String category, Model model) {
+		List<MainDTO> dtoList = ms.getMenuByCategory(category);
+		model.addAttribute("dtoList", dtoList);
+		return "main/mainPage1";
+	}
+	// 메인 페이지2 요청 처리===================================
+	@RequestMapping("mainPage2")
+	public String mainPage2(@RequestParam(required=false) String keyword, 
+			 				@RequestParam(required=false) String searchType,
+			 				@RequestParam(required=false) String category,
+			 				Model model) {       
+        Map<String, Object> params = new HashMap<>();
+        params.put("keyword", keyword != null ? keyword : "");
+        params.put("searchType", searchType != null ? searchType : "");
+        params.put("category", category != null ? category : "");
+	    List<MainMapDTO> storeList = ms.getStoreInfo(params);
+	    List<MainDTO> imgList = ms.getMenuImage(params);
+	    
+	    for (MainDTO img : imgList) {
+	        System.out.println("Image File in Controller: " + img.getStore_menu_img());
+	    }
+	    
+		model.addAttribute("storeList",storeList);
+		model.addAttribute("imgList", imgList);
+		model.addAttribute("category", category);
+
+		System.out.println("store list : "+storeList);
+		System.out.println("image list : "+imgList);
+		return "main/mainPage2";
 	}
 	// 정보 입력 페이지 요청 처리(store_menu)====================
 	@RequestMapping("inputInfo")
@@ -69,50 +108,28 @@ public class MainController {
 	}
 	// 파일 다운로드 요청 처리==================================
 	@GetMapping("download")
-	 public void download(@RequestParam String fileName, HttpServletRequest req, HttpServletResponse res) throws Exception {
-        // 다운로드할 파일 경로 설정
-		File file = new File(MainFileService.IMAGE_REPO + "/" + fileName);
+	public void download(@RequestParam String fileName, HttpServletRequest req, HttpServletResponse res) throws Exception {
+	    File file = new File(MainFileService.IMAGE_REPO + "/" + fileName);
+	    System.out.println("Attempting to download file: " + file.getAbsolutePath());
 
-        if (file.exists()) {
-            //  파일이 존재하면 MIME type 설정
-            String mimeType = req.getServletContext().getMimeType(file.getName());
-            if (mimeType == null) {
-                mimeType = "application/octet-stream";// 기본 MIME 타입 설정
-            }
-            res.setContentType(mimeType); //응답 MIME 타입 설정
-            res.setContentLength((int) file.length()); //응답길이 설정
-            res.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-            // 다운로드 시 파일 이름 설정
+	    if (file.exists()) {
+	        String mimeType = req.getServletContext().getMimeType(file.getName());
+	        if (mimeType == null) {
+	            mimeType = "application/octet-stream";
+	        }
+	        res.setContentType(mimeType);
+	        res.setContentLength((int) file.length());
+	        res.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
 
-            // 파일을 응답 스트림으로 복사
-            try (FileInputStream in = new FileInputStream(file)) {
-                FileCopyUtils.copy(in, res.getOutputStream());
-            }
-        } else {
-        	// 파일이 존재하지 않으면 404에러 응답
-            res.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
-        }
+	        try (FileInputStream in = new FileInputStream(file)) {
+	            FileCopyUtils.copy(in, res.getOutputStream());
+	        }
+	    } else {
+	        System.err.println("File not found: " + file.getAbsolutePath());
+	        res.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
+	    }
 	}
-	// 메인 페이지 검색 기능===================================
-	@GetMapping("search")
-	public String search(@RequestParam(required=false) String keyword, 
-						 @RequestParam(required=false) String searchType ,
-						Model model) {
-		//System.out.println(keyword);
-		
-		List<MainDTO> dtoList = ms.search(keyword,searchType);
-		model.addAttribute("dtoList", dtoList);
-		return "main/search";
-	}
-	@RequestMapping("mainPage2")
-	public String mainPage2(@RequestParam(required=false) String keyword, 
-			 				@RequestParam(required=false) String searchType ,
-			 				Model model) {
-		List<MainMapDTO> storeList = ms.getStoreInfo(keyword, searchType);
-		System.out.println("storeList controller : "+storeList);
-		model.addAttribute("storeList",storeList);
-		return "main/mainPage2";
-	}
+
 	// 정보 입력 페이지 요청 처리(store_info)====================
 	@RequestMapping("storeInfo")
 	public String storeInfo() {
@@ -136,12 +153,7 @@ public class MainController {
 		ms.storeSave(store_id,store_pwd,store_email,store_phone,store_main_phone,store_name,store_add,
 				store_add_info,store_category,store_note,store_introduce,store_business_hours);
 	}
-	/*
-	@GetMapping("flex6")
-	public String flex2() {
-		return "main/flex6";
-	}
-	*/
+
 }
 
 

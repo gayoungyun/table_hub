@@ -185,6 +185,7 @@
 	}
 	.food-tagname button{
 		border: none;
+		border-radius: 5px;
 		display: flex;
 		transition: background-color 0.5s;
 		margin-top: -10px;

@@ -160,18 +160,17 @@
 		margin-bottom: 10px;
 	}
 	.imgBig{
-		max-width: 100%;
-		max-height: 100%;
-		/* object-fit: contain; */
+		width: 450px;
+		height: 300px;
+		object-fit: cover;
 	}
 	.menu-detail-imgSmall{
 		display: flex;
 		justify-content: space-between;
-		width: 100%;
+		width: 450px;
 	}
 	.imgSmall1, .imgSmall2, .imgSmall3{
 		width: 32%;
-		/* height: 100px; */
 		height: auto;
 		background-color: #f0f0f0;
 		display: flex;
@@ -182,6 +181,7 @@
 		width: 100%;
 		height: 100%;
 		object-position: fill;
+		margin-bottom: 10px;
 	}
 	.detail-container-right{
 		display: flex;
@@ -267,110 +267,114 @@
 				
 				<!-- ===== 메뉴 상세보기 부분 ===== -->
 				<c:choose>
-    <c:when test="${not empty storeList}">
-        <c:forEach var="store" items="${storeList}"> 
-            <div class="menu-detail">
-                <div class="detail-container-left">
-                    <div class="menu-detail-imgBig">
-                        <img class="imgBig" src="${path }/resources/img/main/car01.png">
-                    </div>
-                    <div class="menu-detail-imgSmall">
-                        <div class="imgSmall1">
-                            <img class="imgSmall" src="${path }/resources/img/main/맛집01.jpg">
-                        </div>
-                        <div class="imgSmall2">
-                            <img class="imgSmall" src="${path }/resources/img/main/맛집02.jpg">
-                        </div>
-                        <div class="imgSmall3">
-                            <img class="imgSmall" src="${path }/resources/img/main/맛집03.jpg">
-                        </div>
-                    </div>
-                </div>
-                <div class="detail-container-right">
-                    <c:if test="${not empty store.store_name}">
-                        <span>가게 이름 : ${store.store_name}</span><br>
-                    </c:if>
-                    <c:if test="${not empty storeInfo.store_phone}">
-                        <span>전화번호 : ${storeInfo.store_phone}</span><br>
-                    </c:if>
-                    <c:if test="${not empty store.store_main_phone}">
-                        <span>대표 전화번호 : ${store.store_main_phone}</span><br>
-                    </c:if>
-                    <c:if test="${not empty store.store_add}">
-                        <span>주소 : ${store.store_add}</span><br>
-                    </c:if>
-                    <c:if test="${not empty store.store_add_info}">
-                        <span>상세 주소 : ${store.store_add_info}</span><br>
-                    </c:if>
-                   <c:if test="${not empty store.store_category}">
-                        <span>카테고리 : 
-                            <c:set var="seenCategories" value="" />
-                            <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
-                                <c:if test="${param.searchType == 'menu_category' && fn:contains(category, param.keyword)}">
-                                    <c:if test="${not fn:contains(seenCategories, category)}">
-                                        <c:if test="${!empty seenCategories}">
-                                            /
-                                        </c:if>
-                                        ${category}
-                                        <c:set var="seenCategories" value="${seenCategories}${category}/" />
+				    <c:when test="${not empty storeList}">
+				        <c:forEach var="store" items="${storeList}">
+				            <div class="menu-detail">
+				                <div class="detail-container-left">
+				                    <div class="menu-detail-imgBig">
+									    <c:if test="${not empty imgList}">
+									        <img class="imgBig" src="${path}/main/download?fileName=${imgList[0].store_menu_img}">
+									    </c:if>
+									</div>
+									<div class="menu-detail-imgSmall">
+									    <c:forEach var="image" items="${imgList}" varStatus="status">
+									        <c:if test="${status.index < 3}">
+									            <div class="imgSmall1">
+									                <img class="imgSmall" src="${path}/main/download?fileName=${image.store_menu_img}">
+									            </div>
+									        </c:if>
+									    </c:forEach>
+									</div>
+					            </div>
+                                <div class="detail-container-right">
+                                    <c:if test="${not empty store.store_name}">
+                                        <span>가게 이름 : ${store.store_name}</span><br>
                                     </c:if>
-                                </c:if>
-                            </c:forEach>
-                            <c:if test="${param.searchType == 'menu_name' || param.searchType == '' || param.searchType == null}">
-                                <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
-                                    <c:if test="${not fn:contains(seenCategories, category)}">
-                                        <c:if test="${!empty seenCategories}">
-                                            /
-                                        </c:if>
-                                        ${category}
-                                        <c:set var="seenCategories" value="${seenCategories}${category}/" />
+                                    <c:if test="${not empty store.store_phone}">
+                                        <span>전화번호 : ${store.store_phone}</span><br>
                                     </c:if>
-                                </c:forEach>
-                            </c:if>
-                        </span><br>
-                    </c:if>
-                    <c:if test="${not empty store.store_note}">
-                        <span>메모 : ${store.store_note}</span><br>
-                    </c:if>
-                    <c:if test="${not empty store.store_introduce}">
-                        <span>소개 : ${store.store_introduce}</span><br>
-                    </c:if>
-                    <c:if test="${not empty store.store_business_hours}">
-                        <span>영업 시간 : ${store.store_business_hours}</span><br>
-                    </c:if>
-                    <a href="${path}/main/mainPage2?store_id=${store.store_id}" class="detail-link">상세 페이지로 이동</a>
-                </div>
-            </div>
-        </c:forEach>
-    </c:when>
-    <c:otherwise>
-        <p>검색 결과가 없습니다.</p>
-    </c:otherwise>
-</c:choose>
+                                    <c:if test="${not empty store.store_main_phone}">
+                                        <span>대표 전화번호 : ${store.store_main_phone}</span><br>
+                                    </c:if>
+                                    <c:if test="${not empty store.store_add}">
+                                        <span>주소 : ${store.store_add}</span><br>
+                                    </c:if>
+                                    <c:if test="${not empty store.store_add_info}">
+                                        <span>상세 주소 : ${store.store_add_info}</span><br>
+                                    </c:if>
+                                    <c:if test="${not empty store.store_category}">
+                                        <span>카테고리 : 
+                                        <c:set var="seenCategories" value="" />
+                                        
+                                        	<!-- 특정 카테고리로 검색 시 -->
+				                            <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
+				                                <c:if test="${fn:contains(category, param.keyword)}">
+				                                    <c:if test="${not fn:contains(seenCategories, category)}">
+				                                        <c:if test="${!empty seenCategories}">
+				                                            /
+				                                        </c:if>
+				                                        ${category}
+				                                        <c:set var="seenCategories" value="${seenCategories}${category}/" />
+				                                    </c:if>
+				                                </c:if>
+				                            </c:forEach>
+				                            
+				                            <!-- "ALL" 또는  메뉴 이름으로 검색 시 모든 카테고리 출력 -->
+				                            <c:if test="${param.searchType == 'menu_name' || param.searchType == '' || param.searchType == null}">
+				                                <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
+				                                    <c:if test="${not fn:contains(seenCategories, category)}">
+				                                        <c:if test="${!empty seenCategories}">
+				                                            /
+				                                        </c:if>
+				                                        ${category}
+				                                        <c:set var="seenCategories" value="${seenCategories}${category}/" />
+				                                    </c:if>
+				                                </c:forEach>
+				                            </c:if>
+				                        </span><br>
+				                    </c:if>
+                                    <c:if test="${not empty store.store_note}">
+                                        <span>메모 : ${store.store_note}</span><br>
+                                    </c:if>
+                                    <c:if test="${not empty store.store_introduce}">
+                                        <span>소개 : ${store.store_introduce}</span><br>
+                                    </c:if>
+                                    <c:if test="${not empty store.store_business_hours}">
+                                        <span>영업 시간 : ${store.store_business_hours}</span><br>
+                                    </c:if>
+                                    <a href="${path}/main/mainPage2?store_id=${store.store_id}" class="detail-link">상세 페이지로 이동</a>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <br><br><p>검색 결과가 없습니다.</p>
+                    </c:otherwise>
+                </c:choose>
 
-			</div>
+            </div>
 			
 			<!-- ===== right side ===== -->
 			<div class="main-items right-itme">
 				<div class="map_wrap">
-   					<div id="map"></div>
-					    <div id="menu_wrap" class="bg_white">
-					        <div class="option">
-					            <div>
-					                <form onsubmit="searchPlaces(); return false;">
-					                    키워드 : <input type="text" value="이태원 맛집" id="keyword" size="15"> 
-					                    <button type="submit">검색하기</button> 
-					                </form>
-					            </div>
-					        </div>
-					        <hr>
-					        <ul id="placesList"></ul>
-					        <div id="pagination"></div>
-						</div>
+  					<div id="map"></div>
+				    <div id="menu_wrap" class="bg_white">
+				        <div class="option">
+				            <div>
+				                <form onsubmit="searchPlaces(); return false;">
+				                    키워드 : <input type="text" value="이태원 맛집" id="keyword" size="15"> 
+				                    <button type="submit">검색하기</button> 
+				                </form>
+				            </div>
+				        </div>
+				        <hr>
+				        <ul id="placesList"></ul>
+				        <div id="pagination"></div>
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
 </body>
  <%@ include file="./footer.jsp" %> 
 </html>

@@ -20,7 +20,7 @@
 		#search_keyword {
 		    border: 1px solid #bbb;
 		    border-radius: 8px;
-		    padding: 10px 12px;
+		    padding: 5px 12px;
 		    font-size: 14px;
 		    font-family: "Love Ya Like A Sister", fantasy;
 		    background-color: black;
@@ -38,6 +38,7 @@
 		    font-family: "Love Ya Like A Sister", fantasy;
 		    background-color: white; 
 		    color: gray; 
+		    padding: 3px;
 		}
 		/* 드롭다운 목록 옵션 스타일 */
 		#search_category option {
@@ -49,7 +50,7 @@
 			position: relative;
 			border:3px solid rgb(50,50,40);
 			border:none;
-			padding:20px;
+			padding:18px;
 			justify-content:center;
 			align-items:flex-center;
 			color:gray;
