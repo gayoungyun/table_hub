@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.hub.root.member.service.info.MemberInfoService;
 
 @RestController
@@ -129,10 +131,12 @@ public class MemberInfoRestController {
     	return map;
     }
     
-    @GetMapping(value="getStoreName", produces="application/json; charset=utf-8")
-    public String getStoreName (@RequestParam String storeId) {
-    	System.out.println("memInfoRestCont getStoreName 실행");
-    	return mis.getStoreName(storeId);
+    @GetMapping(value="getBookingInfo", produces="application/json; charset=utf-8")
+    public Map<String, Object> getBookingInfo (@RequestParam String storeId, 
+    					@RequestParam(value = "bookingId", required = false, defaultValue = "0") int bookingId) {
+    	System.out.println("memInfoRestCont getBookingInfo 실행");
+    	Map<String, Object> map = mis.getBookingInfo(storeId, bookingId);
+    	return map;
     }
     
     @DeleteMapping(value={"readyBooking", "alreadyBooking"}, produces="application/json; charset=utf-8")
@@ -183,10 +187,11 @@ public class MemberInfoRestController {
 		return map;
 	}
 	
-	@GetMapping(value="review/storeName", produces="application/json; charset=utf-8")
-	public Map<String, Object> getReviewStoreName(@RequestParam String storeId) {
+	@GetMapping(value="review/reviewInfo", produces="application/json; charset=utf-8")
+	public Map<String, Object> getReviewStoreInfo(@RequestParam String storeId, @RequestParam int reviewNum) {
 		System.out.println("memInfoRestCont getReviewStoreName 실행");
-		Map<String, Object> map = mis.getReviewStoreName(storeId);
+		System.out.println("reviewNum : " + reviewNum);
+		Map<String, Object> map = mis.getReviewInfo(storeId, reviewNum);
 		return map;
 	}
 	
@@ -216,6 +221,18 @@ public class MemberInfoRestController {
 		System.out.println("memInfoRestCont deleteReply 실행");
 		int[] replysArr = replys.get("content");
 		Map<String, Object> map = mis.deleteReply(replysArr);
+		return map;
+	}
+	
+	@GetMapping(value="myContentMyInfo", produces="application/json; charset=utf-8")
+	public Map<String, Object> myContentMyInfo (HttpSession session, Model model) {
+		Map<String, Object> map = mis.getMyContentMyInfo((String)session.getAttribute("userId"));
+		System.out.println("boardCount : " + map.get("BOARD_COUNT"));
+		System.out.println("replyCount : " + map.get("REPLY_COUNT"));
+		System.out.println("reviewCount : " + map.get("REVIEW_COUNT"));
+		System.out.println("reviewscore : " + map.get("REVIEW_SCORE"));
+		String userNick = mis.getNick((String)session.getAttribute("userId"));
+		map.put("userNick", userNick);
 		return map;
 	}
 	

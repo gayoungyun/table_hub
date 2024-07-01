@@ -50,17 +50,20 @@
 	
 		                // 각 예약 항목에 대한 HTML 생성을 비동기적으로 처리합니다.
 		                let promise = $.ajax({
-		                    url: "getStoreName?storeId=" + item.storeId,
+		                    url: "getBookingInfo?storeId=" + item.storeId,
 		                    type: "get",
 		        			async : false,
-		                    dataType: "text"
+		                    dataType: "json"
 		                }).then(function(result) {
+		                	console.log("result : ", result)
 		                    // AJAX 요청이 성공하면 content에 HTML을 추가합니다.
 		                    content += `<div class="readyContentInfo">`;
-		                    content += `<label class="bookingStoreName" title=`+result+`>`+result+`</label>`;
+		                    content += `<label class="bookingStoreName" title="`+result.storeName+`">`+result.storeName+`</label>`;
 		                    content += `<label class="bookingStatusReady">방문 대기</label>`;
 		                    content += `<a class="bookingDelete" onclick="readyBookingDelete(`+item.id+`)">X</a><br>`;
-		                    content += `<img class="bookingStoreImg" alt="" src="https://www.gyeongju.go.kr/upload/content/thumb/20200529/4368708A9CC649CDB1EC5DD0C389804C.jpg"><br>`;
+		                    content += `<img class="bookingStoreImg" alt="" src="download?img=` + result.storeImg + `"><br>`;
+// 		                    content += `<img class="bookingStoreImg" alt="" src="https://www.gyeongju.go.kr/upload/content/thumb/20200529/4368708A9CC649CDB1EC5DD0C389804C.jpg"><br>`;
+
 		                    content += `<label class="bookingDate">`+bookingDate+`</label><br>`;
 		                    content += `<label class="bookingPerson">성인 `+item.person+`명</label>`;
 		                    content += `<hr>`;
@@ -192,28 +195,35 @@
 										('0' + (date.getMonth() + 1)).slice(-2) + "월 " +
 										('0' + (date.getDate())).slice(-2) + "일 " +
 										item.time;
+						let reviewPermitDate = new Date(date.getTime() + (7 * 24 * 60 * 60 * 1000))
+						let currentDate = new Date();
 						
 						let promise = $.ajax({
-							url : "getStoreName?storeId="+item.storeId,
+							url : "getBookingInfo?storeId="+item.storeId+"&bookingId="+item.id,
 							type : "get",
 							async : false, 
-							dataType : "text"
+							dataType : "json"
 						}).then(function (result) {
 							console.log("result : ", result)
 							content += `<div class="alreadyContentInfo">`
-							content += `<label class="bookingStoreName" title=`+result+`>`+result+`</label>`
+							content += `<label class="bookingStoreName" title="`+result.storeName+`">`+result.storeName+`</label>`;
 							content += `<label class="bookingStatusAlready">방문 완료</label>`
 							content += `<a class="bookingDelete" onclick="alreadyBookingDelete(`+item.id+`)">X</a><br>`
-							content += `<img class="bookingStoreImg" alt="" src="https://www.gyeongju.go.kr/upload/content/thumb/20200529/4368708A9CC649CDB1EC5DD0C389804C.jpg"><br>`
+							content += `<img class="bookingStoreImg" alt="" src="download?img=` + result.storeImg + `"><br>`;
 							content += `<label class="bookingDate">` + bookingDate + `</label><br>`
 							content += `<label class="bookingPerson">성인 ` + item.person + `명</label>`
 							content += `<hr>`
-							if (item.status == 1) { // 리뷰 작성 가능 상태
-								content += `<label class="bookingStatusReviewReady"><a href="review">후기 작성</a></label>`							
+							
+							if (item.status == 1 && currentDate < reviewPermitDate) { // 리뷰 작성 가능 상태
+								content += `<label class="bookingStatusReviewReady">예약 대기</label>`							
 							} else if(item.status == 2) { // 후기 작성 완료된 상태
 								content += `<label class="bookingStatusReviewComplete"><a href="review">후기 작성 완료</a></label>`
-								content += `<label class="bookingStatusReviewScore">평점 : 3점</label>`
-							} else { // 후기 작성 기간 만료된 상태
+								content += `<label class="bookingStatusReviewScore">평점 : ` + result.reviewScore + `점</label>`
+							} else if (item.status == 3) // 가게에서 예약 거절을 했을때
+								content += `<label class="bookingStatusReviewTimeout">예약 취소</label>`
+								else if (item.status == 4)
+								content += `<label class="bookingStatusReviewReady"><a href="review">예약 대기</a></label>`							
+							else { // status가 1인데 시간이 지났을때 ... 후기 작성 기간 만료된 상태
 								content += `<label class="bookingStatusReviewTimeout">후기 작성 기간 만료</label>`
 							}
 							content += `</div>`					

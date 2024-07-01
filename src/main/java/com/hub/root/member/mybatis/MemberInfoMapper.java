@@ -24,6 +24,8 @@ public interface MemberInfoMapper {
 	
 	public List<BookingDTO> getMyBooking(String id);
 	public String getStoreName(String storeId);
+	public String getStoreImg(String storeId);
+	public int getReviewScore(int id);
 	public int getBookingReadyCount(String id);
 	public int getBookingAlreadyCount(String id);
 	public List<BookingDTO> getBookingReadyContent(@Param("id") String id, 
@@ -42,14 +44,16 @@ public interface MemberInfoMapper {
 	public int getReviewCount(String id);
 	public List<ReviewDTO> getReview(@Param("id") String id, @Param("start") int startNum,
 			@Param("end") int endNum);
-	public String getReviewStoreName(@Param("id") String id);
+	public Map<String, Object> getReviewStoreInfo(@Param("storeId") String storeId);
+	public String getReviewImgInfo(@Param("reviewNum") int reviewNum);
 	public int deleteReview(@Param("storeNum") int storeNum);
 	public int getReplyCount(@Param("memId") String memId);
 	public List<ReplyDTO> getReply(@Param("memId") String memId, @Param("start") int startNum,
 			@Param("end") int endNum);
 	public Map<String, Object> getBoardInfo(@Param("boardId") int boardId);
 	public int deleteReply(@Param("content") int[] content);
-	
+	public Map<String, Object> getMyContentMyInfo(@Param("userId") String userId);
+	public String getNick(@Param("userId") String userId);
 	
 	
 	

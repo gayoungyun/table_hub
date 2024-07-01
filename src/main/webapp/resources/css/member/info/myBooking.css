@@ -156,7 +156,8 @@
 	cursor: pointer;
 }
 .bookingStoreImg {
-	width: 100%
+	width: 100%;
+	height: 150px;
 }
 .bookingDate {
 	margin: 5px 0 5px 10px;

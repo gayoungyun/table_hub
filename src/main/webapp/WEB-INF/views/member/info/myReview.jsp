@@ -57,11 +57,12 @@
 						}
 						//가게 이름 및 이미지를 불러오기위한 ajax
 						$.ajax( {
-							url : "/root/member/myPage/review/storeName?storeId="+item.storeId,
+							url : "/root/member/myPage/review/reviewInfo?storeId="+item.storeId+"&reviewNum="+item.num,
 							type : "get",
 							dataType : "json",
 							async : false,
 							success : function ( result ) {
+								console.log("resultsdfsdf : ", result)
 								// 불러온 시간형식을 표시할 수 있도록 형변환을 한다.
 				                let date = new Date(item.create);
 				                let createDate = (date.getFullYear() + '.') +
@@ -75,12 +76,12 @@
 				    					
 				     					// 가게정보부분에서 왼쪽 이미지를 나타내는 영역
 										html += `<div class="storeInfoLeft">`
-					 						html += `<img class="storeImg" alt="" src="https://i.namu.wiki/i/i0_iT3IlMb11qmP0hPSoG1M9nQRb526ZXPqjMG5Eo-oiVf9y7iVpnOGNoi4fW4mKBZmVf_cv-q3-zD2lvSVZDA.webp">`				
+					 						html += `<img class="storeImg" alt="" src="download?img=` + result.STORE_IMG_ROOT + `">`				
 					 					html += `</div>`
 				    						
 				     					//가운데 가게이름과 평점을 나타내는 영역
 					    				html += `<div class="storeInfoMiddle">`
-						    				html += `<label class="storeInfoTitle">`+result.name+`</label><br>`
+						    				html += `<label class="storeInfoTitle">`+result.STORE_NAME+`</label><br>`
 						    				html += `<label class="storeInfoScoreStar">`+scoreStar+`</label>`
 						    				html += `<label class="storeInfoScore">`+item.score+`점</label>`
 						    				html += `<label class="storeInfoCreate">작성일 : `+createDate+`</label>`
@@ -98,7 +99,11 @@
 				    				html += `<div class="reviewInfo">`
 				     				
 					    				html += `<div class="reviewInfoLeft">`
-					    					html += `<img class="reviewInfoImg" alt="" src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2b/d5/ce/6d/savor-the-exquisite-taste.jpg?w=600&h=-1&s=1">`
+					    				console.log("test1 : ", result.reviewImg)
+					    				console.log("test2 : ", result.reviewImg != null)
+					    					if (result.reviewImg != null) {
+						    					html += `<img class="reviewInfoImg" alt="" src="download?img=` + result.reviewImg + `">`					    						
+					    					}
 					   					html += `</div>`
 				   					
 					  					html += `<div class="reviewInfoMiddle">`

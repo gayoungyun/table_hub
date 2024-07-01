@@ -7,24 +7,43 @@
 <title>Insert title here</title>
 <link href="<%= request.getContextPath() %>/resources/css/member/info/myContentMyInfo.css?after" rel="stylesheet"/>
 <script>
-	$(document).ready = ( () => {
-		
+	$(document).ready( () => {
+		console.log("asdf")
+		getMyInfo()
 	})
+	function getMyInfo () {
+		$.ajax({
+			url : "/root/member/myPage/myContentMyInfo",
+			type : "get",
+			dataType : "json",
+			success : function (result) {
+				console.log("result : ", result)
+				var html = ""
+				html += `<tr>`
+				html += `<td>`
+				html += `<img id="myContentmyImg" alt="" src="">`
+				html += `</td>`
+				html += `<td>`
+				html += `<b id="myContentmyId">` + result.userNick + `</b><br>`
+				html += `<label class="myCount">작성 게시글 <b>` + result.BOARD_COUNT + `</b> · </label>`
+				html += `<label class="myCount">작성 댓글 <b>` + result.REVIEW_COUNT + `</b> · </label>`
+				html += `<label class="myCount">작성 리뷰 <b>` + result.REPLY_COUNT + `</b> · </label>`
+				html += `<label class="myCount">리뷰 평점 <b>` + result.REVIEW_SCORE + `</b></label>`
+				html += `</td>`
+				html += `</tr>` 
+				$("#myContentmyInfo").html(html)
+			} ,
+			error : function ( error ) {
+				console.log ("error : ", error)
+			}
+		})
+	}
 </script>
 </head>
 <body>
 	<h3 class="myContentTitle">내 활동 내역</h3>
 	<table id="myContentmyInfo">
-		<tr>
-			<td>
-				<img id="myContentmyImg" alt="" src="">
-			</td>
-			<td>
-				<b id="myContentmyId">하이루</b><br>
-				<label>작성 리뷰 <b>2</b> ·</label>
-				<label>평균 평점 <b>3.5</b></label>
-			</td>
-		</tr> 
+	
 	</table>
 	<a class="myContentMenu" href="myBoard" id="myContentMyBoard">작성글</a>
 	<a class="myContentMenu" href="myReply" id="myContentMyReply">작성댓글</a>

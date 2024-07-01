@@ -206,27 +206,12 @@
 			});
 		}
 		console.log("checked : ", deleteReplys)
-		checkAll();
 	}
-	
-	function checkAll() {
-		console.log("count : ", pageContent)
-
-		console.log("ayycount : ", deleteReplys.length)
-		if (pageContent == deleteReplys.length) {
-			console.log("11111")
-			$("#selectAll").prop("checked", true)
-		} else {
-			console.log("22222")
-			$("#selectAll").prop("checked", false)
-		}
-	}
-	
 	
 	function replyAllCheck() {
 		console.log("allcheck실행")
 		var content = document.getElementsByClassName("myReplyContentCheck")
-		
+		$("#selectAll").checked = true;
 		Array.from(content).forEach(function(item, index) {
 			if ($("#selectAll").prop("checked") == !item.checked) {
 				item.click();

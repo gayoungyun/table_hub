@@ -177,10 +177,15 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 		return dto;
 	}
 	@Override
-	public String getStoreName(String storeId) {
-    	System.out.println("memInfoSer getStoreName 실행");
-		
-		return mapper.getStoreName(storeId);
+	public Map<String, Object> getBookingInfo(String storeId, int id) {
+    	System.out.println("memInfoSer getBookingInfo 실행");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("storeName",(String)mapper.getStoreName(storeId));
+		map.put("storeImg", (String)mapper.getStoreImg(storeId));
+		int result = mapper.getReviewScore(id);
+		System.out.println("result : "+ result);
+		map.put("reviewScore", result);
+		return map;
 	}
 
 	@Override
@@ -307,6 +312,7 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 		List<ReviewDTO> list = mapper.getReview(id,
 											(int)map.get("startNum"),
 											(int)map.get("endNum"));
+		
 		if (!list.isEmpty()) {
 			map.put("result", 1);
 			map.put("list", list);
@@ -335,10 +341,10 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	}
 
 	@Override
-	public Map<String, Object> getReviewStoreName(String id) {
-		String name = mapper.getReviewStoreName(id);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("name", name);
+	public Map<String, Object> getReviewInfo(String storeId, int reviewNum) {
+		Map<String, Object> map = mapper.getReviewStoreInfo(storeId);
+		String reviewImg = mapper.getReviewImgInfo(reviewNum);
+		map.put("reviewImg", reviewImg);
 		return map;
 	}
 
@@ -399,6 +405,18 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 		map.put("msg", msg);
 		map.put("result", result);
 		return map;
+	}
+
+	@Override
+	public Map<String, Object> getMyContentMyInfo(String userId) {
+		Map<String, Object> map = mapper.getMyContentMyInfo(userId);
+		return map;
+	}
+
+	@Override
+	public String getNick(String userId) {
+		String userNick = mapper.getNick(userId);
+		return userNick;
 	}
 	
 	

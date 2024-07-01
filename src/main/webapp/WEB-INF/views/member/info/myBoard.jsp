@@ -30,6 +30,7 @@
 	lastPage = 1;
 	totalContent = 0;
 	function boardPage(page) {
+		getMyInfo();
 		deleteBoards = [];
 		currentPage = page;
 		$.ajax({
