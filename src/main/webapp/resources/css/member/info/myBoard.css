@@ -1,42 +1,95 @@
 @charset "UTF-8";
 
-#myContentWrapper {
-	width: 100%;
+#myBoardWrapper {
+	width: 770px;
+	min-height: 500px;
 	background-color: white;
-	border-radius: 10px;
+	border: 1px solid #b5b5b5;
+		
 }
-
-#myContentmyInfo {
-	margin-left: 20px;
+#myBoardTable {
+/* 	width: 770px; */
+	border-collapse: collapse;
+	border-spacing: none;
+	text-align: center;
+	margin: auto;
 }
-#myContentmyImg {
-	width: 50px;
-	height: 50px;
-	background-color: red;
-	border-radius: 25px;
-	margin-right: 10px;
-}
-#myContentmyId {
-	display: inline-block;
+.boardTitle {
+	border-bottom: 1px solid #b5b5b5;
+	margin: 0;
 	height: 30px;
+	padding: 5px;
+	box-sizing: border-box;
+	
 }
-
-.myContentMenu {
+.boardContent {
+	border-bottom: 1px solid #b5b5b5;
+	height: 60px;
+	padding: 5px;
+	margin: 0;
+	box-sizing: border-box;
+	font-size: 14px;
+}
+.boardTitle:nth-child(1), .boardContent:nth-child(1) {
+	width: 60px;
+}
+.boardTitle:nth-child(2), .boardContent:nth-child(2) {
+	width: 70px;
+}
+.boardTitle:nth-child(3), .boardContent:nth-child(3) {
+	width: 120px;
+}
+.boardTitle:nth-child(4) {
+	width: 280px;
+	max-width: 280px;
+}
+.boardTitle:nth-child(5), .boardContent:nth-child(5) {
+	width: 130px;
+}
+.boardTitle:nth-child(6), .boardContent:nth-child(6) {
+	width: 80px;
+}
+.boardTitle:nth-child(7), .boardContent:nth-child(7) {
+	width: 70px;
+}
+.boardContent:nth-child(4) {
+	align-items: left;
+}
+tr:last-child .boardContent {
+	border-bottom: 0;
+}
+.boardContentTitle {
+	width: 280px;
 	display: inline-block;
-	margin: 10px -10px 5px 20px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align: left;
 	cursor: pointer;
-	text-decoration: none;
-	color: #1d1d1d;
+	padding: 5px;
 }
-
-
-
-
-
-
-
-
-
-
-
+.boardContentPage {
+	text-decoration: none;
+	font-weight: bold;
+	color: gray;
+	margin: 5px;
+	cursor: pointer;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+}
+.pageDisabled {
+	color: #d4d4d4;
+	cursor: default;
+}
+.boardContentNum {
+	cursor: pointer;
+	padding: 5px;
+}
+.boardContentPage {
+    -webkit-user-select: none;  /* Chrome, Safari, Edge */
+    -moz-user-select: none;     /* Firefox */
+    -ms-user-select: none;      /* IE10+ */
+    user-select: none;          /* 표준 문법 */
+}
 

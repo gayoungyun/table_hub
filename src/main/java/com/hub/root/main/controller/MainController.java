@@ -13,17 +13,21 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.hub.root.main.dto.MainDTO;
+import com.hub.root.main.dto.MainMapDTO;
 import com.hub.root.main.service.MainFileService;
 import com.hub.root.main.service.MainService;
 
@@ -33,36 +37,26 @@ public class MainController {
 	@Autowired MainService ms;
 	// 메인 페이지1 요청 처리===================================
 	@GetMapping("mainPage1")
-	public String main(Model model) {
-		//String store_id = "123";
+	public String main( HttpSession session,Model model) {
+		String user = (String) session.getAttribute("userId");
+		System.out.println("session id main : "+user);
+		if(user != null) {
+			model.addAttribute("user", user);
+		}
 		ms.mainPage1(model);
 		return "main/mainPage1";
-	}
-	// 메인 페이지 요청 처리===================================
-	@GetMapping("mainPage2")
-	public String main() {
-		return "main/mainPage2";
-	}
-	// 메인 페이지 검색 기능===================================
-	@GetMapping("search")
-	public String search(@RequestParam(required=false) String keyword, 
-						 @RequestParam(required=false) String searchType ,
-						Model model) {
-		List<MainDTO> dtoList = ms.search(keyword,searchType);
-		model.addAttribute("dtoList", dtoList);
-		return "main/search";
 	}
 	// 헤더 페이지 요청 처리===================================
 	@GetMapping("header")
 	public String header() {
 		return "main/header";
 	}
-	// 정보 입력 페이지 요청 처리===============================
+	// 정보 입력 페이지 요청 처리(store_menu)====================
 	@RequestMapping("inputInfo")
 	public String inputInfo() {
 		return "main/inputInfo";
 	}
-	// 정보 저장 요청 처리====================================
+	// 정보 저장 요청 처리(store_menu)=========================
 	@RequestMapping("infoSave")
 	public void infoSave(@RequestParam("store_menu_img") MultipartFile mul,
 							HttpServletResponse res,
@@ -98,6 +92,49 @@ public class MainController {
         	// 파일이 존재하지 않으면 404에러 응답
             res.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
         }
+	}
+	// 메인 페이지 검색 기능===================================
+	@GetMapping("search")
+	public String search(@RequestParam(required=false) String keyword, 
+						 @RequestParam(required=false) String searchType ,
+						Model model) {
+		//System.out.println(keyword);
+		
+		List<MainDTO> dtoList = ms.search(keyword,searchType);
+		model.addAttribute("dtoList", dtoList);
+		return "main/search";
+	}
+	@RequestMapping("mainPage2")
+	public String mainPage2(@RequestParam(required=false) String keyword, 
+			 				@RequestParam(required=false) String searchType ,
+			 				Model model) {
+		List<MainMapDTO> storeList = ms.getStoreInfo(keyword, searchType);
+		System.out.println("storeList controller : "+storeList);
+		model.addAttribute("storeList",storeList);
+		return "main/mainPage2";
+	}
+	// 정보 입력 페이지 요청 처리(store_info)====================
+	@RequestMapping("storeInfo")
+	public String storeInfo() {
+		return "main/storeInfo";
+	}
+	// 정보 저장 요청 처리(store_info)=========================
+	@RequestMapping("storeSave")
+	public void storeSave(	HttpServletResponse res,
+							@RequestParam String store_id,
+							@RequestParam String store_pwd,
+							@RequestParam String store_email,
+							@RequestParam String store_phone,
+							@RequestParam String store_main_phone,
+							@RequestParam String store_name,
+							@RequestParam String store_add,
+							@RequestParam String store_add_info,
+							@RequestParam String store_category,
+							@RequestParam String store_note,
+							@RequestParam String store_introduce,
+							@RequestParam String store_business_hours) throws IOException{
+		ms.storeSave(store_id,store_pwd,store_email,store_phone,store_main_phone,store_name,store_add,
+				store_add_info,store_category,store_note,store_introduce,store_business_hours);
 	}
 	/*
 	@GetMapping("flex6")

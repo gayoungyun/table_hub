@@ -134,6 +134,7 @@ public class MemberLoginRestController {
 			if (result == 1 || result == 2) {
 				System.out.println("else 안에 if문실행");
 				session.setAttribute("userId", id);
+				session.setMaxInactiveInterval(1800);
 				map.put("result", null);
 				if (result == 2) {
 					session.setAttribute("isAdmin", 1);

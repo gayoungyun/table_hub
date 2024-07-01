@@ -19,7 +19,7 @@
 				<label>작성 리뷰 <b>2</b> ·</label>
 				<label>평균 평점 <b>3.5</b></label>
 			</td>
-		</tr>
+		</tr> 
 	</table>
 	<a class="myContentMenu" href="myBoard" id="myContentMyBoard">작성글</a>
 	<a class="myContentMenu" href="myReply" id="myContentMyReply">작성댓글</a>
