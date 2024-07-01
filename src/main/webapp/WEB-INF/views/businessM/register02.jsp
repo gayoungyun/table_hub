@@ -29,10 +29,21 @@
     <h1>주소 등록하기</h1><br>
     <h5>*표시 항목은 필수항목입니다</h5>
     <form action="register03" method="post" onsubmit="return inputcheck01()">
-        *우편번호 <input type="text" id="addr1" name="store_zip" readonly placeholder="우편번호를 검색해주세요">
-        <button type="button" onclick="daumPost()">우편번호 검색</button><br>
-        주소 <input type="text" id="addr2" name="store_add" readonly placeholder="주소"><br>
-        *상세주소 <input type="text" id="addr3" name="store_add_info" placeholder="상세주소를 입력해주세요">
+    	<label>
+        *우편번호 
+        <input type="text" id="addr1" name="store_zip" readonly placeholder="우편번호를 검색해주세요">
+        <button type="button" onclick="daumPost()">우편번호 검색</button>
+        </label>
+        <br>
+        <label>
+        주소 
+        <input type="text" id="addr2" name="store_add" readonly placeholder="주소">
+        </label>
+        <br>
+        <label>
+        *상세주소
+        <input type="text" id="addr3" name="store_add_info" placeholder="상세주소를 입력해주세요">
+        </label>
         <hr>
 <div id="map"></div>
         <div style="display: flex; justify-content: space-between;">

@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM.css?after">
-<script src="${path}/resources/js/businessM.js"></script>
+<script type="text/javascript" src="${path}/resources/js/businessM.js"></script>
 </head>
 <body>
 
@@ -22,10 +22,17 @@
 </div>
 
 <div class="center-box">
-<h1>가게 등록하기</h1><br>
-<form action="register02" method="post">
-		가게 이름 <input type="text" name="store_name" placeholder="가게이름 정보 띄우기" readonly><br>
-		사업자 번호 <input type="text" name="store_id" placeholder="사업자번호 정보 띄우기" readonly>
+<h1>회원정보 확인하기</h1><br>
+<form action="register02" method="post" onsubmit="return inputcheck00()">
+		<label>
+		가게 이름
+		<input type="text" id="store_name" name="store_name" placeholder="${storeName}">
+		</label>
+		<br>
+		<label>
+		사업자번호 &nbsp;
+		<span class="line">${storeId}</span>
+		</label>
 		<hr>
 		회원정보가 올바르다면 다음 버튼을, 틀리다면 <b>회원정보 수정을 위해 <a href="">여기</a></b>를 눌러주세요.
 		<div style="display: flex; justify-content: space-between;">
