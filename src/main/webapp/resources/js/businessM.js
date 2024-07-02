@@ -71,6 +71,19 @@ function showMap(address) {
 }
 
 
+function inputcheck00() {
+    // 입력값 가져오기
+    var store_name = document.getElementById('store_name').value;
+
+    // 입력값이 비어있는지 확인
+    if (store_name === '') {
+        alert('가게이름을 직접 입력해주세요!'); // 경고 메시지 표시
+        return false; // 폼 제출을 막기 위해 false 반환
+    }
+
+    return true; // 폼 제출을 허용
+}
+
 function inputcheck01() {
     // 입력값 가져오기
     var store_zip = document.getElementById('addr1').value;
@@ -90,6 +103,7 @@ function inputcheck01() {
 }
 
 
+//카테고리 최대 3개 선택가능하게 하는것
 document.addEventListener('DOMContentLoaded', (event) => {
     const checkboxes = document.querySelectorAll('input[name="store_category"]');
     const maxAllowed = 3;

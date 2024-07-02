@@ -36,22 +36,22 @@
         <label><input type="checkbox" name="store_category" value="뷔페"> 뷔페</label>&nbsp;
         <label><input type="checkbox" name="store_category" value="카페"> 카페</label><br>
         <label><input type="checkbox" name="store_category" value="디저트"> 디저트</label>&nbsp;
-        <label><input type="checkbox" name="store_category" value="기타"> 기타</label>
-		<input type="text" name="store_category"><br>
+        <label for="category_ect"> 기타</label>
+		<input type="text" name="store_category" id="category_ect"><br>
 		</div>
 			
 		<div>
 		편의 시설<br>
-		<label><input type="checkbox" name="option2" value="1"> 포장</label>&nbsp;
-        <label><input type="checkbox" name="option2" value="2"> 주차</label>&nbsp;
-        <label><input type="checkbox" name="option2" value="3"> 남/녀 화장실 구분</label>&nbsp;
-        <label><input type="checkbox" name="option2" value="4"> 무선 인터넷</label>&nbsp;
-        <label><input type="checkbox" name="option2" value="5"> 아기의자</label><br>
-        <label><input type="checkbox" name="option2" value="6"> 장애인 시설</label>&nbsp;
-        <label><input type="checkbox" name="option2" value="7"> 수유방</label>&nbsp;
-        <label><input type="checkbox" name="option2" value="8"> 놀이시설</label><br>
-        <label><input type="checkbox" name="option2" value="9"> 기타</label>
-		<input type="text" name="store_amenities"><br>
+		<label><input type="checkbox" name="store_amenities" value="포장"> 포장</label>&nbsp;
+        <label><input type="checkbox" name="store_amenities" value="주차"> 주차</label>&nbsp;
+        <label><input type="checkbox" name="store_amenities" value="화장실"> 남/녀 화장실 구분</label>&nbsp;
+        <label><input type="checkbox" name="store_amenities" value="인터넷"> 무선 인터넷</label>&nbsp;
+        <label><input type="checkbox" name="store_amenities" value="아기의자"> 아기의자</label><br>
+        <label><input type="checkbox" name="store_amenities" value="장애인"> 장애인 시설</label>&nbsp;
+        <label><input type="checkbox" name="store_amenities" value="수유방"> 수유방</label>&nbsp;
+        <label><input type="checkbox" name="store_amenities" value="놀이시설"> 놀이시설</label><br>
+        <label for="amenities_ect">기타</label>
+		<input type="text" name="store_amenities" id="amenities_ect"><br>
 		</div>	
 		
 		특이사항 <textarea name="store_note" 

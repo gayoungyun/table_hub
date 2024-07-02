@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class storeController {
 	public storeController() {
-		System.out.println("가게 컨트롤러 생성자 실행");
+		System.out.println("보선-가게 컨트롤러 생성자 실행");
 	}
 	
 	@GetMapping("store")
