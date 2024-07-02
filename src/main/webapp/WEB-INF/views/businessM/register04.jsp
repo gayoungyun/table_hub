@@ -53,88 +53,88 @@
 
 <div class="time-buttons">
     <div class="checkbox-button">
-        <input type="checkbox" id="time0230">
+        <input type="checkbox" id="time0230" name="store_business_hours" value="02:30">
         	<label for="time0230">02:30</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time0300">
+        <input type="checkbox" id="time0300" name="store_business_hours" value="03:00">
         	<label for="time0300">03:00</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time0330">
+        <input type="checkbox" id="time0330" name="store_business_hours" value="03:30">
         	<label for="time0330">03:30</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time0400">
+        <input type="checkbox" id="time0400" name="store_business_hours" value="04:00">
         	<label for="time0400">04:00</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time0430">
+        <input type="checkbox" id="time0430" name="store_business_hours" value="04:30">
         	<label for="time0430">04:30</label>
     </div>
 </div>
 
 <div class="time-buttons">
     <div class="checkbox-button">
-        <input type="checkbox" id="time0500">
+        <input type="checkbox" id="time0500" name="store_business_hours" value="05:00">
         	<label for="time0500">05:00</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time0530">
+        <input type="checkbox" id="time0530" name="store_business_hours" value="05:30">
         	<label for="time0530">05:30</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time0600">
+        <input type="checkbox" id="time0600" name="store_business_hours" value="06:00">
         	<label for="time0600">06:00</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time0630">
+        <input type="checkbox" id="time0630" name="store_business_hours" value="06:30">
         	<label for="time0630">06:30</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time0700">
+        <input type="checkbox" id="time0700" name="store_business_hours" value="07:00">
         	<label for="time0700">07:00</label>
     </div>
 </div>
 
 <div class="time-buttons">
     <div class="checkbox-button">
-        <input type="checkbox" id="time0730">
+        <input type="checkbox" id="time0730" name="store_business_hours" value="07:30">
         	<label for="time0730">07:30</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time0800">
+        <input type="checkbox" id="time0800" name="store_business_hours" value="08:00">
         	<label for="time0800">08:00</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time0830">
+        <input type="checkbox" id="time0830" name="store_business_hours" value="08:30">
         	<label for="time0830">08:30</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time0900">
+        <input type="checkbox" id="time0900" name="store_business_hours" value="09:00">
         	<label for="time0900">09:00</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time0930">
+        <input type="checkbox" id="time0930" name="store_business_hours" value="09:30">
         	<label for="time0930">09:30</label>
     </div>
 </div>
 
 <div class="time-buttons">
     <div class="checkbox-button">
-        <input type="checkbox" id="time1000">
+        <input type="checkbox" id="time1000" name="store_business_hours" value="10:00">
         	<label for="time1000">10:00</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time1030">
+        <input type="checkbox" id="time1030" name="store_business_hours" value="10:30">
         	<label for="time1030">10:30</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time1100">
+        <input type="checkbox" id="time1100" name="store_business_hours" value="11:00">
         	<label for="time1100">11:00</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time1130">
+        <input type="checkbox" id="time1130" name="store_business_hours" value="11:30">
         	<label for="time1130">11:30</label>
     </div>
 </div>
@@ -144,111 +144,111 @@
 <h3>오후</h3>
 <div class="time-buttons">
     <div class="checkbox-button">
-        <input type="checkbox" id="time1200">
+        <input type="checkbox" id="time1200" name="store_business_hours" value="12:00">
         	<label for="time1200">12:00</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time1230">
+        <input type="checkbox" id="time1230" name="store_business_hours" value="12:30">
         	<label for="time1230">12:30</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time1300">
+        <input type="checkbox" id="time1300" name="store_business_hours" value="13:00">
         	<label for="time1300">13:00</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time1330">
+        <input type="checkbox" id="time1330" name="store_business_hours" value="13:30">
         	<label for="time1330">13:30</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time1400">
+        <input type="checkbox" id="time1400" name="store_business_hours" value="14:00">
         	<label for="time1400">14:00</label>
     </div>
 </div>
 
 <div class="time-buttons">
     <div class="checkbox-button">
-        <input type="checkbox" id="time1430">
+        <input type="checkbox" id="time1430" name="store_business_hours" value="14:30">
         	<label for="time1430">14:30</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time1500">
+        <input type="checkbox" id="time1500" name="store_business_hours" value="15:00">
         	<label for="time1500">15:00</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time1530">
+        <input type="checkbox" id="time1530" name="store_business_hours" value="15:30">
         	<label for="time1530">15:30</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time1600">
+        <input type="checkbox" id="time1600" name="store_business_hours" value="16:00">
         	<label for="time1600">16:00</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time1630">
+        <input type="checkbox" id="time1630" name="store_business_hours" value="16:30">
         	<label for="time1630">16:30</label>
     </div>
 </div>
 
 <div class="time-buttons">
     <div class="checkbox-button">
-        <input type="checkbox" id="time1700">
+        <input type="checkbox" id="time1700" name="store_business_hours" value="17:00">
         	<label for="time1700">17:00</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time1730">
+        <input type="checkbox" id="time1730" name="store_business_hours" value="17:30">
         	<label for="time1730">17:30</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time1800">
+        <input type="checkbox" id="time1800" name="store_business_hours" value="18:00">
         	<label for="time1800">18:00</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time1830">
+        <input type="checkbox" id="time1830" name="store_business_hours" value="18:30">
         	<label for="time1830">18:30</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time1900">
+        <input type="checkbox" id="time1900" name="store_business_hours" value="19:00">
         	<label for="time1900">19:00</label>
     </div>
 </div>
 
 <div class="time-buttons">
     <div class="checkbox-button">
-        <input type="checkbox" id="time1930">
+        <input type="checkbox" id="time1930" name="store_business_hours" value="19:30">
         	<label for="time1930">19:30</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time2000">
+        <input type="checkbox" id="time2000" name="store_business_hours" value="20:00">
         	<label for="time2000">20:00</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time2030">
+        <input type="checkbox" id="time2030" name="store_business_hours" value="20:30">
         	<label for="time2030">20:30</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time2100">
+        <input type="checkbox" id="time2100" name="store_business_hours" value="21:00">
         	<label for="time2100">21:00</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time2130">
+        <input type="checkbox" id="time2130" name="store_business_hours" value="21:30">
         	<label for="time2130">21:30</label>
     </div>
 </div>
 
 <div class="time-buttons">
     <div class="checkbox-button">
-        <input type="checkbox" id="time2200">
+        <input type="checkbox" id="time2200" name="store_business_hours" value="22:00">
         	<label for="time2200">22:00</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time2230">
+        <input type="checkbox" id="time2230" name="store_business_hours" value="22:30">
         	<label for="time2230">22:30</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time2300">
+        <input type="checkbox" id="time2300" name="store_business_hours" value="23:00">
         	<label for="time2300">23:00</label>
     </div>
     <div class="checkbox-button">
-        <input type="checkbox" id="time2430">
+        <input type="checkbox" id="time2430" name="store_business_hours" value="23:30">
         	<label for="time2430">24:30</label>
     </div>
 </div>

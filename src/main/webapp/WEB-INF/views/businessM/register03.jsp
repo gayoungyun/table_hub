@@ -36,7 +36,7 @@
         <label><input type="checkbox" name="store_category" value="뷔페"> 뷔페</label>&nbsp;
         <label><input type="checkbox" name="store_category" value="카페"> 카페</label><br>
         <label><input type="checkbox" name="store_category" value="디저트"> 디저트</label>&nbsp;
-        <label for="category_ect"><input type="checkbox" name="store_category" > 기타</label>
+        <label for="category_ect"> 기타</label>
 		<input type="text" name="store_category" id="category_ect"><br>
 		</div>
 			
@@ -50,7 +50,7 @@
         <label><input type="checkbox" name="store_amenities" value="장애인"> 장애인 시설</label>&nbsp;
         <label><input type="checkbox" name="store_amenities" value="수유방"> 수유방</label>&nbsp;
         <label><input type="checkbox" name="store_amenities" value="놀이시설"> 놀이시설</label><br>
-        <label for="amenities_ect"><input type="checkbox" name="store_amenities"> 기타</label>
+        <label for="amenities_ect">기타</label>
 		<input type="text" name="store_amenities" id="amenities_ect"><br>
 		</div>	
 		
