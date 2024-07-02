@@ -34,13 +34,18 @@
 	
 	
 	<update id="register">
-		UPDATE
-			store_info(store_zip, store_add, store_add_info, store_introduce, 
-				store_category, store_business_hours, store_amenities,
-				store_note, store_max_person, store_booking_rule) 
-			values(#{store_zip}, #{store_add}, #{store_add_info}, #{store_introduce}, 
-				#{store_category}, #{store_business_hours}, #{store_amenities},
-				#{store_note}, #{store_max_person}, #{store_booking_rule})
+		UPDATE store_info
+			SET store_zip = #{store_zip},
+			    store_add = #{store_add},
+			    store_add_info = #{store_add_info},
+			    store_introduce = #{store_introduce},
+			    store_category = #{store_category},
+			    store_business_hours = #{store_business_hours},
+			    store_amenities = #{store_amenities},
+			    store_note = #{store_note},
+			    store_max_person = #{store_max_person},
+			    store_booking_rule = #{store_booking_rule}
+			WHERE store_id = #{store_id}
 	</update>
 	<!--   
 	<update id="keepLogin">
