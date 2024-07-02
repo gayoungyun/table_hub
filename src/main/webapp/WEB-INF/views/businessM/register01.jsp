@@ -7,8 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM.css?after">
-<script type="text/javascript" src="${path}/resources/js/businessM.js"></script>
+<link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM/businessM.css?after">
+<script type="text/javascript" src="${path}/resources/js/businessM/businessM.js"></script>
 </head>
 <body>
 

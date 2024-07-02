@@ -29,7 +29,7 @@ public class businMService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("보선-회원체크 mapper에서 나온 result : " + result);
+		System.out.println("보선-회원체크 mapper에서 나온 store_name : " + result.getStore_name());
 		return result.getStore_name();
 	}
 	
@@ -89,10 +89,10 @@ public class businMService {
 		String result = null;
 		HttpSession session = request.getSession();
 		session.setAttribute("store_introduce", store_introduce);
-		String store_category = String.join(",", store_categoryS);
+		String store_category = String.join("/", store_categoryS);
 		session.setAttribute("store_category", store_category);
 		//List<String> amenityList = Arrays.asList(store_amenities.split(","));
-		String store_amenities = String.join(",", store_amenitiesS);
+		String store_amenities = String.join("/", store_amenitiesS);
 		session.setAttribute("store_amenities", store_amenities);
 		session.setAttribute("store_note", store_note);
 		session.setAttribute("store_max_person", store_max_person);
@@ -105,22 +105,7 @@ public class businMService {
 	public String registerFinish(businMDTO dto, HttpServletRequest request, 
 						String[] store_business_hours) {
 		String result = null;
-		HttpSession session = request.getSession();
-		dto.setStore_id((String) session.getAttribute("storeId"));
-		dto.setStore_zip((String) session.getAttribute("store_zip"));
-		dto.setStore_add((String) session.getAttribute("store_add"));
-		dto.setStore_add_info((String) session.getAttribute("store_add_info"));
-		dto.setStore_introduce((String) session.getAttribute("store_introduce"));
-		dto.setStore_category((String) session.getAttribute("store_category"));
-		dto.setStore_amenities((String)session.getAttribute("store_amenities"));
-		dto.setStore_note((String) session.getAttribute("store_note"));
-		dto.setStore_max_person((Integer) session.getAttribute("store_max_person"));
-		dto.setStore_booking_rule((String) session.getAttribute("store_booking_rule"));
-		String store_business_hoursS = String.join(",", store_business_hours);
-		System.out.println("store_business_hoursS : " + store_business_hoursS);
-		dto.setStore_business_hours(store_business_hoursS);
-		
-		session = request.getSession(false); // 세션이 없으면 null 반환
+		HttpSession session = request.getSession(false); // 세션이 없으면 null 반환
 	    
 	    if (session != null) {
 		Enumeration<String> attributeNames = session.getAttributeNames();
@@ -132,6 +117,19 @@ public class businMService {
 	            System.out.println("보선-가게등록용 세션 " + attributeName + "의 값: " + attributeValue);
 	        }
 	    }
+	    
+	    dto.setStore_id((String) session.getAttribute("storeId"));
+	    dto.setStore_zip((String) session.getAttribute("store_zip"));
+	    dto.setStore_add((String) session.getAttribute("store_add"));
+	    dto.setStore_add_info((String) session.getAttribute("store_add_info"));
+	    dto.setStore_introduce((String) session.getAttribute("store_introduce"));
+	    dto.setStore_category((String) session.getAttribute("store_category"));
+	    dto.setStore_amenities((String)session.getAttribute("store_amenities"));
+	    dto.setStore_note((String) session.getAttribute("store_note"));
+	    dto.setStore_max_person((Integer) session.getAttribute("store_max_person"));
+	    dto.setStore_booking_rule((String) session.getAttribute("store_booking_rule"));
+	    String store_business_hoursS = String.join("/", store_business_hours);
+	    dto.setStore_business_hours(store_business_hoursS);
             
 		int row = register(dto);
 		System.out.println("보선-서비스에서 나온 result : " + row);
@@ -153,11 +151,11 @@ public class businMService {
 		session.removeAttribute("store_introduce");
 		session.removeAttribute("store_category");
 		session.removeAttribute("store_amenities");
+		session.removeAttribute("store_note");
 		session.removeAttribute("store_max_person");
 		session.removeAttribute("store_booking_rule");
 		
 		Enumeration<String> attributeNames1 = session.getAttributeNames();
-		//attributeNames 세션의 모든 이름(키)을 가져옴, attributeValue 세션의 모든 값을 가져옴
 		while (attributeNames1.hasMoreElements()) {
 			String attributeName = attributeNames1.nextElement();
 			Object attributeValue = session.getAttribute(attributeName);

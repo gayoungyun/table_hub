@@ -7,11 +7,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM.css?after">
+<link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM/businessM.css?after">
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=f96a93ad7623e257e539c299c4c8fcb6&libraries=services"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f96a93ad7623e257e539c299c4c8fcb6"></script>
-<script type="text/javascript" src="${path}/resources/js/businessM.js"></script>
+<script type="text/javascript" src="${path}/resources/js/businessM/businessM.js"></script>
 
 </head>
 <body>
