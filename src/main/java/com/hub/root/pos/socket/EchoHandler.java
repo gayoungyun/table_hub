@@ -43,27 +43,45 @@ public class EchoHandler extends TextWebSocketHandler{
 	// 클라이언트가 Data 전송 시
 		@Override
 		protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-			String senderId = getMemberId(session);
 			// 특정 유저에게 보내기
 			String msg = message.getPayload();
+			
 			if(msg != null) {
-				String[] strs = msg.split(",");
-				log(strs.toString());
-				if(strs != null && strs.length == 4) {
-					String type = strs[0];
-					String target = strs[1]; // m_id 저장
-					String content = strs[2];
-					String url = strs[3];
-					WebSocketSession targetSession = users.get(target);  // 메시지를 받을 세션 조회
+				String[] str = msg.split(",");
+				
+				if(str != null && str.length == 3)
+				{
+					String name = str[0];
+					String person_num = str[1];
+					String sender = str[2];
 					
-					// 실시간 접속시
-					if(targetSession!=null) {
-						// ex: [&분의일] 신청이 들어왔습니다.
-						TextMessage tmpMsg = new TextMessage("<a target='_blank' href='"+ url +"'>[<b>" + type + "</b>] " + content + "</a>" );
-						targetSession.sendMessage(tmpMsg);
+					if(sender.equals("0"))
+					{
+						
 					}
 				}
 			}
+			
+			String senderId = getMemberId(session);
+			System.out.println("senderId : " + senderId);
+//			if(msg != null) {
+//				String[] strs = msg.split(",");
+//				log(strs.toString());
+//				if(strs != null && strs.length == 4) {
+//					String type = strs[0];
+//					String target = strs[1]; // m_id 저장
+//					String content = strs[2];
+//					String url = strs[3];
+//					WebSocketSession targetSession = users.get(target);  // 메시지를 받을 세션 조회
+//					
+//					// 실시간 접속시
+//					if(targetSession!=null) {
+//						// ex: [&분의일] 신청이 들어왔습니다.
+//						TextMessage tmpMsg = new TextMessage("<a target='_blank' href='"+ url +"'>[<b>" + type + "</b>] " + content + "</a>" );
+//						targetSession.sendMessage(tmpMsg);
+//					}
+//				}
+//			}
 		}
 	
 	// 연결 해제될 때

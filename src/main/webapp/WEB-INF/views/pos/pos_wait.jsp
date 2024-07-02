@@ -314,11 +314,14 @@ body {
 
 <script type="text/javascript">
 	let socket = null;
+	
 	const body = document.getElementById('body');
 	
 	$(document).ready(function() {
 		connectWs();
 	})
+	
+	
 	
 	// 소켓
 	function connectWs() {
@@ -341,8 +344,8 @@ body {
 	};
 
 	body.addEventListener("click", function(event) {
-
 		let parent = event.target;
+		
 		for (let i = 0; i < 4; i++) {
 			// 마이너스 버튼을 누르면
 			if (parent.classList.contains('minus')) {
@@ -370,12 +373,18 @@ body {
 				const input_text = document.getElementById('input_text');
 				const person_num = document.querySelector(".person_num");
 				
-				if(input_text.value == null)
+				if(input_text.value == "")
 				{
-
+					alert("이름을 입력해 주세요!!");
 				}
+				else if(person_num.value == 0)
+				{
+					alert("인원을 입력해 주세요!!");		
+				}	
 				else {
-					
+					waitingNumber++;
+					// 이름, 인원, 대기번호 순서, 보내는 곳 종류
+					socket.send(input_text.value + "," + person_num.value + "," + 0);
 				}
 				
 				break;

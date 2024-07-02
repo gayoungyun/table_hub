@@ -298,6 +298,7 @@
 			};
 
 		};
+
 		
 	
 		sse.addEventListener('connect', (e) => {
