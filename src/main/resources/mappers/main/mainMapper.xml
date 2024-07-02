@@ -117,32 +117,6 @@
     </where>
 </select>
 
-
-
-<select id="getList" parameterType="com.hub.root.main.dto.MainMapDTO" resultType="com.hub.root.main.dto.MainMapDTO">
-    SELECT
-        store_name,
-        store_add,
-        store_add_info
-    FROM
-        store_info
-    WHERE
-    <if test="searchWrd != null and searchWrd != ''">
-        (store_add LIKE CONCAT('%', #{searchWrd}, '%') OR  
-        store_name LIKE CONCAT('%', #{searchWrd}, '%'))
-    </if>
-</select>
-
-
-
-
-
-
-
-
-
-
-
 <select id="getStoreInfoByCategory" resultMap="mainMap">
     SELECT si.*, sm.store_menu_img, sm.store_menu_name, sm.store_menu_price, sm.store_menu_detail, sm.store_menu_category 
     FROM store_info si

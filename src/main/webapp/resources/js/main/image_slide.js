@@ -27,12 +27,26 @@ document.addEventListener('DOMContentLoaded', function() {
             setInterval(updateSlider, 3000);
         }, 0);
 
+       
         // 버튼 클릭 이벤트 핸들러
         var buttons = slider.querySelectorAll('.food-tagname button');
         // 각 버튼에 클릭 이벤트를 추가
         buttons.forEach(function(button) {
             button.addEventListener('click', function() {
-                window.location.href = '/root/main/mainPage2'; 
+                var category = button.closest('.food-tagname').querySelector('input[name="category"]').value;
+                var currentUrl = new URL(window.location.href);
+                var keyword = currentUrl.searchParams.get("keyword");
+                var searchType = currentUrl.searchParams.get("searchType");
+                var url = '/root/main/mainPage2?category=' + encodeURIComponent(category);
+                
+                if (keyword) {
+                    url += '&keyword=' + encodeURIComponent(keyword);
+                }
+                if (searchType) {
+                    url += '&searchType=' + encodeURIComponent(searchType);
+                }
+
+                window.location.href = url;
             });
         });
     });

@@ -12,7 +12,6 @@
 
 </head>
 <body>
-
 	<footer>
 		<div class="footer-image">
 			<img src="${path}/resources/img/main/info_icon_01.png">
@@ -28,7 +27,6 @@
 			<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/LINE_New_App_Icon_%282020-12%29.png/600px-LINE_New_App_Icon_%282020-12%29.png">
 		</div>
 	</footer>
-
 </body>
 </html>
 

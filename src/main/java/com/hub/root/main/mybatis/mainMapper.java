@@ -20,8 +20,6 @@ public interface mainMapper {
 	public List<MainMapDTO> getStoreInfoByCategory(@Param("category") String category);
 	public List<Map<String, Object>> getMenuImage(@Param("params") Map<String, Object> params);
 	
-	public List<MainMapDTO> getList(MainMapDTO searchVO);
-	
 	public int infoSave(MainDTO dto);
 	public void saveImagePathToStoreImg(MainImgDTO dto);
 	public void storeSave(MainMapDTO dto);

@@ -51,8 +51,8 @@
 			                                <div class="food-tagname">#${cat}
 			                                    <!-- 자세히보기 버튼 -->
 			                                    <form action="${path}/main/mainPage2" method="get">
-			                                        <input type="hidden" name="category" value="${category}" />
-			                                        <button type="submit">자세히보기</button>
+			                                        <input type="hidden" name="category" value="${cat}" />
+			                                        <button type="button">자세히보기</button>
 			                                    </form>
 			                                </div>
 			                            </li>

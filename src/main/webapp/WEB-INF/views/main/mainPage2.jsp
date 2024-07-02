@@ -199,7 +199,7 @@
 		font-family: 'Gamja Flower', cursive;
         font-size: 16px;
         color: cornflowerblue;
-        /* text-decoration: none; */
+        text-decoration: none;
         padding: 10px 20px;
         /* border: 1px solid blue; */
         border-radius: 5px;
@@ -267,25 +267,26 @@
 				
 				<!-- ===== 메뉴 상세보기 부분 ===== -->
 				<c:choose>
-    <c:when test="${not empty storeList}">
-        <c:forEach var="store" items="${storeList}">
-            <div class="menu-detail">
-                <div class="detail-container-left">
-                    <div class="menu-detail-imgBig">
-                        <c:if test="${not empty imgList}">
-                            <img class="imgBig" src="${path}/main/download?fileName=${imgList[0]['store_img_path']}">
-                        </c:if>
-                    </div>
-                    <div class="menu-detail-imgSmall">
-                        <c:forEach var="image" items="${imgList}" varStatus="status">
-                            <c:if test="${status.index < 3}">
-                                <div class="imgSmall1">
-                                    <img class="imgSmall" src="${path}/main/download?fileName=${image['store_img_path']}">
-                                </div>
-                            </c:if>
-                        </c:forEach>
-                    </div>
-                </div>
+			    <c:when test="${not empty storeList}">
+			        <c:forEach var="store" items="${storeList}">
+			            <div class="menu-detail">
+			                <div class="detail-container-left">
+			                    <div class="menu-detail-imgBig">
+    <c:if test="${not empty imgList}">
+        <img class="imgBig" src="${path}/main/download?fileName=${imgList[0]['store_menu_img']}">
+    </c:if>
+</div>
+<div class="menu-detail-imgSmall">
+    <c:forEach var="image" items="${imgList}" varStatus="status">
+        <c:if test="${status.index < 3}">
+            <div class="imgSmall1">
+                <img class="imgSmall" src="${path}/main/download?fileName=${image['store_menu_img']}">
+            </div>
+        </c:if>
+    </c:forEach>
+</div>
+
+			                </div>
                                 <div class="detail-container-right">
                                     <c:if test="${not empty store.store_name}">
                                         <span>가게 이름 : ${store.store_name}</span><br>
@@ -303,36 +304,36 @@
                                         <span>상세 주소 : ${store.store_add_info}</span><br>
                                     </c:if>
                                     <c:if test="${not empty store.store_category}">
-                                        <span>카테고리 : 
-                                        <c:set var="seenCategories" value="" />
-                                        
-                                        	<!-- 특정 카테고리로 검색 시 -->
-				                            <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
-				                                <c:if test="${fn:contains(category, param.keyword)}">
-				                                    <c:if test="${not fn:contains(seenCategories, category)}">
-				                                        <c:if test="${!empty seenCategories}">
-				                                            /
-				                                        </c:if>
-				                                        ${category}
-				                                        <c:set var="seenCategories" value="${seenCategories}${category}/" />
-				                                    </c:if>
-				                                </c:if>
-				                            </c:forEach>
-				                            
-				                            <!-- "ALL" 또는  메뉴 이름으로 검색 시 모든 카테고리 출력 -->
-				                            <c:if test="${param.searchType == 'menu_name' || param.searchType == '' || param.searchType == null}">
-				                                <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
-				                                    <c:if test="${not fn:contains(seenCategories, category)}">
-				                                        <c:if test="${!empty seenCategories}">
-				                                            /
-				                                        </c:if>
-				                                        ${category}
-				                                        <c:set var="seenCategories" value="${seenCategories}${category}/" />
-				                                    </c:if>
-				                                </c:forEach>
-				                            </c:if>
-				                        </span><br>
-				                    </c:if>
+                        <span>카테고리 : 
+                        <c:set var="seenCategories" value="" />
+                        
+                        <!-- 특정 카테고리로 검색 시 -->
+                        <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
+                            <c:if test="${fn:contains(category, param.keyword)}">
+                                <c:if test="${not fn:contains(seenCategories, category)}">
+                                    <c:if test="${!empty seenCategories}">
+                                        /
+                                    </c:if>
+                                    ${category}
+                                    <c:set var="seenCategories" value="${seenCategories}${category}/" />
+                                </c:if>
+                            </c:if>
+                        </c:forEach>
+                        
+                        <!-- "ALL" 또는  메뉴 이름으로 검색 시 모든 카테고리 출력 -->
+                        <c:if test="${param.searchType == 'menu_name' || param.searchType == '' || param.searchType == null}">
+                            <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
+                                <c:if test="${not fn:contains(seenCategories, category)}">
+                                    <c:if test="${!empty seenCategories}">
+                                        /
+                                    </c:if>
+                                    ${category}
+                                    <c:set var="seenCategories" value="${seenCategories}${category}/" />
+                                </c:if>
+                            </c:forEach>
+                        </c:if>
+                        </span><br>
+                    </c:if>
                                     <c:if test="${not empty store.store_note}">
                                         <span>메모 : ${store.store_note}</span><br>
                                     </c:if>
@@ -351,133 +352,177 @@
                         <br><br><p>검색 결과가 없습니다.</p>
                     </c:otherwise>
                 </c:choose>
-
             </div>
 			
 			<!-- ===== right side ===== -->
-        <div class="main-items right-itme">
-            <div class="map_wrap">
-                <div id="map"></div>
-                <div id="menu_wrap" class="bg_white">
-                    <div class="option">
-                        <div>
-                            <form onsubmit="searchPlaces(); return false;">
-                                키워드 : <input type="text" value="이태원 맛집" id="keyword" size="15"> 
-                                <button type="submit">검색하기</button> 
-                            </form>
-                        </div>
-                    </div>
-                    <hr>
-                    <ul id="placesList"></ul>
-                    <div id="pagination"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    
- <%@ include file="./footer.jsp" %> 
+	        <div class="main-items right-itme">
+	            <div class="map_wrap">
+	                <div id="map"></div>
+	                <div id="menu_wrap" class="bg_white">
+	                    <div class="option">
+	                        <div>
+	                            <form onsubmit="searchPlaces(); return false;">
+	                                키워드 : 
+	                                <input type="text" value="맛집" id="keyword" size="15"> 
+	                                <datalist id="addressList">
+						                <!-- JS로 데이터 리스트 추가 -->
+						            </datalist>
+	                                <button type="submit">검색하기</button> 
+	                            </form>
+	                        </div>
+	                    </div>
+	                    <hr>
+	                    <ul id="placesList"></ul>
+	                    <div id="pagination"></div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+<%@ include file="./footer.jsp" %> 
 </body>
 </html>
  
-<<script type="text/javascript">
-
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+<script type="text/javascript">
 
 document.addEventListener("DOMContentLoaded", marker);
 
 function marker() {
-	const key = '${keyword}'; 
-	const ser = '${searchType}';
-	const cat = '${category}';
-	
-	fetch("http://localhost:8080/root/mainAPI/storeList?keyword="+ key + "&searchType=" + ser + "&category=" + cat, {
-		headers : {"Content-Type": "application/json"},
-	})
-    .then((response) => response.json())
-    .then((res) => {
-
-		for(let i = 0; i < ${storeListSize}; i++)
-		{
-			fetch("https://dapi.kakao.com/v2/local/search/address.json?query=" + res[i].store_add , {
-			    headers : {"Content-Type": "application/json", "Authorization" : "KakaoAK a3c83c3855b79edaedc0687b23adb436"}
-			})
-			.then((response) => response.json())
-			.then((res) => {
-				console.log(res.documents[0].road_address.x);  
-			})	
-		} 
-   				
-   		
+    const key = '${keyword}'; 
+    const ser = '${searchType}';
+    const cat = '${category}';
+    
+    fetch("http://localhost:8080/root/mainAPI/storeList?keyword=" + key + "&searchType=" + ser + "&category=" + cat, {
+        headers: { "Content-Type": "application/json" },
     })
-	 
-	
-	
-	
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then((res) => {
+        console.log("Store List: ", res);
+        
+        var addressList = document.getElementById('addressList');
+        addressList.innerHTML = ''; // 기존 리스트 초기화
+        
+        var placesList = document.getElementById('placesList');
+        placesList.innerHTML = ''; // 기존 리스트 초기화
+
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+            mapOption = { 
+                center: new kakao.maps.LatLng(37.5665, 126.9780), // 초기 중심좌표 (서울 중심으로 설정)
+                level: 3 // 지도의 확대 레벨
+            };
+
+        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+        var bounds = new kakao.maps.LatLngBounds(); // 지도 경계 객체 생성
+
+        var promises = res.map((store, index) => {
+            return fetch("https://dapi.kakao.com/v2/local/search/address.json?query=" + store.store_add, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "KakaoAK a3c83c3855b79edaedc0687b23adb436"
+                }
+            })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log("Address Data for store: ", store.store_name, data);
+                if (data.documents.length > 0) {
+                    var roadAddress = data.documents[0].road_address || data.documents[0].address;
+                    var x = roadAddress.x;
+                    var y = roadAddress.y;
+
+                    // 주소 목록에 추가
+                    var option = document.createElement('option');
+                    option.value = store.store_add;
+                    addressList.appendChild(option);
+
+                    // 검색 결과 목록에 추가
+                    var listItem = document.createElement('li');
+                    listItem.innerHTML = `
+                        <div class="item">
+                            <span class="markerbg marker_${index + 1}"></span>
+                            <div class="info">
+                                <h5>${store.store_name}</h5>
+                                <span>${store.store_add}</span>
+                                <span class="tel">${store.store_phone}</span>
+                            </div>
+                        </div>`;
+                    placesList.appendChild(listItem);
+
+                    return {
+                        position: new kakao.maps.LatLng(y, x),
+                        name: store.store_name,
+                        address: store.store_add // 주소 추가
+                    };
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching address data for store: ", store.store_name, error);
+            });
+        });
+
+        Promise.all(promises).then(locations => {
+            locations.forEach(loc => {
+                if (loc) {
+                    console.log("Adding marker: ", loc);
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: loc.position
+                    });
+
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: '<div>' + loc.name + '<br>' + loc.address + '</div>' // 주소 추가
+                    });
+
+                    kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+                    kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+
+                    // 지도 경계에 마커의 위치를 포함시킴
+                    bounds.extend(loc.position);
+
+                    // 모든 마커를 포함하는 경계로 지도 범위 설정
+                    map.setBounds(bounds);
+                }
+            });
+        }).catch((error) => {
+            console.error("Error in Promise.all: ", error);
+        });
+    })
+    .catch((error) => {
+        console.error("Error fetching store list: ", error);
+    });
 }
 
-var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
-    mapOption = { 
-        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
-    };
-
-var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
- 
-// 마커를 표시할 위치와 내용을 가지고 있는 객체 배열입니다 
-var positions = [
-    {
-        content: '<div>카카오</div>', 
-        latlng: new kakao.maps.LatLng(33.450705, 126.570677)
-    },
-    {
-        content: '<div>생태연못</div>', 
-        latlng: new kakao.maps.LatLng(33.450936, 126.569477)
-    },
-    {
-        content: '<div>텃밭</div>', 
-        latlng: new kakao.maps.LatLng(33.450879, 126.569940)
-    },
-    {
-        content: '<div>근린공원</div>',
-        latlng: new kakao.maps.LatLng(33.451393, 126.570738)
-    }
-];
-
-for (var i = 0; i < positions.length; i ++) {
-    // 마커를 생성합니다
-    var marker = new kakao.maps.Marker({
-        map: map, // 마커를 표시할 지도
-        position: positions[i].latlng // 마커의 위치
-    });
-
-    // 마커에 표시할 인포윈도우를 생성합니다 
-    var infowindow = new kakao.maps.InfoWindow({
-        content: positions[i].content // 인포윈도우에 표시할 내용
-    });
-
-    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-    // 이벤트 리스너로는 클로저를 만들어 등록합니다 
-    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-    kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
-    kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
-}
-
-// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
 function makeOverListener(map, marker, infowindow) {
     return function() {
         infowindow.open(map, marker);
     };
 }
 
-// 인포윈도우를 닫는 클로저를 만드는 함수입니다 
 function makeOutListener(infowindow) {
     return function() {
         infowindow.close();
     };
 }
-
-
 </script>
+
 
 
 

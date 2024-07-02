@@ -23,21 +23,21 @@
 		<div class="flex-sub-container-1">
 			<div class="flex-item">
 				<c:if test="${userId != null }">
-					<a href="/root/member/myPage/detail">Profile</a>
+					<a href="/root/member/myPage/detail" class="a-item">Profile</a>
 				</c:if>
 				<c:if test="${storeId != null }">
-					<a href="/root/member/myPage/detail">Profile</a>
+					<a href="/root/member/myPage/detail" class="a-item">Profile</a>
 				</c:if>
 
 			</div>
 			<div class="flex-item">
-				<a href="#">Board</a>
+				<a href="#" class="a-item">Board</a>
 			</div>
 		</div>
 		
 		<!-- ===== Title 부분 ===== -->
 		<div class="flex-item-title">
-			<a href="/root/main/mainPage1">Tabel HUB</a>
+			<a href="/root/main/mainPage1" class="a-title">Tabel HUB</a>
 		</div>
 		
 		<!-- ===== item2 ===== -->
@@ -45,10 +45,10 @@
 			<div class="flex-item">
 				<c:choose>
 					<c:when test="${userId != null || storeId != null }">
-						<a href="/root/member/logout">LOGOUT</a>
+						<a href="/root/member/logout" class="a-item">LOGOUT</a>
 					</c:when>
 					<c:otherwise>
-						<a href="/root/member/login">LOGIN</a>
+						<a href="/root/member/login" class="a-item">LOGIN</a>
 					</c:otherwise>
 				</c:choose>	
 			</div>

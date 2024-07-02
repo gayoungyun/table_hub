@@ -55,10 +55,7 @@ public class MainServiceImpl implements MainService{
 	    
 		return mapper.getMenuImage(params);
 	}
-	public List<MainMapDTO> getList(MainMapDTO searchVO) {
-	    return mapper.getList(searchVO);
-	}
-	
+
 	public int inputInfo(MainDTO dto) {
 		try {
 			return mapper.infoSave(dto);

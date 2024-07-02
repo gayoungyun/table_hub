@@ -45,14 +45,18 @@ public class MainController {
 	public String header() {
 		return "main/header";
 	}
-	// 메인 페이지1 요청 처리===================================
+	// mainPage1 요청 처리===================================
 	@GetMapping("mainPage1")
 	public String main( HttpSession session,Model model) {
 		String user = (String) session.getAttribute("userId");
-		System.out.println("session id main : "+user);
+		String store = (String) session.getAttribute("storeId");
+	    
 		if(user != null) {
 			model.addAttribute("user", user);
-		}	
+		}	else if (store != null) {
+	        model.addAttribute("store", store);
+	    }
+		
 		List<String> categories = ms.getAllCategories();
 		List<MainDTO> dtoList = ms.mainPage1(model);
 		model.addAttribute("categories", categories);
@@ -66,41 +70,47 @@ public class MainController {
 		model.addAttribute("dtoList", dtoList);
 		return "main/mainPage1";
 	}
-	// 메인 페이지2 요청 처리===================================
+	// mainPage2 요청 처리===================================
 	@RequestMapping("mainPage2")
 	public String mainPage2(@RequestParam(required=false) String keyword, 
-			 				@RequestParam(required=false) String searchType,
-			 				@RequestParam(required=false) String category,
-			 				Model model) {    
-        Map<String, Object> params = new HashMap<>();
-        params.put("keyword", keyword != null ? keyword : "");
-        params.put("searchType", searchType != null ? searchType : "");
-        params.put("category", category != null ? category : "");
-        
+	                        @RequestParam(required=false) String searchType,
+	                        @RequestParam(required=false) String category,
+	                        HttpSession session, Model model) {   
+		String user = (String) session.getAttribute("userId");
+		String store = (String) session.getAttribute("storeId");
+	    
+	    Map<String, Object> params = new HashMap<>();
+	    String key = (keyword != null) ? keyword : "null";
+	    String search = (searchType != null) ? searchType : "null";
+	    String cat = (category != null) ? category : "null";
+
+	    params.put("keyword", key);
+	    params.put("searchType", search);
+	    params.put("category", cat);
+
 	    List<MainMapDTO> storeList = ms.getStoreInfo(params);
 	    List<Map<String, Object>> imgList = ms.getMenuImage(params);
-	    
-		model.addAttribute("storeList",storeList);
-		model.addAttribute("storeListSize",storeList.size());
-		model.addAttribute("imgList", imgList);
+	   
+	    if (storeList == null) {
+	        storeList = new ArrayList<>();
+	    }
 
-		
-		String key = keyword;
-		String search = searchType;
-		String cat = category;
-		if(keyword.equals(""))
-			key = "null";
-		if(searchType.equals(""))
-			search = "null";
-		if(category.equals(""))
-			cat = "null";
-		
-		model.addAttribute("keyword", key);
-		model.addAttribute("searchType", search);
-		model.addAttribute("category", cat);
-		
-		return "main/mainPage2";
+	    if (imgList == null) {
+	        imgList = new ArrayList<>();
+	    }
+
+	    model.addAttribute("storeList", storeList);
+	    model.addAttribute("storeListSize", storeList.size());
+	    model.addAttribute("imgList", imgList);
+	    
+	    model.addAttribute("keyword", keyword);
+	    model.addAttribute("searchType", searchType);
+	    model.addAttribute("category", category);
+
+	    return "main/mainPage2";
 	}
+
+	
 	// 정보 입력 페이지 요청 처리(store_menu)====================
 	@RequestMapping("inputInfo")
 	public String inputInfo() {
