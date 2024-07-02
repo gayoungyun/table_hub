@@ -203,6 +203,11 @@ public class MemberInfoRestController {
 		return map;
 	}
 	
+	
+	
+	/* 
+	 * 게시판 불러오기 및 삭제하기
+	 */
 	@GetMapping(value="reply", produces="application/json; charset=utf-8")
 	public Map<String, Object> getReply(@RequestParam int page, HttpSession session) {
 		System.out.println("memInfoRestCont getReply 실행");
@@ -224,6 +229,9 @@ public class MemberInfoRestController {
 		return map;
 	}
 	
+	
+	
+	// 내 활동 관리 상단의 내 정보 간략하게 표시하는 메뉴의 데이터 불러오기
 	@GetMapping(value="myContentMyInfo", produces="application/json; charset=utf-8")
 	public Map<String, Object> myContentMyInfo (HttpSession session, Model model) {
 		Map<String, Object> map = mis.getMyContentMyInfo((String)session.getAttribute("userId"));

@@ -26,8 +26,8 @@
 				html += `<td>`
 				html += `<b id="myContentmyId">` + result.userNick + `</b><br>`
 				html += `<label class="myCount">작성 게시글 <b>` + result.BOARD_COUNT + `</b> · </label>`
-				html += `<label class="myCount">작성 댓글 <b>` + result.REVIEW_COUNT + `</b> · </label>`
-				html += `<label class="myCount">작성 리뷰 <b>` + result.REPLY_COUNT + `</b> · </label>`
+				html += `<label class="myCount">작성 댓글 <b>` + result.REPLY_COUNT + `</b> · </label>`
+				html += `<label class="myCount">작성 리뷰 <b>` + result.REVIEW_COUNT + `</b> · </label>`
 				html += `<label class="myCount">리뷰 평점 <b>` + result.REVIEW_SCORE + `</b></label>`
 				html += `</td>`
 				html += `</tr>` 
