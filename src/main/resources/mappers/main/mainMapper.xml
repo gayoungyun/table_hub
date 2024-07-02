@@ -39,6 +39,46 @@
     JOIN store_info i ON m.store_id = i.store_id 
     WHERE i.store_category = #{category}
 </select>
+<!--  
+<select id="getStoreInfo" resultMap="mainMap">
+    SELECT si.*, 
+           sm.store_menu_img, 
+           sm.store_menu_name, 
+           sm.store_menu_price, 
+           sm.store_menu_detail, 
+           sm.store_menu_category 
+    FROM store_info si
+    LEFT JOIN store_menu sm ON si.store_id = sm.store_id
+    <where>
+        <if test="params.keyword != null and params.keyword != ''">
+            <choose>
+                <when test="params.searchType == 'menu_name'">
+                    si.store_name LIKE '%' || #{params.keyword} || '%'
+                </when>
+                <when test="params.searchType == 'menu_category'">
+                    EXISTS (
+                        SELECT 1 FROM dual
+                        WHERE REGEXP_SUBSTR(si.store_category, '[^/]+', 1, LEVEL) = #{params.keyword}
+                        CONNECT BY REGEXP_SUBSTR(si.store_category, '[^/]+', 1, LEVEL) IS NOT NULL
+                    )
+                </when>
+                <otherwise>
+                    si.store_name LIKE '%' || #{params.keyword} || '%'
+                    OR EXISTS (
+                        SELECT 1 FROM dual
+                        WHERE REGEXP_SUBSTR(si.store_category, '[^/]+', 1, LEVEL) = #{params.keyword}
+                        CONNECT BY REGEXP_SUBSTR(si.store_category, '[^/]+', 1, LEVEL) IS NOT NULL
+                    )
+                </otherwise>
+            </choose>
+        </if>
+        <if test="params.category != null and params.category != ''">
+            AND si.store_category LIKE '%' || #{params.category} || '%'
+        </if>
+    </where>
+</select>
+-->
+
 <select id="getStoreInfo" resultMap="mainMap">
     SELECT si.*, 
            sm.store_menu_img, 
@@ -77,12 +117,39 @@
     </where>
 </select>
 
+
+
+<select id="getList" parameterType="com.hub.root.main.dto.MainMapDTO" resultType="com.hub.root.main.dto.MainMapDTO">
+    SELECT
+        store_name,
+        store_add,
+        store_add_info
+    FROM
+        store_info
+    WHERE
+    <if test="searchWrd != null and searchWrd != ''">
+        (store_add LIKE CONCAT('%', #{searchWrd}, '%') OR  
+        store_name LIKE CONCAT('%', #{searchWrd}, '%'))
+    </if>
+</select>
+
+
+
+
+
+
+
+
+
+
+
 <select id="getStoreInfoByCategory" resultMap="mainMap">
     SELECT si.*, sm.store_menu_img, sm.store_menu_name, sm.store_menu_price, sm.store_menu_detail, sm.store_menu_category 
     FROM store_info si
     JOIN store_menu sm ON si.store_id = sm.store_id
     WHERE si.store_category LIKE '%' || #{category} || '%'
 </select>
+
 <select id="getMenuImage" resultMap="main">
     SELECT sm.store_menu_img
     FROM store_menu sm
@@ -153,6 +220,10 @@
 	insert into store_menu(store_id, store_menu_img, store_menu_name, store_menu_price,
 		store_menu_detail, store_menu_category) values(#{store_id},#{store_menu_img},
 		#{store_menu_name},#{store_menu_price},#{store_menu_detail},#{store_menu_category})
+</insert>
+
+<insert id="saveImagePathToStoreImg">
+    INSERT INTO store_img (STORE_ID, STORE_IMG_ROOT, STORE_IMG_MAIN) VALUES (#{store_id}, #{store_img_root}, #{store_img_main})
 </insert>
 
 <insert id="storeSave" >

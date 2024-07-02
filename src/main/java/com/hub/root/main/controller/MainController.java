@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -70,24 +71,34 @@ public class MainController {
 	public String mainPage2(@RequestParam(required=false) String keyword, 
 			 				@RequestParam(required=false) String searchType,
 			 				@RequestParam(required=false) String category,
-			 				Model model) {       
+			 				Model model) {    
         Map<String, Object> params = new HashMap<>();
         params.put("keyword", keyword != null ? keyword : "");
         params.put("searchType", searchType != null ? searchType : "");
         params.put("category", category != null ? category : "");
+        
 	    List<MainMapDTO> storeList = ms.getStoreInfo(params);
-	    List<MainDTO> imgList = ms.getMenuImage(params);
-	    
-	    for (MainDTO img : imgList) {
-	        System.out.println("Image File in Controller: " + img.getStore_menu_img());
-	    }
+	    List<Map<String, Object>> imgList = ms.getMenuImage(params);
 	    
 		model.addAttribute("storeList",storeList);
+		model.addAttribute("storeListSize",storeList.size());
 		model.addAttribute("imgList", imgList);
-		model.addAttribute("category", category);
 
-		System.out.println("store list : "+storeList);
-		System.out.println("image list : "+imgList);
+		
+		String key = keyword;
+		String search = searchType;
+		String cat = category;
+		if(keyword.equals(""))
+			key = "null";
+		if(searchType.equals(""))
+			search = "null";
+		if(category.equals(""))
+			cat = "null";
+		
+		model.addAttribute("keyword", key);
+		model.addAttribute("searchType", search);
+		model.addAttribute("category", cat);
+		
 		return "main/mainPage2";
 	}
 	// 정보 입력 페이지 요청 처리(store_menu)====================
@@ -104,13 +115,14 @@ public class MainController {
 							@RequestParam int store_menu_price,
 							@RequestParam String store_menu_detail,
 							@RequestParam String store_menu_category) throws IOException{
-		ms.infoSave(mul,store_id,store_menu_name,store_menu_price,store_menu_detail,store_menu_category);
+		String imagePath  = ms.saveMenuImage(mul);
+		ms.infoSave(store_id,store_menu_name,store_menu_price,store_menu_detail,store_menu_category, imagePath);
+		//ms.saveImagePathToStoreImg(store_id, imgPath);
 	}
 	// 파일 다운로드 요청 처리==================================
 	@GetMapping("download")
 	public void download(@RequestParam String fileName, HttpServletRequest req, HttpServletResponse res) throws Exception {
 	    File file = new File(MainFileService.IMAGE_REPO + "/" + fileName);
-	    System.out.println("Attempting to download file: " + file.getAbsolutePath());
 
 	    if (file.exists()) {
 	        String mimeType = req.getServletContext().getMimeType(file.getName());

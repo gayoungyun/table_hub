@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hub.root.main.dto.MainDTO;
+import com.hub.root.main.dto.MainImgDTO;
 import com.hub.root.main.dto.MainMapDTO;
 import com.hub.root.main.mybatis.mainMapper;
 
@@ -49,13 +50,13 @@ public class MainServiceImpl implements MainService{
 	    List<MainMapDTO> storeList = mapper.getStoreInfoByCategory(category);
 	    return storeList;
 	}
-	public List<MainDTO> getMenuImage(Map<String, Object> params){
-		List<MainDTO> imgList = mapper.getMenuImage(params);
-	    for (MainDTO img : imgList) {
-	        System.out.println("Image File: " + img.getStore_menu_img());
-	    }
-	    return imgList;
-		//return mapper.getMenuImage(params);
+	public List<Map<String, Object>> getMenuImage(Map<String, Object> params){
+	    //return imgList;
+	    
+		return mapper.getMenuImage(params);
+	}
+	public List<MainMapDTO> getList(MainMapDTO searchVO) {
+	    return mapper.getList(searchVO);
 	}
 	
 	public int inputInfo(MainDTO dto) {
@@ -66,21 +67,34 @@ public class MainServiceImpl implements MainService{
 			return 0;
 		}	
 	}
-	public void infoSave(MultipartFile mul,String store_id,String store_menu_name,int store_menu_price,String store_menu_detail,String store_menu_category) {
+	public void infoSave(String store_id,String store_menu_name,int store_menu_price,
+						String store_menu_detail,String store_menu_category, String imagePath) {
 		MainDTO dto = new MainDTO();
 		dto.setStore_id(store_id);
 		dto.setStore_menu_name(store_menu_name);
 		dto.setStore_menu_price(store_menu_price);
 		dto.setStore_menu_detail(store_menu_detail);
 		dto.setStore_menu_category(store_menu_category);
-		dto.setStore_menu_img("nan");
+		dto.setStore_menu_img(imagePath  != null ? imagePath  : "nan");
+
+		//dto.setStore_menu_img("nan");
 		
+		/*
 		if(!mul.isEmpty()) {
 			dto.setStore_menu_img(mfs.saveFile(mul));//이미지 있을경우 처리
 		}
+		String imgPath = null;
+		if (!mul.isEmpty()) {
+			imgPath = mfs.saveFile(mul); // 이미지 파일 저장 및 경로 반환
+			dto.setStore_menu_img(imgPath); // store_menu 테이블에 저장할 이미지 경로 설정
+		}
+		*/
 		int result = 0;
 		try {
 			result = mapper.infoSave(dto);
+			if (result == 1 && imagePath  != null) {
+				saveImagePathToStoreImg(store_id, imagePath); // store_img 테이블에 이미지 경로 저장
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -93,6 +107,17 @@ public class MainServiceImpl implements MainService{
 			url = "/main/mainPage1";
 		}
 	}
+	public String saveMenuImage(MultipartFile mul) {
+		return mfs.saveFile(mul);
+	}
+	public void saveImagePathToStoreImg(String store_id, String store_img_root) {		
+		MainImgDTO dto = new MainImgDTO();
+	    dto.setStore_id(store_id);
+	    dto.setStore_img_root(store_img_root);
+	    dto.setStore_img_main(1);
+	    mapper.saveImagePathToStoreImg(dto);
+	}
+
 	public void storeSave(String store_id,String store_pwd,String store_email,String store_phone,String store_main_phone,String store_name,String store_add,
 			    String store_add_info,String store_category,String store_note,String store_introduce,String store_business_hours) {
 		MainMapDTO dto = new MainMapDTO();

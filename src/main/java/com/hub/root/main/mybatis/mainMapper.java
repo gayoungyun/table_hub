@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.ui.Model;
 
 import com.hub.root.main.dto.MainDTO;
+import com.hub.root.main.dto.MainImgDTO;
 import com.hub.root.main.dto.MainMapDTO;
 
 public interface mainMapper {
@@ -17,8 +18,11 @@ public interface mainMapper {
 	public void mainPage2(MainMapDTO MapDTO);
 	public List<MainMapDTO> getStoreInfo(@Param("params") Map<String, Object> params);
 	public List<MainMapDTO> getStoreInfoByCategory(@Param("category") String category);
-	public List<MainDTO> getMenuImage(Map<String, Object> params);
+	public List<Map<String, Object>> getMenuImage(@Param("params") Map<String, Object> params);
+	
+	public List<MainMapDTO> getList(MainMapDTO searchVO);
 	
 	public int infoSave(MainDTO dto);
+	public void saveImagePathToStoreImg(MainImgDTO dto);
 	public void storeSave(MainMapDTO dto);
 }
