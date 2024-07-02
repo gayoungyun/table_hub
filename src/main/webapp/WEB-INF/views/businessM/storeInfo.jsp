@@ -10,6 +10,7 @@
 <link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM.css?after">
 </head>
 <body>
+	<h1>가게정보 확인 메뉴입니다</h1>
 <img src="resources/img/로고.png" width="100px"
 		onclick="window.location.href='http://localhost:8080/root/'"><br>
 가게 이름 : ${ store_name }<br>
