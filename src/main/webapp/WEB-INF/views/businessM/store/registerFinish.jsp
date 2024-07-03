@@ -7,8 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM.css?after">
-<script src="${path}/resources/js/businessM.js"></script>
+<link rel="stylesheet" type="text/css" href="${path}/resources/css/businessMstore.css?after">
+<script src="${path}/resources/js/businessMstore.js"></script>
 </head>
 <body>
 
@@ -31,7 +31,7 @@
 		<button type="button" onclick="">메뉴 등록 하기</button><br>
 		<button type="button" onclick="">사진 등록 하기</button><br>
 		<button type="button" onclick="window.location.href='http://localhost:8080/root/'">메인 화면</button><br>
-		<button type="button" onclick="window.location.href='http://localhost:8080/root/storeInfo'">내 가게 정보보기</button>
+		<button type="button" onclick="window.location.href='http://localhost:8080/root/businMmenu'">내 가게 정보보기</button>
 	</div>
 </div>
 

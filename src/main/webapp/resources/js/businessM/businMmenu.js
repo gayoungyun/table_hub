@@ -1,3 +1,5 @@
+console.log("JavaScript 파일이 연결되었습니다.");
+
 window.onload = function() {
             category(0);
     };	     
@@ -7,15 +9,15 @@ function category(n) {
 	    let cateVal="";
 	    
 	    if(cateNum == 2)
-	    	cateVal = "http://localhost:8080/root/store/menu";
+	    	cateVal = "http://localhost:8080/root/businessM/menuInfo";
 	    else if(cateNum == 3)
-	    	cateVal = "http://localhost:8080/root/store/review";
+	    	cateVal = "http://localhost:8080/root/businessM/photoInfo";
 	    else if(cateNum == 4)
-	    	cateVal = "http://localhost:8080/root/store/photo";
+	    	cateVal = "http://localhost:8080/root/businessM/reviewInfo";
 	    else if(cateNum == 5)
-	    	cateVal = "http://localhost:8080/root/store/map";
+	    	cateVal = "http://localhost:8080/root/businessM/bookInfo";
 	    else
-	    	cateVal = "http://localhost:8080/root/store/info";
+	    	cateVal = "http://localhost:8080/root/businessM/storeInfo";
 	    
 		 const myIframe = document.getElementById("myIframe");
 	     myIframe.src = cateVal;
@@ -29,3 +31,5 @@ var iHeight = document.getElementById('myIframe').contentWindow.document.body.sc
 document.getElementById('myIframe').height = iHeight;
 console.log("카테고리 높이? : ",iHeight);
 }
+
+// <%@ include file="./myPageMenu.jsp" %> 

@@ -1,13 +1,33 @@
+*{
+	user-select: none;
+}
+
+body {
+	background-color: #e8e8e8;
+}
+
+#businMmenu {
+	width: 1500px;
+	display: flex;
+	justify-content: center;
+	margin: 10px auto;
+}
+
 #myPageMenuWrapper {
 	width: 215px;
+	height: 400px;
 	background-color: white;
 	border-radius: 10px;
-	height: 400px;
+	display : column;
+	position : sticky;
+	top: 10px;
+    z-index: 999;
 }
 
 #myPageMenu {
 	margin: auto;
 	width: 200px;
+	height : auto;
 }
 
 .title {
@@ -24,3 +44,8 @@
 	font-size: 14px;
 }
 
+#iframe {
+	margin : 0px 0px 0px 10px;
+	background-color: white;
+	border-radius: 10px;
+}
