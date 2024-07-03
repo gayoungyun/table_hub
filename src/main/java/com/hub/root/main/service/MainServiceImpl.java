@@ -52,10 +52,17 @@ public class MainServiceImpl implements MainService{
 	}
 	public List<Map<String, Object>> getMenuImage(Map<String, Object> params){
 	    //return imgList;
-	    
 		return mapper.getMenuImage(params);
 	}
-
+	public List<MainMapDTO> getStoreImgList(Map<String, Object> params){
+		
+		List<MainMapDTO> storeImgList = mapper.getStoreImgList(params);
+		System.out.println("imglist ser :"+storeImgList );
+		return storeImgList;
+	}
+	public List<MainImgDTO> getStoreImage(String storeId) {
+		return mapper.getStoreImage(storeId);
+	}
 	public int inputInfo(MainDTO dto) {
 		try {
 			return mapper.infoSave(dto);

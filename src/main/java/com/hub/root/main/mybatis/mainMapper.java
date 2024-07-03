@@ -19,6 +19,9 @@ public interface mainMapper {
 	public List<MainMapDTO> getStoreInfo(@Param("params") Map<String, Object> params);
 	public List<MainMapDTO> getStoreInfoByCategory(@Param("category") String category);
 	public List<Map<String, Object>> getMenuImage(@Param("params") Map<String, Object> params);
+	public List<MainMapDTO> getStoreImgList(@Param("params") Map<String, Object> params);
+	
+	public List<MainImgDTO> getStoreImage(String storeId);
 	
 	public int infoSave(MainDTO dto);
 	public void saveImagePathToStoreImg(MainImgDTO dto);

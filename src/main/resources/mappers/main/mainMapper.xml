@@ -26,6 +26,11 @@
 	<result property="store_introduce" column="store_introduce"/>
 	<result property="store_business_hours" column="store_business_hours"/>
 </resultMap>
+<resultMap type="com.hub.root.main.dto.MainImgDTO" id="mainImg">
+	<id property="store_id" column="store_id"/>
+	<result property="store_img_root" column="store_img_root"/>
+	<result property="store_img_main" column="store_img_main"/>
+</resultMap>
 
 <select id="mainPage1" resultMap="main">
 	select * from store_menu
@@ -39,6 +44,27 @@
     JOIN store_info i ON m.store_id = i.store_id 
     WHERE i.store_category = #{category}
 </select>
+
+
+<select id="getStoreImgList" resultMap="mainImg">
+    SELECT ai.* am.store_img_root, am.store_img_main
+    FROM store_info ai 
+    JOIN store_img am ON ai.store_id = am.store_id 
+    WHERE ai.store_category LIKE '%' || #{category} || '%'
+</select>
+
+<select id="getStoreImage" resultMap="mainImg">
+    SELECT * FROM store_img 
+    WHERE store_id = #{storeId} 
+    AND store_img_main = 1 
+    AND ROWNUM = 1
+</select>
+
+
+
+
+
+
 <!--  
 <select id="getStoreInfo" resultMap="mainMap">
     SELECT si.*, 

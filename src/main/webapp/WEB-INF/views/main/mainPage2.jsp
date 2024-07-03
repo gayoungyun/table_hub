@@ -162,12 +162,13 @@
 	.imgBig{
 		width: 450px;
 		height: 300px;
-		object-fit: cover;
+		object-fit: fill;
 	}
 	.menu-detail-imgSmall{
 		display: flex;
 		justify-content: space-between;
 		width: 450px;
+		height: 140px;
 	}
 	.imgSmall1, .imgSmall2, .imgSmall3{
 		width: 32%;
@@ -268,23 +269,24 @@
 				<!-- ===== 메뉴 상세보기 부분 ===== -->
 				<c:choose>
 			    <c:when test="${not empty storeList}">
-			        <c:forEach var="store" items="${storeList}">
+			        <c:forEach var="store" items="${storeList}" varStatus="status">
 			            <div class="menu-detail">
 			                <div class="detail-container-left">
+			                
 			                    <div class="menu-detail-imgBig">
-    <c:if test="${not empty imgList}">
-        <img class="imgBig" src="${path}/main/download?fileName=${imgList[0]['store_menu_img']}">
-    </c:if>
-</div>
-<div class="menu-detail-imgSmall">
-    <c:forEach var="image" items="${imgList}" varStatus="status">
-        <c:if test="${status.index < 3}">
-            <div class="imgSmall1">
-                <img class="imgSmall" src="${path}/main/download?fileName=${image['store_menu_img']}">
-            </div>
-        </c:if>
-    </c:forEach>
-</div>
+							    <c:if test="${not empty storeImgList[status.index]}">
+							        <img class="imgBig" src="${path}/main/download?fileName=${storeImgList[status.index].store_img_root}" alt="Store Image">
+							    </c:if>
+							</div>
+							<div class="menu-detail-imgSmall">
+							    <c:forEach var="image" items="${imgList}" varStatus="imgStatus">
+							        <c:if test="${imgStatus.index < 3}">
+							            <div class="imgSmall1">
+							                <img class="imgSmall" src="${path}/main/download?fileName=${image.store_menu_img}" alt="Store Menu Image">
+							            </div>
+							        </c:if>
+							    </c:forEach>
+							</div>
 
 			                </div>
                                 <div class="detail-container-right">

@@ -30,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.hub.root.main.dto.MainDTO;
+import com.hub.root.main.dto.MainImgDTO;
 import com.hub.root.main.dto.MainMapDTO;
 import com.hub.root.main.service.MainFileService;
 import com.hub.root.main.service.MainService;
@@ -70,14 +71,37 @@ public class MainController {
 		model.addAttribute("dtoList", dtoList);
 		return "main/mainPage1";
 	}
+	@GetMapping("storeImgList")
+	public String getStoreImgList(@RequestParam String keyword, 
+						          @RequestParam String searchType,
+						          @RequestParam String category,
+						          Model model) {
+		Map<String, Object> params = new HashMap<>();
+		String key = (keyword != null) ? keyword : "null";
+	    String search = (searchType != null) ? searchType : "null";
+	    String cat = (category != null) ? category : "null";
+		
+		params.put("keyword", key);
+		params.put("searchType", search);
+		params.put("category", cat);
+		List<MainMapDTO> storeImgList = ms.getStoreImgList(params);
+		System.out.println("imglist con :"+storeImgList );
+		
+		model.addAttribute("storeImgList", storeImgList);
+		model.addAttribute("keyword", keyword);
+	    model.addAttribute("searchType", searchType);
+	    model.addAttribute("category", category);
+		
+		return "main/mainPage2";
+	}
 	// mainPage2 요청 처리===================================
 	@RequestMapping("mainPage2")
 	public String mainPage2(@RequestParam(required=false) String keyword, 
 	                        @RequestParam(required=false) String searchType,
 	                        @RequestParam(required=false) String category,
 	                        HttpSession session, Model model) {   
-		String user = (String) session.getAttribute("userId");
-		String store = (String) session.getAttribute("storeId");
+		//String user = (String) session.getAttribute("userId");
+		//String store = (String) session.getAttribute("storeId");
 	    
 	    Map<String, Object> params = new HashMap<>();
 	    String key = (keyword != null) ? keyword : "null";
@@ -98,10 +122,23 @@ public class MainController {
 	    if (imgList == null) {
 	        imgList = new ArrayList<>();
 	    }
+	    
+	    List<MainImgDTO> storeImgList = new ArrayList<>();
+	    for(MainMapDTO storeInfo : storeList) {
+	    	List<MainImgDTO> storeImage = ms.getStoreImage(storeInfo.getStore_id());
+	    	//storeImgList.add(storeImage);
+	    	  if (!storeImage.isEmpty()) {
+	              storeImgList.add(storeImage.get(0));
+	              System.out.println("image path: "+storeImage.get(0).getStore_img_root());
+	          } else {
+	              storeImgList.add(null); // 이미지가 없는 경우
+	          }
+	    }
 
 	    model.addAttribute("storeList", storeList);
 	    model.addAttribute("storeListSize", storeList.size());
 	    model.addAttribute("imgList", imgList);
+	    model.addAttribute("storeImgList", storeImgList);
 	    
 	    model.addAttribute("keyword", keyword);
 	    model.addAttribute("searchType", searchType);
@@ -124,8 +161,14 @@ public class MainController {
 							@RequestParam String store_menu_name,
 							@RequestParam int store_menu_price,
 							@RequestParam String store_menu_detail,
-							@RequestParam String store_menu_category) throws IOException{
+							@RequestParam String store_menu_category,
+							HttpSession session, Model model) throws IOException{
 		String imagePath  = ms.saveMenuImage(mul);
+		String store = (String) session.getAttribute("storeId");
+	    
+		if(store != null) {
+			model.addAttribute("store", store);
+		}
 		ms.infoSave(store_id,store_menu_name,store_menu_price,store_menu_detail,store_menu_category, imagePath);
 		//ms.saveImagePathToStoreImg(store_id, imgPath);
 	}

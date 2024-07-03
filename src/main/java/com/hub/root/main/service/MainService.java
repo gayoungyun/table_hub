@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hub.root.main.dto.MainDTO;
+import com.hub.root.main.dto.MainImgDTO;
 import com.hub.root.main.dto.MainMapDTO;
 
 public interface MainService {
@@ -16,6 +17,9 @@ public interface MainService {
 	public List<MainMapDTO> getStoreInfo(Map<String, Object> params);
 	public List<MainMapDTO> getStoreInfoByCategory(String category);
 	public List<Map<String, Object>> getMenuImage(Map<String, Object> params);
+	public List<MainMapDTO> getStoreImgList(Map<String, Object> params);
+	
+	public List<MainImgDTO> getStoreImage(String storeId);
 
 	public void infoSave(String store_id,String store_menu_name,int store_menu_price,String store_menu_detail,String store_menu_category, String imagePath);
 	public String saveMenuImage(MultipartFile mul);
