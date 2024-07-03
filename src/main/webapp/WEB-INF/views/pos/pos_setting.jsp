@@ -14,6 +14,10 @@
 	position: relative;
 }
 
+.delete_button {
+	
+}
+
 .modal{
   position:absolute;
   display:none;
@@ -27,6 +31,7 @@
 
   background-color: rgba(0,0,0,0.4);
 }
+
 .modal_body{
   position:absolute;
   top:50%;  
@@ -42,6 +47,7 @@
 
   transform:translateY(-50%);  
 }
+
 .tbModal {
   width: 400px;
 }
@@ -264,7 +270,11 @@
 					{
 						break;	
 					}
-					
+					else if(parent.classList.contains('delete_button'))
+					{
+						deleteKey(parent);
+						break;
+					}
 					else 
 					{
 						parent = parent.parentElement;
@@ -319,8 +329,27 @@
 				})	
 			}
 			// 삭제 버튼 클릭시
-			function deleteKey() {
-				console.log("삭제");
+			function deleteKey(target) {
+				const key_name = target.dataset.keyname;
+				
+				console.log("유저 세선 아이디 : " + ${UserID})
+				fetch("http://localhost:8080/root/api/key", {
+					method : "DELETE",
+					headers : {"Content-Type": "application/json",},
+					body : JSON.stringify({
+						"store_key" : target.dataset.keyname, 
+					})
+				})
+				.then((response) => response.json())
+				.then((data) => {
+					if(data == 1)
+					{
+						target.parentElement.parentElement.remove();
+					}
+					else {
+						alert("이미 삭제된 키입니다.");
+					}
+				})	
 			}
 			
 			// 키값을 DOM객체로 화면에 뛰우기
@@ -359,7 +388,8 @@
 				const delete_button = document.createElement("button");
 				delete_button_div.classList.add('key_button');
 				delete_button_div.classList.add('key_center');
-				delete_button.setAttribute('onclick', 'deleteKey()');
+				delete_button.classList.add('delete_button');
+				delete_button.dataset.keyname = data.store_key;
 				delete_button.innerText = "삭제";
 				delete_button_div.appendChild(delete_button);
 				

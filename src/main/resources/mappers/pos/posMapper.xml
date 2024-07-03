@@ -23,13 +23,26 @@
 		<result property="store_key" column="store_key" />
 		<result property="key_status" column="key_status" />
 	</resultMap>
-	
+	<resultMap type="com.hub.root.pos.posDTO.waitDTO" id="waitDTO">
+		<result property="wait_num" column="wait_num" />
+		<result property="store_id" column="store_id" />
+		<result property="person_num" column="person_num" />
+		<result property="wait_date" column="wait_date" />
+		<result property="wait_status" column="wait_status" />
+		<result property="wait_time" column="wait_time" />
+		<result property="wait_name" column="wait_name" />
+	</resultMap>
 	
 	<select id="login_chk" resultMap="posDTO">
 		select store_id, store_name from store_info where store_id=#{id} and store_pwd =#{pwd} 
 	</select>
+	
 	<select id="todayReservation" resultMap="bookingDTO">
 		select * from booking_info where store_id = #{store_id} and booking_date_booking = TO_CHAR(SYSDATE, 'YYYY/MM/DD') and (booking_status = 0 or booking_status = 3) ORDER BY booking_time
+	</select>
+	
+	<select id="todayWait" resultMap="waitDTO">
+		select * from store_wait where store_id = #{store_id} and wait_date = TO_CHAR(SYSDATE, 'YYYY/MM/DD') order by wait_num 
 	</select>
 	
 	<insert id="register_booking">
@@ -63,4 +76,20 @@
 	<update id="update_keyStatus">
 		update store_key set key_status= 1 where store_key = #{store_key} 
 	</update>
+	
+	<delete id="delete_key">
+		delete from store_key where store_key = #{store_key}
+	</delete>
+	
+	<select id="findStoreId" resultType="String">
+		select store_id from store_key where store_key = #{key}
+	</select>
+	
+	<insert id="registerWait">
+		insert into store_wait values(#{wait_num}, #{store_id}, #{person_num}, TO_CHAR(SYSDATE, 'YYYY/MM/DD'), 0, 0, #{name})
+	</insert>
+	
+	<select id="wait_num" resultType="int">
+		select count(*) from store_wait where wait_date = TO_CHAR(SYSDATE, 'YYYY/MM/DD')
+	</select>
 </mapper>

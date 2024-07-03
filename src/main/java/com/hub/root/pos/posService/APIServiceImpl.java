@@ -10,6 +10,7 @@ import com.hub.root.pos.mybatis.PosMapper;
 import com.hub.root.pos.posDTO.BookingDTO;
 import com.hub.root.pos.posDTO.keyDTO;
 import com.hub.root.pos.posDTO.updateStatusDTO;
+import com.hub.root.pos.posDTO.waitDTO;
 
 @Service
 public class APIServiceImpl implements APIService{
@@ -100,4 +101,39 @@ public class APIServiceImpl implements APIService{
         }
         return isUpperCase ? sb.toString() : sb.toString().toLowerCase();
 	}
+
+	@Override
+	public int delete_key(keyDTO key) {
+		int result = mapper.delete_key(key);
+		
+		return result;
+	}
+
+	@Override
+	public String findStoreId(String key) {
+		String result = mapper.findStoreId(key);
+		
+		return result;
+	}
+
+	@Override
+	public int registerWait(String name, String person_num, String store_id) {
+		int wait_num = wait_num() + 1;
+		int result = mapper.registerWait(wait_num, name, person_num, store_id);
+		return wait_num;
+	}
+	
+	private int wait_num() {	
+		int result = mapper.wait_num();
+		
+		return result;
+	}
+
+	@Override
+	public List<waitDTO> todayWait(String store_id) {
+		List<waitDTO> dto = mapper.todayWait(store_id);
+		
+		return dto;
+	}
+	
 }

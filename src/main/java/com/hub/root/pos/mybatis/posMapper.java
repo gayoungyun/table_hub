@@ -10,6 +10,7 @@ import com.hub.root.pos.posDTO.BookingDTO;
 import com.hub.root.pos.posDTO.PosDTO;
 import com.hub.root.pos.posDTO.keyDTO;
 import com.hub.root.pos.posDTO.updateStatusDTO;
+import com.hub.root.pos.posDTO.waitDTO;
 
 public interface PosMapper {
 	public PosDTO login_chk(@Param("id") String id, @Param("pwd") String pwd);
@@ -24,4 +25,11 @@ public interface PosMapper {
 	public List<keyDTO> getAllKey(@Param("userId") String userId);
 	public keyDTO wait_keyCheck(@Param("key") String key);
 	public void update_keyStatus(@Param("store_key") String store_key);
+	public int delete_key(keyDTO key);
+	
+	public String findStoreId(@Param("key") String key);
+	public int registerWait(@Param("wait_num") int wait_num,  @Param("name") String name, @Param("person_num") String person_num, @Param("store_id") String store_id);
+	
+	public int wait_num();
+	public List<waitDTO> todayWait(@Param("store_id") String store_id);
 }

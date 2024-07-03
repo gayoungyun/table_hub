@@ -6,10 +6,12 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hub.root.pos.posDTO.BookingDTO;
 import com.hub.root.pos.posDTO.keyDTO;
 import com.hub.root.pos.posDTO.updateStatusDTO;
+import com.hub.root.pos.posDTO.waitDTO;
 import com.hub.root.pos.posService.APIService;
 
 @RestController
@@ -54,13 +57,6 @@ public class APIController {
 		return dto;
 	}
 	
-	@PostMapping("key")
-	public keyDTO key(@RequestBody keyDTO key){
-	
-		keyDTO result = apiService.key(key);
-		return result; 
-	}
-	
 	@GetMapping("key")
 	public List<keyDTO> key_list(@RequestParam String userId){
 		List<keyDTO> result = null;
@@ -68,6 +64,29 @@ public class APIController {
 		result = apiService.getAllKey(userId);
 		
 		return result;
+	}
+	
+	@PostMapping("key")
+	public keyDTO key(@RequestBody keyDTO key){
+	
+		keyDTO result = apiService.key(key);
+		return result; 
+	}
+	
+	
+	@DeleteMapping("key")
+	public int delete_key(@RequestBody keyDTO key) {
+		int result = apiService.delete_key(key);
+		
+		return result;
+	}
+	
+	@GetMapping("todayWait")
+	public List<waitDTO> todayWait(@RequestHeader("store_id") String store_id ) {
+		List<waitDTO> dto = apiService.todayWait(store_id);
+		
+		return dto;
+		
 	}
 	
 }

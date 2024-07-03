@@ -32,6 +32,7 @@ public class PosServiceImpl implements PosService {
 			HttpSession session = req.getSession();
 			session.setAttribute("UserID", dto.getStore_id());
 			session.setAttribute("UserName", dto.getStore_name());
+			session.removeAttribute("key");
 			return 1;
 		}
 		return 0;
@@ -83,6 +84,8 @@ public class PosServiceImpl implements PosService {
 			HttpSession session = req.getSession();
 			session.setAttribute("store_id", result.getStore_id());
 			session.setAttribute("key", result.getStore_key());
+			session.removeAttribute("UserID");
+			session.removeAttribute("UserName");
 			update_keyStatus(key);
 			return 1;
 		}

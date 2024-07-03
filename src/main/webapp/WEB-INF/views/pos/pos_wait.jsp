@@ -321,11 +321,8 @@ body {
 		connectWs();
 	})
 	
-	
-	
 	// 소켓
 	function connectWs() {
-		
 		console.log("tttttt")
 		var ws = new SockJS("http://localhost:8080/root/send");
 		socket = ws;
@@ -377,16 +374,16 @@ body {
 				{
 					alert("이름을 입력해 주세요!!");
 				}
-				else if(person_num.value == 0)
+				else if(person_num.innerText == "0")
 				{
 					alert("인원을 입력해 주세요!!");		
 				}	
 				else {
-					waitingNumber++;
-					// 이름, 인원, 대기번호 순서, 보내는 곳 종류
-					socket.send(input_text.value + "," + person_num.value + "," + 0);
+					// 이름, 인원, 대기번호 순서, 보내는 곳 종류, 목표
+					socket.send(input_text.value + "," + person_num.innerText + "," + 0 + "," + '${store_id}');
+					input_text.value = "";
+					person_num.innerText = 0;
 				}
-				
 				break;
 			}
 			// 끝내기

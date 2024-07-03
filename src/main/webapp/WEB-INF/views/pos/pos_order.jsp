@@ -214,6 +214,38 @@
 	align-items: center;
 }
 
+.wait_table_wrapper {
+	width: 200px;
+	transition: 0.5s;
+}
+.wait_table {
+	margin-top: 2px;
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	background-color: red;
+	border-radius: 8px;
+}
+.wait_table > div {
+	height: 90px;
+}
+.wait_table_left {
+	width: 130px;
+}
+.wait_table_right {
+	width: 50px;
+			
+	display:flex;
+	flex-direction: column;
+}
+.wait_table_left > *{
+	margin-left: 5px;
+}
+.wait_time_wrapper {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
 
 .point_yellow{
 	color: #fa8a48;
@@ -247,7 +279,10 @@
 					<p>황</p>
 				</div>
 			</div>
-			<div id="wait" class="wait"></div>
+			<div id="wait" class="wait">
+				<div class="wait_table_wrapper">
+				</div>
+			</div>
 		</div>
 	</div>
 	
@@ -268,6 +303,7 @@
 			$(".side_bar").css("height", realSize);
 			
 			todayReservation();
+			todayWaiting();
 			connectWs();
 		})
 		$(window).resize(function() {
@@ -290,7 +326,8 @@
 			};
 
 			ws.onmessage = function(event) {
-				console.log("전송 받음");
+				const data = event.data.split(',');
+				console.log(data);
 			};
 
 			ws.onclose = function() {
@@ -334,7 +371,7 @@
 						function(event) {
 							let parent = event.target;
 							const wait = document.getElementById('wait');
-							
+							const wait_table_wrapper = document.querySelector('.wait_table_wrapper');
 							for (let i = 0; i < 6; i++) {
 								if (parent.classList.contains("parent_wait")) {
 									wait.style.width = "300px";
@@ -413,7 +450,7 @@
 					
 					break;
 				}
-				// 예약관리 버튼이 눌리면
+				// 예약관리 버튼이 눌리면 !!!!!(추후 추가) !!!!!!!!!!
 				else if(parent.classList.contains("management"))
 				{
 							
@@ -423,6 +460,71 @@
 				}
 			}
 		})
+	
+		function todayWaiting() {
+			fetch("http://localhost:8080/root/api/todayWait", {
+				headers : {"Content-Type": "application/json",
+							"store_id" : '${UserID}'},
+			})
+			.then((response) => response.json())
+			.then((data) => {
+				for(let i = 0; i < data.length; i++)
+				{
+					makeWaitTable(data[i]);	
+				}
+			})		
+		}
+		// 대기 테이블 만들기
+		function makeWaitTable(data) {
+			console.log(data);
+			const wait_table_wrapper = document.querySelector('.wait_table_wrapper');
+			
+			const table_wrapper = document.createElement('div');
+			const div_left = document.createElement('div');
+			const div_right = document.createElement('div');
+			
+			table_wrapper.classList.add("wait_table");
+			
+			div_left.classList.add("wait_table_left");
+			div_right.classList.add("wait_table_right");
+			
+			const p_left_wait_num = document.createElement('p');
+			p_left_wait_num.innerText = "대기번호 : " + data.wait_num;
+			
+			const p_left_wait_name = document.createElement('p');
+			p_left_wait_name.innerText = "이름 : " + data.wait_name;
+			
+			const p_left_person_num = document.createElement('p');
+			p_left_person_num.innerText = "인원 : " + data.person_num;
+			
+			const div_left_wait_time = document.createElement('div');
+			div_left_wait_time.classList.add("wait_time_wrapper");
+			
+			const span_wait_time_first = document.createElement('span');
+			
+			span_wait_time_first.innerText = "대기시간 : ";
+			const span_wait_time_bun = document.createElement('span');
+			span_wait_time_bun.innerText = "00";
+			const span_wait_time_middle = document.createElement('span');
+			span_wait_time_middle.innerText = ":";
+			const span_wait_time_cho = document.createElement('span');
+			span_wait_time_cho.innerText ="00";
+			
+			div_left_wait_time.appendChild(span_wait_time_first);
+			div_left_wait_time.appendChild(span_wait_time_bun);
+			div_left_wait_time.appendChild(span_wait_time_middle);
+			div_left_wait_time.appendChild(span_wait_time_cho);
+			
+			div_left.appendChild(p_left_wait_num);
+			div_left.appendChild(p_left_wait_name);
+			div_left.appendChild(p_left_person_num);
+			div_left.appendChild(div_left_wait_time);
+			
+			table_wrapper.appendChild(div_left);
+			table_wrapper.appendChild(div_right);
+			
+			wait_table_wrapper.appendChild(table_wrapper);
+		}
 		
 		// 가게에서 예약 수락시
 		function acceptBooking(booking_id) {	
@@ -495,7 +597,6 @@
 			fetch("http://localhost:8080/root/api/todayReservation")
 			.then((response) => response.json())
 			.then((data) => {
-				console.log(data);
 				for(let i = 0; i < data.length; i++)
 				{
 					if(data[i].booking_status == 0)
