@@ -19,6 +19,7 @@
 <button type="button" onclick="goMainPage()">main</button><br>
 <a href="/root/store">store</a><br>
 <a href="/root/register01">사업자 가게 등록 1단계</a><br>
+<a href="/root/businMmenu">사업자 마이페이지</a><br>
 	<c:choose>
 		<c:when test="${userId != null }">
 			<a href="/root/member/logout">로그아웃</a>
