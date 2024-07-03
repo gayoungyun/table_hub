@@ -56,7 +56,7 @@
 <select id="getStoreImage" resultMap="mainImg">
     SELECT * FROM store_img 
     WHERE store_id = #{storeId} 
-    AND store_img_main = 1 
+    AND store_img_main = 999 
     AND ROWNUM = 1
 </select>
 
