@@ -13,6 +13,27 @@ label{
     font-style: normal;
 }
 
+.button1 {
+  position: relative;
+  float: right;
+  width: 100px;
+  height: 40px;
+  margin: 5px 10px 5px 0px;
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
+  background: #E9F1FF  ;
+  border: 1px solid #397BE6;
+  border-radius: 5px;
+  transition: all 0.2s ;
+}
+.btn1Fade:hover {
+  background: #397BE6 ;
+  color: #ffffff;
+  font-weight: bolder;
+}
+
+
 .white_box{
 	width : 1000px;
 	min-height : 500px;
@@ -32,6 +53,12 @@ label{
 	text-align : left;
 	line-height: 5; /* 행간을 1.5로 설정 (기본 글꼴 크기의 1.5배) */
 	margin-bottom: 50px;
+}
+
+.text_leftAlign1 {
+	width : 500px;
+	text-align : left;
+	line-height: 3; /* 행간을 1.5로 설정 (기본 글꼴 크기의 1.5배) */
 }
 
 .top_title{
@@ -274,7 +301,7 @@ label{
 
  #map {
             height: 400px;
-            width: 100%;
+            width: 500px;
             display: none; /* 초기에는 숨김 상태 */
         }
         

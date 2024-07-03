@@ -13,6 +13,7 @@
 <body>
 
 
+<div class="center-box">
 <div class="skill-box">
 	<div class="skill-bar">
 		<span class="per03">
@@ -20,11 +21,12 @@
 		</span>
 	</div>
 </div>
-
-<div class="center-box">
+	<form action="register04" method="post" onsubmit="return inputcheck02()">
+	<div class="white_box">
 <h1>상세정보 입력하기</h1><br>
 <h5>*표시 항목은 필수항목입니다</h5>
-	<form action="register04" method="post" onsubmit="return inputcheck02()">
+
+<div class="text_leftAlign1">
 		*소개글 <textarea id="store_introduce" name="store_introduce" placeholder="소개글을 입력해주세요"></textarea><br>
 		
 		<div id="store_category">
@@ -61,9 +63,11 @@
 		*예약 규정 <textarea id="store_booking_rule" name="store_booking_rule" 
 		placeholder="예) 예약시간 10분 지각 시 예약이 취소됩니다"></textarea>
 		<hr>
+		</div>
+		</div>
 		<div style="display: flex; justify-content: space-between;">
-			<button type="button" onclick=" window.history.back()">이전</button>
-			<button type="submit">다음</button>
+			<button type="button" class="button1 btn1Fade" onclick=" window.history.back()">이전</button>
+			<button type="submit" class="button1 btn1Fade">다음</button>
 		</div>
 	</form>
 </div>

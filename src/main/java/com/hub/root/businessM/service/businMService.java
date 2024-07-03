@@ -45,10 +45,11 @@ public class businMService {
 	        request.setAttribute("url", "storeInfo");
 	    
 	        result = "businessM/businMalert";
+	        return result;
 		}
 	    
-		model.addAttribute("storeName : ", storeName);
-		model.addAttribute("storeId : ", store_id);
+		model.addAttribute("storeName", storeName);
+		model.addAttribute("storeId", store_id);
 		
 		result = "businessM/store/register01";
 		return result;	
@@ -66,6 +67,7 @@ public class businMService {
 	        request.setAttribute("url", "register01");
 	    
 	        result = "businessM/businMalert";
+	        return result;
 		}
 			result = "businessM/store/register02";
 			return result;
@@ -138,6 +140,7 @@ public class businMService {
 	        request.setAttribute("url", "register01");
 	        
 	        result = "businessM/businMalert";
+	        return result;
 		}else {
 			System.out.println("보선-가게등록 업뎃 성공");
 		}
