@@ -1,7 +1,5 @@
 package com.hub.root.member.controller.info;
 
-import java.net.HttpCookie;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.hub.root.member.service.info.MemberInfoService;
 
 @RestController
@@ -218,6 +215,12 @@ public class MemberInfoRestController {
 	public Map<String, Object> getBoardInfo(@RequestParam int boardId) {
 		System.out.println("memInfoRestCont getBoardInfo 실행");
 		Map<String, Object> map = mis.getBoardInfo(boardId);
+		return map;
+	}
+	@GetMapping(value="reply2/board", produces="application/json; charset=utf-8")
+	public Map<String, Object> getBoardInfo2(@RequestParam int reviewId) {
+		System.out.println("memInfoRestCont getBoardInfo2 실행");
+		Map<String, Object> map = mis.getBoardInfo2(reviewId);
 		return map;
 	}
 	

@@ -39,7 +39,7 @@
 			dataType : "json",
 			contentType : "application/json; charset=utf-8",
 			success : function ( data ) {
-				console.log("data : ", data)
+				console.log("datadata : ", data)
 				lastPage = data.totalPage;
 				totalContent = data.count;
 				pageContent = data.list.length;
@@ -59,7 +59,7 @@
 					// 불러온 댓글 데이터를 반복하여 출력
 					data.list.forEach(function (item, index) {
 
-		                let date = new Date(item.reviewCreate+9);
+		                let date = new Date(item.COMBINED_DATE+9);
 		                let currentDateTime = new Date();
 		                
 		                // 시간을 비교하여 오늘이면 시:분 으로 표시하고 이전이면 년월일로 표시
@@ -80,39 +80,79 @@
 		                }
 						
 		                // 게시판 제목과 해당 게시판의 댓글 수량을 불러오기 위한 ajax요청
-						$.ajax({ //내부 ajax start
-							url : "/root/member/myPage/reply/board?boardId="+item.boardId,
-							type : "get",
-							dataType : "json",
-							async : false,
-							contentType : "application/json; charset=utf-8",
-							success : function (result) {
-								
-								html += `<div class="myReplyContent">`
-								
-								html += `<div class="myReplyContentLeft">`
-								html += `<input type="checkbox" class="myReplyContentCheck" onchange="replyCheck(this,+`+item.reviewId+`)">`
-								html += `</div>`
-								
-								html += `<div class="myReplyContentMiddle">`
-								html += `<label class="myReplyContentReply">`+item.reviewContent+`</label><br>`
-								html += `<label class="myReplyContentBody">`+result.BOARD_TITLE+`</label> <label class="myReplyContentCount">[`+ result.COUNT +`]</label>`
-								html += `</div>`
-								
-								html += `<div class="myReplyContentRight">`
-								html += `<label class="myReplyContentCreate">`+createDate+`</label>`
-								html += `</div>`
+		                console.log("test1 : ", item.BOARD_REVIEW2_ID)
+		                if (item.BOARD_REVIEW2_ID == null) {
+		                	console.log("댓글")
+							$.ajax({ //내부 ajax start
+								url : "/root/member/myPage/reply/board?boardId="+item.BOARD_ID,
+								type : "get",
+								dataType : "json",
+								async : false,
+								contentType : "application/json; charset=utf-8",
+								success : function (result) {
+									console.log("result : " , result)
 									
-								html += `</div>`
+									html += `<div class="myReplyContent">`
+									
+									html += `<div class="myReplyContentLeft">`
+									html += `<input type="checkbox" class="myReplyContentCheck" onchange="replyCheck(this,+`+item.reviewId+`)">`
+									html += `</div>`
+									
+									html += `<div class="myReplyContentMiddle">`
+									html += `<label class="myReplyContentReply">`+item.BOARD_REVIEW_CONTENT+`</label><br>`
+									html += `<label class="myReplyContentBody">`+result.BOARD_TITLE+`</label> <label class="myReplyContentCount">[`+ result.COUNT +`]</label>`
+									html += `</div>`
+									
+									html += `<div class="myReplyContentRight">`
+									html += `<label class="myReplyContentCreate">`+createDate+`</label>`
+									html += `</div>`
+										
+									html += `</div>`
+									
+									html += `<hr class="myReplyHr">`
+									
+								},
+								error : function (error) {
+									console.log("error : ", error);
+								}
 								
-								html += `<hr class="myReplyHr">`
+							}) // 내부 ajax end
+		                } else {
+		                	console.log("대댓글")							
+		                	$.ajax({ //내부 ajax start
+								url : "/root/member/myPage/reply2/board?reviewId="+item.BOARD_REVIEW_ID,
+								type : "get",
+								dataType : "json",
+								async : false,
+								contentType : "application/json; charset=utf-8",
+								success : function (result) {
+									
+									html += `<div class="myReplyContent">`
+									
+									html += `<div class="myReplyContentLeft">`
+									html += `<input type="checkbox" class="myReplyContentCheck" onchange="replyCheck(this,+`+item.reviewId+`)">`
+									html += `</div>`
+									
+									html += `<div class="myReplyContentMiddle">`
+									html += `<label class="myReplyContentReply">`+item.BOARD_REVIEW2_CONTENT+`</label><br>`
+									html += `<label class="myReplyContentBody">`+result.BOARD_TITLE+`</label> <label class="myReplyContentCount">[`+ result.COUNT +`]</label>`
+									html += `</div>`
+									
+									html += `<div class="myReplyContentRight">`
+									html += `<label class="myReplyContentCreate">`+createDate+`</label>`
+									html += `</div>`
+										
+									html += `</div>`
+									
+									html += `<hr class="myReplyHr">`
+									
+								},
+								error : function (error) {
+									console.log("error : ", error);
+								}
 								
-							},
-							error : function (error) {
-								console.log("error : ", error);
-							}
-							
-						}) // 내부 ajax end
+							}) // 내부 ajax end
+		                }
 						
 						
 					}) // forEach문 end

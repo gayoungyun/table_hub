@@ -28,5 +28,10 @@ public class MemberLoginController {
 		session.invalidate();
 		return "redirect:/main/mainPage1";
 	}
+	@GetMapping("login/searchId")
+	public String searchId() {
+		
+		return "member/login/searchId";
+	}
 
 }

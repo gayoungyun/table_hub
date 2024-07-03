@@ -51,6 +51,13 @@
 		<result property="reviewContent" column="board_review_content"/>
 		<result property="reviewCreate" column="board_review_date_create"/>
 	</resultMap>
+	<resultMap type="com.hub.root.member.dto.Reply2DTO" id="reply2">
+		<id property="review2Id" column="board_review2_id"/>
+		<result property="reviewId" column="board_review_id"/>
+		<result property="memberId" column="member_id"/>
+		<result property="reviewContent" column="board_review2_content"/>
+		<result property="reviewCreate" column="board_review2_date_create"/>
+	</resultMap>
 
 	<update id="memberImgModify">
 		update member_info set member_img=#{fileName} where member_id=#{id}
@@ -228,20 +235,97 @@
 	</delete>
 	
 	<select id="getReplyCount" resultType="int">
-		select count(*) from board_review where member_id = #{memId}
+	    select
+			(select count(*) from board_review where member_id = #{memId}) +
+			(select count(*) from board_review2 where member_id = #{memId}) as total_count from dual
 	</select>
 	
-	<select id="getReply" resultMap="reply">
+<!-- 	<select id="getReply" resultMap="reply"> -->
+<!-- 		select B.* from ( -->
+<!-- 			select rownum rn, A.*  from ( -->
+<!-- 				select * from board_review where member_id = #{memId} order by board_review_id desc ) A ) B  -->
+<!-- 		where rn between #{start} and #{end} -->
+<!-- 	</select> -->
+	<select id="getReply" resultType="map">
+		SELECT * FROM (
+		    SELECT
+		        rownum rn,
+		        combined.*
+		    FROM (
+		        SELECT
+		        	board_id,
+		            board_review_id,
+		            NULL AS board_review2_id,
+		            member_id,
+		            board_review_content,
+		            board_review_date_create,
+		            NULL AS board_review2_content,
+		            NULL AS board_review2_date_create,
+		            board_review_date_create AS combined_date
+		        FROM
+		            board_review
+		        WHERE
+		            member_id = 'asdf'
+		        UNION ALL
+		        SELECT
+		        	NULL AS board_id,
+		            board_review_id,
+		            board_review2_id,
+		            member_id,
+		            NULL AS board_review_content,
+		            NULL AS board_review_date_create,
+		            board_review2_content,
+		            board_review2_date_create,
+		            board_review2_date_create AS combined_date
+		        FROM
+		            board_review2
+		        WHERE
+		            member_id = #{memId}
+		        ORDER BY
+		            combined_date desc
+		    ) combined
+		)
+		WHERE rn BETWEEN #{start} AND #{end}
+	</select>
+	
+	<select id="getReply2" resultMap="reply2">
 		select B.* from (
 			select rownum rn, A.*  from (
-				select * from board_review where member_id = #{memId} order by board_review_id desc ) A ) B 
+				select * from board_review2 where member_id = #{memId} order by board_review2_id desc ) A ) B 
 		where rn between #{start} and #{end}
 	</select>
 	
 	<select id="getBoardInfo" resultType="map">
+		SELECT 
+			    (select 
+                    COUNT(*) 
+                from 
+                    board_review2 
+                where 
+                    board_review_id in 
+                        (select 
+                            board_review_id 
+                        from 
+                            board_review 
+                        where 
+                            board_id = #{boardId})) AS count, 
+                    (SELECT 
+                        board_title 
+                    FROM 
+                        board 
+                    WHERE 
+                        board_id = #{boardId}) AS board_title
+			FROM dual
+<!-- 	    SELECT  -->
+<!-- 		    (SELECT COUNT(*) FROM board_review WHERE board_id = ${boardId}) AS count,  -->
+<!-- 		    (SELECT board_title FROM board WHERE board_id = ${boardId}) AS board_title -->
+<!-- 		FROM dual -->
+	</select>
+	
+	<select id="getBoardInfo2" resultType="map">
 		    SELECT 
-			    (SELECT COUNT(*) FROM board_review WHERE board_id = ${boardId}) AS count, 
-			    (SELECT board_title FROM board WHERE board_id = ${boardId}) AS board_title
+			    (SELECT COUNT(*) FROM board_review WHERE board_id = (select board_id from board_review where board_review_id = #{reviewId})) AS count, 
+			    (SELECT board_title FROM board WHERE board_id = (select board_id from board_review where board_review_id = #{reviewId})) AS board_title
 			FROM dual
 	</select>
 	

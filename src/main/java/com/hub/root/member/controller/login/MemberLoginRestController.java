@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hub.root.member.config.MemberMessageConfig;
 import com.hub.root.member.dto.MemberDTO;
+import com.hub.root.member.service.common.RandomCodeService;
 import com.hub.root.member.service.login.MemberLoginService;
 
 import net.nurigo.sdk.NurigoApp;
@@ -47,13 +48,13 @@ public class MemberLoginRestController {
     	int code = randomNumber();
     	
     	String phoneNumber = (String)map.get("phoneNumber");
-        Message message = new Message();
+//        Message message = new Message();
 //		 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
-        message.setFrom("01099062986");
-		message.setTo(phoneNumber);
-		message.setText("인증 코드는 [ " + code + " ] 입니다. 코드 입력 후 회원가입을 진행하세요");
+//        message.setFrom("01099062986");
+//		message.setTo(phoneNumber);
+//		message.setText("인증 코드는 [ " + code + " ] 입니다. 코드 입력 후 회원가입을 진행하세요");
     	
-		SingleMessageSentResponse response = mmc.messageService.sendOne(new SingleMessageSendingRequest(message));
+//		SingleMessageSentResponse response = mmc.messageService.sendOne(new SingleMessageSendingRequest(message));
     	
     	session.setAttribute("phoneNumber", phoneNumber);
     	session.setAttribute(phoneNumber, code);
@@ -171,13 +172,15 @@ public class MemberLoginRestController {
 			map.put("msg", "이미 등록되어있는 주소입니다. <br>로그인 또는 아이디 찾기를 진행해주세요");
 			map.put("result", 1);
 		} else {
+			// 이메일 값으로 쿠키를 만들어서 5분간 유지한다.
 			Cookie cookie = new Cookie("email", email);
 			cookie.setMaxAge(5 * 60); // 5분
 			res.addCookie(cookie);
-	    	int code = randomNumber();
-	    	String msg = "인증번호는 [" + code + "] 입니다.\n 해당 코드를 입력해주세요";
-			ms.sendMail(email, "인증번호를 확인해주세요", msg);
-//			 받는사람 이메일, 제목, 내용 순으로 넘겨준다.
+			
+	    	int code = ms.sendMailCode(email);
+	    	
+	    	// 랜덤값을 문자열로 변환하여 세션에 저장 
+	    	// 저장된 쿠키의 이메일 값으로 코드값을 저장한다. 추후 코드 인증 확인시 필요
 			String codeKey = String.valueOf(code);
 			session.setAttribute(email, codeKey);
 			
@@ -199,7 +202,6 @@ public class MemberLoginRestController {
 	}
 	
 	@PostMapping(value="storeSendMail", produces = "application/json; charset=utf-8")
-	@ResponseBody
 	public Map<String, Object> storeSendMail(@RequestBody Map<String, Object> map, HttpServletRequest req, HttpServletResponse res, HttpSession session,
 			Model model) {
 		String email = (String)map.get("email");
@@ -211,10 +213,9 @@ public class MemberLoginRestController {
 			Cookie cookie = new Cookie("storeEmail", email);
 			cookie.setMaxAge(5 * 60); // 5분
 			res.addCookie(cookie);
-	    	int code = randomNumber();
-//	    	String msg = "인증번호는 [" + code + "] 입니다.\n 해당 코드를 입력해주세요";
-//			ms.sendMail(email, "인증번호를 확인해주세요", msg);
-//			 받는사람 이메일, 제목, 내용 순으로 넘겨준다.
+			
+	    	int code = ms.sendMailCode(email);
+	    	
 			String codeKey = String.valueOf(code);
 			session.setAttribute(email, codeKey);
 			
@@ -226,4 +227,20 @@ public class MemberLoginRestController {
 		
 		return map;
 	}
+	
+	@PostMapping(value="sendMail/id", produces="application/json; charset=utf-8")
+	public Map<String, Object> sendMailId(@RequestBody Map<String, Object> map) {
+		System.out.println("MemLoginRestCont sendMailId 실행");
+		map = ms.sendMailId((String)map.get("email"));
+		
+		
+		return map;
+	}
+	
+	
+	
+	
+	
+	
+	
 }

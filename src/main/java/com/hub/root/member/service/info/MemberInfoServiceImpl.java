@@ -1,10 +1,7 @@
 package com.hub.root.member.service.info;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +15,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.hub.root.member.dto.BoardDTO;
 import com.hub.root.member.dto.BookingDTO;
 import com.hub.root.member.dto.MemberDTO;
+import com.hub.root.member.dto.Reply2DTO;
 import com.hub.root.member.dto.ReplyDTO;
 import com.hub.root.member.dto.ReviewDTO;
 import com.hub.root.member.mybatis.MemberInfoMapper;
@@ -369,24 +367,98 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 		System.out.println("memInfoSer getReply 실행");
 		int totalCount = mapper.getReplyCount(memId);
 		Map<String, Object> map = new HashMap<String, Object>();
+		
 		if (totalCount > 0) {
 			map = pageCalc(page, totalCount, 6);
-			List<ReplyDTO> list = mapper.getReply(memId, 
+			
+			List<Map<String, Object>> list1 =  mapper.getReply(memId, 
 										(int)map.get("startNum"),
 										(int)map.get("endNum"));
+//			List<Reply2DTO> list2 = mapper.getReply2(memId, 
+//										(int)map.get("startNum"),
+//										(int)map.get("endNum"));
+//			if (!list1.isEmpty() && !list2.isEmpty()) {
+//				System.out.println("댓글대댓글 둘다 널값 아님");
+//				List<Object> lists = replyMerge(list1, list2);
+//				map.put("list", lists);
+//			} else if (!list1.isEmpty()) {
+//				System.out.println("대댓글이 널값일때");
+//				map.put("list", list1);
+//			} else {
+//				System.out.println("댓글이 널값일때");
+//				map.put("list", list2);
+//			}
+			map.put("list", list1);
 			map.put("result", 1);
-			map.put("list", list);
 		} else {
 			map.put("result", 0);
 		}
+		
 		return map;
 	}
+	
+	public List<Object> replyMerge(List<ReplyDTO> list1, List<Reply2DTO> list2) {
+		List<Object> lists = new ArrayList<Object>();
+		
+		int i = 0;
+		int x = 0;
+		int y = 0;
+		System.out.println("listempty : " + list1.isEmpty());
+		System.out.println("list2empty : " + list2.isEmpty());
+		
+
+		while (true) {
+			
+			if (!list1.isEmpty() && !list2.isEmpty()) {
+				System.out.println("if 1");
+				if (list1.get(0).getReviewCreate().after(list2.get(y).getReviewCreate())) {
+					System.out.println("list1이 빠름");
+					lists.add(list1.get(0));
+					list1.remove(0);
+				} else {
+					System.out.println("list2가 빠름");
+					lists.add(list2.get(0));
+					list2.remove(0);
+				}
+			} else if (!list1.isEmpty()) {
+				System.out.println("if 2");
+				lists.add(list1.get(0));
+				list1.remove(0);
+			} else if (!list2.isEmpty()){
+				System.out.println("if 3");
+				lists.add(list2.get(0));
+				list2.remove(0);
+			} else {
+				System.out.println("if 4");
+				break;
+			}
+			
+			if (lists.size() == 10 ) {
+				System.out.println("size : " + lists.size());
+				break;
+			}
+		}
+		
+		
+		return lists;
+	}
+	
+	
+	
 
 	@Override
 	public Map<String, Object> getBoardInfo(int boardId) {
 		System.out.println("memInfoSer getBoardInfo 실행");
 		Map<String, Object> map = new HashMap<String, Object>();
 		map = mapper.getBoardInfo(boardId);
+		map.put("result", 0);
+		return map;
+	}
+	@Override
+	public Map<String, Object> getBoardInfo2(int reviewId) {
+		System.out.println("memInfoSer getBoardInfo2 실행");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map = mapper.getBoardInfo2(reviewId);
 		map.put("result", 0);
 		return map;
 	}

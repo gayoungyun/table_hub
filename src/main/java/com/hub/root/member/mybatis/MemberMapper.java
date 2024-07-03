@@ -19,4 +19,6 @@ public interface MemberMapper {
 	public int storeNumChk(String storeId);
 	public int storeMailChk(String email);
 	public int storeRegisterChk(StoreDTO dto);
+	
+	public String[] getMemId(String email);
 }

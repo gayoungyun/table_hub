@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,15 @@ import org.springframework.stereotype.Service;
 import com.hub.root.member.dto.MemberDTO;
 import com.hub.root.member.dto.StoreDTO;
 import com.hub.root.member.mybatis.MemberMapper;
+import com.hub.root.member.service.common.RandomCodeService;
+import com.hub.root.member.service.common.SendMailService;
 
 @Service
 public class MemberLoginServiceImpl implements MemberLoginService{
 	
 	@Autowired MemberMapper mapper;
-	@Autowired JavaMailSender sender;
+	@Autowired RandomCodeService rcs;
+	@Autowired SendMailService mail;
 	
 	BCryptPasswordEncoder en;
 	public MemberLoginServiceImpl () {
@@ -43,6 +47,17 @@ public class MemberLoginServiceImpl implements MemberLoginService{
 		
 		return 0;
 	}
+	
+	public int sendMailCode(String email) {
+		int code = rcs.randomNumber();
+		String msg = "인증번호는 [" + code + "] 입니다. \n 해당 코드를 입력해주세요";
+		String title = "인증번호를 확인해주세요";
+		
+		mail.sendMail(email, title, msg);
+//		 받는사람 이메일, 제목, 내용 순으로 넘겨준다.
+		
+		return code;
+	}
 
 	@Override
 	public int mailChk(String email) {
@@ -58,21 +73,6 @@ public class MemberLoginServiceImpl implements MemberLoginService{
 		}
 		return result;
 	}
-	
-	public void sendMail(String to, String subject, String body) {
-		MimeMessage message = sender.createMimeMessage();
-		
-		try {
-			MimeMessageHelper h = new MimeMessageHelper(message, true, "UTF-8");
-			h.setSubject(subject);
-			h.setTo(to);
-			h.setText(body);
-//			sender.send(message);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	
 	@Override
 	public int snsLoginChk(String id) {
@@ -140,6 +140,46 @@ public class MemberLoginServiceImpl implements MemberLoginService{
 	public int storeMailChk(String email) {
 		int result = mapper.storeMailChk(email);
 		return result;
+	}
+
+	@Override
+	public Map<String, Object> sendMailId(String email) {
+		System.out.println("MemLoginSer sendMailId 실행");
+		Map<String, Object> map = new HashMap<String, Object>();
+		String[] memberIds = mapper.getMemId(email);
+		String memberId = "";
+		String msg = "";
+		if (memberIds.length == 0) {
+			System.out.println("if 실행");
+			msg = "가입되지 않은 이메일 주소입니다. \n확인후 다시 시도해주세요";
+			map.put("result", 0);
+		} else if (memberIds.length > 1) { // 간편로그인이 있을 경우 이메일 중복가능성이 있음
+			System.out.println("elseif 실행");
+			
+			for (int i = 0; i < memberIds.length; i++) {
+				String[] check = memberIds[i].split("_");
+				if (check[0] != "N") {
+					memberId = memberIds[i];
+					break;
+				}
+			}
+			msg = "이메일로 아이디가 전송되었으니 확인 후 로그인을 진행해주세요";
+			map.put("result", 1);
+		} else {
+			memberId = memberIds[0];
+			msg = "이메일로 아이디가 전송되었으니 확인 후 로그인을 진행해주세요";
+			map.put("result", 1);
+		}
+		map.put("msg", msg);
+		System.out.println("if 종료");
+		System.out.println("memberId : " + memberId);
+		System.out.println("memberId.null : " + (memberId == null));
+		
+//		String title = "[테이블허브] 이메일 인증을 통한 아이디 전송";
+//		String body = "["+email+"] 주소를 사용중인 사용자의 아이디 정보입니다.\n 아이디 : [" + memberId + "]";
+//		mail.sendMail(email, title, body);
+		
+		return map;
 	}
 	
 	

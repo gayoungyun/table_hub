@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import com.hub.root.member.dto.BoardDTO;
 import com.hub.root.member.dto.BookingDTO;
 import com.hub.root.member.dto.MemberDTO;
+import com.hub.root.member.dto.Reply2DTO;
 import com.hub.root.member.dto.ReplyDTO;
 import com.hub.root.member.dto.ReviewDTO;
 
@@ -48,9 +49,12 @@ public interface MemberInfoMapper {
 	public String getReviewImgInfo(@Param("reviewNum") int reviewNum);
 	public int deleteReview(@Param("storeNum") int storeNum);
 	public int getReplyCount(@Param("memId") String memId);
-	public List<ReplyDTO> getReply(@Param("memId") String memId, @Param("start") int startNum,
+	public List<Map<String, Object>> getReply(@Param("memId") String memId, @Param("start") int startNum,
+			@Param("end") int endNum);
+	public List<Reply2DTO> getReply2(@Param("memId") String memId, @Param("start") int startNum,
 			@Param("end") int endNum);
 	public Map<String, Object> getBoardInfo(@Param("boardId") int boardId);
+	public Map<String, Object> getBoardInfo2(@Param("reviewId") int reviewId);
 	public int deleteReply(@Param("content") int[] content);
 	public Map<String, Object> getMyContentMyInfo(@Param("userId") String userId);
 	public String getNick(@Param("userId") String userId);

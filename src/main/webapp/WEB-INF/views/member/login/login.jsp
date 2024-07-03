@@ -352,6 +352,7 @@
 	}
 	
 	function registerCodeChk() {
+		console.log("asdf")
 		var storeNum = $("#regisInputStoreId1").val();
 		storeNum += $("#regisInputStoreId2").val();
 		storeNum += $("#regisInputStoreId3").val();
@@ -359,8 +360,9 @@
 			$("#storeRegisterBtnInfoMsg").html("")
 			let code = $("#storeAuthCode").val()
 			let form = {code : code};
+			console.log("1")
 			$.ajax({
-				url : "registerCodeChk",
+				url : "/root/member/register/registerCodeChk",
 				type : "post",
 				data : JSON.stringify(form),
 				dataType : "json",
@@ -509,7 +511,7 @@
   	$("#naver_id_login_anchor").find("img").attr("src", "<c:url value='/resources/img/naver.png' />");
   	$("#naver_id_login_anchor").find("img").attr("width", "200");
   	$("#naver_id_login_anchor").find("img").attr("height", "53.33");
-  	$("#kakao_id_login").find("img").attr("src", "<c:url value='/resources/img/kakao.png' />");
+//   	$("#kakao_id_login").find("img").attr("src", "<c:url value='/resources/img/kakao.png' />");
   	
 </script>
 </body>

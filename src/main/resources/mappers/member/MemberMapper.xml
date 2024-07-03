@@ -62,6 +62,9 @@
 			#{id}, #{pwd}, #{name}, #{email},
 			#{mainPhone}, #{phone})
 	</insert>
+	<select id="getMemId" resultType="String">
+		select member_id from member_info where member_email = #{email}
+	</select>
 </mapper>
 
 

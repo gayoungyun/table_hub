@@ -33,6 +33,7 @@ public interface MemberInfoService {
 	public Map<String, Object> deleteReview(int storeNum);
 	public Map<String, Object> getReply(String memId, int page );
 	public Map<String, Object> getBoardInfo(int boardId);
+	public Map<String, Object> getBoardInfo2(int reviewId);
 	public Map<String, Object> deleteReply(int[] content);
 	public Map<String, Object> getMyContentMyInfo(String userId);
 	public String getNick(String userId);
