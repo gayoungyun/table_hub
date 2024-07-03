@@ -2,6 +2,9 @@
 *{
 	user-select: none;
 }
+body {
+	background-color: #e8e8e8;
+}
 
 label{
 	font-family: 'MangoDdobak-B';
@@ -10,6 +13,31 @@ label{
     font-style: normal;
 }
 
+.white_box{
+	width : 1000px;
+	min-height : 500px;
+	background-color: white;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column; /* 컬럼 방향으로 요소들을 배열 */
+    justify-content: center; /* 세로 방향 중앙 정렬 */
+    align-items: center; /* 가로 방향 중앙 정렬 */
+  	text-align : center;
+	margin: 10px auto;
+	padding : 10px;
+}
+
+.text_leftAlign {
+	width : 500px;
+	text-align : left;
+	line-height: 5; /* 행간을 1.5로 설정 (기본 글꼴 크기의 1.5배) */
+	margin-bottom: 50px;
+}
+
+.top_title{
+	margin-bottom: 50px;
+	
+}
 
 .center-box{
 	width: 1500px;

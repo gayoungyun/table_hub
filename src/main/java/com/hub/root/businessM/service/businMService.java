@@ -50,7 +50,7 @@ public class businMService {
 		model.addAttribute("storeName : ", storeName);
 		model.addAttribute("storeId : ", store_id);
 		
-		result = "businessM/register01";
+		result = "businessM/store/register01";
 		return result;	
 	}
 	
@@ -67,7 +67,7 @@ public class businMService {
 	    
 	        result = "businessM/businMalert";
 		}
-			result = "businessM/register02";
+			result = "businessM/store/register02";
 			return result;
 	}
 	
@@ -79,7 +79,7 @@ public class businMService {
 		session.setAttribute("store_add", store_add);
 		session.setAttribute("store_add_info", store_add_info);
 
-        result = "businessM/register03";
+        result = "businessM/store/register03";
         return result;
 	}
 	
@@ -98,7 +98,7 @@ public class businMService {
 		session.setAttribute("store_max_person", store_max_person);
 		session.setAttribute("store_booking_rule", store_booking_rule);
 
-		result = "businessM/register04";
+		result = "businessM/store/register04";
 		return result;
 	}
 	
@@ -162,7 +162,7 @@ public class businMService {
 			System.out.println("보선-가게등록 완료 후 세션 " + attributeName + "의 값: " + attributeValue);
 		}
 		
-		result = "businessM/registerFinish";
+		result = "businessM/store/registerFinish";
 		return result;
 	}
 	

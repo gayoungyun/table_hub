@@ -11,6 +11,7 @@
 </head>
 <body>
 	<h1>가게정보 확인 메뉴입니다</h1>
+	
 <img src="resources/img/로고.png" width="100px"
 		onclick="window.location.href='http://localhost:8080/root/'"><br>
 가게 이름 : ${ store_name }<br>
@@ -28,6 +29,12 @@
 최대 수용 인원 : ${ store_max_person }<br>
 예약 규정 : ${ store_booking_rule }<br>
 <button type="button"> 수정하기 </button>
+
+<script>
+	for (let i = 1; i <= 100; i++) {
+	    document.write(i + "<br>");
+	}
+</script>
 
 </body>
 </html>

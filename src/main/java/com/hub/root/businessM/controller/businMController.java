@@ -1,7 +1,5 @@
 package com.hub.root.businessM.controller;
 
-import java.util.Enumeration;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -27,6 +25,15 @@ public class businMController {
 		
 		@GetMapping("register01")//단순 첫째 페이지 보여주기
 		public String register01(HttpServletRequest request, Model model) {
+			
+			HttpSession session = request.getSession();
+		    String store_id = (String) session.getAttribute("storeId");
+			if(store_id == null) {
+				request.setAttribute("msg", "로그인이 필요한 서비스입니다");
+		        request.setAttribute("url", "member/login");
+		        return "businessM/businMalert";
+			}
+			
 			String result = ser.register01(request, model);
 			return result;
 		}
@@ -72,10 +79,34 @@ public class businMController {
 			
 		}
 		
-		@GetMapping("storeInfo")
+		@GetMapping("businMmenu")
+		public String businMmenu() {
+			return "businessM/businMmenu";
+		}
+		
+		@GetMapping("/businessM/menuInfo")
+		public String menuInfo() {
+			return "businessM/menuInfo";
+		}
+		
+		@GetMapping("/businessM/photoInfo")
+		public String photoInfo() {
+			return "businessM/photoInfo";
+		}
+		
+		@GetMapping("/businessM/reviewInfo")
+		public String reviewInfo() {
+			return "businessM/reviewInfo";
+		}
+		
+		@GetMapping("/businessM/bookInfo")
+		public String bookInfo() {
+			return "businessM/bookInfo";
+		}
+		
+		@GetMapping("/businessM/storeInfo")
 		public String storeInfo() {
 			return "businessM/storeInfo";
 		}
-		
 	}
 
