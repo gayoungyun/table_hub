@@ -21,4 +21,6 @@ public interface MemberMapper {
 	public int storeRegisterChk(StoreDTO dto);
 	
 	public String[] getMemId(String email);
+	public int idEmailChk(@Param("id") String id, @Param("email") String email);
+	public int modifyPwd(@Param("pwd") String pwd, @Param("id") String id);
 }

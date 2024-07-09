@@ -65,6 +65,12 @@
 	<select id="getMemId" resultType="String">
 		select member_id from member_info where member_email = #{email}
 	</select>
+	<select id="idEmailChk" resultType="int">
+		select count(*) from member_info where member_id=#{id} and member_email=#{email}
+	</select>
+	<update id="modifyPwd">
+		update member_info set member_pwd = #{pwd} where member_id = #{id}
+	</update>
 </mapper>
 
 

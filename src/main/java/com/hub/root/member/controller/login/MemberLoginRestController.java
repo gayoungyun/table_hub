@@ -3,6 +3,7 @@ package com.hub.root.member.controller.login;
 import java.util.Map;
 import java.util.Random;
 
+import javax.mail.Session;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -186,7 +187,7 @@ public class MemberLoginRestController {
 			
 			map.put("msg", "인증 코드가 전송되었습니다.");
 			map.put("result", 0);
-			model.addAttribute(session);			
+			model.addAttribute(session);
 		}
 		
 		
@@ -233,6 +234,42 @@ public class MemberLoginRestController {
 		System.out.println("MemLoginRestCont sendMailId 실행");
 		map = ms.sendMailId((String)map.get("email"));
 		
+		
+		return map;
+	}
+	
+	@PostMapping(value="sendMail/pwd", produces="application/json; charset=utf-8")
+	public Map<String, Object> sendMailPwd(@RequestBody Map<String, Object> map, HttpServletResponse res, HttpSession session, Model model) {
+		System.out.println("MemLoginRestCont sendMailPwd 실행");
+		System.out.println("id : " + map.get("inputId"));
+		System.out.println("email : " + map.get("inputEmail"));
+		Map<String, Object> result = ms.idEmailChk((String)map.get("inputId"),
+									(String)map.get("inputEmail"));
+		
+		// 링크 접속시 제어를 위해 5분간 쿠키 및 세션 발급
+		if ((int)result.get("result") == 1) {
+			Cookie cookie = new Cookie("id", (String)result.get("encodeId"));
+			cookie.setMaxAge(5 * 60);
+			cookie.setPath("/root/member/login/searchPwd/modifyPwd");
+			
+			res.addCookie(cookie);
+			
+			session.setAttribute("inputId", (String)map.get("inputId"));
+			model.addAttribute(session);
+			
+		}
+		
+		result.remove("encodeId");
+		
+		return result;
+	}
+	
+	@PostMapping(value="login/searchPwd/modifyPwd", produces="application/json; charset=utf-8")
+	public Map<String, Object> modifyPwd(@RequestBody Map<String, Object> map, HttpSession session) {
+		System.out.println("session : " + session.getAttribute("inputId"));
+		String id = (String)session.getAttribute("inputId");
+//		session.removeAttribute("inputId");
+		map = ms.modifyPwd((String)map.get("pwd"), id);
 		
 		return map;
 	}

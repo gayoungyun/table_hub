@@ -100,7 +100,7 @@
 									
 									html += `<div class="myReplyContentMiddle">`
 									html += `<label class="myReplyContentReply">`+item.BOARD_REVIEW_CONTENT+`</label><br>`
-									html += `<label class="myReplyContentBody">`+result.BOARD_TITLE+`</label> <label class="myReplyContentCount">[`+ result.COUNT +`]</label>`
+									html += `<label class="myReplyContentBody">`+result.BOARD_TITLE+`</label> <label class="myReplyContentCount">[`+ result.TOTAL_COUNT +`]</label>`
 									html += `</div>`
 									
 									html += `<div class="myReplyContentRight">`
@@ -135,7 +135,7 @@
 									
 									html += `<div class="myReplyContentMiddle">`
 									html += `<label class="myReplyContentReply">`+item.BOARD_REVIEW2_CONTENT+`</label><br>`
-									html += `<label class="myReplyContentBody">`+result.BOARD_TITLE+`</label> <label class="myReplyContentCount">[`+ result.COUNT +`]</label>`
+									html += `<label class="myReplyContentBody">`+result.BOARD_TITLE+`</label> <label class="myReplyContentCount">[`+ result.TOTAL_COUNT +`]</label>`
 									html += `</div>`
 									
 									html += `<div class="myReplyContentRight">`

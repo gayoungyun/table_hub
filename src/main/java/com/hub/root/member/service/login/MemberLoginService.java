@@ -2,6 +2,8 @@ package com.hub.root.member.service.login;
 
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+
 import com.hub.root.member.dto.MemberDTO;
 
 public interface MemberLoginService {
@@ -15,4 +17,7 @@ public interface MemberLoginService {
 	public int storeMailChk(String email);
 	
 	public Map<String, Object> sendMailId(String email);
+	public Map<String, Object> idEmailChk(String id, String email);
+	public int modifyPwdIdChk(String id, Cookie[] cookies);
+	public Map<String, Object> modifyPwd(String pwd, String id);
 }

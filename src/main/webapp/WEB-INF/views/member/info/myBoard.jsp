@@ -33,11 +33,14 @@
 		getMyInfo();
 		deleteBoards = [];
 		currentPage = page;
+		
+		// 보드 정보를 불러오기 위한 ajax요청
 		$.ajax({
 			url : "/root/member/myPage/board?page="+page,
 			type : "get",
 			dataType : "json",
 			success : function ( data ) {
+				console.log("data : ", data)
 				lastPage = data.totalPage
 				totalContent = data.count
 				let html = "";
@@ -51,34 +54,53 @@
 	                html += `<th class="boardTitle">조회</th>`
 	                html += `</tr>`
 					data.list.forEach(function (item, index) { // list값을 반복하여 꺼내온다.
+						// 게시글에 달린 댓글 수량 확인을 위한 ajax요청
+						$.ajax({
+							url : "/root/member/myPage/board/replyCount?boardId="+item.id,
+							type : "get",
+							dataType : "json",
+							async : false,
+							success : function (result) {
+								
+								console.log("result : ", result)
+								
+								// 불러온 시간형식을 표시할 수 있도록 형변환을 한다.
+				                let date = new Date(item.create);
+				                let createDate = (date.getFullYear() + '.') +
+				                    ('0' + (date.getMonth() + 1)).slice(-2) + "." +
+				                    ('0' + (date.getDate())).slice(-2) 
+			
+				                // 테이블 값을 표현한다.
+								html += `<tr>`
+								html += `<td class="boardContent">`
+								html += `<input class="boardContentSelect" onchange="boardCheck(this,+`+ item.id+`)" type="checkbox">`
+								html += `</td>`
+								html += `<td class="boardContent">`
+								html += `<label class="boardContentNum" onclick="location.href='/root/board/`+item.id+`'">`+item.id+`</label>`
+								html += `</td>`
+								html += `<td class="boardContent">`
+								html += `<label class="boardContentCategory">db값 없음</label>`
+								html += `</td>`
+								html += `<td class="boardContent">`
+								if (result.boardReplyCount != 0) {
+									html += `<label class="boardContentTitle" title="`+item.title+`" onclick="location.href='/root/board/`+item.id+`'">` + item.title + `<label class="myBoardContentCount">&nbsp;[`+ result.boardReplyCount +`]</label></label>`
+								} else {
+									html += `<label class="boardContentTitle" title="`+item.title+`" onclick="location.href='/root/board/`+item.id+`'">` + item.title + `</label>`									
+								}
+								html += `</td>`
+								html += `<td class="boardContent">`
+								html += `<label class="boardContentDate">`+createDate+`</label>`
+								html += `</td>`
+								html += `<td class="boardContent">`
+								html += `<label class="boardContentView">`+item.view+`</label>`
+								html += `</td>`
+								html += `</tr>`
+							}, 
+							error : function ( error ) {
+								console.log("error : ", error)
+							}
+						})
 						
-						// 불러온 시간형식을 표시할 수 있도록 형변환을 한다.
-		                let date = new Date(item.create);
-		                let createDate = (date.getFullYear() + '.') +
-		                    ('0' + (date.getMonth() + 1)).slice(-2) + "." +
-		                    ('0' + (date.getDate())).slice(-2) 
-	
-		                // 테이블 값을 표현한다.
-						html += `<tr>`
-						html += `<td class="boardContent">`
-						html += `<input class="boardContentSelect" onchange="boardCheck(this,+`+ item.id+`)" type="checkbox">`
-						html += `</td>`
-						html += `<td class="boardContent">`
-						html += `<label class="boardContentNum" onclick="location.href='/root/board/`+item.id+`'">`+item.id+`</label>`
-						html += `</td>`
-						html += `<td class="boardContent">`
-						html += `<label class="boardContentCategory">db값 없음</label>`
-						html += `</td>`
-						html += `<td class="boardContent">`
-						html += `<label class="boardContentTitle" title="`+item.title+`" onclick="location.href='/root/board/`+item.id+`'">`+item.title+`</label>`
-						html += `</td>`
-						html += `<td class="boardContent">`
-						html += `<label class="boardContentDate">`+createDate+`</label>`
-						html += `</td>`
-						html += `<td class="boardContent">`
-						html += `<label class="boardContentView">`+item.view+`</label>`
-						html += `</td>`
-						html += `</tr>`
 					})
 					html += `<tr>`
 					html += `<td class="boardContent" colspan="6">`

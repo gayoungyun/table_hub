@@ -201,6 +201,24 @@
 				select * from board where board_mem_id = #{id} order by board_id ) A ) B 
 		where rn between #{start} and #{end}
 	</select>
+	<select id="getBoardReplyCount" resultType="int">
+		select review_count + review2_count as total_count
+		from (
+		    select(
+		    select count(*) 
+		    from board_review 
+		    where board_id = #{boardId}
+		    ) as review_count,
+		    
+		    (select count(*) 
+		    from board_review2 
+		    where board_review_id in (
+		        select board_review_id 
+		        from board_review 
+		        start with board_id = #{boardId} 
+		        connect by PRIOR board_review.board_review_id = board_review2.board_review_id
+		    )) as review2_count from dual)
+	</select>
 	
 	<delete id="deleteBoard">
 		delete from board where board_id in 
@@ -265,7 +283,7 @@
 		        FROM
 		            board_review
 		        WHERE
-		            member_id = 'asdf'
+		            member_id = #{memId}
 		        UNION ALL
 		        SELECT
 		        	NULL AS board_id,
@@ -296,26 +314,51 @@
 	</select>
 	
 	<select id="getBoardInfo" resultType="map">
-		SELECT 
-			    (select 
-                    COUNT(*) 
-                from 
-                    board_review2 
-                where 
-                    board_review_id in 
-                        (select 
-                            board_review_id 
-                        from 
-                            board_review 
-                        where 
-                            board_id = #{boardId})) AS count, 
-                    (SELECT 
-                        board_title 
-                    FROM 
-                        board 
-                    WHERE 
-                        board_id = #{boardId}) AS board_title
-			FROM dual
+	select review_count + review2_count as total_count , board_title
+	from (
+	    select(
+	    select count(*) 
+	    from board_review 
+	    where board_id = #{boardId}
+	    ) as review_count,
+	    
+	    (select count(*) 
+	    from board_review2 
+	    where board_review_id in (
+	        select board_review_id 
+	        from board_review 
+	        start with board_id = #{boardId}
+	        connect by PRIOR board_review.board_review_id = board_review2.board_review_id
+	    )) as review2_count,
+	    
+	    (SELECT board_title 
+	    FROM board 
+	    WHERE board_id = #{boardId}) AS board_title
+	from dual)
+	
+	
+<!-- 		SELECT  -->
+<!-- 			    (select  -->
+<!--                     COUNT(*)  -->
+<!--                 from  -->
+<!--                     board_review2  -->
+<!--                 where  -->
+<!--                     board_review_id in  -->
+<!--                         (select  -->
+<!--                             board_review_id  -->
+<!--                         from  -->
+<!--                             board_review  -->
+<!--                         where  -->
+<!--                             board_id = #{boardId})) AS count,  -->
+<!--                     (SELECT  -->
+<!--                         board_title  -->
+<!--                     FROM  -->
+<!--                         board  -->
+<!--                     WHERE  -->
+<!--                         board_id = #{boardId}) AS board_title -->
+<!-- 			FROM dual -->
+			
+			
 <!-- 	    SELECT  -->
 <!-- 		    (SELECT COUNT(*) FROM board_review WHERE board_id = ${boardId}) AS count,  -->
 <!-- 		    (SELECT board_title FROM board WHERE board_id = ${boardId}) AS board_title -->
@@ -323,10 +366,34 @@
 	</select>
 	
 	<select id="getBoardInfo2" resultType="map">
-		    SELECT 
-			    (SELECT COUNT(*) FROM board_review WHERE board_id = (select board_id from board_review where board_review_id = #{reviewId})) AS count, 
-			    (SELECT board_title FROM board WHERE board_id = (select board_id from board_review where board_review_id = #{reviewId})) AS board_title
-			FROM dual
+		select review_count + review2_count as total_count , board_title
+		from (
+		    select(
+		    select count(*) 
+		    from board_review 
+		    where board_id = 801
+		    ) as review_count,
+		    
+		    (select count(*) 
+		    from board_review2 
+		    where board_review_id in (
+		        select board_review_id 
+		        from board_review 
+		        start with board_id = (select board_id from board_review where board_review_id = #{reviewId}) 
+		        connect by PRIOR board_review.board_review_id = board_review2.board_review_id
+		    )) as review2_count,
+		    
+		    (SELECT board_title 
+		    FROM board 
+		    WHERE board_id = (select board_id from board_review where board_review_id = ${reviewId})) AS board_title
+		from dual)
+	
+	
+	
+<!-- 		    SELECT  -->
+<!-- 			    (SELECT COUNT(*) FROM board_review WHERE board_id = (select board_id from board_review where board_review_id = #{reviewId})) AS count,  -->
+<!-- 			    (SELECT board_title FROM board WHERE board_id = (select board_id from board_review where board_review_id = #{reviewId})) AS board_title -->
+<!-- 			FROM dual -->
 	</select>
 	
 	<delete id="deleteReply">

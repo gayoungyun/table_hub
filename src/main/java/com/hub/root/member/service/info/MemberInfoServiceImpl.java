@@ -279,6 +279,19 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 		}
 		return map;
 	}
+	
+	
+	
+
+	@Override
+	public Map<String, Object> getBoardReplyCount(int boardId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		System.out.println("serviceboardId : " + boardId);
+		int boardReplyCount = mapper.getBoardReplyCount(boardId);
+		System.out.println("boardReplyCount : " + boardReplyCount);
+		map.put("boardReplyCount", boardReplyCount);
+		return map;
+	}
 
 	@Override
 	public Map<String, Object> deleteBoard(int[] content) {
@@ -482,6 +495,9 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	@Override
 	public Map<String, Object> getMyContentMyInfo(String userId) {
 		Map<String, Object> map = mapper.getMyContentMyInfo(userId);
+		if (map.get("REVIEW_SCORE") == null) {
+			map.put("REVIEW_SCORE", 0);
+		}
 		return map;
 	}
 

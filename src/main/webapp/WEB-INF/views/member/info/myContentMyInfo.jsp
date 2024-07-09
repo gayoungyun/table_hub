@@ -17,7 +17,7 @@
 			type : "get",
 			dataType : "json",
 			success : function (result) {
-				console.log("result : ", result)
+				console.log("inforesult : ", result)
 				var html = ""
 				html += `<tr>`
 				html += `<td>`
@@ -28,6 +28,7 @@
 				html += `<label class="myCount">작성 게시글 <b>` + result.BOARD_COUNT + `</b> · </label>`
 				html += `<label class="myCount">작성 댓글 <b>` + result.REPLY_COUNT + `</b> · </label>`
 				html += `<label class="myCount">작성 리뷰 <b>` + result.REVIEW_COUNT + `</b> · </label>`
+				console.log("리뷰평ㅈ머 : ", result.REVIEW_SCORE)
 				html += `<label class="myCount">리뷰 평점 <b>` + result.REVIEW_SCORE + `</b></label>`
 				html += `</td>`
 				html += `</tr>` 

@@ -405,7 +405,14 @@
 		$("#infoEmailLocal").on("input", function () {
 			console.log('${dto.email}'.split("@")[0])
 			console.log($(this).val())
+			// 불러온 이메일 값과 현재 작성한 이메일 주소값이 같으면 disable상태로 만든다.
 			if ('${dto.email}'.split("@")[0] == $(this).val()) {
+				$("#infoEmailCodeSendBtn").prop("disabled", true);
+				
+				//입력된 이메일 주소가 영문 20자 이상 넘어갈 경우 메세지 표시 및 버튼 비활성화
+			} else if ($(this).val().length > 20) {
+				$("#infoEmailMsg").html("이메일주소는 20자 이상을 넘어갈 수 없습니다.");
+				$("#infoEmailMsg").css("color", "#ff6868")
 				$("#infoEmailCodeSendBtn").prop("disabled", true);
 			} else {
 				$("#infoEmailCodeSendBtn").prop("disabled", false);

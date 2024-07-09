@@ -41,6 +41,7 @@ public interface MemberInfoMapper {
 	public int getBoardCount(String id);
 	public List<BoardDTO> getBoard(@Param("id") String id, @Param("start") int startNum,
 									@Param("end") int endNum);
+	public int getBoardReplyCount(@Param("boardId") int boardId);
 	public int deleteBoard(@Param("content") int[] content);
 	public int getReviewCount(String id);
 	public List<ReviewDTO> getReview(@Param("id") String id, @Param("start") int startNum,
@@ -58,8 +59,6 @@ public interface MemberInfoMapper {
 	public int deleteReply(@Param("content") int[] content);
 	public Map<String, Object> getMyContentMyInfo(@Param("userId") String userId);
 	public String getNick(@Param("userId") String userId);
-	
-	
 	
 	
 	

@@ -21,7 +21,9 @@ public class SendMailService {
 			MimeMessageHelper h = new MimeMessageHelper(message, true, "UTF-8");
 			h.setSubject(subject);
 			h.setTo(to);
-			h.setText(body);
+			
+			// true값이 있어야 html 형식으로 메일이 전달됨
+			h.setText(body, true);
 			sender.send(message);
 		} catch (Exception e) {
 			e.printStackTrace();

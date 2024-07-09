@@ -169,6 +169,13 @@ public class MemberInfoRestController {
 		return map;
 	}
 	
+	@GetMapping(value="board/replyCount", produces="application/json; charset=utf-8")
+	public Map<String, Object> getBoardReplyCount(@RequestParam int boardId){
+		System.out.println("boardId : " + boardId);
+		Map<String, Object> map = mis.getBoardReplyCount(boardId);
+		return map;
+	}
+	
 	@DeleteMapping(value="board", produces="application/json; charset=utf-8")
 	public Map<String, Object> deleteBoard(@RequestBody Map<String, int[]> boards) {
 		System.out.println("memInfoRestCont deleteBoard 실행");
