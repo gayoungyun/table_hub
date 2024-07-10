@@ -15,8 +15,6 @@
 		$("#pwdCheckBtn").on("click", function() {
 			let inputPwd = $("#inputPwd").val();
 			console.log("inputPwd : ", inputPwd)
-			
-			// 입력한 패스워드가 세션의 아이디값과 일치하는지 확인하는 ajax요청
 			$.ajax( {
 				url : "pwdCheck",
 				type : "get",
@@ -27,9 +25,6 @@
 				contentType : "application/json; charset=utf-8",
 				success : function ( data ) {
 					console.log("data : ", data)
-					
-					// 일치한다면 마이페이지로 이동한다.
-					// 아니라면 메세지를 표시한다.
 					if (data.result == 1) {
 						location.href="/root/member/myPage/detail"
 					} else {
@@ -42,13 +37,6 @@
 				}
 				
 			})
-		})
-		
-		// 패스워드 입력란에서 엔터키를 클릭하면 버튼이 클릭된다.
-		$("#inputPwd").keydown(function (event) {
-			if (event.key === 'Enter' || event.keyCode === 13) {
-				$("#pwdCheckBtn").click();
-			}
 		})
 	})
 

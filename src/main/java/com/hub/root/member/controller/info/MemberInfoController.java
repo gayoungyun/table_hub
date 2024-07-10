@@ -43,12 +43,17 @@ public class MemberInfoController {
 	@GetMapping("download")
 	public void download(@RequestParam String img, HttpServletResponse res) throws Exception {
     	System.out.println("memRestCont download 실행");
-		String originImgName = img.split("_")[1];
+    	String originImgName = null;
+    	if (img.split("_").length > 1) {
+    		originImgName = img.split("_")[1];    		
+    	} else {
+    		originImgName = img;
+    	}
 		res.setContentType("text/plain; charset=utf-8");
 		res.addHeader("Content-disposition", "attachment;fileName="+URLEncoder.encode(img, "UTF-8"));
 		File file;
-		if (originImgName.equals("default.jpg")) {
-			file = new File(MemberInfoService.IMAGE_REPO + "/" + originImgName);			
+		if (originImgName.equals("default.jpg") || originImgName.equals("default")) {
+			file = new File(MemberInfoService.IMAGE_REPO + "/default.jpg");			
 		} else {
 			file = new File(MemberInfoService.IMAGE_REPO + "/" + img);			
 		}

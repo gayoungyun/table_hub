@@ -26,7 +26,11 @@
 					<a href="/root/member/myPage/detail" class="a-item">Profile</a>
 				</c:if>
 				<c:if test="${storeId != null }">
+<<<<<<< HEAD
 					<a href="/root/member/myPage/detail" class="a-item">Profile</a>
+=======
+					<a href="/root/store">MyStore</a>
+>>>>>>> refs/heads/guhyeon
 				</c:if>
 
 			</div>
