@@ -83,7 +83,8 @@
 								html += `</td>`
 								html += `<td class="boardContent">`
 								if (result.boardReplyCount != 0) {
-									html += `<label class="boardContentTitle" title="`+item.title+`" onclick="location.href='/root/board/`+item.id+`'">` + item.title + `<label class="myBoardContentCount">&nbsp;[`+ result.boardReplyCount +`]</label></label>`
+									html += `<label class="boardContentTitle" title="`+item.title+`" onclick="location.href='/root/board/`+item.id+`'">` + item.title + `</label>`
+									html += `<label class="myBoardContentCount">[`+ result.boardReplyCount +`]</label>`
 								} else {
 									html += `<label class="boardContentTitle" title="`+item.title+`" onclick="location.href='/root/board/`+item.id+`'">` + item.title + `</label>`									
 								}
