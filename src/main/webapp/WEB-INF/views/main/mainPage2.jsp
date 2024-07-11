@@ -179,7 +179,7 @@
 		justify-content:center;
 	}
 	.imgSmall{
-		width: 100%;
+		width: 150px;
 		height: 100%;
 		object-position: fill;
 		margin-bottom: 10px;
@@ -274,19 +274,19 @@
 			                <div class="detail-container-left">
 			                
 			                    <div class="menu-detail-imgBig">
-							    <c:if test="${not empty storeImgList[status.index]}">
-							        <img class="imgBig" src="${path}/main/download?fileName=${storeImgList[status.index].store_img_root}" alt="Store Image">
-							    </c:if>
-							</div>
-							<div class="menu-detail-imgSmall">
-							    <c:forEach var="image" items="${imgList}" varStatus="imgStatus">
-							        <c:if test="${imgStatus.index < 3}">
-							            <div class="imgSmall1">
-							                <img class="imgSmall" src="${path}/main/download?fileName=${image.store_menu_img}" alt="Store Menu Image">
-							            </div>
-							        </c:if>
-							    </c:forEach>
-							</div>
+								    <c:if test="${not empty storeImgList[status.index]}">
+								        <img class="imgBig" src="${path}/main/download?fileName=${storeImgList[status.index].store_img_root}" alt="Store Image">
+								    </c:if>
+								</div>
+								<div class="menu-detail-imgSmall">
+									<c:forEach var="smallImg" items="${storeSmallImgList}" begin="1" end="3">
+								        <c:if test="${not empty smallImg}">
+								            <div class="imgSmall1${status.index }">
+								                <img class="imgSmall" src="${path}/main/download?fileName=${smallImg.store_img_root}" alt="Store Menu Image">
+								            </div>
+								        </c:if>
+								  	</c:forEach>
+								</div>
 
 			                </div>
                                 <div class="detail-container-right">
@@ -306,36 +306,36 @@
                                         <span>상세 주소 : ${store.store_add_info}</span><br>
                                     </c:if>
                                     <c:if test="${not empty store.store_category}">
-                        <span>카테고리 : 
-                        <c:set var="seenCategories" value="" />
-                        
-                        <!-- 특정 카테고리로 검색 시 -->
-                        <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
-                            <c:if test="${fn:contains(category, param.keyword)}">
-                                <c:if test="${not fn:contains(seenCategories, category)}">
-                                    <c:if test="${!empty seenCategories}">
-                                        /
-                                    </c:if>
-                                    ${category}
-                                    <c:set var="seenCategories" value="${seenCategories}${category}/" />
-                                </c:if>
-                            </c:if>
-                        </c:forEach>
-                        
-                        <!-- "ALL" 또는  메뉴 이름으로 검색 시 모든 카테고리 출력 -->
-                        <c:if test="${param.searchType == 'menu_name' || param.searchType == '' || param.searchType == null}">
-                            <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
-                                <c:if test="${not fn:contains(seenCategories, category)}">
-                                    <c:if test="${!empty seenCategories}">
-                                        /
-                                    </c:if>
-                                    ${category}
-                                    <c:set var="seenCategories" value="${seenCategories}${category}/" />
-                                </c:if>
-                            </c:forEach>
-                        </c:if>
-                        </span><br>
-                    </c:if>
+			                        <span>카테고리 : 
+			                        <c:set var="seenCategories" value="" />
+			                        
+			                        <!-- 특정 카테고리로 검색 시 -->
+			                        <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
+			                            <c:if test="${fn:contains(category, param.keyword)}">
+			                                <c:if test="${not fn:contains(seenCategories, category)}">
+			                                    <c:if test="${!empty seenCategories}">
+			                                        /
+			                                    </c:if>
+			                                    ${category}
+			                                    <c:set var="seenCategories" value="${seenCategories}${category}/" />
+			                                </c:if>
+			                            </c:if>
+			                        </c:forEach>
+			                        
+			                        <!-- "ALL" 또는  메뉴 이름으로 검색 시 모든 카테고리 출력 -->
+			                        <c:if test="${param.searchType == 'menu_name' || param.searchType == 'all' || param.searchType == null}">
+			                            <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
+			                                <c:if test="${not fn:contains(seenCategories, category)}">
+			                                    <c:if test="${!empty seenCategories}">
+			                                        /
+			                                    </c:if>
+			                                    ${category}
+			                                    <c:set var="seenCategories" value="${seenCategories}${category}/" />
+			                                </c:if>
+			                            </c:forEach>
+			                        </c:if>
+			                        </span><br>
+			                 	    </c:if>
                                     <c:if test="${not empty store.store_note}">
                                         <span>메모 : ${store.store_note}</span><br>
                                     </c:if>
@@ -360,15 +360,14 @@
 	        <div class="main-items right-itme">
 	            <div class="map_wrap">
 	                <div id="map"></div>
+	                
 	                <div id="menu_wrap" class="bg_white">
 	                    <div class="option">
 	                        <div>
 	                            <form onsubmit="searchPlaces(); return false;">
 	                                키워드 : 
 	                                <input type="text" value="맛집" id="keyword" size="15"> 
-	                                <datalist id="addressList">
-						                <!-- JS로 데이터 리스트 추가 -->
-						            </datalist>
+	                                <datalist id="addressList"></datalist>
 	                                <button type="submit">검색하기</button> 
 	                            </form>
 	                        </div>
@@ -385,20 +384,13 @@
 </body>
 </html>
  
- 
- 
- 
- 
- 
- 
- 
- 
 <script type="text/javascript">
 
 document.addEventListener("DOMContentLoaded", marker);
 
 function marker() {
-    const key = '${keyword}'; 
+	
+	const key = '${keyword}'; 
     const ser = '${searchType}';
     const cat = '${category}';
     
@@ -461,9 +453,9 @@ function marker() {
                         <div class="item">
                             <span class="markerbg marker_${index + 1}"></span>
                             <div class="info">
-                                <h5>${store.store_name}</h5>
-                                <span>${store.store_add}</span>
-                                <span class="tel">${store.store_phone}</span>
+                                <h5>가게이름 : ${store.store_name}</h5>
+                                <span>주소 : ${store.store_add}</span>
+                                <span class="tel">번호 : ${store.store_phone}</span>
                             </div>
                         </div>`;
                     placesList.appendChild(listItem);
@@ -481,7 +473,7 @@ function marker() {
         });
 
         Promise.all(promises).then(locations => {
-            locations.forEach(loc => {
+            locations.forEach((loc, index) => {//index추가확인
                 if (loc) {
                     console.log("Adding marker: ", loc);
                     var marker = new kakao.maps.Marker({
@@ -523,8 +515,6 @@ function makeOutListener(infowindow) {
         infowindow.close();
     };
 }
+
+
 </script>
-
-
-
-

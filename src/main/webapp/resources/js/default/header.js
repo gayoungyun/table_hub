@@ -1,4 +1,4 @@
- function submitSearch() {
+function submitSearch() {
         var category = document.getElementById('search_category').value;
         var keyword = document.getElementById('search_keyword').value.trim();
         var searchForm = document.getElementById('searchForm');

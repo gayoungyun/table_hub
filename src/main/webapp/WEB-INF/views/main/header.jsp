@@ -57,7 +57,7 @@
 			<div class="search">
 	            <form id="searchForm" action="${path}/main/mainPage2" method="get">
 	                <select id="search_category" name="searchType">
-	                    <option value="">ALL</option>
+	                    <option value="all">ALL</option>
 	                    <option value="menu_name">Store Name</option>
 	                    <option value="menu_category">Menu Category</option>
 	                </select>
@@ -73,9 +73,3 @@
 	</div>
 </body>
 </html>
-
-
-
-
-
-

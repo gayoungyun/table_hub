@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,29 +72,24 @@ public class MainController {
 		model.addAttribute("dtoList", dtoList);
 		return "main/mainPage1";
 	}
-	@GetMapping("storeImgList")
-	public String getStoreImgList(@RequestParam String keyword, 
-						          @RequestParam String searchType,
-						          @RequestParam String category,
-						          Model model) {
-		Map<String, Object> params = new HashMap<>();
-		String key = (keyword != null) ? keyword : "null";
-	    String search = (searchType != null) ? searchType : "null";
-	    String cat = (category != null) ? category : "null";
-		
-		params.put("keyword", key);
-		params.put("searchType", search);
-		params.put("category", cat);
-		List<MainMapDTO> storeImgList = ms.getStoreImgList(params);
-		System.out.println("imglist con :"+storeImgList );
-		
-		model.addAttribute("storeImgList", storeImgList);
-		model.addAttribute("keyword", keyword);
-	    model.addAttribute("searchType", searchType);
-	    model.addAttribute("category", category);
-		
-		return "main/mainPage2";
+	// mainPage1에 현재 위치 기반 가게 정보 가져오기 ===============
+	@PostMapping("/getStoresByLocation")
+	@ResponseBody
+	public ResponseEntity<?> getStoresByLocation(@RequestBody Map<String, Object> location) {
+	    double latitude = Double.parseDouble(location.get("latitude").toString());
+	    double longitude = Double.parseDouble(location.get("longitude").toString());
+	    //String address = location.get("address").toString();
+	    try {
+	        List<MainDTO> stores = ms.getStoreByLocation(latitude, longitude);
+	        return ResponseEntity.ok(stores);
+	    } catch (Exception e) {
+	    	e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving stores: " + e.getMessage());
+	    }
 	}
+
+	
+	
 	// mainPage2 요청 처리===================================
 	@RequestMapping("mainPage2")
 	public String mainPage2(@RequestParam(required=false) String keyword, 
@@ -113,15 +109,15 @@ public class MainController {
 	    params.put("category", cat);
 
 	    List<MainMapDTO> storeList = ms.getStoreInfo(params);
-	    List<Map<String, Object>> imgList = ms.getMenuImage(params);
+	    //List<MainMapDTO> storeListBt = ms.getStoreInfo(params);
 	   
 	    if (storeList == null) {
 	        storeList = new ArrayList<>();
 	    }
 
-	    if (imgList == null) {
-	        imgList = new ArrayList<>();
-	    }
+	   // if (imgList == null) {
+	     //   imgList = new ArrayList<>();
+	   // }
 	    
 	    List<MainImgDTO> storeImgList = new ArrayList<>();
 	    for(MainMapDTO storeInfo : storeList) {
@@ -129,16 +125,31 @@ public class MainController {
 	    	//storeImgList.add(storeImage);
 	    	  if (!storeImage.isEmpty()) {
 	              storeImgList.add(storeImage.get(0));
-	              System.out.println("image path: "+storeImage.get(0).getStore_img_root());
+	              //System.out.println("image path: "+storeImage.get(0).getStore_img_root());
 	          } else {
 	              storeImgList.add(null); // 이미지가 없는 경우
+	          }
+	    }
+	    
+	    List<MainImgDTO> storeSmallImgList = new ArrayList<>();
+	    for(MainMapDTO storeInfo : storeList) {
+	    	List<MainImgDTO> storeSmallImage = ms.getStoreSmallImage(storeInfo.getStore_id());
+	    	  if (!storeSmallImage.isEmpty()) {
+	    		  int maxImages = Math.min(4, storeSmallImage.size());
+	    		  for(int i = 0; i < maxImages; i++) {
+	    			  storeSmallImgList.add(storeSmallImage.get(i));
+	              //System.out.println("image path: "+storeSmallImage.get(i).getStore_img_root());
+	    		  }
+	          } else {
+	        	  storeSmallImage.add(null); // 이미지가 없는 경우
 	          }
 	    }
 
 	    model.addAttribute("storeList", storeList);
 	    model.addAttribute("storeListSize", storeList.size());
-	    model.addAttribute("imgList", imgList);
+	    //model.addAttribute("imgList", imgList);
 	    model.addAttribute("storeImgList", storeImgList);
+	    model.addAttribute("storeSmallImgList", storeSmallImgList);
 	    
 	    model.addAttribute("keyword", keyword);
 	    model.addAttribute("searchType", searchType);
@@ -146,7 +157,6 @@ public class MainController {
 
 	    return "main/mainPage2";
 	}
-
 	
 	// 정보 입력 페이지 요청 처리(store_menu)====================
 	@RequestMapping("inputInfo")
@@ -220,12 +230,3 @@ public class MainController {
 	}
 
 }
-
-
-
-
-
-
-
-
-
