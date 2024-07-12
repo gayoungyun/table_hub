@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -87,9 +88,32 @@ public class MainController {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving stores: " + e.getMessage());
 	    }
 	}
+	/*
+	@Value("${kakao.api.key}")
+	private String kakaoApikey;
+	
+	@PostMapping("/getAddr")
+	@ResponseBody
+	public ResponseEntity<?> getAddr(@RequestBody Map<String, Object> location) {
+        double latitude = Double.parseDouble(location.get("latitude").toString());
+        double longitude = Double.parseDouble(location.get("longitude").toString());
+        String url = "https://dapi.kakao.com/v2/local/geo/coord2address.json?x=" + longitude + "&y=" + latitude + "&input_coord=WGS84";
 
-	
-	
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "KakaoAK " + kakaoApiKey);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+            return ResponseEntity.ok(response.getBody());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error retrieving address: " + e.getMessage());
+        }
+    }
+}
+	*/
 	// mainPage2 요청 처리===================================
 	@RequestMapping("mainPage2")
 	public String mainPage2(@RequestParam(required=false) String keyword, 

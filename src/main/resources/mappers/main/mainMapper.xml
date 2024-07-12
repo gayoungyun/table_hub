@@ -47,22 +47,19 @@
  
 
 <select id="getStoreByLocation" resultMap="main">
-        SELECT 
-            si.store_id, 
-            si.store_name, 
-            si.store_add, 
-            si.store_category,
-            sm.store_menu_img 
-        FROM 
-            store_info si
-        JOIN 
-            store_menu sm ON si.store_id = sm.store_id
-        WHERE 
-            si.store_add LIKE '%' || #{address} || '%'
-    </select>
-
-
- 
+    SELECT 
+        si.store_id, 
+        si.store_name, 
+        si.store_add, 
+        si.store_category,
+        sm.store_menu_img 
+    FROM 
+        store_info si
+    JOIN 
+        store_menu sm ON si.store_id = sm.store_id
+    WHERE 
+        si.store_add LIKE '%' || #{address} || '%'
+</select>
  
  
 <select id="getStoreImage" resultMap="mainImg">

@@ -11,8 +11,8 @@
 
 <script  type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3/dist/js/splide.min.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=da3de66ef64ff42d5b0dc40d2235b72a"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=da3de66ef64ff42d5b0dc40d2235b72a&libraries=services"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=da3de66ef64ff42d5b0dc40d2235b72a"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/main/image_slide.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans:400" rel="stylesheet">
  
@@ -126,13 +126,37 @@
 	/* left side ===== db span */
 	.location-condition{
 		display: flex;
-		justify-content: space-between;
+		/* justify-content: space-between; */
 		width: 100%;
 		margin-top: 20px;
 	}
 	.location-condition span:last-child{
 		margin-right: 80px;
 	}
+	.loc_btn {
+        padding: 10px 20px;
+        background-color: #497671;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+        margin-left: 300px;
+     }
+     .loc_btn1 {
+        padding: 10px 20px;
+        background-color: #497671;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+        margin-left: 150px;
+     }
+     .loc_btn:hover, .loc_btn1:hover {
+        background-color: black;
+     }
+	
 	/* left side ===== db span end */
 	
 	/* left side ===== detail view */
@@ -263,7 +287,8 @@
 				<!-- ===== 위치가져오기, 상세보기 부분 ===== -->
 				<div class="location-condition">
 					<span>서울 종로구 계동 #한식</span>
-					<span>상세조건</span>
+					<button class="loc_btn" onclick="getLocation()">현 위치로 설정</button>
+					<button class="loc_btn1" onclick="getOtherLocation()">다른 지역 선택</button>
 				</div>
 				
 				<!-- ===== 메뉴 상세보기 부분 ===== -->
@@ -386,11 +411,13 @@
  
 <script type="text/javascript">
 
-document.addEventListener("DOMContentLoaded", marker);
+
+
+var map; // 전역 변수로 선언
+var infowindow = new kakao.maps.InfoWindow({zIndex:1});
 
 function marker() {
-	
-	const key = '${keyword}'; 
+    const key = '${keyword}'; 
     const ser = '${searchType}';
     const cat = '${category}';
     
@@ -418,7 +445,7 @@ function marker() {
                 level: 3 // 지도의 확대 레벨
             };
 
-        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+        map = new kakao.maps.Map(mapContainer, mapOption); // 전역 변수로 선언된 map을 초기화
 
         var bounds = new kakao.maps.LatLngBounds(); // 지도 경계 객체 생성
 
@@ -516,5 +543,157 @@ function makeOutListener(infowindow) {
     };
 }
 
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+
+            // 서버로 좌표를 전송하여 주소를 받아옴
+            $.ajax({
+                url: '/main/getAddr',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ latitude: lat, longitude: lon }),
+                success: function(response) {
+                    var address = JSON.parse(response).documents[0].address.address_name;
+                    console.log("주소 가져오기 성공: ", address);
+                    searchStores(address); // 서버로 주소 전송
+                },
+                error: function(xhr, status, error) {
+                    console.error('주소를 가져오는 중 오류가 발생했습니다.', xhr, status, error);
+                    alert('주소를 가져오는 중 오류가 발생했습니다.');
+                }
+            });
+
+            var locPosition = new kakao.maps.LatLng(lat, lon);
+            var message = '<div style="padding:5px;">현위치</div>';
+            displayMarker({ y: lat, x: lon, name: '현위치', address: '현위치' });
+        }, function(error) {
+            console.error("Error occurred. Error code: " + error.code);
+            var locPosition = new kakao.maps.LatLng(37.4812845080678, 126.952713197762);
+            var message = '현재 위치를 알 수 없어 기본 위치로 이동합니다.';
+            displayMarker({ y: 37.4812845080678, x: 126.952713197762, name: '기본 위치', address: message });
+        });
+    } else {
+        var locPosition = new kakao.maps.LatLng(37.4812845080678, 126.952713197762);
+        var message = '현재 위치를 알 수 없어 기본 위치로 이동합니다.';
+        displayMarker({ y: 37.4812845080678, x: 126.952713197762, name: '기본 위치', address: message });
+    }
+}
+
+
+
+function getAddr(lat, lon) {
+	 const url = `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${lon}&y=${lat}&input_coord=WGS84`;
+	    console.log("Request URL: ", url); // 요청 URL 로그 추가
+    $.ajax({
+        url: url,
+        type: 'GET',
+        headers: {
+            "Authorization": "KakaoAK a3c83c3855b79edaedc0687b23adb436" // 실제 API 키로 교체 필요
+        },
+        success: function(data) {
+            if (data.documents.length > 0) {
+                var address = data.documents[0].address.address_name;
+                console.log("주소 가져오기 성공: ", address);
+                searchStores(address); // 서버로 주소 전송
+            } else {
+                alert('주소를 가져올 수 없습니다.');
+                console.log('주소를 가져올 수 없습니다.', data);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('주소를 가져오는 중 오류가 발생했습니다.', xhr, status, error);
+            alert('주소를 가져오는 중 오류가 발생했습니다.');
+        }
+    });
+}
+
+
+
+
+
+
+function displayMarker(store) {
+    var marker = new kakao.maps.Marker({
+        map: map,
+        position: new kakao.maps.LatLng(store.y, store.x)
+    });
+
+    kakao.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent('<div style="padding:5px;font-size:12px;">' + store.name + '</div>');
+        infowindow.open(map, marker);
+    });
+    console.log("Setting center to: ", store.y, store.x);
+    map.setCenter(new kakao.maps.LatLng(store.y, store.x));
+}
+
+
+
+
+function searchStores(address) {
+    $.post('/getStoreByLocation', { address: address }, function(data) {
+        var placesList = $('#placesList');
+        placesList.empty();
+        if (data.length > 0) {
+            data.forEach(function(store, index) {
+                // fetch를 통해 주소를 위도 경도로 변환
+                fetch(`https://dapi.kakao.com/v2/local/search/address.json?query=${store.store_add}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "KakaoAK a3c83c3855b79edaedc0687b23adb436"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.documents.length > 0) {
+                        var roadAddress = data.documents[0].road_address || data.documents[0].address;
+                        var x = roadAddress.x;
+                        var y = roadAddress.y;
+
+                        placesList.append(`
+                            <div class="item">
+                                <span class="markerbg marker_${index + 1}"></span>
+                                <div class="info">
+                                    <h5>${store.store_name}</h5>
+                                    <span>${store.store_add}</span>
+                                    <span class="tel">${store.store_phone}</span>
+                                </div>
+                            </div>
+                        `);
+
+                        // 위도와 경도를 포함한 객체로 displayMarker 호출
+                        displayMarker({
+                            name: store.store_name,
+                            address: store.store_add,
+                            x: x,
+                            y: y
+                        });
+                    }
+                })
+                .catch(error => console.error("Error fetching address data for store: ", store.store_name, error));
+            });
+        } else {
+            placesList.append('<div>상점 정보를 찾을 수 없습니다.</div>');
+        }
+    });
+}
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    marker();
+    document.querySelector('.loc_btn').addEventListener('click', getLocation);
+});
+
+
 
 </script>
+
+
+
+
+
+
+

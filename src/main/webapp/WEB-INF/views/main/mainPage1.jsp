@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="${path}/resources/css/main/mainPage1.css?after"/>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 <script  type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="${path}/resources/js/main/image_slide.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3/dist/js/splide.min.js"></script>
 
@@ -43,7 +44,6 @@
 		
 		<!-- ===== 태그별 img-slide 부분 ===== -->
 		<div class="content_wrapper">
-
 		    <c:forEach var="category" items="${categories}">
 			    <div class="content2">
 			        <div class="menu-img" id="slider${category}">
@@ -73,90 +73,6 @@
  <%@ include file="./footer.jsp" %> 
 </body>
 </html>
-
-
-<script type="text/javascript">
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    var sliders = document.querySelectorAll('.menu-img');
-    
-    sliders.forEach(function(slider) {
-        var index = 0; // 현재 슬라이드의 인덱스 추적
-        var li = slider.querySelectorAll('ul.image-slide > li'); // 모든 슬라이드 요소 선택
-        var liLength = li.length; // 슬라이드의 총 개수 저장
-
-        li[index].classList.add('on'); // 초기 상태 설정: 첫 번째 슬라이드를 보이도록 설정
-
-        function updateSlider() {
-            var prevIndex = (index - 1 + liLength) % liLength; 
-            // 이전 슬라이드 인덱스 계산, index-1이 음수가 되어도 올바른 인덱스 찾을 수 있도록 liLength 더하고 '%liLength'로 나머지 연산
-
-            li[prevIndex].classList.remove('on');
-            li[prevIndex].classList.add('out');
-            // 이전 슬라이드의 클래스를 out으로 설정하여 슬라이드 아웃 애니메이션 적용
-
-            li[index].classList.remove('out');
-            li[index].classList.add('on');
-            // 현재 슬라이드의 클래스를 on으로 설정해여 슬라이드 인 애니메이션 적용
-
-            index = (index + 1) % liLength; // 인덱스 증가, 마지막 슬라이드 이후에 첫 번째 슬라이드로 돌아가도록
-        }
-
-        setTimeout(function() {
-            setInterval(updateSlider, 3000);
-        }, 0);
-
-       
-        // 버튼 클릭 이벤트 핸들러
-        var buttons = slider.querySelectorAll('.food-tagname button');
-        // 각 버튼에 클릭 이벤트를 추가
-        buttons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                var category = button.closest('.food-tagname').querySelector('input[name="category"]').value;
-                var currentUrl = new URL(window.location.href);
-                var keyword = currentUrl.searchParams.get("keyword");
-                var searchType = currentUrl.searchParams.get("searchType");
-                var url = '/root/main/mainPage2?category=' + encodeURIComponent(category);
-                
-                if (keyword) {
-                    url += '&keyword=' + encodeURIComponent(keyword);
-                }
-                if (searchType) {
-                    url += '&searchType=' + encodeURIComponent(searchType);
-                }
-
-                window.location.href = url;
-            });
-        });
-    });
-
-	document.getElementById('getLocationBtn').addEventListener('click', function(){
-		getLocation();
-	});
-
-});
-
-function getLocation() {
-  if (navigator.geolocation) { // GPS를 지원한다면
-    navigator.geolocation.getCurrentPosition(function(position) { //첫번째 인자로 GPS 위치 조회 동의시 실행할 함수
-      alert('위도: '+position.coords.latitude + ' ' +'경도: '+ position.coords.longitude);
-    }, function(error) { //두번째 인자는 에러가 났을 때
-      console.error(error);
-    }, { //세번째 인자는 옵션
-      enableHighAccuracy: false, // 배터리를 더 소모해서 더 정확한 위치 찾기
-      maximumAge: 0, // 캐시된 위치 정보의 유효시간을(밀리초) 지정
-      timeout: 5000 // 주어진 초 안에 찾지 못하면 에러 발생
-    });
-  } else {
-    alert('GPS를 지원하지 않습니다');
-  }
-}
-
-
-	
-
-</script>
 
 
 
