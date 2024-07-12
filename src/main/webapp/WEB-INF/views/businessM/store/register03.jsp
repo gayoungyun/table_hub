@@ -11,7 +11,9 @@
 <script src="${path}/resources/js/businessM/businessMstore.js"></script>
 </head>
 <body>
-
+<div class="header">
+<%@ include file="../../main/header.jsp" %>
+</div>
 
 <div class="center-box">
 <div class="skill-box">

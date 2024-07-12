@@ -26,7 +26,7 @@
 					<a href="/root/member/myPage/detail">Profile</a>
 				</c:if>
 				<c:if test="${storeId != null }">
-					<a href="/root/member/myPage/detail">Profile</a>
+					<a href="/root/businMmenu">Profile</a>
 				</c:if>
 
 			</div>

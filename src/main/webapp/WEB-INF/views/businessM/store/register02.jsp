@@ -15,7 +15,9 @@
 
 </head>
 <body>
-
+<div class="header">
+<%@ include file="../../main/header.jsp" %>
+</div>
 
 <div class="center-box">
 <div class="skill-box">

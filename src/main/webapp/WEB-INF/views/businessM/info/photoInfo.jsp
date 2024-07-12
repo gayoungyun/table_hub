@@ -7,6 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>사진정보 확인 메뉴입니다</h1>
+	<h1>사진정보 확인 메뉴입니다</h1>	
+		<button onclick="parent.changeParentUrl('http://localhost:8080/root/businessM/photo/photoRegister')">사진 등록 하기</button>
+		
+
 </body>
 </html>

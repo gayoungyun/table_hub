@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     <c:set var="path" value="<%= request.getContextPath() %>" />
 <!DOCTYPE html>
 <html>
@@ -11,19 +11,10 @@
 <script src="${path}/resources/js/businessMstore.js"></script>
 </head>
 <body>
-
-<div class="skill-box">
-	<div class="skill-bar">
-		<span class="per05">
-			<span class="tooltip05">100%</span>
-		</span>
-	</div>
-</div>
-
 <div class="center-box">
 	<div style="display:flex; flex-direction: row; align-items: center;">
 		<img src="resources/img/폭죽.png" width="80px">
-		<h1>내 가게가 등록 되었습니다!</h1>
+		<h1>메뉴가 등록 되었습니다!</h1>
 		<img src="resources/img/폭죽.png" width="80px">
 	</div>
 	<br>
@@ -34,6 +25,5 @@
 		<button type="button" onclick="window.location.href='http://localhost:8080/root/businMmenu'">내 가게 정보보기</button>
 	</div>
 </div>
-
 </body>
 </html>

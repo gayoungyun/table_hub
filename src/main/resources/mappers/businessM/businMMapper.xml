@@ -26,6 +26,13 @@
 		<result property="store_max_person" column="store_max_person"/>
 		<result property="store_max_team" column="store_max_team"/>
 		<result property="store_open_status" column="store_open_status"/>
+		
+		
+	<association property="store_img" javaType="com.hub.root.businessM.DTO.businMDTO">
+		<id property="store_img" column="store_id" /> <!-- 사업자번호 -->
+		<result property="store_img_root" column="store_img_root"/>
+		<result property="store_img_main" column="store_img_main"/>
+	</association>
 	</resultMap>
 
 	<select id="businMChk" resultMap="businM">
@@ -47,6 +54,25 @@
 			    store_booking_rule = #{store_booking_rule}
 			WHERE store_id = #{store_id}
 	</update>
+	
+	<insert id="storeImage">
+		INSERT INTO store_img (store_id, store_img_root, store_img_main)
+		VALUES    
+			(#{store_id}, #{file01}, '2'),
+	    <if test="file02 != null">
+	        (#{store_id}, #{file02}, '9'),
+	    </if>
+	    <if test="file03 != null">
+	        (#{store_id}, #{file03}, '9'),
+	    </if>
+	    <if test="file04 != null">
+	        (#{store_id}, #{file04}, '9'),
+	    </if>
+	    <if test="file05 != null">
+	        (#{store_id}, #{file05}, '9')
+	    </if>
+	</insert>
+	
 	<!--   
 	<update id="keepLogin">
 		update membership set session_id = #{ autoLogin } where id=#{id}

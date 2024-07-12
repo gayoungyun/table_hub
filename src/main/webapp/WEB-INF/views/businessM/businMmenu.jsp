@@ -11,24 +11,34 @@
 <script src="${path}/resources/js/businessM/businMmenu.js"></script>
 </head>
 <body>
-<div id="businMmenu">
-	<div id="myPageMenuWrapper">
-		<div id="myPageMenu">
-			<h3>마이페이지</h3>
-			<hr>
-			<b class="title">가게정보 관리</b><br>
-			<div class="content" onclick="category(0)">정보 확인 및 수정</div>
-			<div class="content" onclick="category(2)">메뉴 정보 확인</div>
-			<div class="content" onclick="category(3)">사진 정보 확인</div>
-			<div class="content" onclick="category(4)">고객 후기 보기</div><br>
-			<div class="content" onclick="category(5)">예약 관리</div>
+
+<header class="header">
+<%@ include file="../main/header.jsp" %>
+</header>
+
+<div class="fixed-scroll">
+	<div id="businMmenu">
+		<div id="myPageMenuWrapper">
+			<div id="myPageMenu">
+				<h3>마이페이지</h3>
+				<hr>
+				<b class="title">가게정보 관리</b><br>
+				<div class="content" onclick="category(0)">정보 확인 및 수정</div>
+				<div class="content" onclick="category(2)">메뉴 정보 확인</div>
+				<div class="content" onclick="category(3)">사진 정보 확인</div>
+				<div class="content" onclick="category(4)">고객 후기 보기</div><br>
+				<div class="content" onclick="category(5)">예약 관리</div>
+				<br><br><br>
+				<img src="resources/img/로고.png" style="width:100px"
+					onclick="window.location.href='/root'">
+			</div>
 		</div>
+		
+			<div class="iframe" id="iframe">
+			<iframe frameborder="0" scrolling="no" id="myIframe" onload="iHeight();" 
+				style="width:1285px; min-height:500px;" ></iframe>
+			</div>
 	</div>
-	
-		<div class="iframe" id="iframe">
-		<iframe frameborder="0" scrolling="no" id="myIframe" onload="iHeight();" 
-			style="width:1285px; min-height:100px;" ></iframe>
-		</div>
 </div>
 </body>
 </html>

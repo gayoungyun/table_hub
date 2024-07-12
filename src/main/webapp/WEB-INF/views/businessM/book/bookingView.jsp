@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>메뉴정보 확인 메뉴입니다</h1>
+<h1>내 가게 예약관리 창</h1>
 </body>
 </html>

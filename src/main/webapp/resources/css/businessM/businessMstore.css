@@ -13,6 +13,23 @@ label{
     font-style: normal;
 }
 
+.header {
+    position: fixed; /* Header를 화면 상단에 고정 */
+    top: 0;
+    width: 100%; /* 전체 화면 너비만큼 */
+    z-index: 1000; /* 다른 요소들보다 위에 표시 */
+    background-color: #e8e8e8; /* 원하는 배경색 */
+    height : 150px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #e8e8e8;
+    z-index: 1000;
+}
+
 .button1 {
   position: relative;
   float: right;
@@ -71,7 +88,7 @@ label{
 	display: flex;
  	flex-direction: column;
   	align-items: center;
-	margin: 10px auto;
+	margin: 150px auto;
 	
 }
 
