@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,34 +25,129 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.hub.root.main.dto.MainDTO;
+import com.hub.root.main.dto.MainImgDTO;
 import com.hub.root.main.dto.MainMapDTO;
 import com.hub.root.main.service.MainFileService;
 import com.hub.root.main.service.MainService;
+
+import retrofit2.http.GET;
 
 @Controller
 @RequestMapping("main")//main이라는 경로에 대한 요청
 public class MainController {
 	@Autowired MainService ms;
-	// 메인 페이지1 요청 처리===================================
-	@GetMapping("mainPage1")
-	public String main( HttpSession session,Model model) {
-		String user = (String) session.getAttribute("userId");
-		System.out.println("session id main : "+user);
-		if(user != null) {
-			model.addAttribute("user", user);
-		}
-		ms.mainPage1(model);
-		return "main/mainPage1";
-	}
 	// 헤더 페이지 요청 처리===================================
 	@GetMapping("header")
 	public String header() {
 		return "main/header";
 	}
+	// mainPage1 요청 처리===================================
+	@GetMapping("mainPage1")
+	public String main( HttpSession session,Model model) {
+		String user = (String) session.getAttribute("userId");
+		String store = (String) session.getAttribute("storeId");
+	    
+		if(user != null) {
+			model.addAttribute("user", user);
+		}	else if (store != null) {
+	        model.addAttribute("store", store);
+	    }
+		
+		List<String> categories = ms.getAllCategories();
+		List<MainDTO> dtoList = ms.mainPage1(model);
+		model.addAttribute("categories", categories);
+		model.addAttribute("dtoList", dtoList);
+		return "main/mainPage1";
+	}
+	// mainPage1에 카테고리별 이미지 가져오기 =====================
+	@GetMapping("menuByCategory")
+	public String getMenuByCategory(@RequestParam String category, Model model) {
+		List<MainDTO> dtoList = ms.getMenuByCategory(category);
+		model.addAttribute("dtoList", dtoList);
+		return "main/mainPage1";
+	}
+	@GetMapping("storeImgList")
+	public String getStoreImgList(@RequestParam String keyword, 
+						          @RequestParam String searchType,
+						          @RequestParam String category,
+						          Model model) {
+		Map<String, Object> params = new HashMap<>();
+		String key = (keyword != null) ? keyword : "null";
+	    String search = (searchType != null) ? searchType : "null";
+	    String cat = (category != null) ? category : "null";
+		
+		params.put("keyword", key);
+		params.put("searchType", search);
+		params.put("category", cat);
+		List<MainMapDTO> storeImgList = ms.getStoreImgList(params);
+		System.out.println("imglist con :"+storeImgList );
+		
+		model.addAttribute("storeImgList", storeImgList);
+		model.addAttribute("keyword", keyword);
+	    model.addAttribute("searchType", searchType);
+	    model.addAttribute("category", category);
+		
+		return "main/mainPage2";
+	}
+	// mainPage2 요청 처리===================================
+	@RequestMapping("mainPage2")
+	public String mainPage2(@RequestParam(required=false) String keyword, 
+	                        @RequestParam(required=false) String searchType,
+	                        @RequestParam(required=false) String category,
+	                        HttpSession session, Model model) {   
+		//String user = (String) session.getAttribute("userId");
+		//String store = (String) session.getAttribute("storeId");
+	    
+	    Map<String, Object> params = new HashMap<>();
+	    String key = (keyword != null) ? keyword : "null";
+	    String search = (searchType != null) ? searchType : "null";
+	    String cat = (category != null) ? category : "null";
+
+	    params.put("keyword", key);
+	    params.put("searchType", search);
+	    params.put("category", cat);
+
+	    List<MainMapDTO> storeList = ms.getStoreInfo(params);
+	    List<Map<String, Object>> imgList = ms.getMenuImage(params);
+	   
+	    if (storeList == null) {
+	        storeList = new ArrayList<>();
+	    }
+
+	    if (imgList == null) {
+	        imgList = new ArrayList<>();
+	    }
+	    
+	    List<MainImgDTO> storeImgList = new ArrayList<>();
+	    for(MainMapDTO storeInfo : storeList) {
+	    	List<MainImgDTO> storeImage = ms.getStoreImage(storeInfo.getStore_id());
+	    	//storeImgList.add(storeImage);
+	    	  if (!storeImage.isEmpty()) {
+	              storeImgList.add(storeImage.get(0));
+	              System.out.println("image path: "+storeImage.get(0).getStore_img_root());
+	          } else {
+	              storeImgList.add(null); // 이미지가 없는 경우
+	          }
+	    }
+
+	    model.addAttribute("storeList", storeList);
+	    model.addAttribute("storeListSize", storeList.size());
+	    model.addAttribute("imgList", imgList);
+	    model.addAttribute("storeImgList", storeImgList);
+	    
+	    model.addAttribute("keyword", keyword);
+	    model.addAttribute("searchType", searchType);
+	    model.addAttribute("category", category);
+
+	    return "main/mainPage2";
+	}
+
+	
 	// 정보 입력 페이지 요청 처리(store_menu)====================
 	@RequestMapping("inputInfo")
 	public String inputInfo() {
@@ -64,55 +161,40 @@ public class MainController {
 							@RequestParam String store_menu_name,
 							@RequestParam int store_menu_price,
 							@RequestParam String store_menu_detail,
-							@RequestParam String store_menu_category) throws IOException{
-		ms.infoSave(mul,store_id,store_menu_name,store_menu_price,store_menu_detail,store_menu_category);
+							@RequestParam String store_menu_category,
+							HttpSession session, Model model) throws IOException{
+		String imagePath  = ms.saveMenuImage(mul);
+		String store = (String) session.getAttribute("storeId");
+	    
+		if(store != null) {
+			model.addAttribute("store", store);
+		}
+		ms.infoSave(store_id,store_menu_name,store_menu_price,store_menu_detail,store_menu_category, imagePath);
+		//ms.saveImagePathToStoreImg(store_id, imgPath);
 	}
 	// 파일 다운로드 요청 처리==================================
 	@GetMapping("download")
-	 public void download(@RequestParam String fileName, HttpServletRequest req, HttpServletResponse res) throws Exception {
-        // 다운로드할 파일 경로 설정
-		File file = new File(MainFileService.IMAGE_REPO + "/" + fileName);
+	public void download(@RequestParam String fileName, HttpServletRequest req, HttpServletResponse res) throws Exception {
+	    File file = new File(MainFileService.IMAGE_REPO + "/" + fileName);
 
-        if (file.exists()) {
-            //  파일이 존재하면 MIME type 설정
-            String mimeType = req.getServletContext().getMimeType(file.getName());
-            if (mimeType == null) {
-                mimeType = "application/octet-stream";// 기본 MIME 타입 설정
-            }
-            res.setContentType(mimeType); //응답 MIME 타입 설정
-            res.setContentLength((int) file.length()); //응답길이 설정
-            res.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-            // 다운로드 시 파일 이름 설정
+	    if (file.exists()) {
+	        String mimeType = req.getServletContext().getMimeType(file.getName());
+	        if (mimeType == null) {
+	            mimeType = "application/octet-stream";
+	        }
+	        res.setContentType(mimeType);
+	        res.setContentLength((int) file.length());
+	        res.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
 
-            // 파일을 응답 스트림으로 복사
-            try (FileInputStream in = new FileInputStream(file)) {
-                FileCopyUtils.copy(in, res.getOutputStream());
-            }
-        } else {
-        	// 파일이 존재하지 않으면 404에러 응답
-            res.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
-        }
+	        try (FileInputStream in = new FileInputStream(file)) {
+	            FileCopyUtils.copy(in, res.getOutputStream());
+	        }
+	    } else {
+	        System.err.println("File not found: " + file.getAbsolutePath());
+	        res.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
+	    }
 	}
-	// 메인 페이지 검색 기능===================================
-	@GetMapping("search")
-	public String search(@RequestParam(required=false) String keyword, 
-						 @RequestParam(required=false) String searchType ,
-						Model model) {
-		//System.out.println(keyword);
-		
-		List<MainDTO> dtoList = ms.search(keyword,searchType);
-		model.addAttribute("dtoList", dtoList);
-		return "main/search";
-	}
-	@RequestMapping("mainPage2")
-	public String mainPage2(@RequestParam(required=false) String keyword, 
-			 				@RequestParam(required=false) String searchType ,
-			 				Model model) {
-		List<MainMapDTO> storeList = ms.getStoreInfo(keyword, searchType);
-		System.out.println("storeList controller : "+storeList);
-		model.addAttribute("storeList",storeList);
-		return "main/mainPage2";
-	}
+
 	// 정보 입력 페이지 요청 처리(store_info)====================
 	@RequestMapping("storeInfo")
 	public String storeInfo() {
@@ -136,12 +218,7 @@ public class MainController {
 		ms.storeSave(store_id,store_pwd,store_email,store_phone,store_main_phone,store_name,store_add,
 				store_add_info,store_category,store_note,store_introduce,store_business_hours);
 	}
-	/*
-	@GetMapping("flex6")
-	public String flex2() {
-		return "main/flex6";
-	}
-	*/
+
 }
 
 

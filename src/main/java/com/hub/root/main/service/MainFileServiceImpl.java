@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class MainFileServiceImpl implements MainFileService{
 	public String saveFile(MultipartFile mul) {
 		SimpleDateFormat simpl = new SimpleDateFormat("yyyyMMddHHmmss-");
+		String getOriginalFilename = mul.getOriginalFilename();
 		String sysFileName = simpl.format(new Date()) +mul.getOriginalFilename();
 		File saveFile = new File(IMAGE_REPO+"/"+sysFileName);
 		try {

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="path" value="<%= request.getContextPath() %>" />
 <!DOCTYPE html>
 <html>
@@ -13,11 +14,11 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/main/image_slide.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3/dist/js/splide.min.js"></script>
 
- <%@ include file="./header.jsp" %> 
+<%@ include file="./header.jsp" %> 
 </head>
 <body>
 	<div class="page">
-	
+
 		<!-- ===== main img 부분 ===== -->
 		<div class="content1">
 			<div class="main-img">
@@ -38,149 +39,34 @@
 		
 		<!-- ===== 태그별 img-slide 부분 ===== -->
 		<div class="content_wrapper">
-			<div class="content2">
-				<div class="menu-img" id="slider1">
-					<ul class="image-slide">
-						<c:forEach var="dto" items="${dtoList}">
-							<li class="food-img">
-								<img width="380px" height="350px" src="download?fileName=${dto.store_menu_img}" >
-								<div class="food-tagname">#한식 
-									<button type="button">자세히보기</button>
-								</div>
-							</li>
-						</c:forEach>
-					</ul>
-				</div>
-			</div>
-		
-			<div class="content2">
-				<div class="menu-img" id="slider2">
-					<ul class="image-slide">
-						<li class="food-img">
-							<img class="out" src="${path}/resources/img/main/맛집03.jpg" width="225">
-							<div class="food-tagname">#한식 
-								<button type="button">자세히보기</button>
-							</div>
-						</li>
-						<li class="food-img">
-							<img class="on" src="${path}/resources/img/main/맛집04.jpg" alt="음식사진">
-							<div class="food-tagname">#일식
-								<button type="button">자세히보기</button>
-							</div>
-						</li>
-						<li class="food-img">
-							<img src="${path}/resources/img/main/맛집05.jpg" alt="음식사진">
-							<div class="food-tagname">#양식 
-								<button type="button">자세히보기</button>
-							</div>
-						</li>
-						<li class="food-img">
-							<img src="${path}/resources/img/main/맛집01.jpg" alt="음식사진">
-							<div class="food-tagname">#양식 
-								<button type="button">자세히보기</button>
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-			
-			<div class="content2">
-				<div class="menu-img" id="slider3">
-					<ul class="image-slide">
-						<li class="food-img">
-							<img class="out" src="${path}/resources/img/main/맛집03.jpg" width="225">
-							<div class="food-tagname">#한식 
-								<button type="button">자세히보기</button>
-							</div>
-						</li>
-						<li class="food-img">
-							<img class="on" src="${path}/resources/img/main/맛집04.jpg" alt="음식사진">
-							<div class="food-tagname">#일식
-								<button type="button">자세히보기</button>
-							</div>
-						</li>
-						<li class="food-img">
-							<img src="${path}/resources/img/main/맛집05.jpg" alt="음식사진">
-							<div class="food-tagname">#양식 
-								<button type="button">자세히보기</button>
-							</div>
-						</li>
-						<li class="food-img">
-							<img src="${path}/resources/img/main/맛집01.jpg" alt="음식사진">
-							<div class="food-tagname">#양식 
-								<button type="button">자세히보기</button>
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-			
-			<div class="content2">
-				<div class="menu-img" id="slider4">
-					<ul class="image-slide">
-						<li class="food-img">
-							<img class="out" src="${path}/resources/img/main/맛집03.jpg" width="225">
-							<div class="food-tagname">#한식 
-								<button type="button">자세히보기</button>
-							</div>
-						</li>
-						<li class="food-img">
-							<img class="on" src="${path}/resources/img/main/맛집04.jpg" alt="음식사진">
-							<div class="food-tagname">#일식
-								<button type="button">자세히보기</button>
-							</div>
-						</li>
-						<li class="food-img">
-							<img src="${path}/resources/img/main/맛집05.jpg" alt="음식사진">
-							<div class="food-tagname">#양식 
-								<button type="button">자세히보기</button>
-							</div>
-						</li>
-						<li class="food-img">
-							<img src="${path}/resources/img/main/맛집01.jpg" alt="음식사진">
-							<div class="food-tagname">#양식 
-								<button type="button">자세히보기</button>
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-			
-			<div class="content2">
-				<div class="menu-img" id="slider5">
-					<ul class="image-slide">
-						<li class="food-img">
-							<img class="out" src="${path}/resources/img/main/맛집03.jpg" width="225">
-							<div class="food-tagname">#한식 
-								<button type="button">자세히보기</button>
-							</div>
-						</li>
-						<li class="food-img">
-							<img class="on" src="${path}/resources/img/main/맛집04.jpg" alt="음식사진">
-							<div class="food-tagname">#일식
-								<button type="button">자세히보기</button>
-							</div>
-						</li>
-						<li class="food-img">
-							<img src="${path}/resources/img/main/맛집05.jpg" alt="음식사진">
-							<div class="food-tagname">#양식 
-								<button type="button">자세히보기</button>
-							</div>
-						</li>
-						<li class="food-img">
-							<img src="${path}/resources/img/main/맛집01.jpg" alt="음식사진">
-							<div class="food-tagname">#양식 
-								<button type="button">자세히보기</button>
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-			
+		    <c:forEach var="category" items="${categories}">
+			    <div class="content2">
+			        <div class="menu-img" id="slider${category}">
+			            <ul class="image-slide">
+			                <c:forEach var="dto" items="${dtoList}">
+			                    <c:forEach var="cat" items="${fn:split(dto.store_menu_category, '/')}">
+			                        <c:if test="${fn:trim(cat) == category}">
+			                            <li class="food-img">
+			                                <img width="380px" height="350px" src="download?fileName=${dto.store_menu_img}">
+			                                <div class="food-tagname">#${cat}
+			                                    <!-- 자세히보기 버튼 -->
+			                                    <form action="${path}/main/mainPage2" method="get">
+			                                        <input type="hidden" name="category" value="${cat}" />
+			                                        <button type="button">자세히보기</button>
+			                                    </form>
+			                                </div>
+			                            </li>
+			                        </c:if>
+			                    </c:forEach>
+			                </c:forEach>
+			            </ul>
+			        </div>
+			    </div>
+			</c:forEach>
 		</div>
 	</div>
-</body>
  <%@ include file="./footer.jsp" %> 
+</body>
 </html>
 
 
