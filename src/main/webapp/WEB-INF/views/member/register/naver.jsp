@@ -57,7 +57,7 @@
 							data : JSON.stringify(form),
 							contentType : "application/json; charset=utf-8",
 							success : function ( result ) {
-								location.href="/root";
+								location.href="/root/main/mainPage1";
 							},
 							error : function (e) {
 								console.log("문제 발생!!!")

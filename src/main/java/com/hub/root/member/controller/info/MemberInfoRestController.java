@@ -148,9 +148,12 @@ public class MemberInfoRestController {
 	public Map<String, Object> pwdCheck(@RequestParam("inputPwd") String pwd, HttpSession session, HttpServletResponse res) {
     	System.out.println("memInfoRestCont pwdCheck 실행");
 		String id = (String)session.getAttribute("userId");
-		Cookie cook = new Cookie("myPage", id);
-		res.addCookie(cook);
 		Map<String, Object> map = mis.pwdCheck(pwd, id);
+		if ((int)map.get("result") == 1) {
+			Cookie cook = new Cookie("myPage", id);
+			cook.setPath("/root/member");
+			res.addCookie(cook);			
+		}
 		return map;
 	}
     
