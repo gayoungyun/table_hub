@@ -1,7 +1,5 @@
 package com.hub.root.businessM.DTO;
 
-import java.util.List;
-
 public class businMDTO {
 	String store_id, store_pwd, store_email, store_phone, store_main_phone, store_name,
 	store_zip, store_add, store_add_info, store_note, store_category, store_amenities,
