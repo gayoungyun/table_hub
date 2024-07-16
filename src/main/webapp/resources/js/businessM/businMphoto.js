@@ -10,14 +10,18 @@ for (let i = 1; i <= 6; i++) {
 
 function inputcheck00() {
     // 입력값 가져오기
+    //var fileInput = document.getElementById('file-upload01');
+    //var file01 = fileInput.files[0];
+    console.log("대표이미지 체크중");
     var file01 = document.getElementById('file-upload01').value;
 
     // 입력값이 비어있는지 확인
     if (file01 === '') {
+    	console.log("폼 제출 못해!");
         alert('대표 사진은 필수 입력입니다.'); // 경고 메시지 표시
         return false; // 폼 제출을 막기 위해 false 반환
     }
-
+	console.log("폼 제출 허용!");
     return true; // 폼 제출을 허용
 }
 

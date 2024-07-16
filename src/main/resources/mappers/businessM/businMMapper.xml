@@ -30,6 +30,11 @@
 		
 	<association property="store_img" javaType="com.hub.root.businessM.DTO.businMDTO">
 		<id property="store_img" column="store_id" /> <!-- 사업자번호 -->
+		<result property="file01Path" column="store_img_root"/>
+		<result property="file02Path" column="store_img_root"/>
+		<result property="file03Path" column="store_img_root"/>
+		<result property="file04Path" column="store_img_root"/>
+		<result property="file05Path" column="store_img_root"/>
 		<result property="store_img_root" column="store_img_root"/>
 		<result property="store_img_main" column="store_img_main"/>
 	</association>
@@ -55,23 +60,51 @@
 			WHERE store_id = #{store_id}
 	</update>
 	
-	<insert id="storeImage">
-		INSERT INTO store_img (store_id, store_img_root, store_img_main)
-		VALUES    
-			(#{store_id}, #{file01}, '2'),
-	    <if test="file02 != null">
-	        (#{store_id}, #{file02}, '9'),
-	    </if>
-	    <if test="file03 != null">
-	        (#{store_id}, #{file03}, '9'),
-	    </if>
-	    <if test="file04 != null">
-	        (#{store_id}, #{file04}, '9'),
-	    </if>
-	    <if test="file05 != null">
-	        (#{store_id}, #{file05}, '9')
-	    </if>
+	
+	
+	
+	<insert id="storeImage01">
+		INSERT INTO store_img (store_id, store_img_root, store_img_main) VALUES (#{store_id}, #{file01Path}, 1)
 	</insert>
+	
+	<insert id="storeImage09">
+		INSERT INTO store_img (store_id, store_img_root, store_img_main) VALUES (#{store_id}, #{filePath}, 9)	
+	</insert>
+	
+	
+	
+	
+	<!--  
+     <insert id="storeImage" parameterType="map">
+	    INSERT INTO store_img (store_id, store_img_root, store_img_main) VALUES
+	    <foreach collection="FilePaths" item="filePath" separator=",">
+	        (#{store_id}, #{filePath}, 1)
+	    </foreach>
+	</insert>
+	
+	   <insert id="storeImage" parameterType="map">
+		    <if test="store_id != null and FilePaths != null and FilePaths.size() > 0">
+		        <foreach collection="FilePaths" item="filePath" separator=";">
+		            INSERT INTO store_img (store_id, store_img_root, store_img_main)
+		            VALUES (#{store_id}, #{filePath}, 1);
+		        </foreach>
+		    </if>
+		</insert>
+
+	    INSERT ALL 
+	    INTO store_img (store_id, store_img_root, store_img_main) VALUES (#{store_id}, #{file01Path}, 1)
+	     <if test='file02Path != null'> INTO store_img (store_id, store_img_root, store_img_main) 
+	     	VALUES (#{store_id}, #{file02Path}, 9)</if>
+	     <if test='file02Path != null'> INTO store_img (store_id, store_img_root, store_img_main) 
+	     	VALUES (#{store_id}, #{file03Path}, 9)</if>
+	     <if test='file02Path != null'> INTO store_img (store_id, store_img_root, store_img_main) 
+	     	VALUES (#{store_id}, #{file04Path}, 9)</if>
+	     <if test='file02Path != null'> INTO store_img (store_id, store_img_root, store_img_main) 
+	     	VALUES (#{store_id}, #{file05Path}, 9)</if>
+	    SELECT * FROM DUAL;
+	   
+	    -->
+
 	
 	<!--   
 	<update id="keepLogin">

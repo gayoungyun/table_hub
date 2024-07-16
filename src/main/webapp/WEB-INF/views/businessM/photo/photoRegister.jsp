@@ -19,9 +19,9 @@
 
 
     
-<form action="storePhotoUpload" id="uploadForm" method="post" enctype="multipart/form-data">
+<form action="storeImgSave" method="post" enctype="multipart/form-data" onsubmit="return inputcheck00()">
     <div class="white-box">
-<h1>내 가게 사진 등록</h1>
+		<h1>내 가게 사진 등록</h1>
 	    <div class="photo01">
 		    <div class="preview-box01">
 		    	<label class="mainphoto-text">대표</label>
@@ -105,7 +105,7 @@
 			</div>
 		</div>
 		<br>
-	       <button type="submit" onclick="inputcheck00">업로드</button>
+	    <button type="submit">업로드</button>
 	</div>
 </form>
     

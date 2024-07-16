@@ -38,7 +38,7 @@ public class businMController {
 		
 		@GetMapping("register01")//단순 첫째 페이지 보여주기
 		public String register01(HttpServletRequest request, Model model) {
-			
+
 			HttpSession session = request.getSession();
 		    String store_id = (String) session.getAttribute("storeId");
 			if(store_id == null) {
@@ -100,7 +100,7 @@ public class businMController {
 				request.setAttribute("msg", "로그인이 필요한 서비스입니다");
 		        request.setAttribute("url", "member/login");
 		        return "businessM/businMalert";
-			}
+			} 
 			return "businessM/businMmenu";
 		}
 		
@@ -148,11 +148,9 @@ public class businMController {
 			return "businessM/photo/photoRFinish";
 		}
 		
-
-			
-	    @PostMapping("/storePhotoUpload")//사진 정보 DB에 저장하고, 마지막 페이지로 
-	    @ResponseBody
-	    public String handleFileUpload(HttpServletRequest request,
+		//photoRegister.jsp에서 form action="storeImgSave"으로 받아오는 경로
+	    @PostMapping("/businessM/photo/storeImgSave")//사진 정보 DB에 저장하고, 사진등록 완료 화면으로 
+	    public String storeImgSave(HttpServletRequest request,
 	            @RequestParam("storeImage01") MultipartFile file01,
 	            @RequestParam("storeImage02") MultipartFile file02,
 	            @RequestParam("storeImage03") MultipartFile file03,
@@ -161,9 +159,6 @@ public class businMController {
 	    	String result = ser.storeImage(request, file01, file02, file03, file04, file05);
 	    	return result;
 	    }
-	    
-
-		    
 		
 	}
 
