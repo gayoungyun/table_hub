@@ -57,7 +57,7 @@
 			                                    <!-- 자세히보기 버튼 -->
 			                                    <form action="${path}/main/mainPage2" method="get">
 			                                        <input type="hidden" name="category" value="${cat}" />
-			                                        <button type="button">자세히보기</button>
+			                                        <button type="submit">자세히보기</button>
 			                                    </form> 
 			                                </div>
 			                            </li>
