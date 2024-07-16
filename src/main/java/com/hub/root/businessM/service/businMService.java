@@ -1,28 +1,22 @@
 package com.hub.root.businessM.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hub.root.businessM.DTO.businMDTO;
@@ -210,16 +204,31 @@ public class businMService {
             String store_id = (String) session.getAttribute("storeId");
             System.out.println("보선-세션 아이디 store_id 확인 : "+store_id);
             
-            /*
-            String[] filePaths = {file02Path, file03Path, file04Path, file05Path};
+            // 인서트 배열로 하려다 실패한거
+            String[] arr = {file01Path, file02Path, file03Path, file04Path, file05Path};
             List<String> FilePaths = new ArrayList<>();
             
-            // 배열 순회하면서 null이 아닌 경우에만 리스트에 추가
-            for (String path  : filePaths) {
-                if (path  != null) {
-                	FilePaths.add(path );
-                }
+            for (String path  : arr) {
+            	if (path  != null) {
+            		FilePaths.add(path );
+            	}
             }
+      
+            Map<String, Object> param = new HashMap<>();
+            param.put("FilePaths", FilePaths);   // FilePaths는 List<String> 타입
+            param.put("store_id", store_id);     // store_id는 String 타입
+         
+            //맵 로그 뽑기
+            for (Entry<String, Object> entry : param.entrySet()) {
+                String key = entry.getKey();
+                Object value = entry.getValue();
+                System.out.println("Key: " + key + ", Value: " + value);
+            }
+            
+            
+            int result01 = mapper.storeImage01(param);
+            /*
+            // 배열 순회하면서 null이 아닌 경우에만 리스트에 추가
             if (FilePaths.size() > 0 && FilePaths.get(0) != null && !FilePaths.get(0).isEmpty())
                 System.out.println("보선-경로 배열 확인 2번 : " + FilePaths.get(0)); // file02Path
             if (FilePaths.size() > 1 && FilePaths.get(1) != null && !FilePaths.get(1).isEmpty())
@@ -228,8 +237,9 @@ public class businMService {
                 System.out.println("보선-경로 배열 확인 4번 : " + FilePaths.get(2)); // file04Path
             if (FilePaths.size() > 3 && FilePaths.get(3) != null && !FilePaths.get(3).isEmpty())
                 System.out.println("보선-경로 배열 확인 5번 : " + FilePaths.get(3)); // file05Path
-             */
             
+            
+        
             int result01 = mapper.storeImage01(file01Path, store_id);
             
             int result02=0, result=0;
@@ -254,8 +264,9 @@ public class businMService {
             }
             System.out.println("보선-메인 사진이 등록되었나? : "+result01);
             System.out.println("보선-메인 사진 외 추가 사진 갯수 : "+result02);
-            
-            
+            */
+ 
+            System.out.println("보선-사진이 행 추가? : "+result01);
 	         if(result01 > 0)
 	            	return "businessM/photo/photoRFinish";
 	         else {

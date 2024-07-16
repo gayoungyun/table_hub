@@ -26,18 +26,6 @@
 		<result property="store_max_person" column="store_max_person"/>
 		<result property="store_max_team" column="store_max_team"/>
 		<result property="store_open_status" column="store_open_status"/>
-		
-		
-	<association property="store_img" javaType="com.hub.root.businessM.DTO.businMDTO">
-		<id property="store_img" column="store_id" /> <!-- 사업자번호 -->
-		<result property="file01Path" column="store_img_root"/>
-		<result property="file02Path" column="store_img_root"/>
-		<result property="file03Path" column="store_img_root"/>
-		<result property="file04Path" column="store_img_root"/>
-		<result property="file05Path" column="store_img_root"/>
-		<result property="store_img_root" column="store_img_root"/>
-		<result property="store_img_main" column="store_img_main"/>
-	</association>
 	</resultMap>
 
 	<select id="businMChk" resultMap="businM">
@@ -47,22 +35,15 @@
 	
 	<update id="register">
 		UPDATE store_info
-			SET store_zip = #{store_zip},
-			    store_add = #{store_add},
-			    store_add_info = #{store_add_info},
-			    store_introduce = #{store_introduce},
-			    store_category = #{store_category},
-			    store_business_hours = #{store_business_hours},
-			    store_amenities = #{store_amenities},
-			    store_note = #{store_note},
-			    store_max_person = #{store_max_person},
-			    store_booking_rule = #{store_booking_rule}
+			SET store_zip = #{store_zip}, store_add = #{store_add},
+			    store_add_info = #{store_add_info}, store_introduce = #{store_introduce},
+			    store_category = #{store_category}, store_business_hours = #{store_business_hours},
+			    store_amenities = #{store_amenities}, store_note = #{store_note},
+			    store_max_person = #{store_max_person}, store_booking_rule = #{store_booking_rule}
 			WHERE store_id = #{store_id}
-	</update>
+	</update>	
 	
-	
-	
-	
+	 <!--  
 	<insert id="storeImage01">
 		INSERT INTO store_img (store_id, store_img_root, store_img_main) VALUES (#{store_id}, #{file01Path}, 1)
 	</insert>
@@ -70,11 +51,28 @@
 	<insert id="storeImage09">
 		INSERT INTO store_img (store_id, store_img_root, store_img_main) VALUES (#{store_id}, #{filePath}, 9)	
 	</insert>
+	-->
 	
 	
+	   <insert id="storeImage01" parameterType="java.util.Map">
+		    <foreach collection="FilePaths" item="filePath" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL" index="index">
+		        INTO store_img VALUES (
+		            #{store_id},
+		            #{filePath},
+		            <choose>
+			            <when test="index == 0">
+		                    1
+		                </when>
+		                <otherwise>
+		                    9
+		                </otherwise>
+		            </choose>
+		        )
+		    </foreach>
+		</insert>
 	
-	
-	<!--  
+
+	<!--  가게 이미지 인서트 실패한거
      <insert id="storeImage" parameterType="map">
 	    INSERT INTO store_img (store_id, store_img_root, store_img_main) VALUES
 	    <foreach collection="FilePaths" item="filePath" separator=",">
@@ -82,16 +80,8 @@
 	    </foreach>
 	</insert>
 	
-	   <insert id="storeImage" parameterType="map">
-		    <if test="store_id != null and FilePaths != null and FilePaths.size() > 0">
-		        <foreach collection="FilePaths" item="filePath" separator=";">
-		            INSERT INTO store_img (store_id, store_img_root, store_img_main)
-		            VALUES (#{store_id}, #{filePath}, 1);
-		        </foreach>
-		    </if>
-		</insert>
 
-	    INSERT ALL 
+	   INSERT ALL 
 	    INTO store_img (store_id, store_img_root, store_img_main) VALUES (#{store_id}, #{file01Path}, 1)
 	     <if test='file02Path != null'> INTO store_img (store_id, store_img_root, store_img_main) 
 	     	VALUES (#{store_id}, #{file02Path}, 9)</if>
@@ -101,8 +91,7 @@
 	     	VALUES (#{store_id}, #{file04Path}, 9)</if>
 	     <if test='file02Path != null'> INTO store_img (store_id, store_img_root, store_img_main) 
 	     	VALUES (#{store_id}, #{file05Path}, 9)</if>
-	    SELECT * FROM DUAL;
-	   
+	    SELECT * FROM DUAL; 
 	    -->
 
 	

@@ -46,11 +46,10 @@
 
 	</interceptors>
 	
-
 	<!--  파일 업로드 객체 설정 -->
 	<beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<beans:property name="maxUploadSize" value="5242880"/> <!-- 개별크기 5MB -->
+		<beans:property name="maxUploadSize" value="26214400"/> <!-- 25MB -->
 		<beans:property name="defaultEncoding" value="utf-8"/>
 	</beans:bean>
 	

@@ -5,54 +5,11 @@ import java.util.List;
 public class businMDTO {
 	String store_id, store_pwd, store_email, store_phone, store_main_phone, store_name,
 	store_zip, store_add, store_add_info, store_note, store_category, store_amenities,
-	store_introduce, store_booking_rule, store_business_hours, store_img_root,
-	file01Path, file02Path, file03Path, file04Path, file05Path;
+	store_introduce, store_booking_rule, store_business_hours, store_img_root;
 	
 
 	int store_max_person, store_max_team, store_open_status, store_img_main;
 	
-
-
-
-	public String getFile01Path() {
-		return file01Path;
-	}
-
-	public void setFile01Path(String file01Path) {
-		this.file01Path = file01Path;
-	}
-
-	public String getFile02Path() {
-		return file02Path;
-	}
-
-	public void setFile02Path(String file02Path) {
-		this.file02Path = file02Path;
-	}
-
-	public String getFile03Path() {
-		return file03Path;
-	}
-
-	public void setFile03Path(String file03Path) {
-		this.file03Path = file03Path;
-	}
-
-	public String getFile04Path() {
-		return file04Path;
-	}
-
-	public void setFile04Path(String file04Path) {
-		this.file04Path = file04Path;
-	}
-
-	public String getFile05Path() {
-		return file05Path;
-	}
-
-	public void setFile05Path(String file05Path) {
-		this.file05Path = file05Path;
-	}
 
 	public String getStore_img_root() {
 		return store_img_root;
