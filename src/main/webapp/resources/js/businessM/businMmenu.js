@@ -32,4 +32,11 @@ document.getElementById('myIframe').height = iHeight;
 console.log("카테고리 높이? : ",iHeight);
 }
 
-// <%@ include file="./myPageMenu.jsp" %> 
+
+//메뉴에서 쓰이는 iframe에서 버튼을 누를때 부모페이지가 바뀌게 하는 이벤트
+//보안상으로 안좋아서 막아놓는 웹사이트도 많다. iframe을 안쓰는 다른방법을 찾아보기
+function changeParentUrl(newUrl) {
+	window.location.href = newUrl;
+}
+
+

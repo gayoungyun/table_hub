@@ -11,8 +11,11 @@
 <script src="${path}/resources/js/businessM/businessMstore.js"></script>
 </head>
 <body>
+<div class="header">
+<%@ include file="../../main/header.jsp" %>
+</div>
 
-
+<div class="center-box">
 <div class="skill-box">
 	<div class="skill-bar">
 		<span class="per04">
@@ -21,9 +24,9 @@
 	</div>
 </div>
 
-<div class="center-box">
-<h1>영업시간 선택하기</h1><br>
 <form action="registerFinish" method="post">
+<div class="white_box">
+<h1>영업시간 선택하기</h1><br>
 예약이 가능한 시간을 모두 골라주세요
 
 
@@ -252,11 +255,12 @@
         	<label for="time2430">24:30</label>
     </div>
 </div>
+</div>
 
         
 		<div style="display: flex; justify-content: space-between;">
-			<button type="button" onclick=" window.history.back()">이전</button>
-			<button type="submit">가게 등록 완료</button>
+			<button type="button" class="button1 btn1Fade" onclick=" window.history.back()">이전</button>
+			<button type="submit" class="button1 btn1Fade">가게 등록<br> 완료</button>
 		</div>
 	</form>
 </div>

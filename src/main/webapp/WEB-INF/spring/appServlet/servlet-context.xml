@@ -28,6 +28,7 @@
 	
 	<beans:bean id="loginChk" class="com.hub.root.member.interceptor.MemberInterceptor" />
 	<beans:bean id="pwdChkInterCeptor" class="com.hub.root.member.interceptor.MemberInfoInterceptor" />
+	<beans:bean id="idChkInterCeptor" class="com.hub.root.member.interceptor.SearchPwdInterceptor" />
 	<interceptors>
 		<interceptor>
 			<mapping path="/member/myPage/*"/>
@@ -38,14 +39,17 @@
 			<mapping path="/member/myPage/d*"/>
 			<beans:ref bean="pwdChkInterCeptor"/>
 		</interceptor>
+		<interceptor>
+			<mapping path="/member/login/searchPwd/*"/>
+			<beans:ref bean="idChkInterCeptor"/>
+		</interceptor>
 
 	</interceptors>
 	
-
 	<!--  파일 업로드 객체 설정 -->
 	<beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<beans:property name="maxUploadSize" value="52428800"/>
+		<beans:property name="maxUploadSize" value="26214400"/> <!-- 25MB -->
 		<beans:property name="defaultEncoding" value="utf-8"/>
 	</beans:bean>
 	

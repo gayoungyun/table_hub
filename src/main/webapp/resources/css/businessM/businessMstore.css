@@ -13,6 +13,44 @@ label{
     font-style: normal;
 }
 
+.header {
+    position: fixed; /* Header를 화면 상단에 고정 */
+    top: 0;
+    width: 100%; /* 전체 화면 너비만큼 */
+    z-index: 1000; /* 다른 요소들보다 위에 표시 */
+    background-color: #e8e8e8; /* 원하는 배경색 */
+    height : 150px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #e8e8e8;
+    z-index: 1000;
+}
+
+.button1 {
+  position: relative;
+  float: right;
+  width: 100px;
+  height: 40px;
+  margin: 5px 10px 5px 0px;
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
+  background: #E9F1FF  ;
+  border: 1px solid #397BE6;
+  border-radius: 5px;
+  transition: all 0.2s ;
+}
+.btn1Fade:hover {
+  background: #397BE6 ;
+  color: #ffffff;
+  font-weight: bolder;
+}
+
+
 .white_box{
 	width : 1000px;
 	min-height : 500px;
@@ -34,6 +72,12 @@ label{
 	margin-bottom: 50px;
 }
 
+.text_leftAlign1 {
+	width : 500px;
+	text-align : left;
+	line-height: 3; /* 행간을 1.5로 설정 (기본 글꼴 크기의 1.5배) */
+}
+
 .top_title{
 	margin-bottom: 50px;
 	
@@ -44,7 +88,7 @@ label{
 	display: flex;
  	flex-direction: column;
   	align-items: center;
-	margin: 10px auto;
+	margin: 150px auto;
 	
 }
 
@@ -274,7 +318,7 @@ label{
 
  #map {
             height: 400px;
-            width: 100%;
+            width: 500px;
             display: none; /* 초기에는 숨김 상태 */
         }
         

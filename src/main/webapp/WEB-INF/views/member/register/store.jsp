@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="<%= request.getContextPath() %>/resources/css/member/login/registerStore.css?after" rel="stylesheet"/>
+<link href="<%= request.getContextPath() %>/resources/css/member/register/store.css?after" rel="stylesheet"/>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <%@ include file="../../main/header.jsp" %>
@@ -200,7 +200,7 @@
 				inputPhone = phoneCode + phone1 + phone2
 				let form = {phoneNumber : inputPhone}
 				$.ajax({
-					url : "sendMessage",
+					url : "/root/member/sendMessage",
 					type : "post",
 					data : JSON.stringify(form),
 					dataType : "text",
@@ -264,7 +264,7 @@
 			} else {
 				let form = {inputCode : inputCode}
 				$.ajax({
-					url : "codeChk",
+					url : "/root/member/codeChk",
 					type : "post",
 					data : JSON.stringify(form),
 					dataType : "text",
@@ -310,14 +310,14 @@
 			let form = {id : inputId, pwd : inputPwd, name : inputName, mainPhone : inputPhone,
 					email : inputEmail, phone : storePhone};
 			$.ajax({
-				url : "storeRegisterChk",
+				url : "/root/member/register/storeRegisterChk",
 				type : "post",
 				data : JSON.stringify(form),
 				dataType : "text",
 				contentType : "application/json; charset=utf-8",
 				success : function ( result ) {
 					alert(result)
-					location.href="login"
+					location.href="/root/member/login"
 					
 				},
 				error : function (e) {

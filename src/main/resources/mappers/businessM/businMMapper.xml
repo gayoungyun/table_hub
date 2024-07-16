@@ -35,18 +35,66 @@
 	
 	<update id="register">
 		UPDATE store_info
-			SET store_zip = #{store_zip},
-			    store_add = #{store_add},
-			    store_add_info = #{store_add_info},
-			    store_introduce = #{store_introduce},
-			    store_category = #{store_category},
-			    store_business_hours = #{store_business_hours},
-			    store_amenities = #{store_amenities},
-			    store_note = #{store_note},
-			    store_max_person = #{store_max_person},
-			    store_booking_rule = #{store_booking_rule}
+			SET store_zip = #{store_zip}, store_add = #{store_add},
+			    store_add_info = #{store_add_info}, store_introduce = #{store_introduce},
+			    store_category = #{store_category}, store_business_hours = #{store_business_hours},
+			    store_amenities = #{store_amenities}, store_note = #{store_note},
+			    store_max_person = #{store_max_person}, store_booking_rule = #{store_booking_rule}
 			WHERE store_id = #{store_id}
-	</update>
+	</update>	
+	
+	 <!--  
+	<insert id="storeImage01">
+		INSERT INTO store_img (store_id, store_img_root, store_img_main) VALUES (#{store_id}, #{file01Path}, 1)
+	</insert>
+	
+	<insert id="storeImage09">
+		INSERT INTO store_img (store_id, store_img_root, store_img_main) VALUES (#{store_id}, #{filePath}, 9)	
+	</insert>
+	-->
+	
+	
+	   <insert id="storeImage01" parameterType="java.util.Map">
+		    <foreach collection="FilePaths" item="filePath" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL" index="index">
+		        INTO store_img VALUES (
+		            #{store_id},
+		            #{filePath},
+		            <choose>
+			            <when test="index == 0">
+		                    1
+		                </when>
+		                <otherwise>
+		                    9
+		                </otherwise>
+		            </choose>
+		        )
+		    </foreach>
+		</insert>
+	
+
+	<!--  가게 이미지 인서트 실패한거
+     <insert id="storeImage" parameterType="map">
+	    INSERT INTO store_img (store_id, store_img_root, store_img_main) VALUES
+	    <foreach collection="FilePaths" item="filePath" separator=",">
+	        (#{store_id}, #{filePath}, 1)
+	    </foreach>
+	</insert>
+	
+
+	   INSERT ALL 
+	    INTO store_img (store_id, store_img_root, store_img_main) VALUES (#{store_id}, #{file01Path}, 1)
+	     <if test='file02Path != null'> INTO store_img (store_id, store_img_root, store_img_main) 
+	     	VALUES (#{store_id}, #{file02Path}, 9)</if>
+	     <if test='file02Path != null'> INTO store_img (store_id, store_img_root, store_img_main) 
+	     	VALUES (#{store_id}, #{file03Path}, 9)</if>
+	     <if test='file02Path != null'> INTO store_img (store_id, store_img_root, store_img_main) 
+	     	VALUES (#{store_id}, #{file04Path}, 9)</if>
+	     <if test='file02Path != null'> INTO store_img (store_id, store_img_root, store_img_main) 
+	     	VALUES (#{store_id}, #{file05Path}, 9)</if>
+	    SELECT * FROM DUAL; 
+	    -->
+
+	
 	<!--   
 	<update id="keepLogin">
 		update membership set session_id = #{ autoLogin } where id=#{id}

@@ -1,7 +1,18 @@
 package com.hub.root.businessM.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +20,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.hub.root.businessM.DTO.businMDTO;
 import com.hub.root.businessM.service.businMService;
@@ -25,7 +38,7 @@ public class businMController {
 		
 		@GetMapping("register01")//단순 첫째 페이지 보여주기
 		public String register01(HttpServletRequest request, Model model) {
-			
+
 			HttpSession session = request.getSession();
 		    String store_id = (String) session.getAttribute("storeId");
 			if(store_id == null) {
@@ -42,7 +55,7 @@ public class businMController {
 		public String register02(HttpServletRequest request,
 				@RequestParam("store_name") String store_name) {
 			String result = ser.register02(request, store_name);
-			return result;
+			return result; 
 		}
 		
 		@PostMapping("register03")//둘째 페이지 정보 받고, 셋째 페이지로 
@@ -79,34 +92,73 @@ public class businMController {
 			
 		}
 		
-		@GetMapping("businMmenu")
-		public String businMmenu() {
+		@GetMapping("businMmenu")//사업자 마이페이지
+		public String businMmenu(HttpServletRequest request) {
+			HttpSession session = request.getSession();
+		    String store_id = (String) session.getAttribute("storeId");
+			if(store_id == null) {
+				request.setAttribute("msg", "로그인이 필요한 서비스입니다");
+		        request.setAttribute("url", "member/login");
+		        return "businessM/businMalert";
+			} 
 			return "businessM/businMmenu";
 		}
 		
-		@GetMapping("/businessM/menuInfo")
+		@GetMapping("/businessM/menuInfo")//마이페이지 내 메뉴정보확인
 		public String menuInfo() {
-			return "businessM/menuInfo";
+			return "businessM/info/menuInfo";
 		}
 		
-		@GetMapping("/businessM/photoInfo")
-		public String photoInfo() {
-			return "businessM/photoInfo";
-		}
-		
-		@GetMapping("/businessM/reviewInfo")
-		public String reviewInfo() {
-			return "businessM/reviewInfo";
-		}
-		
-		@GetMapping("/businessM/bookInfo")
-		public String bookInfo() {
-			return "businessM/bookInfo";
-		}
-		
-		@GetMapping("/businessM/storeInfo")
+		@GetMapping("/businessM/storeInfo")//마이페이지 내 정보확인및수정(기본메뉴페이지)
 		public String storeInfo() {
-			return "businessM/storeInfo";
+			return "businessM/info/storeInfo";
 		}
+		
+		@GetMapping("/businessM/photoInfo")//마이페이지 내 사진정보확인
+		public String photoInfo() {
+			return "businessM/info/photoInfo";
+		}
+		
+		@GetMapping("/businessM/reviewInfo")//마이페이지 내 고객후기보기
+		public String reviewInfo() {
+			return "businessM/info/reviewInfo";
+		}
+		
+		@GetMapping("/businessM/bookInfo")//마이페이지 내 예약관리
+		public String bookInfo() {
+			return "businessM/info/bookInfo";
+		}
+
+		
+		@GetMapping("/businessM/menu/menuRegister")//메뉴등록화면
+		public String menuRegister() {
+			return "businessM/menu/menuRegister";
+		}
+		@GetMapping("/businessM/menu/menuRFinish")//메뉴등록 완료화면
+		public String menuRFinish() {
+			return "businessM/menu/menuRFinish";
+		}
+		
+		@GetMapping("/businessM/photo/photoRegister")//사진등록화면
+		public String photoRegister() {
+			return "businessM/photo/photoRegister";
+		}
+		@GetMapping("/businessM/photo/photoRFinish")//사진등록 완료화면
+		public String photoRFinish() {
+			return "businessM/photo/photoRFinish";
+		}
+		
+		//photoRegister.jsp에서 form action="storeImgSave"으로 받아오는 경로
+	    @PostMapping("/businessM/photo/storeImgSave")//사진 정보 DB에 저장하고, 사진등록 완료 화면으로 
+	    public String storeImgSave(HttpServletRequest request,
+	            @RequestParam("storeImage01") MultipartFile file01,
+	            @RequestParam("storeImage02") MultipartFile file02,
+	            @RequestParam("storeImage03") MultipartFile file03,
+	            @RequestParam("storeImage04") MultipartFile file04,
+	            @RequestParam("storeImage05") MultipartFile file05 ) {
+	    	String result = ser.storeImage(request, file01, file02, file03, file04, file05);
+	    	return result;
+	    }
+		
 	}
 

@@ -15,8 +15,11 @@
 
 </head>
 <body>
+<div class="header">
+<%@ include file="../../main/header.jsp" %>
+</div>
 
-
+<div class="center-box">
 <div class="skill-box">
 	<div class="skill-bar">
 		<span class="per02">
@@ -25,10 +28,11 @@
 	</div>
 </div>
 
-<div class="center-box">
-    <h1>주소 등록하기</h1><br>
-    <h5>*표시 항목은 필수항목입니다</h5>
     <form action="register03" method="post" onsubmit="return inputcheck01()">
+	<div class="white_box">
+    <h1 class="top_title">주소 등록하기</h1><br>
+    <h5>*표시 항목은 필수항목입니다</h5>
+    <div class="text_leftAlign1">
     	<label>
         *우편번호 
         <input type="text" id="addr1" name="store_zip" readonly placeholder="우편번호를 검색해주세요">
@@ -44,11 +48,13 @@
         *상세주소
         <input type="text" id="addr3" name="store_add_info" placeholder="상세주소를 입력해주세요">
         </label>
-        <hr>
+        </div>
 <div id="map"></div>
+        <hr>
+</div>
         <div style="display: flex; justify-content: space-between;">
-            <button type="button" onclick="window.history.back()">이전</button>
-            <button type="submit">다음</button>
+            <button type="button" class="button1 btn1Fade" onclick="window.history.back()">이전</button>
+            <button type="submit" class="button1 btn1Fade">다음</button>
         </div>
     </form>
 </div>

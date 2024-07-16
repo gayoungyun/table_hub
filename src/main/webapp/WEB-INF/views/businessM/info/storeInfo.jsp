@@ -28,10 +28,10 @@
 소개글 : ${ store_introduce }<br>
 최대 수용 인원 : ${ store_max_person }<br>
 예약 규정 : ${ store_booking_rule }<br>
-<button type="button"> 수정하기 </button>
+<button type="button"> 수정하기 </button><br>
 
 <script>
-	for (let i = 1; i <= 100; i++) {
+	for (let i = 1; i <= 200; i++) {
 	    document.write(i + "<br>");
 	}
 </script>

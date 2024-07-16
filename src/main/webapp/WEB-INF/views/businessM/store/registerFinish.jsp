@@ -28,8 +28,8 @@
 	</div>
 	<br>
 	<div style="display:grid; justify-items: center;">
-		<button type="button" onclick="">메뉴 등록 하기</button><br>
-		<button type="button" onclick="">사진 등록 하기</button><br>
+		<button type="button" onclick="window.location.href='http://localhost:8080/root/businessM/menuInfo'">메뉴 등록 하기</button><br>
+		<button type="button" onclick="window.location.href='http://localhost:8080/root/businessM/photoInfo'">사진 등록 하기</button><br>
 		<button type="button" onclick="window.location.href='http://localhost:8080/root/'">메인 화면</button><br>
 		<button type="button" onclick="window.location.href='http://localhost:8080/root/businMmenu'">내 가게 정보보기</button>
 	</div>

@@ -11,7 +11,9 @@
 <script type="text/javascript" src="${path}/resources/js/businessM/businessMstore.js"></script>
 </head>
 <body>
-
+<div class="header">
+<%@ include file="../../main/header.jsp" %>
+</div>
 
 <div class="center-box">
 	<div class="skill-box">
@@ -42,8 +44,8 @@
 			</div>
 	</div>
 	<div style="display: flex; justify-content: space-between;">
-		<button type="button" onclick=" window.history.back()">이전</button>
-		<button type="submit">다음</button>
+		<button type="button" class="button1 btn1Fade" onclick=" window.history.back()">이전</button>
+		<button type="submit" class="button1 btn1Fade">다음</button>
 	</div>
 	</form>
 </div>
