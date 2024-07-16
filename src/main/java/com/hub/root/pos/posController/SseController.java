@@ -18,32 +18,32 @@ import com.hub.root.pos.posService.SseService;
 @RestController
 @RequestMapping("con")
 public class SseController {
-	
+
 	@Autowired
 	SseService sseService;
-	
+
 	@Autowired
 	PosService service;
-	
+
 	@GetMapping(value="connect", produces=MediaType.TEXT_EVENT_STREAM_VALUE)
 	public ResponseEntity<SseEmitter> connect(@RequestParam("articleId") String articleId){
 		System.out.println("SseController 연결!!!!");
 	    SseEmitter emitter = sseService.connect(articleId);
 	    return ResponseEntity.ok(emitter);
 	}
-	
+
 	@PostMapping("/book")
 	public ResponseEntity<Void> sendComment(@RequestBody BookingDTO bookingDTO) {
 		int booking_id = service.register_booking(bookingDTO);
-		
+
 		if(booking_id != 0)
 		{
 			int check_booking_maxNum = service.check_booking_maxNum();
-					
+
 			bookingDTO.setBooking_id(check_booking_maxNum);
 			sseService.booking(bookingDTO);
 		}
 	    return ResponseEntity.ok().build();
 	}
-	
+
 }

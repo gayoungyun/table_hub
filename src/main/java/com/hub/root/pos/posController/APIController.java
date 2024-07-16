@@ -1,6 +1,5 @@
 package com.hub.root.pos.posController;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -17,76 +16,98 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hub.root.pos.posDTO.BookingDTO;
-import com.hub.root.pos.posDTO.keyDTO;
-import com.hub.root.pos.posDTO.updateStatusDTO;
-import com.hub.root.pos.posDTO.waitDTO;
+import com.hub.root.pos.posDTO.KeyDTO;
+import com.hub.root.pos.posDTO.UpdateStatusDTO;
+import com.hub.root.pos.posDTO.WaitDTO;
 import com.hub.root.pos.posService.APIService;
 
 @RestController
 @RequestMapping("api")
 public class APIController {
-	
+
 	@Autowired
 	APIService apiService;
-	
+
 	@GetMapping("todayReservation")
 	public List<BookingDTO> todayReservation(HttpSession session) {
-		String userId = session.getAttribute("UserID").toString(); 
+		String userId = session.getAttribute("UserID").toString();
 		List<BookingDTO> today = null;
-		
+
 		if(userId != null)
 		{
 			today = apiService.todayReservation(userId);
 		}
-		return today;	
+		return today;
 	}
-	
+
 	@PatchMapping("bookingStatus")
-	public int bookingStatus(@RequestBody updateStatusDTO updateStatus) {
+	public int bookingStatus(@RequestBody UpdateStatusDTO updateStatus) {
 		System.out.println(updateStatus.getBooking_id());
-		
+
 		int result = apiService.bookingStatus(updateStatus);
-		
+
 		return result;
 	}
-	
+
 	@PostMapping("bookingCount")
 	public BookingDTO updateSseDTO(@RequestBody BookingDTO bookingDTO) {
 		BookingDTO dto = apiService.updateSseDTO(bookingDTO);
-		
+
 		return dto;
 	}
-	
+
 	@GetMapping("key")
-	public List<keyDTO> key_list(@RequestParam String userId){
-		List<keyDTO> result = null;
-		
+	public List<KeyDTO> key_list(@RequestParam String userId){
+		List<KeyDTO> result = null;
+
 		result = apiService.getAllKey(userId);
-		
+
 		return result;
 	}
-	
+
 	@PostMapping("key")
-	public keyDTO key(@RequestBody keyDTO key){
-	
-		keyDTO result = apiService.key(key);
-		return result; 
-	}
-	
-	
-	@DeleteMapping("key")
-	public int delete_key(@RequestBody keyDTO key) {
-		int result = apiService.delete_key(key);
-		
+	public KeyDTO key(@RequestBody KeyDTO key){
+
+		KeyDTO result = apiService.key(key);
 		return result;
 	}
-	
-	@GetMapping("todayWait")
-	public List<waitDTO> todayWait(@RequestHeader("store_id") String store_id ) {
-		List<waitDTO> dto = apiService.todayWait(store_id);
-		
-		return dto;
-		
+
+
+	@DeleteMapping("key")
+	public int delete_key(@RequestBody KeyDTO key) {
+		int result = apiService.delete_key(key);
+
+		return result;
 	}
-	
+
+	@GetMapping("todayWait")
+	public List<WaitDTO> todayWait(@RequestHeader("store_id") String store_id ) {
+		List<WaitDTO> dto = apiService.todayWait(store_id);
+
+		return dto;
+	}
+
+	@PatchMapping("wait")
+	public void wait(@RequestBody WaitDTO wait) {
+		apiService.wait(wait.getStore_id(), wait.getWait_time(), wait.getWait_num());
+
+	}
+
+	@GetMapping("averageTime")
+	public String averageTime(@RequestHeader("store_id") String store_id) {
+
+		String result = "null";
+		result = apiService.averageTime(store_id);
+
+		return result;
+	}
+
+	@GetMapping("nowWaitNum")
+	public String nowWaitNum(@RequestHeader("store_id") String store_id) {
+		String result = "null";
+		result = apiService.nowWaitNum(store_id);
+
+		return result;
+	}
+
 }

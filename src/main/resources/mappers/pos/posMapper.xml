@@ -18,12 +18,12 @@
 		<result property="booking_phone" column="BOOKING_PHONE" />
 		<result property="booking_status" column="BOOKING_STATUS" />
 	</resultMap>
-	<resultMap type="com.hub.root.pos.posDTO.keyDTO" id="keyDTO">
+	<resultMap type="com.hub.root.pos.posDTO.KeyDTO" id="keyDTO">
 		<result property="store_id" column="store_id" />
 		<result property="store_key" column="store_key" />
 		<result property="key_status" column="key_status" />
 	</resultMap>
-	<resultMap type="com.hub.root.pos.posDTO.waitDTO" id="waitDTO">
+	<resultMap type="com.hub.root.pos.posDTO.WaitDTO" id="waitDTO">
 		<result property="wait_num" column="wait_num" />
 		<result property="store_id" column="store_id" />
 		<result property="person_num" column="person_num" />
@@ -38,11 +38,11 @@
 	</select>
 	
 	<select id="todayReservation" resultMap="bookingDTO">
-		select * from booking_info where store_id = #{store_id} and booking_date_booking = TO_CHAR(SYSDATE, 'YYYY/MM/DD') and (booking_status = 0 or booking_status = 3) ORDER BY booking_time
+		select * from booking_info where store_id = #{store_id} and booking_date_booking = TO_CHAR(CURRENT_DATE, 'YYYY/MM/DD') and (booking_status = 0 or booking_status = 4) ORDER BY booking_time
 	</select>
 	
 	<select id="todayWait" resultMap="waitDTO">
-		select * from store_wait where store_id = #{store_id} and wait_date = TO_CHAR(SYSDATE, 'YYYY/MM/DD') order by wait_num 
+		select * from store_wait where store_id = #{store_id} and TO_CHAR(wait_date, 'YYYY/MM/DD') = TO_CHAR(CURRENT_DATE, 'YYYY/MM/DD') and wait_status = 0 order by wait_num 
 	</select>
 	
 	<insert id="register_booking">
@@ -57,20 +57,24 @@
 		update booking_info set booking_status = #{booking_status} where booking_id = #{booking_id}
 	</update>
 	
+	<update id="wait">
+		update store_wait set wait_time = #{wait_time}, wait_status = 1  where store_id = #{store_id} and TO_CHAR(wait_date, 'YYYY/MM/DD') = TO_CHAR(CURRENT_DATE, 'YYYY/MM/DD') and wait_num = #{wait_num} 
+	</update>
+	
 	<select id="totalRegisterCount" resultType="int">
 		select count(*) from booking_info where (BOOKING_STATUS = 1 or BOOKING_STATUS = 2) and store_id = #{store_id} and member_id = #{member_id}
 	</select>
 	
 	<insert id="key">
-		insert into store_key(STORE_ID, STORE_KEY, key_status) values(#{store_id}, #{store_key}, #{key_status})		
+		insert into store_key(STORE_ID, STORE_KEY, key_status) values(#{store_id}, CRYPTPACK.ENCRYPT(#{store_key}, 'ora_java_table'), #{key_status})		
 	</insert>
 	
 	<select id="getAllKey" resultMap="keyDTO">
-		select * from store_key where store_id = #{userId}
+		select store_id, CRYPTPACK.DECRYPT(store_key,'ora_java_table') as store_key, key_status from store_key where store_id = #{userId}
 	</select>
 	
 	<select id="wait_keyCheck" resultMap="keyDTO">
-		select * from store_key where store_key = #{key}
+		select a.store_id, CRYPTPACK.DECRYPT(a.store_key,'ora_java_table') as store_key, a.key_status, b.store_name from store_key a inner join store_info b on a.store_id = b.store_id where CRYPTPACK.DECRYPT(a.store_key,'ora_java_table') = #{key}
 	</select>
 	
 	<update id="update_keyStatus">
@@ -78,18 +82,35 @@
 	</update>
 	
 	<delete id="delete_key">
-		delete from store_key where store_key = #{store_key}
+		delete from store_key where CRYPTPACK.DECRYPT(store_key,'ora_java_table') = #{store_key}
 	</delete>
 	
 	<select id="findStoreId" resultType="String">
-		select store_id from store_key where store_key = #{key}
+		select store_id from store_key where CRYPTPACK.DECRYPT(store_key,'ora_java_table') = #{key}
 	</select>
 	
-	<insert id="registerWait">
-		insert into store_wait values(#{wait_num}, #{store_id}, #{person_num}, TO_CHAR(SYSDATE, 'YYYY/MM/DD'), 0, 0, #{name})
+	<insert id="registerWait"> 
+		insert into store_wait values(#{wait_num}, #{store_id}, #{person_num}, CURRENT_DATE, 0, 0, #{name})
 	</insert>
 	
 	<select id="wait_num" resultType="int">
-		select count(*) from store_wait where wait_date = TO_CHAR(SYSDATE, 'YYYY/MM/DD')
+		select count(*) from store_wait where TO_CHAR(wait_date, 'YYYY/MM/DD') = TO_CHAR(CURRENT_DATE, 'YYYY/MM/DD')
 	</select>
+	
+	<select id="averageTime" resultType="String">
+		select wait_time from store_wait where store_id = #{store_id} and wait_status = 1 and wait_date >= to_date(add_months(CURRENT_DATE, -1)) 
+	</select>
+	
+	<select id="nowWaitNum" resultType="String">
+		SELECT wait_num FROM
+			(
+    			SELECT *
+    			FROM store_wait a
+    			ORDER BY WAIT_NUM desc
+			)
+			<![CDATA[
+			WHERE ROWNUM <= 1 and wait_status = 1 and TO_CHAR(wait_date, 'YYYY/MM/DD') = TO_CHAR(CURRENT_DATE, 'YYYY/MM/DD')
+			]]>
+	</select>
+	
 </mapper>

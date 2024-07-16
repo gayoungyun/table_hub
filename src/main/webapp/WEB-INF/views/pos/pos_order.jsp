@@ -226,17 +226,35 @@
 	background-color: red;
 	border-radius: 8px;
 }
+
 .wait_table > div {
 	height: 90px;
 }
+
 .wait_table_left {
 	width: 130px;
 }
+
 .wait_table_right {
-	width: 50px;
+	width: 65px;
 			
 	display:flex;
 	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	
+	margin-top: 5px;
+}
+
+.wait_table_right > button {
+	border-radius: 8px;
+	width: 50px;
+}
+.wait_accept {
+	margin-top: 10px;
+}
+.wait_cancel {
+	margin-bottom: 10px;
 }
 .wait_table_left > *{
 	margin-left: 5px;
@@ -250,6 +268,8 @@
 .point_yellow{
 	color: #fa8a48;
 }
+
+
 </style>
 </head>
 <body id="body">
@@ -266,7 +286,6 @@
 			<div class="save show_booking" style="width: 100%">
 				<p>확정 예약</p>
 				<div class="public_booking_wrapper save_wrapper">
-				
 				</div>
 			</div>
 		</div>
@@ -295,6 +314,7 @@
 		const main_layout = document.querySelector(".main_layout");
 		let sse = new EventSource("http://localhost:8080/root/con/connect?articleId=${UserID}");	
 		
+		// 나중에 변경하기(넓이 지정 방식)
 		$(document).ready(function() {
 			var realSize = window.innerHeight - 57;
 			$(".main_wrapper").css("height", realSize);
@@ -321,23 +341,24 @@
 			const ws = new SockJS("http://localhost:8080/root/send");
 			socket = ws;
 			console.log(socket);
-			ws.onopen = function() {
+			ws.onopen = function(e) {
 				 console.log('open');
 			};
 
 			ws.onmessage = function(event) {
 				const data = event.data.split(',');
-				console.log(data);
+				makeWaitTable(data[0], data[1], data[2], 0, 1);
 			};
 
-			ws.onclose = function() {
+			ws.onclose = function(e) {
 			    console.log('close');
 			};
-
+			
+			ws.onerror = function(e) {
+				console.log("error");
+			}
 		};
 
-		
-	
 		sse.addEventListener('connect', (e) => {
 			const {data : receivedConnectData } = e;
 			console.log('connect data: ', receivedConnectData);			
@@ -364,28 +385,63 @@
 					Reservation(data, 3);
 			})	
 		})
-
 		
-		body.addEventListener(
-						"click",
-						function(event) {
+		body.addEventListener("click", function(event) {
 							let parent = event.target;
 							const wait = document.getElementById('wait');
 							const wait_table_wrapper = document.querySelector('.wait_table_wrapper');
-							for (let i = 0; i < 6; i++) {
-								if (parent.classList.contains("parent_wait")) {
+							for (let i = 0; i < 6; i++) 
+							{
+								if (parent.classList.contains("parent_wait")) 
+								{
+									console.log(parent.classList.contains("parent_wait"));
+									console.log(parent);
 									wait.style.width = "300px";
+									
 									break;
-								} else {
-									if (parent.getAttribute("id", "body") == "body") {
+								}
+								// 대기 테이블에 수락버튼을 클릭하면
+								else if(parent.classList.contains('wait_accept'))
+								{
+									const wait_table_time = document.querySelectorAll('.wait_time');
+									const wait_table = document.querySelectorAll('.wait_table');
+									let wait_time;
+									
+									for(let i = 0; i < wait_table_time.length; i++)
+									{
+										if(wait_table_time[i].dataset.wait_num == parent.dataset.wait_num)
+										{
+											let data = wait_table_time[i].innerText.split(':');
+											let wait_time = Number(data[0]) * 60 + Number(data[1]);
+
+											fetch("http://localhost:8080/root/api/wait", {
+												method : "PATCH",
+												headers : {"Content-Type": "application/json",},
+												body : JSON.stringify({
+													"store_id" : '${UserID}',
+													"wait_time": wait_time,
+													"wait_num" : parent.dataset.wait_num
+													})
+												})
+											wait_table[i].remove();
+											
+											// 소켓 전송
+											socket.send(1 + "," + '${UserID}' + "," + parent.dataset.wait_num);		
+											break;
+										}	
+									}
+									break;
+								}	
+								else 
+								{
+									if (parent.getAttribute("id", "body") == "body") 
+									{
 										wait.style.width = "0";
 										break;
 									}
 									parent = parent.parentElement;
 								}
 							}
-
-							
 		})
 		// booking_wrapper에 클릭이 들어오면 
 		main_layout.addEventListener("click", function(event) {
@@ -460,7 +516,7 @@
 				}
 			}
 		})
-	
+		// 오늘 대기 가져오기
 		function todayWaiting() {
 			fetch("http://localhost:8080/root/api/todayWait", {
 				headers : {"Content-Type": "application/json",
@@ -470,13 +526,37 @@
 			.then((data) => {
 				for(let i = 0; i < data.length; i++)
 				{
-					makeWaitTable(data[i]);	
+					console.log(data[i]);
+					makeWaitTable(data[i].wait_num, data[i].wait_name, data[i].person_num, data[i].wait_date, 0);	
 				}
 			})		
 		}
-		// 대기 테이블 만들기
-		function makeWaitTable(data) {
-			console.log(data);
+			
+		// 시간 증가
+		 setInterval(function() {
+			const time = document.querySelectorAll('.wait_time');
+			
+			for(let i = 0; i < time.length; i++)
+			{
+				const str = time[i].innerText.split(':');
+				let bun = Number(str[0]);
+				let cho = Number(str[1]);
+				
+				if(cho == 59)
+				{
+					bun++;
+					cho = 00;					
+				}
+				else
+					cho++;
+				time[i].innerText = bun + ":" + cho;
+			}
+		}, 1000); 					
+															
+		// 대기 테이블 만들기(type == 0 이면 DB에서 읽어 오는값 아니면 소켓에서 가져오는값)
+		// wait_date 값이 0이면 소켓에서 실시간으로 전송해 준 데이터;
+		function makeWaitTable(wait_num, wait_name, person_num, wait_date, type) {
+			
 			const wait_table_wrapper = document.querySelector('.wait_table_wrapper');
 			
 			const table_wrapper = document.createElement('div');
@@ -489,13 +569,13 @@
 			div_right.classList.add("wait_table_right");
 			
 			const p_left_wait_num = document.createElement('p');
-			p_left_wait_num.innerText = "대기번호 : " + data.wait_num;
+			p_left_wait_num.innerText = "대기번호 : " + wait_num;
 			
 			const p_left_wait_name = document.createElement('p');
-			p_left_wait_name.innerText = "이름 : " + data.wait_name;
+			p_left_wait_name.innerText = "이름 : " + wait_name;
 			
 			const p_left_person_num = document.createElement('p');
-			p_left_person_num.innerText = "인원 : " + data.person_num;
+			p_left_person_num.innerText = "인원 : " + person_num;
 			
 			const div_left_wait_time = document.createElement('div');
 			div_left_wait_time.classList.add("wait_time_wrapper");
@@ -503,28 +583,66 @@
 			const span_wait_time_first = document.createElement('span');
 			
 			span_wait_time_first.innerText = "대기시간 : ";
-			const span_wait_time_bun = document.createElement('span');
-			span_wait_time_bun.innerText = "00";
-			const span_wait_time_middle = document.createElement('span');
-			span_wait_time_middle.innerText = ":";
-			const span_wait_time_cho = document.createElement('span');
-			span_wait_time_cho.innerText ="00";
+			const span_wait_time_set = document.createElement('span');
+			
+			if(wait_date == 0)
+			{
+				span_wait_time_set.innerText = "00:00";
+			}
+			else 
+			{
+				const sec = time(wait_date);
+				span_wait_time_set.innerText = parseInt(sec/60) + ":" + sec%60;	
+			}
+			span_wait_time_set.classList.add('wait_time');
+			span_wait_time_set.dataset.wait_num = wait_num;
 			
 			div_left_wait_time.appendChild(span_wait_time_first);
-			div_left_wait_time.appendChild(span_wait_time_bun);
-			div_left_wait_time.appendChild(span_wait_time_middle);
-			div_left_wait_time.appendChild(span_wait_time_cho);
+			div_left_wait_time.appendChild(span_wait_time_set);
 			
 			div_left.appendChild(p_left_wait_num);
 			div_left.appendChild(p_left_wait_name);
 			div_left.appendChild(p_left_person_num);
 			div_left.appendChild(div_left_wait_time);
 			
+			// 버튼 만들기
+			const accept_button = document.createElement('button');
+			const cancel_button = document.createElement('button');
+			
+			accept_button.innerText = '입장';
+			cancel_button.innerText = '취소';
+			
+			accept_button.dataset.wait_num = wait_num;
+			cancel_button.dataset.wait_num = wait_num;
+			
+			accept_button.classList.add('wait_accept');
+			accept_button.classList.add('wait_button');
+			cancel_button.classList.add('wait_cancel');
+			cancel_button.classList.add('wait_button');
+			
+			div_right.appendChild(accept_button);
+			div_right.appendChild(cancel_button);
+			
 			table_wrapper.appendChild(div_left);
 			table_wrapper.appendChild(div_right);
 			
 			wait_table_wrapper.appendChild(table_wrapper);
 		}
+		// 시간 계산
+		function time(wait_date) {
+			const currentDate = new Date();
+
+			const db_wait_date = wait_date.split('.')[0];
+			const formattedDate = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate() + " " + currentDate.getHours()+ ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds();
+			
+			const dateA = new Date(formattedDate); 
+			const dateB = new Date(db_wait_date);
+			
+			const diffMSec = (dateA.getTime() - dateB.getTime()) / 1000;
+			
+			return diffMSec;
+		}
+		
 		
 		// 가게에서 예약 수락시
 		function acceptBooking(booking_id) {	
@@ -533,7 +651,7 @@
 				headers : {"Content-Type": "application/json",},
 				body : JSON.stringify({
 					"booking_id" : booking_id,
-					"booking_status": 3
+					"booking_status": 4
 				})
 			})
 			.then((response) => response.json())
@@ -577,7 +695,7 @@
 				headers : {"Content-Type": "application/json",},
 				body : JSON.stringify({
 					"booking_id" : data,
-					"booking_status": -1
+					"booking_status": 3
 				})
 			})
 			.then((response) => response.json())
@@ -603,7 +721,7 @@
 					{
 						Reservation(data[i], 0);
 					}
-					else if(data[i].booking_status == 3) {
+					else if(data[i].booking_status == 4) {
 						Reservation(data[i], 1);	
 					}	
 				}	

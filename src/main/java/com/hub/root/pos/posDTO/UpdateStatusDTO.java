@@ -1,9 +1,9 @@
 package com.hub.root.pos.posDTO;
 
-public class updateStatusDTO {
+public class UpdateStatusDTO {
 	private int booking_status;
 	private int booking_id;
-	
+
 	public int getBooking_status() {
 		return booking_status;
 	}

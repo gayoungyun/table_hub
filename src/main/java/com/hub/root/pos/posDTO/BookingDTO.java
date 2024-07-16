@@ -9,9 +9,9 @@ public class BookingDTO {
 	private int booking_person;
 	private String booking_phone;
 	private int booking_status;
-	
+
 	private int review_count;
-	
+
 	public int getReview_count() {
 		return review_count;
 	}
@@ -24,7 +24,7 @@ public class BookingDTO {
 	public void setBooking_id(int booking_id) {
 		this.booking_id = booking_id;
 	}
-	
+
 	@Override
 	public String toString() {
 		return super.toString();

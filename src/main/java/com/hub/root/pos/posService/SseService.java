@@ -1,47 +1,37 @@
 package com.hub.root.pos.posService;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEventBuilder;
 
-import com.fasterxml.jackson.annotation.JacksonInject.Value;
 import com.hub.root.pos.posDTO.BookingDTO;
-import com.hub.root.pos.posDTO.SseDTO;
 
 @Service
 public class SseService {
-	
+
 	private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
-	
+
 	public SseEmitter connect(final String articleId) {
 		SseEmitter sseEmitter = new SseEmitter(300_000L);
-		
+
 		final SseEventBuilder sseEventBuilder = SseEmitter.event().name("connect").data("connected!")
 				.reconnectTime(0);
 
 		sendEvent(sseEmitter, sseEventBuilder);
-		
+
 		sseEmitter.onCompletion(() -> {
 			emitters.remove(articleId);
 		});
 		sseEmitter.onError((ex) -> {
 			emitters.remove(articleId);
 		});
-		
+
 		emitters.put(articleId, sseEmitter);
-		
+
 		return sseEmitter;
 	}
 
@@ -57,20 +47,20 @@ public class SseService {
 	}
 
 	public void booking(final BookingDTO bookingDTO) {
-		
+
 		final SseEventBuilder sseEventBuilder = SseEmitter.event().name("newBooking").data(bookingDTO)
 				.reconnectTime(0);
-					
+
 		SseEmitter sse = findStore(bookingDTO.getStore_id());
-		
+
 		if( sse != null)
 		{
 			sendEvent(sse, sseEventBuilder);
 		}
 	}
-	
+
 	private SseEmitter findStore(String store_id) {
-		
+
 		if(emitters.get(store_id) != null)
 		{
 			return emitters.get(store_id);
@@ -80,5 +70,5 @@ public class SseService {
 			return null;
 		}
 	}
-	
+
 }

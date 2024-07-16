@@ -1,10 +1,17 @@
 package com.hub.root.pos.posDTO;
 
-public class keyDTO {
+public class KeyDTO {
 	String store_id;
+	String store_name;
 	String store_key;
 	int key_status;
-	
+
+	public String getStore_name() {
+		return store_name;
+	}
+	public void setStore_name(String store_name) {
+		this.store_name = store_name;
+	}
 	public int getKey_status() {
 		return key_status;
 	}

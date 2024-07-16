@@ -1,15 +1,15 @@
 package com.hub.root.pos.posDTO;
 
-public class waitDTO {
-	
+public class WaitDTO {
+
 	private int wait_num;
 	private String store_id;
 	private int person_num;
 	private String wait_date;
 	private int wait_status;
 	private int wait_time;
-	private String wait_name;	
-	
+	private String wait_name;
+
 	public int getWait_status() {
 		return wait_status;
 	}
@@ -52,5 +52,5 @@ public class waitDTO {
 	public void setWait_name(String wait_name) {
 		this.wait_name = wait_name;
 	}
-	
+
 }

@@ -8,68 +8,69 @@ import org.springframework.stereotype.Service;
 
 import com.hub.root.pos.mybatis.PosMapper;
 import com.hub.root.pos.posDTO.BookingDTO;
-import com.hub.root.pos.posDTO.keyDTO;
-import com.hub.root.pos.posDTO.updateStatusDTO;
-import com.hub.root.pos.posDTO.waitDTO;
+import com.hub.root.pos.posDTO.KeyDTO;
+import com.hub.root.pos.posDTO.UpdateStatusDTO;
+import com.hub.root.pos.posDTO.WaitDTO;
 
 @Service
 public class APIServiceImpl implements APIService{
-	
+
 	@Autowired
 	PosMapper mapper;
-	
+
 	@Override
 	public List<BookingDTO> todayReservation(String store_id) {
-		
+
 		List<BookingDTO> today = mapper.todayReservation(store_id);
-		
+
 		if(today != null)
 		{
-			for(int i = 0; i < today.size(); i++)
-			{
-				String str[] = today.get(i).getBooking_date_booking().split(" ");
-				today.get(i).setBooking_date_booking(str[0]);
-				
-				int count = totalRegisterCount(store_id, today.get(i).getMember_id());
-				today.get(i).setReview_count(count);
+			for (BookingDTO element : today) {
+				String str[] = element.getBooking_date_booking().split(" ");
+				element.setBooking_date_booking(str[0]);
+
+				int count = totalRegisterCount(store_id, element.getMember_id());
+				element.setReview_count(count);
 			}
-					
+
 			return today;
 		}
 		else {
 			return null;
 		}
 	}
-	
-	public int bookingStatus(updateStatusDTO updateStatus) {
-		
+
+	@Override
+	public int bookingStatus(UpdateStatusDTO updateStatus) {
+
 		int result = mapper.bookingStatus(updateStatus.getBooking_id(), updateStatus.getBooking_status() );
-		
+
 		return result;
 	}
-	
+
 	private int totalRegisterCount(String store_id, String member_id)
 	{
 		int result = 0;
 		result = mapper.totalRegisterCount(store_id, member_id);
-		
+
 		return result;
 	}
 
 	@Override
 	public BookingDTO updateSseDTO(BookingDTO bookingDTO) {
-		
+
 		BookingDTO dto = new BookingDTO();
 		dto.setReview_count(mapper.totalRegisterCount(bookingDTO.getStore_id(), bookingDTO.getMember_id()));
-		
+
 		return dto;
 	}
 
-	
-	public keyDTO key(keyDTO key) {
+
+	@Override
+	public KeyDTO key(KeyDTO key) {
 		String makeKey = makekey(10, false);
 		int result = 0;
-		
+
 		if(makeKey != null)
 		{
 			key.setStore_key(makeKey);
@@ -79,16 +80,17 @@ public class APIServiceImpl implements APIService{
 		}
 		if(result == 1 )
 			return key;
-		else 
+		else
 			return null;
 	}
-	
-	public List<keyDTO> getAllKey(String userId) {
-		List<keyDTO> result = mapper.getAllKey(userId);
-		
+
+	@Override
+	public List<KeyDTO> getAllKey(String userId) {
+		List<KeyDTO> result = mapper.getAllKey(userId);
+
 		return result;
 	}
-	
+
 	private String makekey(int length, boolean isUpperCase) {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -103,37 +105,67 @@ public class APIServiceImpl implements APIService{
 	}
 
 	@Override
-	public int delete_key(keyDTO key) {
+	public int delete_key(KeyDTO key) {
 		int result = mapper.delete_key(key);
-		
+
 		return result;
 	}
 
 	@Override
 	public String findStoreId(String key) {
 		String result = mapper.findStoreId(key);
-		
+
 		return result;
 	}
 
 	@Override
 	public int registerWait(String name, String person_num, String store_id) {
 		int wait_num = wait_num() + 1;
-		int result = mapper.registerWait(wait_num, name, person_num, store_id);
+		mapper.registerWait(wait_num, name, person_num, store_id);
 		return wait_num;
 	}
-	
-	private int wait_num() {	
+
+	private int wait_num() {
 		int result = mapper.wait_num();
-		
+
 		return result;
 	}
 
 	@Override
-	public List<waitDTO> todayWait(String store_id) {
-		List<waitDTO> dto = mapper.todayWait(store_id);
-		
+	public List<WaitDTO> todayWait(String store_id) {
+		List<WaitDTO> dto = mapper.todayWait(store_id);
+
+
 		return dto;
 	}
-	
+
+	@Override
+	public int wait(String store_id, int wait_time, int wait_num) {
+		int result = mapper.wait(store_id, wait_time, wait_num);
+
+		return 0;
+	}
+
+	@Override
+	public String averageTime(String store_id) {
+		String[] result = mapper.averageTime(store_id);
+
+		long average = 0;
+
+		for (String element : result)
+			average += Integer.parseInt(element);
+
+		average = average / result.length;
+		return Long.toString(average);
+	}
+
+	@Override
+	public String nowWaitNum(String store_id) {
+		String result = mapper.nowWaitNum(store_id);
+
+		if(result == null)
+			return "null";
+		return result;
+	}
+
 }

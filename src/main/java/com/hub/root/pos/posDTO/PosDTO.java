@@ -3,7 +3,7 @@ package com.hub.root.pos.posDTO;
 public class PosDTO {
 	private String store_id;
 	private String store_name;
-	
+
 	public String getStore_id() {
 		return store_id;
 	}

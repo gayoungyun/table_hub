@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -25,6 +25,64 @@ body {
 	background-color: #E2E2E2;
 	min-height: 500px;
 }
+
+.modal{
+  position:absolute;
+  display:none;
+  
+  justify-content: center;
+  top:0;
+  left:0;
+
+  width:100vw;
+  height:100vh;
+
+  background-color: rgba(0,0,0,0.4);
+  
+  z-index: 10;
+}
+
+.modal_body1{
+	display: none;
+  	position:absolute;
+  	top:50%;  
+
+  	width:400px;  
+  	height:400px; 
+
+  	padding:40px;  
+
+	  background-color: rgb(255,255,255); 
+  	border-radius:10px;  
+  	box-shadow:0 2px 3px 0 rgba(34,36,38,0.15); 
+
+	  transform:translateY(-50%);  
+}
+
+.modal_body2 {
+	display: none;
+  	position:absolute;
+  	top:50%;  
+
+  	width:600px;  
+  	height:800px; 
+
+  	padding:40px;  
+
+	background-color: rgb(255,255,255); 
+  	border-radius:10px;  
+  	box-shadow:0 2px 3px 0 rgba(34,36,38,0.15); 
+
+	transform:translateY(-50%);
+	
+	overflow: scroll;
+}
+
+.tbModal {
+  width: 400px;
+}
+
+
 
 .main_wrapper {
 	display: flex;
@@ -96,6 +154,15 @@ body {
 }
 
 .store_circleNumber {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	width: 170px;
+	height: 170px;
+	position: relative;
+}
+.modal_circle_num {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -245,17 +312,87 @@ body {
 .div_button_wrapper {
 	width: 100%;
 }
+
+.font_color_white {
+	color: white;
+}
+
+.color_deepBlue {
+	background-color: #191E36;
+}
+
+.modal_body_header {
+	display: flex;
+	justify-content: center;
+	
+}
+
+.modal_body_header > span {
+	font-size: 30px;
+	font-weight: bold;
+}
+.modal_body_body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 90%;
+}
+.modal_circle_num > span {
+	font-size: 40px;	
+}
+
+.waitTable {
+	display: flex;
+	justify-content: space-around;
+	
+	width: 100%;
+	height: 30px;
+	
+	margin-top: 8px;
+	
+	background-color: #f1f3f5;
+	border-radius: 8px; 
+}
+.wait_time {
+	display: block;
+	width: 60px;
+}
+
+.qr {
+	height: 150px;
+	width: 150px;
+}
+.bold {
+	font-weight: bold;
+}
 </style>
 
 </head>
 <body id="body">
 	<div class="main_wrapper">
+		<div class="modal">
+			<div class="modal_body1">
+				<div class="modal_body_header">
+					<span>대기 번호</span>
+				</div>
+				<div class="modal_body_body">
+					<div class="modal_circle_num color_deepBlue font_color_white">
+						<span>0</span>
+					</div>	
+				</div>
+			</div>
+			<div class="modal_body2">
+			</div>
+		</div>
+	
 		<div class="left_body">
-			<div class="store_introduction"></div>
+			<div class="store_introduction">
+				
+			</div>
 			<div class="store_waitingNumber_wrapper">
-				<p class="store_name p_center">가게 이름</p>
+				<p class="store_name p_center">${store_id}</p>
 				<p class="store_waitingNumber p_center">현재 입장번호</p>
-				<div class="store_circleNumber color_orange store_circleNumber_white ">
+				<div class="store_circleNumber color_orange store_circleNumber_white">
 					<span>0</span>
 				</div>
 			</div>
@@ -265,7 +402,7 @@ body {
 						<p class="p_center p_footer">현제 웨이팅</p>
 					</div>
 					<div class="dom_wrapper team">
-						<span class="color_orange font_size">0팀</span>
+						<span class="color_orange font_size store_teamWait">0팀</span>
 					</div>
 				</div>
 				<div class="avg_time footer_common">
@@ -273,13 +410,15 @@ body {
 						<p class="p_center p_footer">예상 시간</p>
 					</div>
 					<div class="dom_wrapper time">
-						<span class="color_orange font_size">0분</span>
+						<span class="color_orange font_size average_time">0분</span>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="right_body">
-			<div class="store_introduction"></div>
+			<div class="store_introduction">
+				<img class="qr" src="data:image/jpeg;base64,${qrCode}" alt="QR Code">
+			</div>
 			<div class="store_waitingNumber_wrapper">
 				<div class="input_wrapper">
 					<label for="input_text" class="label">이름</label> 
@@ -316,32 +455,257 @@ body {
 	let socket = null;
 	
 	const body = document.getElementById('body');
-	
+
 	$(document).ready(function() {
 		connectWs();
+		
+		fetch("http://localhost:8080/root/api/todayWait", {
+			headers : {"Content-Type": "application/json",
+						"store_id" : '${store_id}'},
+		})
+		.then((response) => response.json())
+		.then((data) => {
+			const store_teamWait = document.querySelector('.store_teamWait');	
+			store_teamWait.innerText = data.length + "팀";
+			
+			for(let i = 0; i < data.length; i++)
+			{
+				makeWaitTable(data[i].wait_num, data[i].person_num, data[i].wait_date);
+			}
+		})	
+		averageTime();
+		nowWaitNum();
 	})
+	// 현재 대기 번호 가져오기
+	function nowWaitNum() {
+		fetch("http://localhost:8080/root/api/nowWaitNum", {
+			headers : {"Content-Type": "application/json",
+						"store_id" : '${store_id}'},
+		})
+		.then((response) => response.json())
+		.then((data) => {
+			if(data == null)
+				return ;
+			else {
+				const store_circleNumber = document.querySelector('.store_circleNumber');
+				store_circleNumber.firstElementChild.innerText = data;	
+			}
+		})			
+		
+	}
+	// 평균 시간 가져오기
+	function averageTime() {
+		fetch("http://localhost:8080/root/api/averageTime", {
+			headers : {"Content-Type": "application/json",
+						"store_id" : '${store_id}'},
+		})
+		.then((response) => response.json())
+		.then((data) => {
+			const average_time = document.querySelector('.average_time');
+			average_time.innerText = Math.floor(data/60)  + "분";
+		})			
+	}
+	
+	function makeWaitTable(wait_num, person_num, wait_date) {
+		
+		const modal_body2 = document.querySelector('.modal_body2');
+		
+		const waitTable = document.createElement('div');
+		waitTable.classList.add('waitTable');
+		waitTable.dataset.wait_num = wait_num;
+		// 맨 앞 컬럼 순서 
+		const div_columNum = document.createElement('div');
+		const span_columNum = document.createElement('span');
+		
+		div_columNum.classList.add('wait_number');
+		span_columNum.innerText = Number(modal_body2.childElementCount + 1);
+		div_columNum.appendChild(span_columNum);
+				
+		// 컬럼 순서 테이블에 넣기
+		waitTable.appendChild(div_columNum);
+		
+		const div_waitNum = document.createElement('div');
+		const span_waitNum = document.createElement('span');
+		
+		span_waitNum.classList.add('bold');
+		span_waitNum.innerText = wait_num;
+		
+		div_waitNum.appendChild(span_waitNum);
+		
+		// 대기 번호 테이블에 넣기
+		waitTable.appendChild(div_waitNum);
+		
+		const div_personNum = document.createElement('div');
+		const span_personNum = document.createElement('span');
+		
+		span_personNum.innerText = "인원 " + person_num + "명";
+		div_personNum.appendChild(span_personNum);
+		
+		// 인원 테이블에 넣기
+		waitTable.appendChild(div_personNum);
+		
+		const div_waitTime = document.createElement('div');
+		const span_waitDate = document.createElement('span');
+		const sec = time(wait_date);
+		
+		span_waitDate.classList.add('wait_time');
+		span_waitDate.innerText = parseInt(sec/60) + ":" + sec%60;
+		div_waitTime.appendChild(span_waitDate);
+		waitTable.appendChild(div_waitTime);
+		
+		modal_body2.appendChild(waitTable);
+	}
+	// 시간 증가
+	 setInterval(function() {
+		const time = document.querySelectorAll('.wait_time');
+		
+		for(let i = 0; i < time.length; i++)
+		{
+			const str = time[i].innerText.split(':');
+			let bun = Number(str[0]);
+			let cho = Number(str[1]);
+			
+			if(cho == 59)
+			{
+				bun++;
+				cho = 00;					
+			}
+			else
+				cho++;
+			time[i].innerText = bun + ":" + cho;
+		}
+	}, 1000);
+	
+	
+	// 시간 계산
+	function time(wait_date) {
+		const currentDate = new Date();
+
+		const db_wait_date = wait_date.split('.')[0];
+		const formattedDate = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate() + " " + currentDate.getHours()+ ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds();
+		
+		const dateA = new Date(formattedDate); 
+		const dateB = new Date(db_wait_date);
+		
+		const diffMSec = (dateA.getTime() - dateB.getTime()) / 1000;
+		
+		return diffMSec;
+	}
 	
 	// 소켓
 	function connectWs() {
 		console.log("tttttt")
 		var ws = new SockJS("http://localhost:8080/root/send");
 		socket = ws;
-		ws.onopen = function() {
+		
+		ws.onopen = function(e) {
 			console.log('open');
-		};
+		}
 
 		ws.onmessage = function(event) {
-			console.log("전송 받음");
-		};
+			const data = event.data.split(',');
+			
+			// 보낸 대기요청에 모든 키값 클라이언트가 응답받았다는 의미
+			if(data[0] == 0)
+			{
+				console.log("전송 받음");
+				setWait(data);
+				const currentDate = new Date();
+				const formattedDate = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate() + " " + currentDate.getHours()+ ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds() + ".0";
+				makeWaitTable(data[1], data[3], formattedDate);
+			}
+			else if(data[0] == 1)
+			{
+				console.log("전송 받음");
+				manageWait(data);
+			}
+			else if(data[0] == -1)
+			{
+				alert("호스트가 로그인 되어 있지 않습니다.");
+				location.href="/root/pos/wait_login";
+			}
+		}
 
-		ws.onclose = function() {
-			console.log('close');
-		};
-
-	};
-
+		ws.onclose = function(e) {
+		    console.log('close');		    
+		}
+		
+		ws.onerror = function(e) {
+			console.log("error");
+		}
+	}
+	
+	function manageWait(data) {		
+		const wait_num = data[1];
+		const store_circleNumber = document.querySelector('.store_circleNumber');
+		store_circleNumber.firstElementChild.innerText = wait_num;	
+		
+		const span_wait = document.querySelector('.store_teamWait');
+		let span_num = span_wait.innerText;
+		let num = span_num.split('팀');
+		num[0]--;
+		span_wait.innerText = num[0] + "팀";	
+		
+		const waitTable = document.querySelectorAll('.waitTable');
+		const wait_number = document.querySelectorAll('.wait_number');
+		let changeFirstNum = false;
+		
+		for(let i = 0; i < waitTable.length; i++)
+		{
+			
+			if(waitTable[i].dataset.wait_num == wait_num)
+			{
+				waitTable[i].remove();
+				changeFirstNum = true;
+			}
+			else if(changeFirstNum == true)
+			{
+				wait_number[i].firstChild.innerText = i;		
+			}
+		}
+		
+	}
+	
+	function setWait(data) {
+		console.log(data);		
+		const wait_num = data[1];
+		const wait_name = data[2];
+		const wait_person = data[3];
+		
+		const span_wait = document.querySelector('.store_teamWait');
+		let span_num = span_wait.innerText;
+		let num = span_num.split('팀');
+		num[0]++;
+		span_wait.innerText = num[0] + "팀";
+		
+		// 모달창에서 작동하는거 추가하기
+		
+		if(data[4] == '${key}')
+		{			
+			const modal = document.querySelector('.modal');
+			const modal_body1 = document.querySelector('.modal_body1');
+			const modal_body2 = document.querySelector('.modal_body2');
+			const modal_circle_num = document.querySelector('.modal_circle_num');
+			
+			modal_circle_num.lastElementChild.innerText = wait_num;
+			
+			modal.style.display = "flex";
+			modal_body1.style.display = "block";
+		}
+	}
+	
 	body.addEventListener("click", function(event) {
 		let parent = event.target;
+		
+		if(event.target.classList.contains('modal') || event.target.classList.contains('modal_body1') || event.target.classList.contains('modal_body2'))
+		{
+			const modal = document.querySelector('.modal');
+			const modal_body1 = document.querySelector('.modal_body1');
+			const modal_body2 = document.querySelector('.modal_body2');
+			modal_body2.style.display = 'none';
+			modal_body1.style.display = 'none';
+			modal.style.display = 'none';
+		}
 		
 		for (let i = 0; i < 4; i++) {
 			// 마이너스 버튼을 누르면
@@ -363,6 +727,12 @@ body {
 			}
 			// 웨이팅 목록 버튼을 누르면
 			else if (parent.classList.contains('view_waiting')) {
+				
+				const modal = document.querySelector('.modal');
+				const modal_body2 = document.querySelector('.modal_body2');
+				modal.style.display='flex';
+				modal_body2.style.display='block';
+				
 				break;
 			}
 			// 웨이팅 시작 버튼을 누르면
@@ -379,7 +749,7 @@ body {
 					alert("인원을 입력해 주세요!!");		
 				}	
 				else {
-					// 이름, 인원, 대기번호 순서, 보내는 곳 종류, 목표
+					// 이름, 인원, 보내는 곳 종류, 목표
 					socket.send(input_text.value + "," + person_num.innerText + "," + 0 + "," + '${store_id}');
 					input_text.value = "";
 					person_num.innerText = 0;

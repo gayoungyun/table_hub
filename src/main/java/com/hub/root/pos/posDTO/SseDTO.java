@@ -5,7 +5,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class SseDTO {
 	String User_Id;
 	SseEmitter emitter;
-	
+
 	public String getUser_Id() {
 		return User_Id;
 	}
@@ -18,6 +18,6 @@ public class SseDTO {
 	public void setEmitter(SseEmitter emitter) {
 		this.emitter = emitter;
 	}
-	
-	
+
+
 }
