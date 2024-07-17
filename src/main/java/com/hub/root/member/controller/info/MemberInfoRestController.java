@@ -152,7 +152,7 @@ public class MemberInfoRestController {
 		if ((int)map.get("result") == 1) {
 			Cookie cook = new Cookie("myPage", id);
 			cook.setPath("/root/member");
-			res.addCookie(cook);			
+			res.addCookie(cook);
 		}
 		return map;
 	}

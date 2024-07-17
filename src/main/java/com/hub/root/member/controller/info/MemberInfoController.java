@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.net.URLEncoder;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -25,9 +26,23 @@ public class MemberInfoController {
 	@Autowired MemberInfoService mis;
 
 	@GetMapping("info")
-	public String memberInfo(HttpSession session, Model model, HttpServletRequest req) {
+	public String memberInfo(HttpSession session, Model model, HttpServletRequest req, HttpServletResponse res) {
     	System.out.println("memInfoCont info 실행");
-			return "member/info/pwdCheck";
+		String id = (String)session.getAttribute("userId");
+		String loginType = id.split(":")[0];
+		
+		// 사용자가 네이버 로그인일 경우 바로 마이페이지로 이동
+		if (loginType.equals("N")) {
+			Cookie cook = new Cookie("myPage", id);
+			cook.setPath("/root/member");
+			res.addCookie(cook);
+			
+			return "redirect:detail";
+			
+		// 사용자가 로컬로그인 사용자이면 패스워드 확인 페이지로 이동
+		} else {
+			return "member/info/pwdCheck";			
+		}
 	}
 	
 	@GetMapping("detail")
@@ -72,8 +87,12 @@ public class MemberInfoController {
 	}
 	
 	@GetMapping("deleteUser")
-	public String deleteUser() {
+	public String deleteUser(HttpSession session, Model model) {
     	System.out.println("memInfoCont deleteUser 실행");
+		String id = (String) session.getAttribute("userId");
+		String loginType = id.split(":")[0];
+		
+    	model.addAttribute("loginType", loginType);
 		
 		return "member/info/deleteUser";
 	}

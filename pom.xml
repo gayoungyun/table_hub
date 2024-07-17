@@ -221,6 +221,13 @@
 		    <artifactId>spring-security-web</artifactId>
 		    <version>${org.springframework-version}</version>
 		</dependency>
+<!-- 		https://mvnrepository.com/artifact/org.springframework/spring-test -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-test</artifactId>
+		    <version>${org.springframework-version}</version>
+		    <scope>test</scope>
+		</dependency>
 		
 		        
 	</dependencies>
@@ -261,5 +268,11 @@
                 </configuration>
             </plugin>
         </plugins>
+        
+	    <testResources>
+	        <testResource>
+	            <directory>src/test/resources</directory>
+	        </testResource>
+	    </testResources>
     </build>
 </project>
