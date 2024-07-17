@@ -38,8 +38,21 @@ public class MemberLoginController {
 	}
 	
 	@GetMapping("logout")
-	public String logout(HttpSession session) {
+	public String logout(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
+		System.out.println("memLoginCont logout 실행");
 		session.invalidate();
+		Cookie[] cookie  = req.getCookies();
+		if (cookie != null) {
+			for (Cookie c : cookie) {
+				System.out.println("cookie : " + c.getName());
+				if (c.getName().equals("myPage")) {
+					c.setMaxAge(0);
+					c.setPath("/root/member");
+					res.addCookie(c);
+					System.out.println("myPage : " + c.getValue());
+				}
+			}
+		}
 		return "redirect:/main/mainPage1";
 	}
 	@GetMapping("login/searchId")

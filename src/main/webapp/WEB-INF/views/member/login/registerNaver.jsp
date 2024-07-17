@@ -6,12 +6,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link href="<%= request.getContextPath() %>/resources/css/member/register/registerUser.css?after" rel="stylesheet"/>
+<link href="<%= request.getContextPath() %>/resources/css/member/registerUser.css" rel="stylesheet"/>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-<%@ include file="../../main/header.jsp" %>
 </head>
 <body>
 <script type="text/javascript">
@@ -51,13 +50,13 @@
 // 					alert("이미 가입된 계정입니다.\n로그인 후 메인페이지로 이동합니다.")
 					let form = {id : inputId}
 						$.ajax({
-							url : "/root/member/loginChk",
+							url : "loginChk",
 							type : "post",
 							dataType : "text",
 							data : JSON.stringify(form),
 							contentType : "application/json; charset=utf-8",
 							success : function ( result ) {
-								location.href="/root/main/mainPage1";
+								location.href="/root";
 							},
 							error : function (e) {
 								console.log("문제 발생!!!")
@@ -255,7 +254,7 @@
 			inputPhone = phoneCode + phone1 + phone2
 			let form = {phoneNumber : inputPhone}
 			$.ajax({
-				url : "/root/member/sendMessage",
+				url : "sendMessage",
 				type : "post",
 				data : JSON.stringify(form),
 				dataType : "text",
@@ -298,7 +297,7 @@
 			let inputCode = $("#inputCode").val()
 			let form = {inputCode : inputCode}
 			$.ajax({
-				url : "/root/member/codeChk",
+				url : "codeChk",
 				type : "post",
 				data : JSON.stringify(form),
 				dataType : "text",
@@ -395,7 +394,7 @@
 				contentType : "application/json; charset=utf-8",
 				success : function ( result ) {
 					alert(`회원가입이 완료되었습니다.\n로그인을 진행해주세요`)
-					location.href="/root/main/mainPage1"
+					location.href="login"
 					
 				},
 				error : function (e) {
@@ -406,5 +405,4 @@
 
 	</script>
 </body>
-<%@ include file="../../main/footer.jsp" %>
 </html>

@@ -175,7 +175,7 @@
 					html += `<div id="divBottomRight">`
 					html += `</div>`
                 } else {
-                	html = "작성한 리뷰가 없습니다. 없습니다.";
+                	html = "작성한 리뷰가 없습니다.";
                 }// if end
 				$("#myReviewContentWrapper").html( html );
                 

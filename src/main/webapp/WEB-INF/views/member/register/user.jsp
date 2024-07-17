@@ -64,7 +64,7 @@
 							<input type="number" name="phone2" id="phone2">
 							<input type="button" value="인증코드 전송" id="sendCodeBtn" onclick="sendMessage()">
 							<p id="phoneInfoMsg"></p>
-						</td>		
+						</td>
 					</tr>
 					<tr>
 						<th>전화번호 인증</th>

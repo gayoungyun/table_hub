@@ -11,33 +11,37 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 		
-		<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-			<property name="username" value="java"></property>
-			<property name="password" value="1234"></property>
-			<property name="jdbcUrl" value="jdbc:oracle:thin:@34.64.35.231:1521:xe"></property>
-			<property name="driverClassName" value="oracle.jdbc.OracleDriver"></property>
-		</bean>
-		<!-- 데이타베이스 연동기능 -->
-		<bean id="ds" class="com.zaxxer.hikari.HikariDataSource">
-			<constructor-arg ref="hikariConfig"></constructor-arg>
-		</bean>
-		<!-- mybatis설정 -->
-		<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-			<property name="dataSource" ref="ds"></property>
-			<property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml"></property>
-		</bean>
-		<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="username" value="java"></property>
+		<property name="password" value="1234"></property>
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@34.64.35.231:1521:xe"></property>
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver"></property>
+	</bean>
+	<!-- 데이타베이스 연동기능 -->
+	<bean id="ds" class="com.zaxxer.hikari.HikariDataSource">
+		<constructor-arg ref="hikariConfig"></constructor-arg>
+	</bean>
+	<!-- mybatis설정 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="ds"></property>
+		<property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml"></property>
+	</bean>
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
 
-         <constructor-arg index="0" ref="sqlSessionFactory" />
-      	</bean>    
+        <constructor-arg index="0" ref="sqlSessionFactory" />
+     	</bean>
 
-		<!-- namespaces에서 mybaties 선택후 -->
-		<mybatis-spring:scan base-package="com.hub.root.board.mybatis"/>
-		<mybatis-spring:scan base-package="com.hub.root.main.mybatis"/>
-		<mybatis-spring:scan base-package="com.hub.root.member.mybatis"/>
-		<mybatis-spring:scan base-package="com.hub.root.pos.mybatis"/>
-		<mybatis-spring:scan base-package="com.hub.root.store.mybatis"/>
-		<mybatis-spring:scan base-package="com.hub.root.businessM.mybatis"/>
+	<bean id="txMgr" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="ds"></property>
+	</bean>
+
+	<!-- namespaces에서 mybaties 선택후 -->
+	<mybatis-spring:scan base-package="com.hub.root.board.mybatis"/>
+	<mybatis-spring:scan base-package="com.hub.root.main.mybatis"/>
+	<mybatis-spring:scan base-package="com.hub.root.member.mybatis"/>
+	<mybatis-spring:scan base-package="com.hub.root.pos.mybatis"/>
+	<mybatis-spring:scan base-package="com.hub.root.store.mybatis"/>
+	<mybatis-spring:scan base-package="com.hub.root.businessM.mybatis"/>
 
     
 </beans>
