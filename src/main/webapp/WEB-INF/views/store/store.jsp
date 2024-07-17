@@ -24,7 +24,7 @@
 				<button class="button1 btn1Fade" style="visibility: hidden;"></button>
 				<button class="button1 btn1Fade" style="visibility: hidden;"></button>
 			</div>
-			<img src="resources\img\BoSeon\보정\로고.png" onclick="window.location.href='/root'">
+			<img src="resources\img\Boseon\보정\로고.png" onclick="window.location.href='/root'">
 			<div>
 				<button class="button1 btn1Fade" onclick="">예약하기</button>
 				<button class="button2 btn2Fade" onclick="">찜하기</button>
@@ -32,7 +32,7 @@
 		</div>
 	
 		<div class="main-photo">
-			<img src="resources\img\BoSeon\카페 결\결01.jpg">
+			<img src="resources\img\Boseon\카페 결\결01.jpg">
 		</div>
 	
 		<div class="store_name">
@@ -40,19 +40,19 @@
 		    <span style="color: gray;">브런치카페, 디저트</span><br>
 		    <span style="font-size: 50px; font-weight: bold;">결</span><br>
 		    
-		    <img src="resources\img\BoSeon\보정\별.png" width="15px"> 4.3 &nbsp;&nbsp;&nbsp;
+		    <img src="resources\img\Boseon\보정\별.png" width="15px"> 4.3 &nbsp;&nbsp;&nbsp;
 		    리뷰 <a href=""><span style="color: #397BE6;">135</span></a> &nbsp;&nbsp;&nbsp;
-		    <img src="resources\imge\BoSeon\보정\하트.png" width="15px"> 32
+		    <img src="resources\imge\Boseon\보정\하트.png" width="15px"> 32
 		    <br><br>
 		    
 		    <span style="font-size: 18px;">#까눌레&nbsp;#브런치&nbsp;#커피&nbsp;#디저트맛집</span>
 		</div>
 	
 		<div class="review-photo">
-			<img src="resources\img\BoSeon\카페 결\결01_4.jpg">
-			<img src="resources\img\BoSeon\카페 결\결02.jpg">
-			<img src="resources\img\BoSeon\카페 결\결02_2.jpg">
-			<img src="resources\img\BoSeon\카페 결\결02_3.jpg">
+			<img src="resources\img\Boseon\카페 결\결01_4.jpg">
+			<img src="resources\img\Boseon\카페 결\결02.jpg">
+			<img src="resources\img\Boseon\카페 결\결02_2.jpg">
+			<img src="resources\img\Boseon\카페 결\결02_3.jpg">
 		</div>
 		
 		<div class="categories">

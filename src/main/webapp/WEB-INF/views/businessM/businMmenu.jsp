@@ -29,7 +29,7 @@
 				<div class="content" onclick="category(4)">고객 후기 보기</div><br>
 				<div class="content" onclick="category(5)">예약 관리</div>
 				<br><br><br>
-				<img src="resources/img/BoSeon/보정/로고.png" style="width:100px"
+				<img src="resources/img/Boseon/보정/로고.png" style="width:100px"
 					onclick="window.location.href='/root'">
 			</div>
 		</div>
