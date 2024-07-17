@@ -14,11 +14,6 @@
 	<c:choose>
 		<c:when test="${dto == null}">
 			<button type="button" onclick="parent.changeParentUrl('http://localhost:8080/root/register01')">가게 등록하러 가기</button>
-			<script>
-				for (let i = 1; i <= 200; i++) {
-				    document.write(i + "<br>");
-				}
-			</script>
 		</c:when>
 		<c:otherwise>
 			가게 이름 : ${ dto.store_name }<br>
@@ -35,7 +30,7 @@
 			소개글 : ${ dto.store_introduce }<br>
 			최대 수용 인원 : ${ dto.store_max_person }<br>
 			예약 규정 : ${ dto.store_booking_rule }<br>
-			<button type="button"> 수정하기 </button><br>
+			<button type="button" onclick="parent.changeParentUrl('http://localhost:8080/root/register01')"> 수정하기 </button><br>
 		</c:otherwise>
 	</c:choose>
 
