@@ -304,6 +304,7 @@
 			                    <div class="menu-detail-imgBig">
 								    <c:if test="${not empty storeImgList[status.index]}">
 								        <img class="imgBig" src="${path}/main/download?fileName=${storeImgList[status.index].store_img_root}" alt="Store Image">
+								    
 								    </c:if>
 								</div>
 								<div class="menu-detail-imgSmall">
@@ -373,7 +374,7 @@
                                     <c:if test="${not empty store.store_business_hours}">
                                         <span>영업 시간 : ${store.store_business_hours}</span><br>
                                     </c:if>
-                                    <a href="${path}/main/mainPage2?store_id=${store.store_id}" class="detail-link">상세 페이지로 이동</a>
+                                    <a href="${path}/store" class="detail-link">상세 페이지로 이동</a>
                                 </div>
                             </div>
                         </c:forEach>

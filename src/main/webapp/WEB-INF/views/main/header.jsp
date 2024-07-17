@@ -26,10 +26,15 @@
 					<a href="/root/member/myPage/detail" class="a-item">Profile</a>
 				</c:if>
 				<c:if test="${storeId != null }">
-					<a href="/root/businMmenu">Profile</a>
-					<a href="/root/store">MyStore</a>
+					<a href="/root/businMmenu" class="a-item">Profile</a>
+					
 				</c:if>
-
+			</div>
+			
+			<div class="flex-item">
+				<c:if test="${storeId != null }">
+					<a href="/root/store" class="a-item">MyStore</a>
+				</c:if>
 			</div>
 			<div class="flex-item">
 				<a href="#" class="a-item">Board</a>

@@ -65,7 +65,7 @@
 <select id="getStoreImage" resultMap="mainImg">
     SELECT * FROM store_img 
     WHERE store_id = #{storeId} 
-    AND store_img_main = 2 
+    AND store_img_main = 1
     AND ROWNUM = 1
     ORDER BY store_img_root DESC 
 </select>
@@ -73,7 +73,7 @@
 <select id="getStoreSmallImage" resultMap="mainImg">
     SELECT * FROM store_img 
     WHERE store_id = #{storeId} 
-    AND store_img_main = 2 
+    AND store_img_main = 9
     ORDER BY store_img_root DESC 
 </select>
 
