@@ -7,15 +7,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="${path}/resources/css/businessMstore.css?after">
-<script src="${path}/resources/js/businessMstore.js"></script>
+<link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM/businessMphoto.css?after">
+<script src="${path}/resources/js/businessMphoto.js"></script>
 </head>
 <body>
 <div class="center-box">
 	<div style="display:flex; flex-direction: row; align-items: center;">
-		<img src="resources/img/폭죽.png" width="80px">
+		<img src="C:\tablehub_image\BoSeon\폭죽.png" width="80px">
 		<h1>사진이 등록 되었습니다!</h1>
-		<img src="resources/img/폭죽.png" width="80px">
+		<img src="C:\tablehub_image\BoSeon\폭죽.png" width="80px">
 	</div>
 	<br>
 	<div style="display:grid; justify-items: center;">

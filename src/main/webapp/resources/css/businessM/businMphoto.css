@@ -39,6 +39,15 @@ body {
 	
 }
 
+.center-box{
+	width: 1500px;
+	display: flex;
+ 	flex-direction: column;
+  	align-items: center;
+	margin: 150px auto;
+	
+}
+
 
 /*대표사진*/
 .mainphoto-text{
