@@ -103,7 +103,7 @@
 	</select>
 	
 	<select id="getStoreImg" resultType="String">
-		select NVL(( select store_img_root from store_img where store_id=#{storeId} and store_img_main = 1 ), 'default')as img_root from dual
+		select NVL(( select store_img_root from store_img where store_id=#{storeId} and store_img_main = 1 and rownum = 1), 'default')as img_root from dual
 	</select>
 	
 	<select id="getReviewScore" resultType="int">
@@ -241,7 +241,7 @@
 	<select id="getReviewStoreInfo" resultType="map">
 		select
 		    (select store_name from store_info where store_id = #{storeId}) AS store_name,
-		    NVL( (select store_img_root from store_img where store_id = #{storeId} and store_img_main = 1), 'default') store_img_root from dual
+		    NVL( (select store_img_root from store_img where store_id = #{storeId} and store_img_main = 1 and rownum=1), 'default') store_img_root from dual
 	</select>
 	
 	<select id="getReviewImgInfo" resultType="String">

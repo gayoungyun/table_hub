@@ -28,16 +28,20 @@
 		</bean>
 		<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
 
-         <constructor-arg index="0" ref="sqlSessionFactory" />
-      	</bean>    
+        <constructor-arg index="0" ref="sqlSessionFactory" />
+     	</bean>
 
-		<!-- namespaces에서 mybaties 선택후 -->
-		<mybatis-spring:scan base-package="com.hub.root.board.mybatis"/>
-		<mybatis-spring:scan base-package="com.hub.root.main.mybatis"/>
-		<mybatis-spring:scan base-package="com.hub.root.member.mybatis"/>
-		<mybatis-spring:scan base-package="com.hub.root.pos.mybatis"/>
-		<mybatis-spring:scan base-package="com.hub.root.store.mybatis"/>
-		<mybatis-spring:scan base-package="com.hub.root.businessM.mybatis"/>
+	<bean id="txMgr" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="ds"></property>
+	</bean>
+
+	<!-- namespaces에서 mybaties 선택후 -->
+	<mybatis-spring:scan base-package="com.hub.root.board.mybatis"/>
+	<mybatis-spring:scan base-package="com.hub.root.main.mybatis"/>
+	<mybatis-spring:scan base-package="com.hub.root.member.mybatis"/>
+	<mybatis-spring:scan base-package="com.hub.root.pos.mybatis"/>
+	<mybatis-spring:scan base-package="com.hub.root.store.mybatis"/>
+	<mybatis-spring:scan base-package="com.hub.root.businessM.mybatis"/>
 
     
 </beans>

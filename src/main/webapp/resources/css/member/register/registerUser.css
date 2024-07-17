@@ -24,7 +24,7 @@ table {
 }
 th {
 	text-align: left;
-	width: 25%;
+	width: 118px;
 	height: 60px;
 	padding: 10px 0;
 	border-bottom: 1px solid #d3defa;
@@ -34,7 +34,7 @@ td {
 	vertical-align: bottom;
 	padding-bottom: 5px;
 	border-bottom: 1px solid #d3defa;
-	width: 100%;
+	width: 550-118px;
 }
 #inputId, #inputNick, #inputPwd, #inputPwdChk, #phoneCode
 , #phone1, #phone2, #inputCode, #year, #month, #day {
