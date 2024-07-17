@@ -14,12 +14,17 @@ public interface MainService {
 	public List<MainDTO> mainPage1(Model model);
 	public List<String> getAllCategories();
 	public List<MainDTO> getMenuByCategory(String category);
+	
+	public List<MainDTO> getStoreByLocation(double latitude, double longitude);
+	
 	public List<MainMapDTO> getStoreInfo(Map<String, Object> params);
+	
 	public List<MainMapDTO> getStoreInfoByCategory(String category);
-	public List<Map<String, Object>> getMenuImage(Map<String, Object> params);
-	public List<MainMapDTO> getStoreImgList(Map<String, Object> params);
+	//public List<Map<String, Object>> getMenuImage(Map<String, Object> params);
+	//public List<MainMapDTO> getStoreImgList(Map<String, Object> params);
 	
 	public List<MainImgDTO> getStoreImage(String storeId);
+	public List<MainImgDTO> getStoreSmallImage(String storeId);
 
 	public void infoSave(String store_id,String store_menu_name,int store_menu_price,String store_menu_detail,String store_menu_category, String imagePath);
 	public String saveMenuImage(MultipartFile mul);

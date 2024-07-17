@@ -11,7 +11,8 @@
 <link rel="stylesheet" href="${path}/resources/css/main/mainPage1.css?after"/>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 <script  type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/main/image_slide.js"></script>
+<script type="text/javascript" src="${path}/resources/js/main/image_slide.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3/dist/js/splide.min.js"></script>
 
 <%@ include file="./header.jsp" %> 
@@ -24,6 +25,10 @@
 			<div class="main-img">
 				<div>
 					<img src="${path}/resources/img/main/test8.jpg">
+				</div>
+				<div class="loc-container">
+					<button class="loc_btn" onclick="setOtherLocation()">다른 지역 선택</button>
+					<button class="loc_btn1" onclick="getLocation()">현 위치로 설정</button>
 				</div>
 			</div>
 		</div>
@@ -52,8 +57,8 @@
 			                                    <!-- 자세히보기 버튼 -->
 			                                    <form action="${path}/main/mainPage2" method="get">
 			                                        <input type="hidden" name="category" value="${cat}" />
-			                                        <button type="button">자세히보기</button>
-			                                    </form>
+			                                        <button type="submit">자세히보기</button>
+			                                    </form> 
 			                                </div>
 			                            </li>
 			                        </c:if>
@@ -68,7 +73,6 @@
  <%@ include file="./footer.jsp" %> 
 </body>
 </html>
-
 
 
 

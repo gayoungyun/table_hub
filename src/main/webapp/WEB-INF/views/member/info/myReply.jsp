@@ -40,13 +40,15 @@
 			contentType : "application/json; charset=utf-8",
 			success : function ( data ) {
 				console.log("datadata : ", data)
-				lastPage = data.totalPage;
-				totalContent = data.count;
-				pageContent = data.list.length;
 				var html = "";
+				
 				
 				// 내가 작성한 댓글이 하나 이상 있을때
 				if (data.result == 1) {
+					
+					lastPage = data.totalPage;
+					totalContent = data.count;
+					pageContent = data.list.length;
 					
 					//댓글 당산 타이틀 내용 작성
 					html += `<div class="myReplyTitle">`
@@ -209,18 +211,21 @@
 						}
 					}
 					
+					// bottom middle 영역 end
+					html += `</div>`
+					
+					// 삭제 버튼 영역
+					html += `<div class="myReplyContentBottomRight">`
+						html += `<input type="button" value="삭제" class="deleteBtn" onclick="deleteReply()"></input>`
+					html += `</div>`
+	
+					//bottom 영역 end
+					html += `</div>`
+					
+					
 				} else { // 내가 작성한 댓글이 하나도 없을때
 					html += `<label>작성한 댓글이 없습니다.</label>`
 				}
-				html += `</div>`
-				
-				// 삭제 버튼 영역
-				html += `<div class="myReplyContentBottomRight">`
-					html += `<input type="button" value="삭제" class="deleteBtn" onclick="deleteReply()"></input>`
-				html += `</div>`
-
-				//bottom 영역 end
-				html += `</div>`
 				
 				$("#myReplyContentWrapper").html(html);
 				

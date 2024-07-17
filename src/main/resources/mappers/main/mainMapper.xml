@@ -44,28 +44,66 @@
     JOIN store_info i ON m.store_id = i.store_id 
     WHERE i.store_category = #{category}
 </select>
+ 
 
-
-<select id="getStoreImgList" resultMap="mainImg">
-    SELECT ai.* am.store_img_root, am.store_img_main
-    FROM store_info ai 
-    JOIN store_img am ON ai.store_id = am.store_id 
-    WHERE ai.store_category LIKE '%' || #{category} || '%'
+<select id="getStoreByLocation" resultMap="main">
+    SELECT 
+        si.store_id, 
+        si.store_name, 
+        si.store_add, 
+        si.store_category,
+        sm.store_menu_img 
+    FROM 
+        store_info si
+    JOIN 
+        store_menu sm ON si.store_id = sm.store_id
+    WHERE 
+        si.store_add LIKE '%' || #{address} || '%'
 </select>
-
+ 
+ 
 <select id="getStoreImage" resultMap="mainImg">
     SELECT * FROM store_img 
     WHERE store_id = #{storeId} 
-    AND store_img_main = 999 
+    AND store_img_main = 1
     AND ROWNUM = 1
+    ORDER BY store_img_root DESC 
 </select>
 
+<select id="getStoreSmallImage" resultMap="mainImg">
+    SELECT * FROM store_img 
+    WHERE store_id = #{storeId} 
+    AND store_img_main = 9
+    ORDER BY store_img_root DESC 
+</select>
 
+<select id="getStoreInfo" resultMap="mainMap">
+	SELECT si.*
+	FROM store_info si
+	LEFT JOIN store_menu sm ON sm.store_id = si.store_id
+	WHERE
+	<trim prefixOverrides="AND|OR">
+		<if test="params.keyword != null and params.keyword != ''">
+			<choose>
+				<when test="params.searchType == 'menu_name'">
+					AND si.store_name LIKE '%' || #{params.keyword} || '%'
+				</when>
+				<when test="params.searchType == 'menu_category'">
+					AND si.store_category LIKE '%' || #{params.keyword} || '%'
+				</when>
+				<otherwise>
+					AND (si.store_name LIKE '%' || #{params.keyword} || '%'
+					OR si.store_category LIKE '%' || #{params.keyword} || '%')
+				</otherwise>
+			</choose>
+		</if>
+		<if test="params.category != null and params.category != ''">
+			AND store_category LIKE '%' || #{params.category} ||'%'
+		</if>
+	</trim>
+</select>
 
-
-
-
-<!--  
+<!-- 
 <select id="getStoreInfo" resultMap="mainMap">
     SELECT si.*, 
            sm.store_menu_img, 
@@ -103,45 +141,10 @@
         </if>
     </where>
 </select>
--->
-
-<select id="getStoreInfo" resultMap="mainMap">
-    SELECT si.*, 
-           sm.store_menu_img, 
-           sm.store_menu_name, 
-           sm.store_menu_price, 
-           sm.store_menu_detail, 
-           sm.store_menu_category 
-    FROM store_info si
-    LEFT JOIN store_menu sm ON si.store_id = sm.store_id
-    <where>
-        <if test="params.keyword != null and params.keyword != ''">
-            <choose>
-                <when test="params.searchType == 'menu_name'">
-                    si.store_name LIKE '%' || #{params.keyword} || '%'
-                </when>
-                <when test="params.searchType == 'menu_category'">
-                    EXISTS (
-                        SELECT 1 FROM dual
-                        WHERE REGEXP_SUBSTR(si.store_category, '[^/]+', 1, LEVEL) = #{params.keyword}
-                        CONNECT BY REGEXP_SUBSTR(si.store_category, '[^/]+', 1, LEVEL) IS NOT NULL
-                    )
-                </when>
-                <otherwise>
-                    si.store_name LIKE '%' || #{params.keyword} || '%'
-                    OR EXISTS (
-                        SELECT 1 FROM dual
-                        WHERE REGEXP_SUBSTR(si.store_category, '[^/]+', 1, LEVEL) = #{params.keyword}
-                        CONNECT BY REGEXP_SUBSTR(si.store_category, '[^/]+', 1, LEVEL) IS NOT NULL
-                    )
-                </otherwise>
-            </choose>
-        </if>
-        <if test="params.category != null and params.category != ''">
-            AND si.store_category LIKE '%' || #{params.category} || '%'
-        </if>
-    </where>
-</select>
+ -->
+ 
+ 
+ 
 
 <select id="getStoreInfoByCategory" resultMap="mainMap">
     SELECT si.*, sm.store_menu_img, sm.store_menu_name, sm.store_menu_price, sm.store_menu_detail, sm.store_menu_category 
@@ -149,7 +152,22 @@
     JOIN store_menu sm ON si.store_id = sm.store_id
     WHERE si.store_category LIKE '%' || #{category} || '%'
 </select>
+ 
+<!--  
+<select id="getMenuImage" resultMap="main">
+	SELECT sm.store_menu_img
+	FROM store_menu sm
+	JOIN store_info si ON sm.store_id = si.store_id
+	<where>
+		<if test=""></if>
+	</where>
+</select>
+-->
 
+
+
+
+<!-- 
 <select id="getMenuImage" resultMap="main">
     SELECT sm.store_menu_img
     FROM store_menu sm
@@ -182,7 +200,7 @@
         </if>
     </where>
 </select>
-
+ -->
 
 <!-- 
 <select id="getMenuImage" resultMap="main">
@@ -235,15 +253,3 @@
 
 
 </mapper>
- 
-
-
-
-
-
-
-
-
-
-
-

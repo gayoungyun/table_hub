@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.net.URLEncoder;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -25,14 +26,28 @@ public class MemberInfoController {
 	@Autowired MemberInfoService mis;
 
 	@GetMapping("info")
-	public String memberInfo(HttpSession session, Model model, HttpServletRequest req) {
-    	System.out.println("memRestCont info 실행");
-			return "member/info/pwdCheck";
+	public String memberInfo(HttpSession session, Model model, HttpServletRequest req, HttpServletResponse res) {
+    	System.out.println("memInfoCont info 실행");
+		String id = (String)session.getAttribute("userId");
+		String loginType = id.split(":")[0];
+		
+		// 사용자가 네이버 로그인일 경우 바로 마이페이지로 이동
+		if (loginType.equals("N")) {
+			Cookie cook = new Cookie("myPage", id);
+			cook.setPath("/root/member");
+			res.addCookie(cook);
+			
+			return "redirect:detail";
+			
+		// 사용자가 로컬로그인 사용자이면 패스워드 확인 페이지로 이동
+		} else {
+			return "member/info/pwdCheck";			
+		}
 	}
 	
 	@GetMapping("detail")
 	public String detail (HttpSession session, HttpServletRequest req, Model model) {
-    	System.out.println("memRestCont detail 실행");
+    	System.out.println("memInfoCont detail 실행");
 		MemberDTO dto = mis.getMemberInfo((String)session.getAttribute("userId"));
 		model.addAttribute(session);
 		model.addAttribute("dto", dto);
@@ -42,7 +57,7 @@ public class MemberInfoController {
 	
 	@GetMapping("download")
 	public void download(@RequestParam String img, HttpServletResponse res) throws Exception {
-    	System.out.println("memRestCont download 실행");
+    	System.out.println("memInfoCont download 실행");
     	String originImgName = null;
     	if (img.split("_").length > 1) {
     		originImgName = img.split("_")[1];    		
@@ -66,35 +81,39 @@ public class MemberInfoController {
 	
 	@GetMapping("myBooking")
 	public String myBooking(Model model, HttpSession session) {
-    	System.out.println("memRestCont myBooking 실행");
+    	System.out.println("memInfoCont myBooking 실행");
 		model.addAttribute(session);
 		return "member/info/myBooking";
 	}
 	
 	@GetMapping("deleteUser")
-	public String deleteUser() {
-    	System.out.println("memRestCont deleteUser 실행");
+	public String deleteUser(HttpSession session, Model model) {
+    	System.out.println("memInfoCont deleteUser 실행");
+		String id = (String) session.getAttribute("userId");
+		String loginType = id.split(":")[0];
+		
+    	model.addAttribute("loginType", loginType);
 		
 		return "member/info/deleteUser";
 	}
 	
 	@GetMapping("myReview")
 	public String myReview() {
-    	System.out.println("memRestCont myReview 실행");
+    	System.out.println("memInfoCont myReview 실행");
 		
 		return "member/info/myReview";
 	}
 	
 	@GetMapping("myBoard")
 	public String myBoard() {
-    	System.out.println("memRestCont myBoard 실행");
+    	System.out.println("memInfoCont myBoard 실행");
 		
 		return "member/info/myBoard";
 	}
 	
 	@GetMapping("myReply")
 	public String myReply() {
-    	System.out.println("memRestCont myReply 실행");
+    	System.out.println("memInfoCont myReply 실행");
 		
 		return "member/info/myReply";
 	}

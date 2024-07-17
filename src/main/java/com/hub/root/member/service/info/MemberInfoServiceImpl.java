@@ -246,6 +246,7 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	public Map<String, Object> deleteUser(String id) {
 		System.out.println("memInfoSer deleteUser 실행");
 		Map<String, Object> map = new HashMap<String, Object>();
+		System.out.println("id : " + id);
 		int result = mapper.deleteUser(id);
 		map.put("result", result);
 		if (result == 1) {

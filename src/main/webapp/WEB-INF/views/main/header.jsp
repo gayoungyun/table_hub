@@ -26,10 +26,15 @@
 					<a href="/root/member/myPage/detail" class="a-item">Profile</a>
 				</c:if>
 				<c:if test="${storeId != null }">
-					<a href="/root/businMmenu">Profile</a>
-					<a href="/root/store">MyStore</a>
+					<a href="/root/businMmenu" class="a-item">Profile</a>
+					
 				</c:if>
-
+			</div>
+			
+			<div class="flex-item">
+				<c:if test="${storeId != null }">
+					<a href="/root/store" class="a-item">MyStore</a>
+				</c:if>
 			</div>
 			<div class="flex-item">
 				<a href="#" class="a-item">Board</a>
@@ -58,7 +63,7 @@
 			<div class="search">
 	            <form id="searchForm" action="${path}/main/mainPage2" method="get">
 	                <select id="search_category" name="searchType">
-	                    <option value="">ALL</option>
+	                    <option value="all">ALL</option>
 	                    <option value="menu_name">Store Name</option>
 	                    <option value="menu_category">Menu Category</option>
 	                </select>
@@ -74,9 +79,3 @@
 	</div>
 </body>
 </html>
-
-
-
-
-
-
