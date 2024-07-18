@@ -56,7 +56,7 @@ public class APIController {
 		return dto;
 	}
 
-	@GetMapping("key")
+	@GetMapping("key1")
 	public List<KeyDTO> key_list(@RequestParam String userId){
 		List<KeyDTO> result = null;
 
@@ -65,7 +65,7 @@ public class APIController {
 		return result;
 	}
 
-	@PostMapping("key")
+	@PostMapping("key1")
 	public KeyDTO key(@RequestBody KeyDTO key){
 
 		KeyDTO result = apiService.key(key);
@@ -73,7 +73,7 @@ public class APIController {
 	}
 
 
-	@DeleteMapping("key")
+	@DeleteMapping("key1")
 	public int delete_key(@RequestBody KeyDTO key) {
 		int result = apiService.delete_key(key);
 
@@ -87,13 +87,13 @@ public class APIController {
 		return dto;
 	}
 
-	@PatchMapping("wait")
+	@PatchMapping("wait1")
 	public void wait(@RequestBody WaitDTO wait) {
 		apiService.wait(wait.getStore_id(), wait.getWait_time(), wait.getWait_num());
 
 	}
 
-	@GetMapping("averageTime")
+	@GetMapping("averageTime1")
 	public String averageTime(@RequestHeader("store_id") String store_id) {
 
 		String result = "null";

@@ -92,9 +92,9 @@ public class PosServiceImpl implements PosService {
 	@Override
 	public int wait_keyCheck(HttpServletRequest req, String key) {
 		KeyDTO result = mapper.wait_keyCheck(key);
-		
+
 		System.out.println(result.getStore_key());
-		
+
 		if(result != null)
 		{
 			HttpSession session = req.getSession();

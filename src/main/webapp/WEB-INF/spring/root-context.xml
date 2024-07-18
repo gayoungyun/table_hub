@@ -7,6 +7,8 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 		
+<!-- 		<bean id="posAPI" class="com.hub.root.pos.posController.APIController"></bean> -->
+		
 		<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 			<property name="username" value="java"></property>
 			<property name="password" value="1234"></property>

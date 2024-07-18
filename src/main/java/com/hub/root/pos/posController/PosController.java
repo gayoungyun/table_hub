@@ -100,7 +100,7 @@ public class PosController {
 	{
 		int result = service.wait_keyCheck(req, key);
 		System.out.println("로그인서어어어어어어어엉공?????????? : " + result);
-		
+
 		return "redirect:/pos/wait";
 	}
 }
