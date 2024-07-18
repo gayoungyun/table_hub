@@ -8,16 +8,28 @@ function category(n) {
 		const cateNum = n;
 	    let cateVal="";
 	    
-	    if(cateNum == 2)
+	    if(cateNum == 2) {
 	    	cateVal = "http://localhost:8080/root/businessM/menuInfo";
-	    else if(cateNum == 3)
+		    // History API를 사용하여 URL을 업데이트
+		    var newUrl = 'http://localhost:8080/root/businMmenu?category=menuInfo';
+		    history.replaceState(null, null, newUrl);
+	    }else if(cateNum == 3) {
 	    	cateVal = "http://localhost:8080/root/businessM/photoInfo";
-	    else if(cateNum == 4)
+		    var newUrl = 'http://localhost:8080/root/businMmenu?category=photoInfo';
+		    history.replaceState(null, null, newUrl);
+	    }else if(cateNum == 4) {
 	    	cateVal = "http://localhost:8080/root/businessM/reviewInfo";
-	    else if(cateNum == 5)
+	    	var newUrl = 'http://localhost:8080/root/businMmenu?category=reviewInfo';
+		    history.replaceState(null, null, newUrl);
+	    }else if(cateNum == 5) {
 	    	cateVal = "http://localhost:8080/root/businessM/bookInfo";
-	    else
+	    	var newUrl = 'http://localhost:8080/root/businMmenu?category=bookInfo';
+		    history.replaceState(null, null, newUrl);
+	    }else{
 	    	cateVal = "http://localhost:8080/root/businessM/storeInfo";
+	    	var newUrl = 'http://localhost:8080/root/businMmenu?category=storeInfo';
+		    history.replaceState(null, null, newUrl);
+	    }
 	    
 		 const myIframe = document.getElementById("myIframe");
 	     myIframe.src = cateVal;
@@ -30,6 +42,16 @@ function iHeight(){
 var iHeight = document.getElementById('myIframe').contentWindow.document.body.scrollHeight;
 document.getElementById('myIframe').height = iHeight;
 console.log("카테고리 높이? : ",iHeight);
+}
+
+
+function changeCategory(category) {
+    var iframe = document.getElementById('categoryFrame');
+    iframe.src = category + '.html'; // 해당 카테고리의 HTML 파일로 변경
+
+    // History API를 사용하여 URL을 업데이트
+    var newUrl = 'iframe_example.html?category=' + category;
+    history.replaceState(null, null, newUrl);
 }
 
 

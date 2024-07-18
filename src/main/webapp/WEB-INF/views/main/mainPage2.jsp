@@ -3,6 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="path" value="<%= request.getContextPath() %>" />
+<c:set var="keyword" value="${param.keyword }" />
+<c:set var="searchType" value="${param.searchType }" />
+<c:set var="category" value="${param.category }" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,8 +14,8 @@
 
 <script  type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3/dist/js/splide.min.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=da3de66ef64ff42d5b0dc40d2235b72a"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=da3de66ef64ff42d5b0dc40d2235b72a&libraries=services"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=da3de66ef64ff42d5b0dc40d2235b72a"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/main/image_slide.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans:400" rel="stylesheet">
  
@@ -126,13 +129,37 @@
 	/* left side ===== db span */
 	.location-condition{
 		display: flex;
-		justify-content: space-between;
+		/* justify-content: space-between; */
 		width: 100%;
 		margin-top: 20px;
 	}
 	.location-condition span:last-child{
 		margin-right: 80px;
 	}
+	.loc_btn {
+        padding: 10px 20px;
+        background-color: #497671;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+        margin-left: 300px;
+     }
+     .loc_btn1 {
+        padding: 10px 20px;
+        background-color: #497671;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+        margin-left: 150px;
+     }
+     .loc_btn:hover, .loc_btn1:hover {
+        background-color: black;
+     }
+	
 	/* left side ===== db span end */
 	
 	/* left side ===== detail view */
@@ -179,7 +206,7 @@
 		justify-content:center;
 	}
 	.imgSmall{
-		width: 100%;
+		width: 150px;
 		height: 100%;
 		object-position: fill;
 		margin-bottom: 10px;
@@ -263,7 +290,8 @@
 				<!-- ===== 위치가져오기, 상세보기 부분 ===== -->
 				<div class="location-condition">
 					<span>서울 종로구 계동 #한식</span>
-					<span>상세조건</span>
+					<button class="loc_btn" onclick="getLocation()">현 위치로 설정</button>
+					<button class="loc_btn1" onclick="getOtherLocation()">다른 지역 선택</button>
 				</div>
 				
 				<!-- ===== 메뉴 상세보기 부분 ===== -->
@@ -274,19 +302,20 @@
 			                <div class="detail-container-left">
 			                
 			                    <div class="menu-detail-imgBig">
-							    <c:if test="${not empty storeImgList[status.index]}">
-							        <img class="imgBig" src="${path}/main/download?fileName=${storeImgList[status.index].store_img_root}" alt="Store Image">
-							    </c:if>
-							</div>
-							<div class="menu-detail-imgSmall">
-							    <c:forEach var="image" items="${imgList}" varStatus="imgStatus">
-							        <c:if test="${imgStatus.index < 3}">
-							            <div class="imgSmall1">
-							                <img class="imgSmall" src="${path}/main/download?fileName=${image.store_menu_img}" alt="Store Menu Image">
-							            </div>
-							        </c:if>
-							    </c:forEach>
-							</div>
+								    <c:if test="${not empty storeImgList[status.index]}">
+								        <img class="imgBig" src="${path}/main/download?fileName=${storeImgList[status.index].store_img_root}" alt="Store Image">
+								    
+								    </c:if>
+								</div>
+								<div class="menu-detail-imgSmall">
+									<c:forEach var="smallImg" items="${storeSmallImgList}" begin="1" end="3">
+								        <c:if test="${not empty smallImg}">
+								            <div class="imgSmall1${status.index }">
+								                <img class="imgSmall" src="${path}/main/download?fileName=${smallImg.store_img_root}" alt="Store Menu Image">
+								            </div>
+								        </c:if>
+								  	</c:forEach>
+								</div>
 
 			                </div>
                                 <div class="detail-container-right">
@@ -306,36 +335,36 @@
                                         <span>상세 주소 : ${store.store_add_info}</span><br>
                                     </c:if>
                                     <c:if test="${not empty store.store_category}">
-                        <span>카테고리 : 
-                        <c:set var="seenCategories" value="" />
-                        
-                        <!-- 특정 카테고리로 검색 시 -->
-                        <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
-                            <c:if test="${fn:contains(category, param.keyword)}">
-                                <c:if test="${not fn:contains(seenCategories, category)}">
-                                    <c:if test="${!empty seenCategories}">
-                                        /
-                                    </c:if>
-                                    ${category}
-                                    <c:set var="seenCategories" value="${seenCategories}${category}/" />
-                                </c:if>
-                            </c:if>
-                        </c:forEach>
-                        
-                        <!-- "ALL" 또는  메뉴 이름으로 검색 시 모든 카테고리 출력 -->
-                        <c:if test="${param.searchType == 'menu_name' || param.searchType == '' || param.searchType == null}">
-                            <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
-                                <c:if test="${not fn:contains(seenCategories, category)}">
-                                    <c:if test="${!empty seenCategories}">
-                                        /
-                                    </c:if>
-                                    ${category}
-                                    <c:set var="seenCategories" value="${seenCategories}${category}/" />
-                                </c:if>
-                            </c:forEach>
-                        </c:if>
-                        </span><br>
-                    </c:if>
+			                        <span>카테고리 : 
+			                        <c:set var="seenCategories" value="" />
+			                        
+			                        <!-- 특정 카테고리로 검색 시 -->
+			                        <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
+			                            <c:if test="${fn:contains(category, param.keyword)}">
+			                                <c:if test="${not fn:contains(seenCategories, category)}">
+			                                    <c:if test="${!empty seenCategories}">
+			                                        /
+			                                    </c:if>
+			                                    ${category}
+			                                    <c:set var="seenCategories" value="${seenCategories}${category}/" />
+			                                </c:if>
+			                            </c:if>
+			                        </c:forEach>
+			                        
+			                        <!-- "ALL" 또는  메뉴 이름으로 검색 시 모든 카테고리 출력 -->
+			                        <c:if test="${param.searchType == 'menu_name' || param.searchType == 'all' || param.searchType == null}">
+			                            <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
+			                                <c:if test="${not fn:contains(seenCategories, category)}">
+			                                    <c:if test="${!empty seenCategories}">
+			                                        /
+			                                    </c:if>
+			                                    ${category}
+			                                    <c:set var="seenCategories" value="${seenCategories}${category}/" />
+			                                </c:if>
+			                            </c:forEach>
+			                        </c:if>
+			                        </span><br>
+			                 	    </c:if>
                                     <c:if test="${not empty store.store_note}">
                                         <span>메모 : ${store.store_note}</span><br>
                                     </c:if>
@@ -345,7 +374,7 @@
                                     <c:if test="${not empty store.store_business_hours}">
                                         <span>영업 시간 : ${store.store_business_hours}</span><br>
                                     </c:if>
-                                    <a href="${path}/main/mainPage2?store_id=${store.store_id}" class="detail-link">상세 페이지로 이동</a>
+                                    <a href="${path}/store" class="detail-link">상세 페이지로 이동</a>
                                 </div>
                             </div>
                         </c:forEach>
@@ -360,16 +389,21 @@
 	        <div class="main-items right-itme">
 	            <div class="map_wrap">
 	                <div id="map"></div>
+	                
+	                <div id="menuDiv">
+	                
 	                <div id="menu_wrap" class="bg_white">
 	                    <div class="option">
-	                        <div>
-	                            <form onsubmit="searchPlaces(); return false;">
+	                        
+	                        <div id="map_title">
+	                        	<div>맛집</div>
+	                        </div>
+	                        
+	                            <form id="searchForm" onsubmit="searchPlaces(); return false;">
 	                                키워드 : 
-	                                <input type="text" value="맛집" id="keyword" size="15"> 
-	                                <datalist id="addressList">
-						                <!-- JS로 데이터 리스트 추가 -->
-						            </datalist>
-	                                <button type="submit">검색하기</button> 
+	                                <input type="text" id="keyword" size="15" onChange="onchangeSearch(event)"> 
+	                                <!-- <datalist id="addressList"></datalist> -->
+	                                <button id="submit_btn" type="submit">검색하기</button> 
 	                            </form>
 	                        </div>
 	                    </div>
@@ -378,6 +412,9 @@
 	                    <div id="pagination"></div>
 	                </div>
 	            </div>
+	            
+	            </div>
+	            
 	        </div>
 	    </div>
 	</div>
@@ -385,52 +422,99 @@
 </body>
 </html>
  
- 
- 
- 
- 
- 
- 
- 
- 
 <script type="text/javascript">
 
-document.addEventListener("DOMContentLoaded", marker);
+let markers = [];
+let ps;
+let map;
+let infowindow = new kakao.maps.InfoWindow({zIndex:1});
 
-function marker() {
-    const key = '${keyword}'; 
-    const ser = '${searchType}';
-    const cat = '${category}';
-    
-    fetch("http://localhost:8080/root/mainAPI/storeList?keyword=" + key + "&searchType=" + ser + "&category=" + cat, {
-        headers: { "Content-Type": "application/json" },
-    })
+let search = "";
+let isOpen = true;
+
+function onchangeSearch(event) {
+	search = event.target.value;
+};
+
+function onClickSearchBarOpen() {
+	isOpen = !isOpen;
+};
+
+
+
+document.addEventListener("DOMContentLoaded", function(){
+	markerFunction();
+	
+	document.getElementById("searchForm").addEventListener("submit", function(e){
+		e.preventDefault();
+		searchPlaces();
+	});
+});
+
+
+
+
+// document.addEventListener("DOMContentLoaded", function() {
+//     // 초기 지도 설정
+//     const mapContainer = document.getElementById('map'),
+//         mapOption = {
+//             center: new kakao.maps.LatLng(37.5665, 126.9780), // 초기 중심좌표 (서울 중심으로 설정)
+//             level: 3 // 지도의 확대 레벨
+//         };
+
+//     map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+//     ps = new kakao.maps.services.Places(); // Places 서비스 초기화
+
+//     // 초기 검색
+//     searchPlaces();
+
+//     // 검색 폼 서브밋 이벤트 추가
+//     document.getElementById("searchForm").addEventListener("submit", function(e) {
+//         e.preventDefault();
+//         searchPlaces();
+//     });
+// });
+
+
+function markerFunction() {
+	const key = '<c:out value="${keyword}"/>'; 
+	const ser = '<c:out value="${searchType}"/>';
+	const cat = '<c:out value="${category}"/>';
+	
+	fetch("http://localhost:8080/root/mainAPI/storeList?keyword="+ key + "&searchType=" + ser + "&category=" + cat, {
+		headers : {"Content-Type": "application/json"},
+	})
     .then((response) => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-        }
-        return response.json();
+    	if(!response.ok){
+    		throw new Error('Network response was not ok' + response.statusText);
+    	}
+    	return response.json();
     })
     .then((res) => {
-        console.log("Store List: ", res);
-        
-        var addressList = document.getElementById('addressList');
-        addressList.innerHTML = ''; // 기존 리스트 초기화
-        
-        var placesList = document.getElementById('placesList');
+    	console.log("Store List : ",res);
+    	
+//     	const addressList = document.getElementById('addressList');
+//     	if(addressList){
+//     	addressList.innerHTML = ''; //기존 리스트 초기화
+//     	}
+    	
+    	const placesList = document.getElementById('placesList');
+    	if(placesList){
         placesList.innerHTML = ''; // 기존 리스트 초기화
-
-        var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+    	}
+    	
+        const mapContainer = document.getElementById('map'), // 지도를 표시할 div
             mapOption = { 
                 center: new kakao.maps.LatLng(37.5665, 126.9780), // 초기 중심좌표 (서울 중심으로 설정)
                 level: 3 // 지도의 확대 레벨
             };
 
-        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+        map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+        ps = new kakao.maps.services.Places(); // Places 서비스 초기화
+	
+        const bounds = new kakao.maps.LatLngBounds(); // 지도 경계 객체 생성
 
-        var bounds = new kakao.maps.LatLngBounds(); // 지도 경계 객체 생성
-
-        var promises = res.map((store, index) => {
+        const promises = res.map((store, index) => {
             return fetch("https://dapi.kakao.com/v2/local/search/address.json?query=" + store.store_add, {
                 headers: {
                     "Content-Type": "application/json",
@@ -446,27 +530,37 @@ function marker() {
             .then((data) => {
                 console.log("Address Data for store: ", store.store_name, data);
                 if (data.documents.length > 0) {
-                    var roadAddress = data.documents[0].road_address || data.documents[0].address;
-                    var x = roadAddress.x;
-                    var y = roadAddress.y;
+                    const roadAddress = data.documents[0].road_address || data.documents[0].address;
+                    const x = roadAddress.x;
+                    const y = roadAddress.y;
 
-                    // 주소 목록에 추가
-                    var option = document.createElement('option');
-                    option.value = store.store_add;
-                    addressList.appendChild(option);
+                    //주소 목록에 추가
+//                     if(addressList){
+//                     const option = document.createElement('option');
+//                     option.value = store.store_add;
+//                     addressList.appendChild(option);
+//                     }
 
                     // 검색 결과 목록에 추가
-                    var listItem = document.createElement('li');
-                    listItem.innerHTML = `
-                        <div class="item">
-                            <span class="markerbg marker_${index + 1}"></span>
-                            <div class="info">
-                                <h5>${store.store_name}</h5>
-                                <span>${store.store_add}</span>
-                                <span class="tel">${store.store_phone}</span>
-                            </div>
-                        </div>`;
+                    if(placesList){
+                    const listItem = getListItem(index, {
+                        place_name: store.store_name,
+                        road_address_name: store.store_add,
+                        address_name: store.store_add_info,
+                        phone: store.store_phone
+                      });
+//                    const listItem = document.createElement('li');
+//                     listItem.innerHTML = `
+//                         <div class="item">
+//                             <span class="markerbg marker_${index + 1}"></span>
+//                             <div class="info">
+//                                 <h5>${store.store_name}</h5>
+//                                 <span>${store.store_add}</span>
+//                                 <span class="tel">${store.store_phone}</span>
+//                             </div>
+//                         </div>`;
                     placesList.appendChild(listItem);
+                    }
 
                     return {
                         position: new kakao.maps.LatLng(y, x),
@@ -484,12 +578,12 @@ function marker() {
             locations.forEach(loc => {
                 if (loc) {
                     console.log("Adding marker: ", loc);
-                    var marker = new kakao.maps.Marker({
+                    const marker = new kakao.maps.Marker({
                         map: map,
                         position: loc.position
                     });
 
-                    var infowindow = new kakao.maps.InfoWindow({
+                    const infowindow = new kakao.maps.InfoWindow({
                         content: '<div>' + loc.name + '<br>' + loc.address + '</div>' // 주소 추가
                     });
 
@@ -523,7 +617,277 @@ function makeOutListener(infowindow) {
         infowindow.close();
     };
 }
+
+
+
+
+ markers = [];
+
+// const container = document.getElementById("map");
+// const options = {
+// 		center : new window.kakao.maps.LatLng(37.5665, 126.9780),
+// 		level: 3,
+// };
+
+//  map = new window.kakao.maps.Map(container, options);
+//  ps = new window.kakao.maps.services.Places();
+//  infowindow = new kakao.maps.InfoWindow({zIndex:1});
+
+
+const markerPosition = new window.kakao.maps.LatLng(
+		37.5665, 
+		126.9780
+);
+const marker = new window.kakao.maps.Marker({
+		position: markerPosition,
+});
+marker.setMap(map);
+
+
+// ?
+const searchForm = document.getElementById("submit_btn");
+searchForm?.addEventListener("click", function(e){
+	e.preventDefault();
+	searchPlaces();
+});
+
+
+function searchPlaces(){
+	const keyword= document.getElementById("keyword").value;
+	
+	if (!keyword.replace(/^\s+|\s+$/g, "")) {
+		alert("키워드를 입력해주세요!");
+		  
+			return false;
+		}
+		console.log("searchPlaces 호출됨");
+		ps.keywordSearch(keyword, placesSearchCB);
+}
+
+
+function placesSearchCB(data, status, pagination) {
+	console.log("placesSearchCB호출");
+    if (status === window.kakao.maps.services.Status.OK) {
+    	console.log("검색 결과 : ", data);
+      displayPlaces(data);
+
+      displayPagination(pagination);
+
+      const bounds = new window.kakao.maps.LatLngBounds();
+      for (let i = 0; i < data.length; i++) {
+        displayMarker(data[i]);
+        bounds.extend(new window.kakao.maps.LatLng(data[i].y, data[i].x));
+      }
+
+      map.setBounds(bounds);
+    } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
+      alert("검색 결과가 존재하지 않습니다.");
+    } else if (status === window.kakao.maps.services.Status.ERROR) {
+      alert("검색 결과 중 오류가 발생했습니다.");
+    }
+  }
+
+
+// ?
+function displayMarker(place) {
+    const marker = new window.kakao.maps.Marker({
+      map,
+      position: new window.kakao.maps.LatLng(place.y, place.x),
+    });
+    window.kakao.maps.event.addListener(
+      marker,
+      "click",
+      function (mouseEvent) {
+        infowindow.setContent(`
+        <span>
+        ${place.store_name}
+        </span>
+        `);
+        infowindow.open(map, marker);
+        const moveLatLon = new window.kakao.maps.LatLng(place.y, place.x);
+        map.panTo(moveLatLon);
+      }
+    );
+  }
+
+
+function displayPlaces(places) {
+    const listEl = document.getElementById("placesList");
+    const menuEl = document.getElementById("menu_wrap");
+    const fragment = document.createDocumentFragment();
+    const bounds = new window.kakao.maps.LatLngBounds();
+    listStr='';
+    
+    removeAllChildNods(listEl);
+    removeMarker();
+    
+    console.log("displayPlace 호출");
+    for (let i = 0; i < places.length; i++) {
+      const placePosition = new window.kakao.maps.LatLng(places[i].y, places[i].x);
+      const marker = addMarker(placePosition, i);
+      const itemEl = getListItem(i, places[i]);
+      bounds.extend(placePosition);
+      
+      (function (marker, title) {
+        window.kakao.maps.event.addListener(marker, "mouseover", function () {
+            displayInfowindow(marker, title);
+          });
+
+        window.kakao.maps.event.addListener(marker, "mouseout", function () {
+            infowindow.close();
+          });
+
+        itemEl.onmouseover = function () {
+        	displayInfowindow(marker, title);
+        };
+        itemEl.onmouseout =  function () {
+            infowindow.close();
+        };
+      })(marker, places[i].place_name);
+
+      fragment.appendChild(itemEl);
+    }
+
+    listEl?.appendChild(fragment);
+    menuEl.scrollTop = 0;
+
+    map.setBounds(bounds);
+  }
+
+
+// ?
+// window.kakao.maps.event.addListener(
+//         marker,
+//         "mouseover",
+//         function () {
+//           displayInfowindow(marker, title);
+//         }
+//       );
+// window.kakao.maps.event.addListener(
+//         marker,
+//         "mouseout",
+//         function () {
+//           infowindow.close();
+//         }
+//       );
+
+
+
+function getListItem(index, places) {
+	console.log("getlistitem 호출");
+	const el = document.createElement("li");
+	let itemStr = '<span class="markerbg marker_' + (index + 1) +'"></span>' + 
+					'<div class="info">' + 
+					"<h5>" + places.place_name + "</h5>";
+		if (places.road_address_name) {
+            itemStr += "    <span>" + places.road_address_name + "</span>" +
+             			 '   <span class="jibun gray">' +
+           			   `<img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png"></img>`
+              			+ places.address_name + "</span>";
+          } else {
+            itemStr += "<span>" + places.address_name + "</span>";
+          }
+
+          itemStr +=
+            '  <span class="tel">' + places.phone + "</span>" + "</div>";
+
+          el.innerHTML = itemStr;
+          el.className = "item";
+
+          return el;
+        }
+
+
+
+function addMarker(position, idx) {
+    const imageSrc =
+      "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png";
+    const imageSize = new window.kakao.maps.Size(36, 37);
+    const imgOptions = {
+      spriteSize: new window.kakao.maps.Size(36, 691),
+      spriteOrigin: new window.kakao.maps.Point(0, idx * 46 + 10),
+      offset: new window.kakao.maps.Point(13, 37),
+    };
+
+    const markerImage = new window.kakao.maps.MarkerImage(
+      imageSrc,
+      imageSize,
+      imgOptions
+    );
+
+    const marker = new window.kakao.maps.Marker({
+      position,
+      image: markerImage,
+    });
+
+    marker.setMap(map);
+    markers.push(marker);
+
+    return marker;
+  }
+
+
+
+function removeMarker() {
+    for (let i = 0; i < markers.length; i++) {
+      markers[i].setMap(null);
+    }
+    markers = [];
+  }
+
+function displayPagination(pagination) {
+    const paginationEl = document.getElementById("pagination");
+    const fragment = document.createDocumentFragment();
+    while (paginationEl?.hasChildNodes()) {
+      paginationEl.removeChild(paginationEl.lastChild);
+    }
+
+    for (let i = 1; i <= pagination.last; i++) {
+      const el = document.createElement("a");
+      el.href = "#";
+      el.innerHTML = String(i);
+
+      if (i === pagination.current) {
+        el.className = "on";
+      } else {
+        el.onclick = (function (i) {
+          return function () {
+            pagination.gotoPage(i);
+          };
+        })(i);
+      }
+
+      fragment.appendChild(el);
+    }
+    paginationEl?.appendChild(fragment);
+  }
+  
+  
+  
+function displayInfowindow(marker, title) {
+    const content =
+      '<div style="padding:5px;z-index:1;">' + title + "</div>";
+
+    infowindow.setContent(content);
+    infowindow.open(map, marker);
+  }
+
+
+function removeAllChildNods(el) {
+    while (el.hasChildNodes()) {
+      el.removeChild(el.lastChild);
+    }
+  }
+  
+  
+
+
+
 </script>
+
+
+
+
 
 
 

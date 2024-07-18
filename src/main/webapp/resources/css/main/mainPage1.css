@@ -102,6 +102,24 @@
 		height: 100%;
 		object-fit: cover;
 	}
+    .loc-container {
+        position: absolute;
+        left: 39%;
+        gap: 10px;
+    }
+    .loc_btn, .loc_btn1 {
+        padding: 10px 20px;
+        background-color: #497671;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 1000;
+        margin: 650px 20px;
+     }
+     .loc_btn:hover, .loc_btn1:hover {
+        background-color: black;
+     }
 	
 	/* main image css end */
 	
@@ -198,6 +216,3 @@
 	}
 	
 	/* menu image tagname css end */
-	
-	
-	

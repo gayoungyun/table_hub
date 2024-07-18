@@ -100,7 +100,7 @@ public class businMController {
 				request.setAttribute("msg", "로그인이 필요한 서비스입니다");
 		        request.setAttribute("url", "member/login");
 		        return "businessM/businMalert";
-			} 
+			}
 			return "businessM/businMmenu";
 		}
 		
@@ -110,7 +110,13 @@ public class businMController {
 		}
 		
 		@GetMapping("/businessM/storeInfo")//마이페이지 내 정보확인및수정(기본메뉴페이지)
-		public String storeInfo() {
+		public String storeInfo(HttpServletRequest request, Model model) {
+			HttpSession session = request.getSession();
+			String store_id = (String) session.getAttribute("storeId");
+			
+			businMDTO dto = new businMDTO();
+			dto = ser.infochk(store_id);
+			model.addAttribute("dto", dto);
 			return "businessM/info/storeInfo";
 		}
 		

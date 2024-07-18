@@ -178,9 +178,22 @@ public class businMService {
 	
 	}
 	
+	public businMDTO infochk(String store_id) {
+		businMDTO dto = new businMDTO();
+		try {
+			dto = mapper.infochk(store_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dto;
+	}
+	
+	
+	
+	
 	//이미지 저장경로 \\\\192.168.42.40\\공유폴더\\tableHub\\businessM
 	// 업로드된 파일을 저장할 경로
-	private static String UPLOAD_FOLDER = "\\\\192.168.42.40\\공유폴더\\tableHub\\businessM";
+	private static String UPLOAD_FOLDER = "C:\\tablehub_image\\businessM";
 	public String storeImage(HttpServletRequest request,
 				MultipartFile file01, MultipartFile file02, MultipartFile file03, 
 				MultipartFile file04, MultipartFile file05) {

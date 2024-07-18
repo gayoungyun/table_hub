@@ -43,25 +43,32 @@ public class MainServiceImpl implements MainService{
 	public List<MainDTO> getMenuByCategory(String category){
 		return mapper.getMenuByCategory(category);
 	}
+	
+	public List<MainDTO> getStoreByLocation(double latitude, double longitude){
+		return mapper.findStoreByLocation(latitude, longitude);
+	}
+	
 	public List<MainMapDTO> getStoreInfo(Map<String, Object> params) {
 		return mapper.getStoreInfo(params);
 	}
+	
 	public List<MainMapDTO> getStoreInfoByCategory(String category) {
 	    List<MainMapDTO> storeList = mapper.getStoreInfoByCategory(category);
 	    return storeList;
 	}
+	
+	/*
 	public List<Map<String, Object>> getMenuImage(Map<String, Object> params){
 	    //return imgList;
 		return mapper.getMenuImage(params);
 	}
-	public List<MainMapDTO> getStoreImgList(Map<String, Object> params){
-		
-		List<MainMapDTO> storeImgList = mapper.getStoreImgList(params);
-		System.out.println("imglist ser :"+storeImgList );
-		return storeImgList;
-	}
+	*/
+	
 	public List<MainImgDTO> getStoreImage(String storeId) {
 		return mapper.getStoreImage(storeId);
+	}
+	public List<MainImgDTO> getStoreSmallImage(String storeId) {
+		return mapper.getStoreSmallImage(storeId);
 	}
 	public int inputInfo(MainDTO dto) {
 		try {
@@ -102,6 +109,7 @@ public class MainServiceImpl implements MainService{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		/*
 		String msg, url;
 		if(result == 1) {
 			msg = "새글이 추가되었습니다";
@@ -110,6 +118,7 @@ public class MainServiceImpl implements MainService{
 			msg = "문제가 발생되었습니다!";
 			url = "/main/mainPage1";
 		}
+		*/
 	}
 	public String saveMenuImage(MultipartFile mul) {
 		return mfs.saveFile(mul);
@@ -118,7 +127,7 @@ public class MainServiceImpl implements MainService{
 		MainImgDTO dto = new MainImgDTO();
 	    dto.setStore_id(store_id);
 	    dto.setStore_img_root(store_img_root);
-	    dto.setStore_img_main(1);
+	    dto.setStore_img_main(2);
 	    mapper.saveImagePathToStoreImg(dto);
 	}
 
@@ -141,10 +150,3 @@ public class MainServiceImpl implements MainService{
 	}
 		
 }
-
-
-
-
-
-
-
