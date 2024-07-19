@@ -62,3 +62,14 @@ function changeParentUrl(newUrl) {
 }
 
 
+// 구현 내용 추가
+// reviewInfo 높이 조절을 위한 코드
+window.addEventListener('message', function(event) {
+	console.log("event : ", event)
+    const iframe = document.getElementById('myIframe');
+    if (event.data.height) {
+        iframe.style.height = event.data.height + 'px';
+    }
+});
+
+

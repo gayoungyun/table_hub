@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM/businMinfo.css?after">
-<script src="${path}/resources/js/businessM/businMmenu.js"></script>
+<script src="${path}/resources/js/businessM/businMmenu.js?after"></script>
 </head>
 <body>
 
@@ -36,9 +36,10 @@
 		
 			<div class="iframe" id="iframe">
 			<iframe frameborder="0" scrolling="no" id="myIframe" onload="iHeight();" 
-				style="width:1285px; min-height:500px;" ></iframe>
+				style="width:785px; min-height:500px;" ></iframe>
 			</div>
 	</div>
 </div>
+
 </body>
 </html>
