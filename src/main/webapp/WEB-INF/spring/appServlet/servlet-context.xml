@@ -51,6 +51,7 @@
 	<beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<beans:property name="maxUploadSize" value="26214400"/> <!-- 25MB -->
+		 <beans:property name="maxUploadSizePerFile" value="26214400"/> <!-- 파일당 25MB -->
 		<beans:property name="defaultEncoding" value="utf-8"/>
 	</beans:bean>
 	
