@@ -88,28 +88,18 @@
 	    </foreach>
 	</insert>
 	
-
-	<!--  가게 이미지 인서트 실패한거
-     <insert id="storeImage" parameterType="map">
-	    INSERT INTO store_img (store_id, store_img_root, store_img_main) VALUES
-	    <foreach collection="FilePaths" item="filePath" separator=",">
-	        (#{store_id}, #{filePath}, 1)
-	    </foreach>
+	<insert id="menuRegister" parameterType="java.util.Map">
+	         <foreach collection="categories" item="category" index="index" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL">
+	        INTO store_menu VALUES (
+	            #{store_id},  
+	            #{photos[${index}]}, 
+	            #{names[${index}]}, 
+	            #{prices[${index}]}, 
+	            #{notes[${index}]}, 
+	            #{category}
+	            )
+        </foreach>
 	</insert>
-	
-
-	   INSERT ALL 
-	    INTO store_img (store_id, store_img_root, store_img_main) VALUES (#{store_id}, #{file01Path}, 1)
-	     <if test='file02Path != null'> INTO store_img (store_id, store_img_root, store_img_main) 
-	     	VALUES (#{store_id}, #{file02Path}, 9)</if>
-	     <if test='file02Path != null'> INTO store_img (store_id, store_img_root, store_img_main) 
-	     	VALUES (#{store_id}, #{file03Path}, 9)</if>
-	     <if test='file02Path != null'> INTO store_img (store_id, store_img_root, store_img_main) 
-	     	VALUES (#{store_id}, #{file04Path}, 9)</if>
-	     <if test='file02Path != null'> INTO store_img (store_id, store_img_root, store_img_main) 
-	     	VALUES (#{store_id}, #{file05Path}, 9)</if>
-	    SELECT * FROM DUAL; 
-	    -->
 
 	
 	<!--   

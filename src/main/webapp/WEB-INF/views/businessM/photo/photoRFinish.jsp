@@ -7,8 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM/businessMphoto.css?after">
-<script src="${path}/resources/js/businessMphoto.js"></script>
+<link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM/businMphoto.css?after">
+<script src="${path}/resources/js/businessM/businMmenu.js"></script>
 </head>
 <body>
 <div class="center-box">
@@ -19,11 +19,12 @@
 	</div>
 	<br>
 	<div style="display:grid; justify-items: center;">
-		<button type="button" onclick="window.location.href='http://localhost:8080/root/businessM/menuInfo'">메뉴 등록 하기</button><br>
-		<button type="button" onclick="window.location.href='http://localhost:8080/root/businessM/photoInfo'">사진 등록 하기</button><br>
-		<button type="button" onclick="window.location.href='http://localhost:8080/root/'">메인 화면</button><br>
-		<button type="button" onclick="window.location.href='http://localhost:8080/root/businMmenu'">내 가게 정보보기</button>
+		<button type="button" onclick="window.location.href='http://localhost:8080/root/businMmenu?category=menuInfo'">메뉴 등록 하기</button><br>
+		<button type="button" onclick="categoryChoose(3)">사진 확인 하기</button><br>
+		<button type="button" onclick="window.location.href='/root/main/mainPage1">메인 화면</button><br>
+		<button type="button" onclick="window.location.href='http://localhost:8080/root/businMmenu?category=storeInfo'">내 가게 정보보기</button>
 	</div>
 </div>
+
 </body>
 </html>
