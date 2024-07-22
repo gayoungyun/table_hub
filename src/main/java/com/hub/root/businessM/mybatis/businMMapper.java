@@ -11,5 +11,6 @@ public interface businMMapper {
 	//public int storeImage01(@Param("file01Path") String file01Path, @Param("store_id")String store_id);
 	//public int storeImage09(@Param("filePath")String filePath, @Param("store_id")String store_id);
 	public int storeImage01( Map<String, Object> param );
+	public int menuRegister( Map<String, Object> menuparam );
 	public businMDTO infochk(String store_id);
 }

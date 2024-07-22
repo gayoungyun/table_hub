@@ -10,7 +10,7 @@
 <link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM/businMinfo.css?after">
 <script src="${path}/resources/js/businessM/businMmenu.js"></script>
 </head>
-<body>
+<body onload="category()">
 
 <header class="header">
 <%@ include file="../main/header.jsp" %>

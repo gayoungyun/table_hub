@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM.css?after">
+<link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM/businessMstore.css?after">
 </head>
 <body>
 	<h1>가게정보 확인 메뉴입니다</h1>
