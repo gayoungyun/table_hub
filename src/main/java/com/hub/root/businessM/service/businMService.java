@@ -18,8 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartRequest;
 
 import com.hub.root.businessM.DTO.businMDTO;
+import com.hub.root.businessM.DTO.storeReviewDTO;
 import com.hub.root.businessM.mybatis.businMMapper;
 
 @Service
@@ -131,15 +134,20 @@ public class businMService {
 	    String store_business_hoursS = String.join("/", store_business_hours);
 	    dto.setStore_business_hours(store_business_hoursS);
             
-		int row = register(dto);
-		System.out.println("보선-서비스에서 나온 result : " + row);
-		if(row == 0) {
-			request.setAttribute("msg", "문제 발생\n다시 시도해주세요");
-	        request.setAttribute("url", "register01");
-	        
-	        return "businessM/businMalert";
-		}else {
-			System.out.println("보선-가게등록 업뎃 성공");
+		int row;
+		try {
+			row = register(dto);
+			System.out.println("보선-서비스에서 나온 result : " + row);
+			if(row == 0) {
+				request.setAttribute("msg", "문제 발생\n다시 시도해주세요");
+		        request.setAttribute("url", "register01");
+		        
+		        return "businessM/businMalert";
+			}else {
+				System.out.println("보선-가게등록 업뎃 성공");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		// 세션 전체 삭제 (invalidate)
 		// session.invalidate();
@@ -166,21 +174,31 @@ public class businMService {
 	}
 	
 	
-	public int register(businMDTO dto) {
-		int result = 0;
-		try {
-			result = mapper.register(dto);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public int register(businMDTO dto) throws IOException {
+		
+		int result = mapper.register(dto);
+	
 		System.out.println("보선-가게등록 mapper에서 나온 result : " + result);
 		return result;
 	
 	}
 	
+	public businMDTO infochk(String store_id) {
+		businMDTO dto = new businMDTO();
+		try {
+			dto = mapper.infochk(store_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dto;
+	}
+	
+	// 구현 추가
+	public String DOWNLOAD_FOLDER = "C:/tablehub_image/businessM";
+	
 	//이미지 저장경로 \\\\192.168.42.40\\공유폴더\\tableHub\\businessM
 	// 업로드된 파일을 저장할 경로
-	private static String UPLOAD_FOLDER = "\\\\192.168.42.40\\공유폴더\\tableHub\\businessM";
+	private static String UPLOAD_FOLDER = "C:\tablehub_image\businessM";
 	public String storeImage(HttpServletRequest request,
 				MultipartFile file01, MultipartFile file02, MultipartFile file03, 
 				MultipartFile file04, MultipartFile file05) {
@@ -204,7 +222,7 @@ public class businMService {
             String store_id = (String) session.getAttribute("storeId");
             System.out.println("보선-세션 아이디 store_id 확인 : "+store_id);
             
-            // 인서트 배열로 하려다 실패한거
+        
             String[] arr = {file01Path, file02Path, file03Path, file04Path, file05Path};
             List<String> FilePaths = new ArrayList<>();
             
@@ -223,49 +241,9 @@ public class businMService {
                 String key = entry.getKey();
                 Object value = entry.getValue();
                 System.out.println("Key: " + key + ", Value: " + value);
-            }
-            
+            }   
             
             int result01 = mapper.storeImage01(param);
-            /*
-            // 배열 순회하면서 null이 아닌 경우에만 리스트에 추가
-            if (FilePaths.size() > 0 && FilePaths.get(0) != null && !FilePaths.get(0).isEmpty())
-                System.out.println("보선-경로 배열 확인 2번 : " + FilePaths.get(0)); // file02Path
-            if (FilePaths.size() > 1 && FilePaths.get(1) != null && !FilePaths.get(1).isEmpty())
-                System.out.println("보선-경로 배열 확인 3번 : " + FilePaths.get(1)); // file03Path
-            if (FilePaths.size() > 2 && FilePaths.get(2) != null && !FilePaths.get(2).isEmpty())
-                System.out.println("보선-경로 배열 확인 4번 : " + FilePaths.get(2)); // file04Path
-            if (FilePaths.size() > 3 && FilePaths.get(3) != null && !FilePaths.get(3).isEmpty())
-                System.out.println("보선-경로 배열 확인 5번 : " + FilePaths.get(3)); // file05Path
-            
-            
-        
-            int result01 = mapper.storeImage01(file01Path, store_id);
-            
-            int result02=0, result=0;
-            if(file02Path != null) {
-            	String filePath = file02Path;
-            	result02 = mapper.storeImage09(filePath, store_id);
-            }
-            if(file03Path != null) {
-            	String filePath = file03Path;
-            	result = mapper.storeImage09(filePath, store_id);
-            	result02 += result;
-            }
-            if(file04Path != null) {
-            	String filePath = file04Path;
-            	result = mapper.storeImage09(filePath, store_id);
-            	result02 += result;
-            }
-            if(file05Path != null) {
-            	String filePath = file05Path;
-            	result = mapper.storeImage09(filePath, store_id);
-            	result02 += result;
-            }
-            System.out.println("보선-메인 사진이 등록되었나? : "+result01);
-            System.out.println("보선-메인 사진 외 추가 사진 갯수 : "+result02);
-            */
- 
             System.out.println("보선-사진이 행 추가? : "+result01);
 	         if(result01 > 0)
 	            	return "businessM/photo/photoRFinish";
@@ -286,7 +264,7 @@ public class businMService {
 		if (!file.isEmpty()) {
 	        byte[] bytes = file.getBytes();
 	        /* 파일을 바이트 배열로 변환하는 이유는 파일을 읽거나 다루기 쉽게 하기 위함입니다. 
-	         * 예를 들어 파일을 디스크에 저장할 때나 네트워크를 통해 전송할 때는 바이트 배열 형태로 변환하여 다루는 것이 일반적입니다. */
+	         * 예를 들어 파일을 디스크에 저장할 때나 네트워크를 통해 전송할 때는 바이트 배열 형태로 변환하여 다루는 것이 일반적. */
 	        String uniqueFileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
 	        Path path = Paths.get(UPLOAD_FOLDER + "/" + uniqueFileName);
 	        Files.write(path, bytes);
@@ -294,6 +272,124 @@ public class businMService {
 	    }
 	    return null;
 	}  
+
+	// 구현 작업 내용
+	public Map<String, Object> getReview(String storeId, int curPage) {
+		int totalReview = mapper.getTotalReview(storeId);
+		System.out.println("TotalReview : " + totalReview);
+		
+		// 리뷰의 총 갯수를 이용하여 페이징 처리 작업
+		Map<String, Object> map = pageCalc(totalReview, curPage);
+		
+		// 해당되는 페이지에 맞춰 데이터 불러오기
+		List<storeReviewDTO> list = mapper.getReview(storeId, 
+													(int)map.get("startNum"), 
+													(int)map.get("endNum") );
+		map.put("list", list);
+		return map;
+	}
+	
+	// getReview에서 불러온 데이터에서 다른 db를 참조해야하는 부분들의 정보를 불러옴
+	public Map<String, Object> getReviewDetail(String memId, int reviewNum) {
+		Map<String, Object> map = mapper.getReviewDetail(memId, reviewNum);
+		return map;
+	}
+	
+	// getReview 페이징 처리
+	private Map<String, Object> pageCalc(int totalReview, int curPage) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		// 한 페이지에 6개의 컨텐츠 표시
+		int viewCont = 6;
+		
+		// 페이지의 시작, 끝 번호
+		int startNum = curPage * viewCont - (viewCont - 1);
+		int endNum = curPage * viewCont;
+		int totalPage = (totalReview / viewCont) + ((totalReview % viewCont) == 0 ? 0 : 1);
+		
+		map.put("viewCont", viewCont);
+		map.put("startNum", startNum);
+		map.put("endNum", endNum);
+		map.put("totalReview", totalReview);
+		map.put("curPage", curPage);
+		map.put("totalPage", totalPage);
+		
+		return map;
+	}
+	
+	public Map<String, Object> deleteReview(int[] reviews) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		int result = mapper.deleteReview(reviews);
+		String msg = "";
+		
+		if (result == 0) {
+			msg = "삭제하는 중 문제가 발생하였습니다. 새로고침 후 다시 시도해주세요";
+		} else {
+			msg = "삭제가 완료되었습니다.";
+		}
+		
+		map.put("msg", msg);
+		
+		return map;
+	}
+	
+	public String menuRegister(HttpServletRequest request, MultipartHttpServletRequest mul){
+		
+		  HttpSession session = request.getSession();
+	      String store_id = (String) session.getAttribute("storeId");
+
+	  	  int rowCount = Integer.parseInt(request.getParameter("rowCount")); 
+	  	  System.out.println("보선-메뉴 행 몇개? : "+ rowCount);
+	  	  
+	  	  List<String> categories = new ArrayList<>();
+	  	  List<String> names = new ArrayList<>();
+	  	  List<Integer> prices = new ArrayList<>();
+	  	  List<String> photos = new ArrayList<>();
+	  	  List<String> notes = new ArrayList<>();
+  	  
+  	  
+        for (int i = 1; i <= rowCount; i++) {
+            String category = request.getParameter("menu_category" + i);
+            String name = request.getParameter("menu_name" + i);
+            Integer price = Integer.parseInt(request.getParameter("menu_price" + i));
+            String note = request.getParameter("menu_note" + i);
+            String file;
+			try {
+				MultipartFile filePath = ((MultipartRequest) mul).getFile("menu_photo" + i);
+				file = saveFileAndGetPath(filePath);
+             
+            categories.add(category);
+            names.add(name);
+            prices.add(price);
+            notes.add(note);
+            photos.add(file);
+            
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        }
+        
+        Map<String, Object> menuparam = new HashMap<>();
+        menuparam.put("store_id", store_id);
+        menuparam.put("categories", categories);   
+        menuparam.put("names", names);    
+        menuparam.put("prices", prices);    
+        menuparam.put("notes", notes);    
+        menuparam.put("photos", photos);  
+        
+        System.out.println("보선-메뉴리스트들 확인 \n카테고리 : "+ categories+"\n이름 : "+names
+        		+"\n가격 : "+prices+"\n설명 : "+notes+"\n사진경로 : "+photos);
+        
+        int result = mapper.menuRegister(menuparam);
+        if(result > 0)
+        	return "businessM/menu/menuRFinish";
+        else {
+        	request.setAttribute("msg", "오류발생\n 사진이 등록되지 않았습니다.\n 다시 시도해주세요");
+	        request.setAttribute("url", "/businessM/menuInfo");
+	        return "businessM/businMalert";
+        }      
+	}
+	
 }
 	
 

@@ -1,12 +1,16 @@
 package com.hub.root.businessM.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,14 +21,22 @@ import javax.servlet.http.Part;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.hub.root.businessM.DTO.businMDTO;
+import com.hub.root.businessM.DTO.storeReviewDTO;
 import com.hub.root.businessM.service.businMService;
+import com.hub.root.member.service.info.MemberInfoService;
 
 @Controller
 public class businMController {
@@ -100,7 +112,7 @@ public class businMController {
 				request.setAttribute("msg", "로그인이 필요한 서비스입니다");
 		        request.setAttribute("url", "member/login");
 		        return "businessM/businMalert";
-			} 
+			}
 			return "businessM/businMmenu";
 		}
 		
@@ -110,7 +122,13 @@ public class businMController {
 		}
 		
 		@GetMapping("/businessM/storeInfo")//마이페이지 내 정보확인및수정(기본메뉴페이지)
-		public String storeInfo() {
+		public String storeInfo(HttpServletRequest request, Model model) {
+			HttpSession session = request.getSession();
+			String store_id = (String) session.getAttribute("storeId");
+			
+			businMDTO dto = new businMDTO();
+			dto = ser.infochk(store_id);
+			model.addAttribute("dto", dto);
 			return "businessM/info/storeInfo";
 		}
 		
@@ -119,10 +137,63 @@ public class businMController {
 			return "businessM/info/photoInfo";
 		}
 		
+		
+		//구현 작업 영역 start
 		@GetMapping("/businessM/reviewInfo")//마이페이지 내 고객후기보기
 		public String reviewInfo() {
 			return "businessM/info/reviewInfo";
 		}
+		
+		@GetMapping("/businessM/review")
+		@ResponseBody
+		public Map<String, Object> getReview(HttpSession session, @RequestParam int curPage) {
+			System.out.println("curPage : " + curPage);
+			String storeId = (String)session.getAttribute("storeId");
+			Map<String, Object> map = ser.getReview(storeId, curPage);
+			return map;
+		}
+		
+		@GetMapping(value = "/businessM/reviewDetail", produces = "application/json; charset=utf-8")
+		@ResponseBody 
+		public Map<String, Object> getReviewDetail(@RequestParam Map<String, Object> map) {
+			System.out.println("memId : " + map.get("memId"));
+			System.out.println("reviewNum : " + Integer.parseInt((String) map.get("reviewNum")));
+			String memId = (String)map.get("memId");
+			int reviewNum = Integer.parseInt((String) map.get("reviewNum"));
+			map = ser.getReviewDetail(memId, reviewNum);
+			return map;
+		}
+		
+		@DeleteMapping(value="/businessM/review", produces = "application/json; charset=utf-8")
+		@ResponseBody
+		public Map<String, Object> deleteReview(@RequestBody Map<String, int[]> getReviews) {
+			int[] reviews = getReviews.get("reviews");
+			Map<String, Object> map = ser.deleteReview(reviews);
+			return map;
+		}
+		
+		@GetMapping("/businessM/download")
+		public void download(@RequestParam String img, HttpServletResponse res) throws Exception {
+	    	System.out.println("businMCont download 실행");
+	    	String originImgName = img;
+	    	
+			res.setContentType("text/plain; charset=utf-8");
+			res.addHeader("Content-disposition", "attachment;fileName="+URLEncoder.encode(img, "UTF-8"));
+			File file;
+			
+			
+			// 해당 파일을 불러온다.
+			file = new File(ser.DOWNLOAD_FOLDER + "/" + img);	
+			
+			// 파일이 존재한다면 해당 파일을 사용자에게 전달한다.
+			if(file.exists()) {
+				FileInputStream in = new FileInputStream(file);
+				FileCopyUtils.copy(in, res.getOutputStream());
+				in.close();			
+			}
+		}
+		
+		// 구현 작업 영역 end
 		
 		@GetMapping("/businessM/bookInfo")//마이페이지 내 예약관리
 		public String bookInfo() {
@@ -159,6 +230,15 @@ public class businMController {
 	    	String result = ser.storeImage(request, file01, file02, file03, file04, file05);
 	    	return result;
 	    }
-		
+	    
+	    @PostMapping("/businessM/menu/menuRegister")
+	    public String menuRegister(HttpServletRequest request, MultipartHttpServletRequest mul) {
+	    	System.out.println("보선-메뉴등록 컨트롤러 실행");
+	    	String result = ser.menuRegister(request, mul);
+	    	return result;
+	    }
+	    
+	    
+	    
 	}
 

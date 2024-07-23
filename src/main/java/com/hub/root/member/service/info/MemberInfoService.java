@@ -9,7 +9,7 @@ import com.hub.root.member.dto.BookingDTO;
 import com.hub.root.member.dto.MemberDTO;
 
 public interface MemberInfoService {
-	public String IMAGE_REPO = "//D://tablehub_image/member";
+	public String IMAGE_REPO = "//C://tablehub_image/member";
 	public int memberImgModify(MultipartHttpServletRequest file, String id, String imgName);
 	public String memberImgDelete(String imgName, String id);
 	public String memberNickModify(String nick, String id);

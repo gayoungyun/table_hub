@@ -8,7 +8,9 @@
 		http://www.springframework.org/schema/beans 
 		https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context 
-		https://www.springframework.org/schema/context/spring-context.xsd">
+		https://www.springframework.org/schema/context/spring-context.xsd"
+		
+		>
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
@@ -32,12 +34,9 @@
 	<beans:bean id="idChkInterCeptor" class="com.hub.root.member.interceptor.SearchPwdInterceptor" />
 	<interceptors>
 		<interceptor>
-			<mapping path="/member/myPage/*"/>
-			<beans:ref bean="loginChk"/>
-		</interceptor>
-		<interceptor>
 			<mapping path="/member/myPage/m*"/>
 			<mapping path="/member/myPage/d*"/>
+			<exclude-mapping path="/member/myPage/download"/>
 			<beans:ref bean="pwdChkInterCeptor"/>
 		</interceptor>
 		<interceptor>
