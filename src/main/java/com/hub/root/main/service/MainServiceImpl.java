@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.hub.root.main.dto.MainDTO;
 import com.hub.root.main.dto.MainImgDTO;
 import com.hub.root.main.dto.MainMapDTO;
+import com.hub.root.main.dto.MainReviewDTO;
 import com.hub.root.main.mybatis.mainMapper;
 
 @Service
@@ -48,6 +49,14 @@ public class MainServiceImpl implements MainService{
 		return mapper.findStoreByLocation(latitude, longitude);
 	}
 	
+	public List<MainReviewDTO> getPopularityList(Map<String, Object> params) {
+        return mapper.getPopularityList(params);
+    }
+
+    public List<MainReviewDTO> getReviewList(Map<String, Object> params) {
+        return mapper.getReviewList(params);
+    }
+	
 	public List<MainMapDTO> getStoreInfo(Map<String, Object> params) {
 		return mapper.getStoreInfo(params);
 	}
@@ -69,6 +78,9 @@ public class MainServiceImpl implements MainService{
 	}
 	public List<MainImgDTO> getStoreSmallImage(String storeId) {
 		return mapper.getStoreSmallImage(storeId);
+	}
+	public List<MainReviewDTO> getReviewList(String userId){
+		return mapper.getReviewList(userId);
 	}
 	public int inputInfo(MainDTO dto) {
 		try {

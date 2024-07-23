@@ -34,6 +34,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.hub.root.main.dto.MainDTO;
 import com.hub.root.main.dto.MainImgDTO;
 import com.hub.root.main.dto.MainMapDTO;
+import com.hub.root.main.dto.MainReviewDTO;
 import com.hub.root.main.service.MainFileService;
 import com.hub.root.main.service.MainService;
 
@@ -119,6 +120,7 @@ public class MainController {
 	public String mainPage2(@RequestParam(required=false) String keyword, 
 	                        @RequestParam(required=false) String searchType,
 	                        @RequestParam(required=false) String category,
+	                        @RequestParam(required=false) String sortType,
 	                        HttpSession session, Model model) {   
 		//String user = (String) session.getAttribute("userId");
 		//String store = (String) session.getAttribute("storeId");
@@ -131,17 +133,30 @@ public class MainController {
 	    params.put("keyword", key);
 	    params.put("searchType", search);
 	    params.put("category", cat);
+	    params.put("sortType", sortType);
 
-	    List<MainMapDTO> storeList = ms.getStoreInfo(params);
-	    //List<MainMapDTO> storeListBt = ms.getStoreInfo(params);
+	    //List<MainMapDTO> storeList = ms.getStoreInfo(params);
 	   
-	    if (storeList == null) {
-	        storeList = new ArrayList<>();
-	    }
+//	    if (storeList == null) {
+//	        storeList = new ArrayList<>();
+//	    }
 
 	   // if (imgList == null) {
 	     //   imgList = new ArrayList<>();
 	   // }
+	    
+	    
+	    if("review".equals(sortType)) {
+	    	List<MainReviewDTO> reviewList = ms.getReviewList(params);
+	    	model.addAttribute("reviewList", reviewList);
+	    }else if("popularity".equals(sortType)) {
+	    	List<MainReviewDTO> popularityList = ms.getPopularityList(params);
+	    	model.addAttribute("popularityList", popularityList);
+	    }else {
+	    	List<MainMapDTO> storeList = ms.getStoreInfo(params);
+	    	model.addAttribute("storeList", storeList);
+	    	
+	    	
 	    
 	    List<MainImgDTO> storeImgList = new ArrayList<>();
 	    for(MainMapDTO storeInfo : storeList) {
@@ -169,15 +184,24 @@ public class MainController {
 	          }
 	    }
 
-	    model.addAttribute("storeList", storeList);
+//	    List<MainReviewDTO> revList = new ArrayList<>();
+//	    for(MainReviewDTO storeInfo : revList) {
+//	    	List<MainReviewDTO> reviewList = ms.getReviewList(storeInfo.getMember_id());
+//	    }
+	    
+	    
+	    
+	    //model.addAttribute("storeList", storeList);
 	    model.addAttribute("storeListSize", storeList.size());
 	    //model.addAttribute("imgList", imgList);
 	    model.addAttribute("storeImgList", storeImgList);
 	    model.addAttribute("storeSmallImgList", storeSmallImgList);
-	    
+	    //model.addAttribute("revList", revList);
+	    }
 	    model.addAttribute("keyword", keyword);
 	    model.addAttribute("searchType", searchType);
 	    model.addAttribute("category", category);
+	    model.addAttribute("sortType", sortType);
 
 	    return "main/mainPage2";
 	}

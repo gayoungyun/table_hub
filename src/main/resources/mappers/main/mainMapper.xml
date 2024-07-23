@@ -162,6 +162,7 @@
 </select>
  
  
+ <!-- 
  <select id="getReview" resultMap="mainReview">
  	select B.* 
  	from (select rownum rn, A.* 
@@ -169,9 +170,26 @@
  	order by store_review_num ) A ) B
  	where rn between #{start} and #{end}		
  </select>
- 
- 
- 
+  -->
+  
+<select id="getPopularityList" resultMap="mainReview">
+    SELECT sr.*, mi.*
+    FROM store_review sr
+    LEFT JOIN member_info mi ON sr.member_id = mi.member_id
+    ORDER BY sr.store_review_score DESC
+</select>
+
+<select id="getReviewList" resultMap="mainReview">
+    SELECT sr.*, mi.*
+    FROM store_review sr
+    LEFT JOIN member_info mi ON sr.member_id = mi.member_id
+    ORDER BY sr.store_review_score DESC
+</select>
+
+  
+  
+  
+  
 <!--  
 <select id="getMenuImage" resultMap="main">
 	SELECT sm.store_menu_img
