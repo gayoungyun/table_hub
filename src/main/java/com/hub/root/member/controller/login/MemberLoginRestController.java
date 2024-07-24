@@ -45,6 +45,7 @@ public class MemberLoginRestController {
     
     @PostMapping(value="sendMessage", produces = "application/json; charset=utf-8")
     public String sendOne(@RequestBody Map<String, Object> map, HttpSession session, Model model) {
+		System.out.println("memLoginrestCont sendMessage 실행");
 
     	int code = randomNumber();
     	
@@ -67,6 +68,7 @@ public class MemberLoginRestController {
     
     @PostMapping(value="codeChk", produces = "application/json; charset=utf-8")
     public int codeChk(@RequestBody Map<String, Object> map, HttpSession session, Model model) {
+		System.out.println("memLoginrestCont codeChk 실행");
     	
     	String phoneNumber = (String)session.getAttribute("phoneNumber");
     	int inputCode = Integer.parseInt((String)map.get("inputCode"));
@@ -87,6 +89,7 @@ public class MemberLoginRestController {
 	@ResponseBody
 	public Map<String, Object> register(@RequestBody Map<String, Object> map, HttpServletRequest req, HttpServletResponse res, HttpSession session,
 			Model model) {
+		System.out.println("memLoginrestCont register 실행");
 		String code = (String)map.get("code");
 		
 		Cookie[] Cookies = req.getCookies();
@@ -112,15 +115,25 @@ public class MemberLoginRestController {
 
 	@PostMapping(value="loginChk", produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public Map<String, Object> loginChk(@RequestBody Map<String, Object> map, Model model, HttpSession session) {
-		System.out.println("service");
+	public Map<String, Object> loginChk(@RequestBody Map<String, Object> map, Model model, HttpSession session, HttpServletResponse res) {
+		System.out.println("memLoginrestCont loginChk 실행");
 		String id = (String)map.get("id");
-		String ids[] = id.toString().split(":");
+		String ids[] = id.toString().split("=");
 		System.out.println(ids[0]);
+		
+		// 불러온 id값의 첫글자가 N 또는 K(sns로그인)일경우 if문 실행
 		if (ids[0].equals("N") || ids[0].equals("K")) {
-			System.out.println("if문실행");
+			
+			// 회원 정보를 조회하고 결과에 따라 0 또는 1을 반환한다.
 			map.put("result", ms.snsLoginChk(id));
+			String token = (String)map.get("token");
+			
 			session.setAttribute("userId", id);
+			Cookie cookie = new Cookie("snsToken", token);
+			cookie.setMaxAge(5 * 60);
+			cookie.setPath("/root");
+			res.addCookie(cookie);
+			
 			model.addAttribute(session);
 		}else {
 			System.out.println("else문 실행");
@@ -147,7 +160,7 @@ public class MemberLoginRestController {
 	@PostMapping(value="storeLoginChk", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public Map<String, Object> storeLoginChk(@RequestBody Map<String, Object> map, Model model, HttpSession session) {
-		System.out.println("conteoller실행");
+		System.out.println("memLoginrestCont storeLoginChk 실행");
 		String id = (String)map.get("id");
 		String pwd = (String)map.get("pwd");
 		int result = ms.storeLoginChk(id, pwd);
@@ -167,6 +180,7 @@ public class MemberLoginRestController {
 	@ResponseBody
 	public Map<String, Object> sendMail(@RequestBody Map<String, Object> map, HttpServletRequest req, HttpServletResponse res, HttpSession session,
 			Model model) {
+		System.out.println("memLoginrestCont sendMail 실행");
 		String email = (String)map.get("email");
 		int result = ms.mailChk(email);
 		if (result == 1) {
@@ -196,6 +210,7 @@ public class MemberLoginRestController {
 	
 	@PostMapping(value="storeNumChk", produces = "application/json; charset=utf-8")
 	public Map<String, Object> storeNumChk(@RequestBody Map<String, Object> map) {
+		System.out.println("memLoginrestCont storeNumChk 실행");
 		System.out.println("id : " + map.get("storeId"));
 		String storeId = (String)map.get("storeId");
 		map = ms.storeNumChk(storeId);
@@ -205,6 +220,8 @@ public class MemberLoginRestController {
 	@PostMapping(value="storeSendMail", produces = "application/json; charset=utf-8")
 	public Map<String, Object> storeSendMail(@RequestBody Map<String, Object> map, HttpServletRequest req, HttpServletResponse res, HttpSession session,
 			Model model) {
+		System.out.println("memLoginrestCont storeSendMail 실행");
+
 		String email = (String)map.get("email");
 		int result = ms.storeMailChk(email);
 		if (result != 0) {
@@ -229,6 +246,7 @@ public class MemberLoginRestController {
 		return map;
 	}
 	
+	// 아이디 찾기시 아이디정보를 메일로 전달
 	@PostMapping(value="sendMail/id", produces="application/json; charset=utf-8")
 	public Map<String, Object> sendMailId(@RequestBody Map<String, Object> map) {
 		System.out.println("MemLoginRestCont sendMailId 실행");
@@ -266,6 +284,7 @@ public class MemberLoginRestController {
 	
 	@PostMapping(value="login/searchPwd/modifyPwd", produces="application/json; charset=utf-8")
 	public Map<String, Object> modifyPwd(@RequestBody Map<String, Object> map, HttpSession session) {
+		System.out.println("MemLoginRestCont modifyPwd 실행");
 		System.out.println("session : " + session.getAttribute("inputId"));
 		String id = (String)session.getAttribute("inputId");
 //		session.removeAttribute("inputId");

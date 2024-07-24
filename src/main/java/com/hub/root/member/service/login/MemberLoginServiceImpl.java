@@ -150,6 +150,9 @@ public class MemberLoginServiceImpl implements MemberLoginService{
 		String[] memberIds = mapper.getMemId(email);
 		String memberId = "";
 		String msg = "";
+		System.out.println("memberIds.length : " + memberIds.length);
+		
+		// 정보가 없을경우 사용자에게 메세지 전달
 		if (memberIds.length == 0) {
 			System.out.println("if 실행");
 			msg = "가입되지 않은 이메일 주소입니다. \n확인후 다시 시도해주세요";
@@ -161,14 +164,31 @@ public class MemberLoginServiceImpl implements MemberLoginService{
 			
 			//불러온 데이터중 _으로 구분되는 첫번째 자리의 값이 N이 아닌 값을 대입한다.
 			for (int i = 0; i < memberIds.length; i++) {
-				String[] check = memberIds[i].split("_");
+				String[] check = memberIds[i].split("=");
 				if (check[0] != "N") {
 					memberId = memberIds[i];
 					break;
 				}
 			}
-			
-		} else {
+		// 불러온 데이터가 sns계정인지 비교
+		} else if (memberIds.length == 1) {
+			System.out.println("length가 1일때");
+			if (memberIds[0].split("=")[0].equals("N")) {
+				
+				System.out.println("1일때 if실행");
+				msg = "SNS회원가입 계정입니다. 간편인증을 통해 로그인해주세요";
+				map.put("result", 0);
+				map.put("msg", msg);
+				return map;
+				
+			} else {
+				System.out.println("1일때 else실행");
+				memberId = memberIds[0];
+			}
+		}
+		
+		// 안쓰는 코드..??
+		else {
 			memberId = memberIds[0];
 		}
 		msg = "이메일로 아이디가 전송되었으니 확인 후 로그인을 진행해주세요";
