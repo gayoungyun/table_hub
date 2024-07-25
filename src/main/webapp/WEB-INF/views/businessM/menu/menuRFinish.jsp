@@ -13,9 +13,9 @@
 <body>
 <div class="center-box">
 	<div style="display:flex; flex-direction: row; align-items: center;">
-		<img src="resources/img/Boseon/폭죽.png" width="80px">
+		<img src="/root/businessM/download?img=../BoSeon/폭죽.png" width="80px">
 		<h1>메뉴가 등록 되었습니다!</h1>
-		<img src="resources/img/Boseon/폭죽.png" width="80px">
+		<img src="/root/businessM/download?img=../BoSeon/폭죽.png" width="80px">
 	</div>
 	<br>
 	<div style="display:grid; justify-items: center;">

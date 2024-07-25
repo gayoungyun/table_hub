@@ -27,6 +27,8 @@
 		<result property="store_max_team" column="store_max_team"/>
 		<result property="store_open_status" column="store_open_status"/>
 	</resultMap>
+	
+	
 	<resultMap type="com.hub.root.businessM.DTO.storeReviewDTO" id="review">
 		<id property="storeReviewNum" column="store_review_num"/>
 		<result property="storeId" column="store_id"/>
