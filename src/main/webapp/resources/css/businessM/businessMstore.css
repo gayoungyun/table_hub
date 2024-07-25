@@ -380,8 +380,9 @@ label{
     position: absolute;
     top: 0;
     left: 0;
-    opacity: 0; /* opacity를 사용하여 숨김 처리 */
+    opacity: 0; /* opacity를 사용하여 숨김 처리 
 }
+*/
 .checkbox-button label {
     z-index: 1;
     pointer-events: none;

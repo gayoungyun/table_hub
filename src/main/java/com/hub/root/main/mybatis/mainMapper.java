@@ -8,13 +8,15 @@ import org.apache.ibatis.annotations.Param;
 import com.hub.root.main.dto.MainDTO;
 import com.hub.root.main.dto.MainImgDTO;
 import com.hub.root.main.dto.MainMapDTO;
+import com.hub.root.main.dto.MainReviewDTO;
 
 public interface mainMapper {
 	public List<MainDTO> mainPage1();
 	public List<String> getAllCategories();
-	public List<MainDTO> getMenuByCategory(@Param("category") String category);
+	//public List<MainImgDTO> getStoreImg(@Param("category") String category);
+	public List<MainImgDTO> getStoreImgToMain(String storeId);
 
-	public List<MainDTO> findStoreByLocation(@Param("latitude") double latitude, @Param("longitude") double longitude);
+	//public List<MainDTO> findStoreByLocation(@Param("latitude") double latitude, @Param("longitude") double longitude);
 
 	public void mainPage2(MainMapDTO MapDTO);
 	public List<MainMapDTO> getStoreInfo(@Param("params") Map<String, Object> params);
@@ -25,6 +27,9 @@ public interface mainMapper {
 
 	public List<MainImgDTO> getStoreImage(String storeId);
 	public List<MainImgDTO> getStoreSmallImage(String storeId);
+	public List<MainReviewDTO> getReviewList(String userId);
+	public List<MainReviewDTO> getPopularityList(@Param("params") Map<String, Object> params);
+	public List<MainReviewDTO> getReviewList(@Param("params") Map<String, Object> params);
 
 	public int infoSave(MainDTO dto);
 	public void saveImagePathToStoreImg(MainImgDTO dto);

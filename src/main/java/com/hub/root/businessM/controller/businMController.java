@@ -1,18 +1,29 @@
 package com.hub.root.businessM.controller;
 
+
 import java.util.List;
+import java.io.File;
+import java.io.FileInputStream;
+import java.net.URLEncoder;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.hub.root.businessM.DTO.BookPageDTO;
 import com.hub.root.businessM.DTO.businMDTO;
@@ -20,9 +31,9 @@ import com.hub.root.businessM.service.businMService;
 
 @Controller
 public class businMController {
+	private final businMService ser;
 
 		@Autowired
-		private final businMService ser;
 		public businMController(businMService ser) {
 			this.ser = ser;
 			System.out.println("보선-사업자 회원 컨트롤러 생성자 실행");
@@ -117,10 +128,66 @@ public class businMController {
 			return "businessM/info/photoInfo";
 		}
 
+
+		//구현 작업 영역 start
 		@GetMapping("/businessM/reviewInfo")//마이페이지 내 고객후기보기
 		public String reviewInfo() {
 			return "businessM/info/reviewInfo";
 		}
+
+		@GetMapping("/businessM/review")
+		@ResponseBody
+		public Map<String, Object> getReview(HttpSession session, @RequestParam int curPage) {
+			System.out.println("curPage : " + curPage);
+			String storeId = (String)session.getAttribute("storeId");
+			Map<String, Object> map = ser.getReview(storeId, curPage);
+			return map;
+		}
+
+		@GetMapping(value = "/businessM/reviewDetail", produces = "application/json; charset=utf-8")
+		@ResponseBody
+		public Map<String, Object> getReviewDetail(@RequestParam Map<String, Object> map) {
+			System.out.println("memId : " + map.get("memId"));
+			System.out.println("reviewNum : " + Integer.parseInt((String) map.get("reviewNum")));
+			String memId = (String)map.get("memId");
+			int reviewNum = Integer.parseInt((String) map.get("reviewNum"));
+			map = ser.getReviewDetail(memId, reviewNum);
+			return map;
+		}
+
+		@DeleteMapping(value="/businessM/review", produces = "application/json; charset=utf-8")
+		@ResponseBody
+		public Map<String, Object> deleteReview(@RequestBody Map<String, int[]> getReviews) {
+			int[] reviews = getReviews.get("reviews");
+			Map<String, Object> map = ser.deleteReview(reviews);
+			return map;
+		}
+
+		@GetMapping("/businessM/download")
+		public void download(@RequestParam String img, HttpServletResponse res) throws Exception {
+	    	System.out.println("businMCont download 실행");
+	    	String originImgName = img;
+	    	 System.out.println("Requested image: " + img); // 추가된 로그
+
+			res.setContentType("text/plain; charset=utf-8");
+			res.addHeader("Content-disposition", "attachment;fileName="+URLEncoder.encode(img, "UTF-8"));
+			File file;
+
+			// 해당 파일을 불러온다.
+			file = new File(ser.DOWNLOAD_FOLDER + "/" + img);
+
+			// 파일이 존재한다면 해당 파일을 사용자에게 전달한다.
+			if(file.exists()) {
+				FileInputStream in = new FileInputStream(file);
+				FileCopyUtils.copy(in, res.getOutputStream());
+				in.close();
+			} else {
+		        System.err.println("File not found: " + file.getAbsolutePath()); // 추가된 로그
+		        res.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
+		    }
+		}
+
+		// 구현 작업 영역 end
 
 		@GetMapping("/businessM/bookInfo")//마이페이지 내 예약관리
 		public String bookInfo() {
@@ -162,5 +229,12 @@ public class businMController {
 	    public String test() {
 	    	return "businessM/book/bookingView";
 	    }
+	    @PostMapping("/businessM/menu/menuRegister")
+	    public String menuRegister(HttpServletRequest request, MultipartHttpServletRequest mul) {
+	    	System.out.println("보선-메뉴등록 컨트롤러 실행");
+	    	String result = ser.menuRegister(request, mul);
+	    	return result;
+	    }
+
 	}
 

@@ -9,13 +9,16 @@ import org.springframework.web.multipart.MultipartFile;
 import com.hub.root.main.dto.MainDTO;
 import com.hub.root.main.dto.MainImgDTO;
 import com.hub.root.main.dto.MainMapDTO;
+import com.hub.root.main.dto.MainReviewDTO;
 
 public interface MainService {
 	public List<MainDTO> mainPage1(Model model);
 	public List<String> getAllCategories();
-	public List<MainDTO> getMenuByCategory(String category);
+	//public List<MainImgDTO> getMenuByCategory(String category);
+	//public List<MainImgDTO> getStoreImg(String category);
+	public List<List<MainImgDTO>> getStoreImgToMain(List<String> storeIds);
 
-	public List<MainDTO> getStoreByLocation(double latitude, double longitude);
+	//public List<MainDTO> getStoreByLocation(double latitude, double longitude);
 
 	public List<MainMapDTO> getStoreInfo(Map<String, Object> params);
 
@@ -24,7 +27,12 @@ public interface MainService {
 	//public List<MainMapDTO> getStoreImgList(Map<String, Object> params);
 
 	public List<MainImgDTO> getStoreImage(String storeId);
-	public List<MainImgDTO> getStoreSmallImage(String storeId);
+	//public List<MainImgDTO> getStoreSmallImage(String storeId);
+	public List<List<MainImgDTO>> getStoreSmallImages(List<String> storeIds);
+
+	//public List<MainReviewDTO> getReviewList(String userId);
+	public List<MainReviewDTO> getReviewList(Map<String, Object> params);
+	public List<MainReviewDTO> getPopularityList(Map<String, Object> params);
 
 	public void infoSave(String store_id,String store_menu_name,int store_menu_price,String store_menu_detail,String store_menu_category, String imagePath);
 	public String saveMenuImage(MultipartFile mul);

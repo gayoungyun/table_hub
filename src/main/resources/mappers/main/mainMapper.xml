@@ -31,10 +31,20 @@
 	<result property="store_img_root" column="store_img_root"/>
 	<result property="store_img_main" column="store_img_main"/>
 </resultMap>
+<resultMap type="com.hub.root.main.dto.MainReviewDTO" id="mainReview">
+	<id property="store_review_num" column="store_review_num"/>
+	<result property="store_id" column="store_id"/>
+	<result property="member_id" column="member_id"/>
+	<result property="store_review_body" column="store_review_body"/>
+	<result property="store_review_date_create" column="store_review_date_create"/>
+	<result property="booking_id" column="booking_id"/>
+</resultMap>
+
 
 <select id="mainPage1" resultMap="main">
 	select * from store_menu
 </select>
+<!-- 
 <select id="getAllCategories" resultType="String">
     SELECT DISTINCT store_menu_category FROM store_menu
 </select>
@@ -44,7 +54,18 @@
     JOIN store_info i ON m.store_id = i.store_id 
     WHERE i.store_category = #{category}
 </select>
+  -->
  
+<select id="getAllCategories" resultType="String">
+	SELECT DISTINCT store_category FROM store_info
+</select>
+<select id="getStoreImgToMain" resultMap="mainImg">
+ 	SELECT * FROM store_img 
+    WHERE store_id = #{storeId} 
+    AND store_img_main = 9
+    ORDER BY store_img_root DESC 
+</select>
+
 
 <select id="getStoreByLocation" resultMap="main">
     SELECT 
@@ -81,8 +102,7 @@
 	SELECT si.*
 	FROM store_info si
 	LEFT JOIN store_menu sm ON sm.store_id = si.store_id
-	WHERE
-	<trim prefixOverrides="AND|OR">
+	<where>
 		<if test="params.keyword != null and params.keyword != ''">
 			<choose>
 				<when test="params.searchType == 'menu_name'">
@@ -98,9 +118,9 @@
 			</choose>
 		</if>
 		<if test="params.category != null and params.category != ''">
-			AND store_category LIKE '%' || #{params.category} ||'%'
+			AND si.store_category LIKE #{params.category} 
 		</if>
-	</trim>
+	</where>
 </select>
 
 <!-- 
@@ -153,6 +173,35 @@
     WHERE si.store_category LIKE '%' || #{category} || '%'
 </select>
  
+ 
+ <!-- 
+ <select id="getReview" resultMap="mainReview">
+ 	select B.* 
+ 	from (select rownum rn, A.* 
+ 	from (select * from store_review where member_id = #{member_id} 
+ 	order by store_review_num ) A ) B
+ 	where rn between #{start} and #{end}		
+ </select>
+  -->
+  
+<select id="getPopularityList" resultMap="mainReview">
+    SELECT sr.*, mi.*
+    FROM store_review sr
+    LEFT JOIN member_info mi ON sr.member_id = mi.member_id
+    ORDER BY sr.store_review_score DESC
+</select>
+
+<select id="getReviewList" resultMap="mainReview">
+    SELECT sr.*, mi.*
+    FROM store_review sr
+    LEFT JOIN member_info mi ON sr.member_id = mi.member_id
+    ORDER BY sr.store_review_score DESC
+</select>
+
+  
+  
+  
+  
 <!--  
 <select id="getMenuImage" resultMap="main">
 	SELECT sm.store_menu_img
@@ -202,46 +251,19 @@
 </select>
  -->
 
-<!-- 
-<select id="getMenuImage" resultMap="main">
-    SELECT sm.store_menu_img
-    FROM store_menu sm
-    JOIN store_info si ON sm.store_id = si.store_id
-    <where>
-        <if test="params != null and params.keyword != null and params.keyword != ''">
-            <choose>
-                <when test="params.searchType == 'menu_name'">
-                    si.store_name LIKE '%' || #{params.keyword} || '%'
-                </when>
-                <when test="params.searchType == 'menu_category'">
-                    sm.store_menu_category LIKE '%' || #{params.keyword} || '%'
-                </when>
-                <otherwise>
-                    si.store_name LIKE '%' || #{params.keyword} || '%'
-                    OR sm.store_menu_category LIKE '%' || #{params.keyword} || '%'
-                </otherwise>
-            </choose>
-        </if>
-        <if test="params != null and params.category != null and params.category != ''">
-            AND sm.store_menu_category LIKE '%' || #{params.category} || '%'
-        </if>
-    </where>
-</select>
- -->
-
 
 
 
 
 
 <insert id="infoSave">
-	insert into store_menu(store_id, store_menu_img, store_menu_name, store_menu_price,
-		store_menu_detail, store_menu_category) values(#{store_id},#{store_menu_img},
-		#{store_menu_name},#{store_menu_price},#{store_menu_detail},#{store_menu_category})
+	insert into store_menu(store_id, store_menu_img, store_menu_name, store_menu_price, store_menu_detail, store_menu_category) 
+	values (#{store_id},#{store_menu_img},#{store_menu_name},#{store_menu_price},#{store_menu_detail},#{store_menu_category})
 </insert>
 
 <insert id="saveImagePathToStoreImg">
-    INSERT INTO store_img (STORE_ID, STORE_IMG_ROOT, STORE_IMG_MAIN) VALUES (#{store_id}, #{store_img_root}, #{store_img_main})
+    INSERT INTO store_img (STORE_ID, STORE_IMG_ROOT, STORE_IMG_MAIN) 
+    VALUES (#{store_id}, #{store_img_root}, #{store_img_main})
 </insert>
 
 <insert id="storeSave" >

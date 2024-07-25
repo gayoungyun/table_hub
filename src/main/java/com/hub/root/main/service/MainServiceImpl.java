@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.hub.root.main.dto.MainDTO;
 import com.hub.root.main.dto.MainImgDTO;
 import com.hub.root.main.dto.MainMapDTO;
+import com.hub.root.main.dto.MainReviewDTO;
 import com.hub.root.main.mybatis.mainMapper;
 
 @Service
@@ -24,13 +25,46 @@ public class MainServiceImpl implements MainService{
 	MainFileService mfs;
 	@Override
 	public List<MainDTO> mainPage1(Model model) {
+		try {
 		List<MainDTO> dtoList = mapper.mainPage1();
 		model.addAttribute("dtoList", dtoList);
 		return dtoList;
+		 } catch (Exception e) {
+	            e.printStackTrace(); // 콘솔에 예외 스택 트레이스 출력
+	            throw new RuntimeException("Error fetching main page data", e);
+	        }
 	}
+
+	@Override
+	public List<List<MainImgDTO>> getStoreImgToMain(List<String> storeIds){
+		try {
+		List<List<MainImgDTO>> storeImgToMain = new ArrayList<>();
+		for (String storeId : storeIds) {
+			List<MainImgDTO> storeImageToMain = mapper.getStoreImgToMain(storeId);
+			 System.out.println("Store ID: " + storeId + ", Images: " + storeImageToMain);
+			storeImgToMain.add(storeImageToMain);
+		}
+		return storeImgToMain;
+		 } catch (Exception e) {
+	            e.printStackTrace(); // 콘솔에 예외 스택 트레이스 출력
+	            throw new RuntimeException("Error fetching store images", e);
+	        }
+	}
+
 	@Override
 	public List<String> getAllCategories() {
-		List<String> categories = mapper.getAllCategories();
+		  System.out.println("Entering getAllCategories");
+		  List<String> categories = mapper.getAllCategories();
+		    System.out.println("categories from mapper: " + categories);
+	      if (mapper == null) {
+	            System.err.println("Error: mainMapper is not injected!");
+	            return new ArrayList<>(); // 빈 리스트 반환
+	        }
+
+		//List<String> categories = mapper.getAllCategories();
+		if (categories == null) {
+            categories = new ArrayList<>();  // Null 체크 후 빈 리스트로 초기화
+        }
 	    Set<String> uniqueCategories = new HashSet<>();
 	    for (String category : categories) {
 	        String[] splitCategories = category.split("/");
@@ -38,22 +72,48 @@ public class MainServiceImpl implements MainService{
 	            uniqueCategories.add(splitCategory.trim());
 	        }
 	    }
+	    System.out.println("Exiting getAllCategories with categories: " + uniqueCategories);
 	    return new ArrayList<>(uniqueCategories);
 	}
-	@Override
-	public List<MainDTO> getMenuByCategory(String category){
-		return mapper.getMenuByCategory(category);
-	}
+
+//	public List<MainImgDTO> getStoreImg(String category){
+//		return mapper.getStoreImg(category);
+//	}
+
+//	public List<MainDTO> getStoreByLocation(double latitude, double longitude){
+//		return mapper.findStoreByLocation(latitude, longitude);
+//	}
 
 	@Override
-	public List<MainDTO> getStoreByLocation(double latitude, double longitude){
-		return mapper.findStoreByLocation(latitude, longitude);
-	}
+	public List<MainReviewDTO> getPopularityList(Map<String, Object> params) {
+        return mapper.getPopularityList(params);
+    }
 
-	@Override
+    @Override
+	public List<MainReviewDTO> getReviewList(Map<String, Object> params) {
+        return mapper.getReviewList(params);
+    }
+
+//	public List<MainMapDTO> getStoreInfo(Map<String, Object> params) {
+//		return mapper.getStoreInfo(params);
+//	}
+    @Override
 	public List<MainMapDTO> getStoreInfo(Map<String, Object> params) {
-		return mapper.getStoreInfo(params);
-	}
+        try {
+        	System.out.println("Parameters in Service: " + params);
+            List<MainMapDTO> storeInfo = mapper.getStoreInfo(params);
+            if (storeInfo == null || storeInfo.isEmpty()) {
+                System.out.println("No store information found for the given parameters.");
+            } else {
+                System.out.println("storeInfo size: " + storeInfo.size());
+            }
+            return storeInfo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 	@Override
 	public List<MainMapDTO> getStoreInfoByCategory(String category) {
@@ -72,9 +132,23 @@ public class MainServiceImpl implements MainService{
 	public List<MainImgDTO> getStoreImage(String storeId) {
 		return mapper.getStoreImage(storeId);
 	}
+//	public List<MainImgDTO> getStoreSmallImage(String storeId) {
+//		return mapper.getStoreSmallImage(storeId);
+//	}
 	@Override
-	public List<MainImgDTO> getStoreSmallImage(String storeId) {
-		return mapper.getStoreSmallImage(storeId);
+	public List<List<MainImgDTO>> getStoreSmallImages(List<String> storeIds) {
+	    List<List<MainImgDTO>> storeSmallImgLists = new ArrayList<>();
+	    for (String storeId : storeIds) {
+	        List<MainImgDTO> storeSmallImages = mapper.getStoreSmallImage(storeId);
+	        storeSmallImgLists.add(storeSmallImages);
+	    }
+	    return storeSmallImgLists;
+	}
+
+
+
+	public List<MainReviewDTO> getReviewList(String userId){
+		return mapper.getReviewList(userId);
 	}
 	public int inputInfo(MainDTO dto) {
 		try {

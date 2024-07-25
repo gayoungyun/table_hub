@@ -32,27 +32,26 @@
 		</div>
 	
 		<div class="main-photo">
-			<img src="resources\img\Boseon\카페 결\결01.jpg">
+			<img src="/root/businessM/download?img=${mainImg}">
 		</div>
 	
 		<div class="store_name">
-		    <span style="color: gray;">종로 | </span>
-		    <span style="color: gray;">브런치카페, 디저트</span><br>
-		    <span style="font-size: 50px; font-weight: bold;">결</span><br>
+		    <span style="color: gray;">${infoDTO.store_add} | </span>
+		    <span style="color: gray;">${infoDTO.store_category} </span><br>
+		    <span style="font-size: 50px; font-weight: bold;">${infoDTO.store_name}</span><br>
 		    
 		    <img src="resources/img/Boseon/보정/별.png" width="15px"> 4.3 &nbsp;&nbsp;&nbsp;
 		    리뷰 <a href=""><span style="color: #397BE6;">135</span></a> &nbsp;&nbsp;&nbsp;
-		    <img src="resources/img/Boseon/보정/하트.png" width="15px"> 32
+		    <img src="resources/img/Boseon/보정/하트.png" width="15px"> ${totalBookmark}
 		    <br><br>
 		    
-		    <span style="font-size: 18px;">#까눌레&nbsp;#브런치&nbsp;#커피&nbsp;#디저트맛집</span>
+		    <span style="font-size: 18px; visibility: hidden;">#&nbsp;#&nbsp;#&nbsp;#</span>
 		</div>
 	
 		<div class="review-photo">
-			<img src="resources\img\Boseon\카페 결\결01_4.jpg">
-			<img src="resources\img\Boseon\카페 결\결02.jpg">
-			<img src="resources\img\Boseon\카페 결\결02_2.jpg">
-			<img src="resources\img\Boseon\카페 결\결02_3.jpg">
+			<c:forEach var="img" items="${storeImg}">
+                <img src="/root/businessM/download?img=${img}">
+            </c:forEach>
 		</div>
 		
 		<div class="categories">
@@ -71,10 +70,16 @@
 		
 	</div>
 </div>
+	<div class="div_footer">
+		<footer class="footer">
+			<%@ include file="../main/footer.jsp" %>
+		</footer>
+	</div>
 
-<footer class="footer">
-<%@ include file="../main/footer.jsp" %>
-</footer>
+<script type="text/javascript">
+	
+
+</script>
 
 </body>
 </html>
