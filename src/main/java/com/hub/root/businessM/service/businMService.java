@@ -198,7 +198,11 @@ public class businMService {
 	
 	//이미지 저장경로 \\\\192.168.42.40\\공유폴더\\tableHub\\businessM
 	// 업로드된 파일을 저장할 경로
+<<<<<<< HEAD
 	private static String UPLOAD_FOLDER = "C:/tablehub_image/businessM";
+=======
+	private static String UPLOAD_FOLDER = "C:/tablehub_image/businessM"; //수정
+>>>>>>> 77d555b8e30ea19a5ee515443088027e3d18bcde
 	public String storeImage(HttpServletRequest request,
 				MultipartFile file01, MultipartFile file02, MultipartFile file03, 
 				MultipartFile file04, MultipartFile file05) {
