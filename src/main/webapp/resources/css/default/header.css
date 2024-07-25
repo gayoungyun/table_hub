@@ -55,7 +55,10 @@
 		/* 드롭다운 목록 옵션 스타일 */
 		
 		#search_category option {
-		    color: white; /* 드롭다운 목록 글자색 설정 */
+		    color: gray; /* 드롭다운 목록 글자색 설정 */
+		}
+		#search_category option .search_option:hover {
+			color: green; 
 		}
 		.search {
 			display:flex;

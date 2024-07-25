@@ -176,11 +176,11 @@ public class businMController {
 		public void download(@RequestParam String img, HttpServletResponse res) throws Exception {
 	    	System.out.println("businMCont download 실행");
 	    	String originImgName = img;
+	    	 System.out.println("Requested image: " + img); // 추가된 로그
 	    	
 			res.setContentType("text/plain; charset=utf-8");
 			res.addHeader("Content-disposition", "attachment;fileName="+URLEncoder.encode(img, "UTF-8"));
 			File file;
-			
 			
 			// 해당 파일을 불러온다.
 			file = new File(ser.DOWNLOAD_FOLDER + "/" + img);	
@@ -190,7 +190,10 @@ public class businMController {
 				FileInputStream in = new FileInputStream(file);
 				FileCopyUtils.copy(in, res.getOutputStream());
 				in.close();			
-			}
+			} else {
+		        System.err.println("File not found: " + file.getAbsolutePath()); // 추가된 로그
+		        res.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
+		    }
 		}
 		
 		// 구현 작업 영역 end

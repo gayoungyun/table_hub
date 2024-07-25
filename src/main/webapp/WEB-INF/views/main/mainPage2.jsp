@@ -148,7 +148,7 @@
         border-radius: 5px;
         cursor: pointer;
         z-index: 1000;
-        margin-left: 300px;
+        margin-left: 474px;
      }
      .loc_btn1 {
         padding: 10px 20px;
@@ -298,31 +298,51 @@
 				</div>
 				
 				<!-- ===== 위치가져오기, 상세보기 부분 ===== -->
-				<div class="location-condition">
-					<span>서울 종로구 계동 #한식</span>
-					<button class="loc_btn" >현 위치로 설정</button>
-					<button class="loc_btn1" onclick="getOtherLocation()">다른 지역 선택</button>
-				</div>
-				
-				<!-- ===== 메뉴 상세보기 부분 ===== -->
 				<c:choose>
 			    <c:when test="${not empty storeList}">
 			        <c:forEach var="store" items="${storeList}" varStatus="status">
+					<div class="location-condition">		
+						<c:if test="${not empty store.store_category}">
+	                        <span># 
+	                        <c:set var="seenCategories" value="" />
+	                        
+	                        <!-- 특정 카테고리로 검색 시 -->
+	                        <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
+	                            <c:if test="${fn:contains(category, param.keyword)}">
+	                                <c:if test="${not fn:contains(seenCategories, category)}">
+	                                    <c:if test="${!empty seenCategories}">
+	                                        /
+	                                    </c:if>
+	                                    ${category}
+	                                    <c:set var="seenCategories" value="${seenCategories}${category}/" />
+	                                </c:if>
+	                            </c:if>
+	                        </c:forEach>
+	                        
+                        	</span><br>
+                 	    </c:if>
+					</div>
+					<div class="location-condition">
+						<button class="loc_btn" >현 위치로 설정</button>
+						<button class="loc_btn1" onclick="getOtherLocation()">다른 지역 선택</button>
+					</div>
+				
+					<!-- ===== 메뉴 상세보기 부분 ===== -->
 			            <div class="menu-detail" id="listItem${status.index}" >
 			                <div class="detail-container-left">
 			                
 			                    <div class="menu-detail-imgBig">
 								    <c:if test="${not empty storeImgList[status.index]}">
-								        <!-- <img class="imgBig" src="${path}/main/download?fileName=${storeImgList[status.index].store_img_root}" alt="Store Image">  -->
-								    	<img class="imgBig" src="\\\\C:\\tablehub_image\\businessM\\${storeImgList[status.index].store_img_root}" alt="Store Image">
+								        <img class="imgBig" src="${path}/businessM/download?img=${fn:substringAfter(storeImgList[status.index].store_img_root, 'C:\\tablehub_image\\businessM\\')}" alt="Store Image">  
+								    	<!-- <img class="imgBig" src="C:\\tablehub_image\\businessM\\${storeImgList[status.index].store_img_root}" alt="Store Image">-->
 								    </c:if>
 								</div>
 								<div class="menu-detail-imgSmall">
-									<c:forEach var="smallImg" items="${storeSmallImgList}" begin="1" end="3">
+									<c:forEach var="smallImg" items="${storeSmallImgLists[status.index]}" begin="0" end="2">
 								        <c:if test="${not empty smallImg}">
 								            <div class="imgSmall1${status.index }">
-								                <!-- <img class="imgSmall" src="${path}/main/download?fileName=${smallImg.store_img_root}" alt="Store Menu Image">-->
-								            	<img class="imgSmall" src="\\\\C:\\tablehub_image\\businessM\\${smallImg.store_img_root}" alt="Store Menu Image"> 
+								                <img class="imgSmall" src="${path}/businessM/download?img=${fn:substringAfter(smallImg.store_img_root, 'C:\\tablehub_image\\businessM\\')}" alt="Store Menu Image">
+								            	<!-- <img class="imgSmall" src="C:\\tablehub_image\\businessM\\${smallImg.store_img_root}" alt="Store Menu Image"> -->
 								            </div>
 								        </c:if>
 								  	</c:forEach>
@@ -385,11 +405,23 @@
                                     <c:if test="${not empty store.store_business_hours}">
                                         <span>영업 시간 : ${store.store_business_hours}</span><br>
                                     </c:if>
-                                    <a href="${path}/store" class="detail-link">상세 페이지로 이동</a>
+                                    <a href="${path}/store?store_id=${store.store_id}" class="detail-link">상세 페이지로 이동</a>
+                         
                                 </div>
                             </div>
                         </c:forEach>
                     </c:when>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                     <c:when test="${not empty popularityList}">
 			        <c:forEach var="store" items="${popularityList}" varStatus="status">
 			            <div class="menu-detail" id="listItem${status.index}" >
@@ -397,16 +429,14 @@
 			                
 			                    <div class="menu-detail-imgBig">
 								    <c:if test="${not empty storeImgList[status.index]}">
-								        <!-- <img class="imgBig" src="${path}/main/download?fileName=${storeImgList[status.index].store_img_root}" alt="Store Image">  -->
-								    	<img class="imgBig" src="\\\\192.168.42.40\\공유폴더\\tableHub\\businessM\\${storeImgList[status.index].store_img_root}" alt="Store Image">
+								       <img class="imgBig" src="${path}/businessM/download?img=${fn:substringAfter(storeImgList[status.index].store_img_root, 'C:\\tablehub_image\\businessM\\')}" alt="Store Image">  
 								    </c:if>
 								</div>
 								<div class="menu-detail-imgSmall">
 									<c:forEach var="smallImg" items="${storeSmallImgList}" begin="1" end="3">
 								        <c:if test="${not empty smallImg}">
 								            <div class="imgSmall1${status.index }">
-								                <!-- <img class="imgSmall" src="${path}/main/download?fileName=${smallImg.store_img_root}" alt="Store Menu Image">-->
-								            	<img class="imgSmall" src="\\\\192.168.42.40\\공유폴더\\tableHub\\businessM\\${smallImg.store_img_root}" alt="Store Menu Image"> 
+								                <img class="imgSmall" src="${path}/businessM/download?img=${fn:substringAfter(smallImg.store_img_root, 'C:\\tablehub_image\\businessM\\')}" alt="Store Menu Image">
 								            </div>
 								        </c:if>
 								  	</c:forEach>
@@ -469,7 +499,7 @@
                                     <c:if test="${not empty store.store_business_hours}">
                                         <span>영업 시간 : ${store.store_business_hours}</span><br>
                                     </c:if>
-                                    <a href="${path}/store" class="detail-link">상세 페이지로 이동</a>
+                                    <a href="${path}/businMmenu" class="detail-link">상세 페이지로 이동</a>
                                 </div>
                             </div>
                         </c:forEach>
@@ -481,16 +511,14 @@
 			                
 			                    <div class="menu-detail-imgBig">
 								    <c:if test="${not empty storeImgList[status.index]}">
-								        <!-- <img class="imgBig" src="${path}/main/download?fileName=${storeImgList[status.index].store_img_root}" alt="Store Image">  -->
-								    	<img class="imgBig" src="\\\\192.168.42.40\\공유폴더\\tableHub\\businessM\\${storeImgList[status.index].store_img_root}" alt="Store Image">
+								        <img class="imgBig" src="${path}/businessM/download?img=${fn:substringAfter(storeImgList[status.index].store_img_root, 'C:\\tablehub_image\\businessM\\')}" alt="Store Image">  
 								    </c:if>
 								</div>
 								<div class="menu-detail-imgSmall">
 									<c:forEach var="smallImg" items="${storeSmallImgList}" begin="1" end="3">
 								        <c:if test="${not empty smallImg}">
 								            <div class="imgSmall1${status.index }">
-								                <!-- <img class="imgSmall" src="${path}/main/download?fileName=${smallImg.store_img_root}" alt="Store Menu Image">-->
-								            	<img class="imgSmall" src="\\\\192.168.42.40\\공유폴더\\tableHub\\businessM\\${smallImg.store_img_root}" alt="Store Menu Image"> 
+								                <img class="imgSmall" src="${path}/businessM/download?img=${fn:substringAfter(smallImg.store_img_root, 'C:\\tablehub_image\\businessM\\')}" alt="Store Menu Image">
 								            </div>
 								        </c:if>
 								  	</c:forEach>
@@ -553,7 +581,7 @@
                                     <c:if test="${not empty store.store_business_hours}">
                                         <span>영업 시간 : ${store.store_business_hours}</span><br>
                                     </c:if>
-                                    <a href="${path}/store" class="detail-link">상세 페이지로 이동</a>
+                                    <a href="${path}/businMmenu" class="detail-link">상세 페이지로 이동</a>
                                 </div>
                             </div>
                         </c:forEach>

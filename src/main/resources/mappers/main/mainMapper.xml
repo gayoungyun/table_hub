@@ -44,6 +44,7 @@
 <select id="mainPage1" resultMap="main">
 	select * from store_menu
 </select>
+<!-- 
 <select id="getAllCategories" resultType="String">
     SELECT DISTINCT store_menu_category FROM store_menu
 </select>
@@ -53,7 +54,18 @@
     JOIN store_info i ON m.store_id = i.store_id 
     WHERE i.store_category = #{category}
 </select>
+  -->
  
+<select id="getAllCategories" resultType="String">
+	SELECT DISTINCT store_category FROM store_info
+</select>
+<select id="getStoreImgToMain" resultMap="mainImg">
+ 	SELECT * FROM store_img 
+    WHERE store_id = #{storeId} 
+    AND store_img_main = 9
+    ORDER BY store_img_root DESC 
+</select>
+
 
 <select id="getStoreByLocation" resultMap="main">
     SELECT 
@@ -106,7 +118,7 @@
 			</choose>
 		</if>
 		<if test="params.category != null and params.category != ''">
-			AND store_category LIKE '%' || #{params.category} ||'%'
+			AND si.store_category LIKE #{params.category} 
 		</if>
 	</where>
 </select>
@@ -245,13 +257,13 @@
 
 
 <insert id="infoSave">
-	insert into store_menu(store_id, store_menu_img, store_menu_name, store_menu_price,
-		store_menu_detail, store_menu_category) values(#{store_id},#{store_menu_img},
-		#{store_menu_name},#{store_menu_price},#{store_menu_detail},#{store_menu_category})
+	insert into store_menu(store_id, store_menu_img, store_menu_name, store_menu_price, store_menu_detail, store_menu_category) 
+	values (#{store_id},#{store_menu_img},#{store_menu_name},#{store_menu_price},#{store_menu_detail},#{store_menu_category})
 </insert>
 
 <insert id="saveImagePathToStoreImg">
-    INSERT INTO store_img (STORE_ID, STORE_IMG_ROOT, STORE_IMG_MAIN) VALUES (#{store_id}, #{store_img_root}, #{store_img_main})
+    INSERT INTO store_img (STORE_ID, STORE_IMG_ROOT, STORE_IMG_MAIN) 
+    VALUES (#{store_id}, #{store_img_root}, #{store_img_main})
 </insert>
 
 <insert id="storeSave" >

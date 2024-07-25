@@ -63,9 +63,9 @@
 			<div class="search">
 	            <form id="searchForm" action="${path}/main/mainPage2" method="get">
 	                <select id="search_category" name="searchType">
-	                    <option value="all">ALL</option>
-	                    <option value="menu_name">Store Name</option>
-	                    <option value="menu_category">Menu Category</option>
+	                    <option value="all" class="search_option">ALL</option>
+	                    <option value="menu_name" class="search_option">Store Name</option>
+	                    <option value="menu_category" class="search_option">Menu Category</option>
 	                </select>
 	                <input type="text" id="search_keyword" name="keyword" placeholder="search for..">
 	                <input type="hidden" id="search_category_hidden" name="category" value="">

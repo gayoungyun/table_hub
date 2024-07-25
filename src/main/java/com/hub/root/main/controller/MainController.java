@@ -51,44 +51,120 @@ public class MainController {
 	}
 	// mainPage1 요청 처리===================================
 	@GetMapping("mainPage1")
-	public String main( HttpSession session,Model model) {
+	public String main(@RequestParam(name="category", required=false) String category,
+						HttpSession session,Model model) {
+
 		String user = (String) session.getAttribute("userId");
 		String store = (String) session.getAttribute("storeId");
-	    
+		
+		Map<String, Object> params = new HashMap<>();
+		String cat = (category != null) ? category : "null";
+		params.put("category", category);
+		
+		System.out.println("parameter:" +params);
+		
 		if(user != null) {
 			model.addAttribute("user", user);
 		}	else if (store != null) {
 	        model.addAttribute("store", store);
 	    }
 		
-		List<String> categories = ms.getAllCategories();
-		List<MainDTO> dtoList = ms.mainPage1(model);
+		List<String> categories = ms.getAllCategories();//?
+		//List<MainDTO> dtoList = ms.mainPage1(model);//?
+		
+		List<MainMapDTO> storeList = ms.getStoreInfo(params);//?
+		
+		
+//		if (storeList.isEmpty()) {
+//	        System.out.println("No store information found for the given parameters.");
+//	        model.addAttribute("storeList", null);
+//	    } else {
+//	        List<String> storeIds = new ArrayList<>();
+//	        for (MainMapDTO storeInfo : storeList) {
+//	            storeIds.add(storeInfo.getStore_id());
+//	        } 
+		
+		List<String> storeIds = new ArrayList<>();
+	    for (MainMapDTO storeInfo : storeList) {
+	        storeIds.add(storeInfo.getStore_id());
+	    }	
+		
+		// 위에서 처리시 모든 store_id에 대해 이미지 추가 방식이므로, store_id별로 분리
+	    List<List<MainImgDTO>> storeImgToMain = ms.getStoreImgToMain(storeIds);
+		
+	    
+//	    for (List<MainImgDTO> imgList : storeImgToMain) {
+//	        for (MainImgDTO img : imgList) {
+//	            System.out.println("Store ID: " + img.getStore_id() + " Image Path: " + img.getStore_img_root());
+//	        }
+//	    }
+
+	    
+//	    // store_img 테이블에서 이미지를 가져오는 부분 추가
+//	    List<MainImgDTO> storeImgList = new ArrayList<>();
+//	    for(MainMapDTO storeInfo : storeList) {
+//	        List<MainImgDTO> storeImage = ms.getStoreImage(storeInfo.getStore_id());
+//	        if (!storeImage.isEmpty()) {
+//	            storeImgList.add(storeImage.get(0));
+//	        } else {
+//	            storeImgList.add(null); // 이미지가 없는 경우
+//	        }
+//	    }
+
+	    // 로그 추가
+	    System.out.println("Categories: " + categories);
+	    System.out.println("Store List: " + storeList);
+	    System.out.println("Store Images: " + storeImgToMain);
+		
 		model.addAttribute("categories", categories);
-		model.addAttribute("dtoList", dtoList);
+		//model.addAttribute("dtoList", dtoList);
+		model.addAttribute("storeImgToMain", storeImgToMain);
+		model.addAttribute("storeList", storeList);
+		//model.addAttribute("storeImgList", storeImgList);
 		return "main/mainPage1";
+	    
 	}
+	
+	
 	// mainPage1에 카테고리별 이미지 가져오기 =====================
-	@GetMapping("menuByCategory")
-	public String getMenuByCategory(@RequestParam String category, Model model) {
-		List<MainDTO> dtoList = ms.getMenuByCategory(category);
-		model.addAttribute("dtoList", dtoList);
-		return "main/mainPage1";
-	}
-	// mainPage1에 현재 위치 기반 가게 정보 가져오기 ===============
-	@PostMapping("/getStoresByLocation")
-	@ResponseBody
-	public ResponseEntity<?> getStoresByLocation(@RequestBody Map<String, Object> location) {
-	    double latitude = Double.parseDouble(location.get("latitude").toString());
-	    double longitude = Double.parseDouble(location.get("longitude").toString());
-	    //String address = location.get("address").toString();
-	    try {
-	        List<MainDTO> stores = ms.getStoreByLocation(latitude, longitude);
-	        return ResponseEntity.ok(stores);
-	    } catch (Exception e) {
-	    	e.printStackTrace();
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving stores: " + e.getMessage());
-	    }
-	}
+//	@GetMapping("menuByCategory")
+//	public String getMenuByCategory(@RequestParam String category, HttpSession session, Model model) {
+//		String user = (String) session.getAttribute("userId");
+//		String store = (String) session.getAttribute("storeId");
+//		
+//		//List<MainImgDTO> dtoList = ms.getMenuByCategory(category);
+//		List<String> categories = ms.getAllCategories();
+//		
+//		List<MainImgDTO> dtoList = ms.getStoreImg(category);
+//		
+//		List<String> storeIds = new ArrayList<>();
+//	    for (MainImgDTO storeInfo : dtoList) {
+//	        storeIds.add(storeInfo.getStore_id());
+//	    }	
+//		
+//		//List<List<MainImgDTO>> storeSmallImgLists = ms.getStoreSmallImages(storeIds);
+//		 
+//		//model.addAttribute("storeList", storeList);
+//		model.addAttribute("dtoList", dtoList);
+//		model.addAttribute("categories", categories);
+//		return "main/mainPage1";
+//	}
+	
+//	// mainPage1에 현재 위치 기반 가게 정보 가져오기 ===============
+//	@PostMapping("/getStoresByLocation")
+//	@ResponseBody
+//	public ResponseEntity<?> getStoresByLocation(@RequestBody Map<String, Object> location) {
+//	    double latitude = Double.parseDouble(location.get("latitude").toString());
+//	    double longitude = Double.parseDouble(location.get("longitude").toString());
+//	    //String address = location.get("address").toString();
+//	    try {
+//	        List<MainDTO> stores = ms.getStoreByLocation(latitude, longitude);
+//	        return ResponseEntity.ok(stores);
+//	    } catch (Exception e) {
+//	    	e.printStackTrace();
+//	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving stores: " + e.getMessage());
+//	    }
+//	}
 	/*
 	@Value("${kakao.api.key}")
 	private String kakaoApikey;
@@ -122,9 +198,15 @@ public class MainController {
 	                        @RequestParam(required=false) String category,
 	                        @RequestParam(required=false) String sortType,
 	                        HttpSession session, Model model) {   
-		//String user = (String) session.getAttribute("userId");
-		//String store = (String) session.getAttribute("storeId");
+		String user = (String) session.getAttribute("userId");
+		String store = (String) session.getAttribute("storeId");
 	    
+		if(user != null) {
+			model.addAttribute("user", user);
+		}	else if (store != null) {
+	        model.addAttribute("store", store);
+	    }
+		
 	    Map<String, Object> params = new HashMap<>();
 	    String key = (keyword != null) ? keyword : "null";
 	    String search = (searchType != null) ? searchType : "null";
@@ -157,6 +239,10 @@ public class MainController {
 	    	model.addAttribute("storeList", storeList);
 	    	
 	    	
+		List<String> storeIds = new ArrayList<>();
+	    for (MainMapDTO storeInfo : storeList) {
+	        storeIds.add(storeInfo.getStore_id());
+	    }	
 	    
 	    List<MainImgDTO> storeImgList = new ArrayList<>();
 	    for(MainMapDTO storeInfo : storeList) {
@@ -170,32 +256,29 @@ public class MainController {
 	          }
 	    }
 	    
-	    List<MainImgDTO> storeSmallImgList = new ArrayList<>();
-	    for(MainMapDTO storeInfo : storeList) {
-	    	List<MainImgDTO> storeSmallImage = ms.getStoreSmallImage(storeInfo.getStore_id());
-	    	  if (!storeSmallImage.isEmpty()) {
-	    		  int maxImages = Math.min(4, storeSmallImage.size());
-	    		  for(int i = 0; i < maxImages; i++) {
-	    			  storeSmallImgList.add(storeSmallImage.get(i));
-	              //System.out.println("image path: "+storeSmallImage.get(i).getStore_img_root());
-	    		  }
-	          } else {
-	        	  storeSmallImage.add(null); // 이미지가 없는 경우
-	          }
-	    }
-
-//	    List<MainReviewDTO> revList = new ArrayList<>();
-//	    for(MainReviewDTO storeInfo : revList) {
-//	    	List<MainReviewDTO> reviewList = ms.getReviewList(storeInfo.getMember_id());
+//	    List<MainImgDTO> storeSmallImgList = new ArrayList<>();
+//	    for(MainMapDTO storeInfo : storeList) {
+//	    	List<MainImgDTO> storeSmallImage = ms.getStoreSmallImage(storeInfo.getStore_id());
+//	    	  if (!storeSmallImage.isEmpty()) {
+//	    		  int maxImages = Math.min(4, storeSmallImage.size());
+//	    		  for(int i = 0; i < maxImages; i++) {
+//	    			  storeSmallImgList.add(storeSmallImage.get(i));
+//	              //System.out.println("image path: "+storeSmallImage.get(i).getStore_img_root());
+//	    		  }
+//	          } else {
+//	        	  storeSmallImage.add(null); // 이미지가 없는 경우
+//	          }
 //	    }
-	    
+
+	    // 위에서 처리시 모든 store_id에 대해 이미지 추가 방식이므로, store_id별로 분리
+	    List<List<MainImgDTO>> storeSmallImgLists = ms.getStoreSmallImages(storeIds);
 	    
 	    
 	    //model.addAttribute("storeList", storeList);
 	    model.addAttribute("storeListSize", storeList.size());
 	    //model.addAttribute("imgList", imgList);
 	    model.addAttribute("storeImgList", storeImgList);
-	    model.addAttribute("storeSmallImgList", storeSmallImgList);
+	    model.addAttribute("storeSmallImgLists", storeSmallImgLists);
 	    //model.addAttribute("revList", revList);
 	    }
 	    model.addAttribute("keyword", keyword);
