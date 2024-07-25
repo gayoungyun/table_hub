@@ -1,10 +1,10 @@
 package com.hub.root.store.DTO;
 
 public class storeMenuDTO {
-	
+
 	String store_menu_img, store_menu_name, store_menu_detail, store_menu_category;
 	int store_menu_price;
-	
+
 	public String getStore_menu_img() {
 		return store_menu_img;
 	}
@@ -35,6 +35,6 @@ public class storeMenuDTO {
 	public void setStore_menu_price(int store_menu_price) {
 		this.store_menu_price = store_menu_price;
 	}
-	
-	
+
+
 }

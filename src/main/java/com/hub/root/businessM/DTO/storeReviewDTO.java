@@ -48,7 +48,7 @@ public class storeReviewDTO {
 	public void setStoreReviewDateCreate(Date storeReviewDateCreate) {
 		this.storeReviewDateCreate = storeReviewDateCreate;
 	}
-	
-	
-	
+
+
+
 }

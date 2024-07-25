@@ -406,7 +406,6 @@
                                         <span>영업 시간 : ${store.store_business_hours}</span><br>
                                     </c:if>
                                     <a href="${path}/store?store_id=${store.store_id}" class="detail-link">상세 페이지로 이동</a>
-                         
                                 </div>
                             </div>
                         </c:forEach>

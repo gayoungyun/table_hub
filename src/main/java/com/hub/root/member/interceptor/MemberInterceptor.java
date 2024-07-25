@@ -15,7 +15,7 @@ public class MemberInterceptor extends HandlerInterceptorAdapter {
 			throws Exception {
 		HttpSession session = request.getSession();
 		System.out.println("interceptor LoginChk 실행");
-		
+
 		if (session.getAttribute("userId") == null) {
 			response.setContentType("text/html; charset=utf-8");
 			PrintWriter out = response.getWriter();
@@ -23,7 +23,7 @@ public class MemberInterceptor extends HandlerInterceptorAdapter {
 						+"location.href='/root/member/login';</script>");
 			return false;
 		}
-		
+
 		return true;
 	}
 

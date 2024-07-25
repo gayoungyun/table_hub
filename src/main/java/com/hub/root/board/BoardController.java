@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("board")
 public class BoardController {
 	@Autowired BoardService bs;
-	
+
 	@GetMapping("list")
 	public String board() {
 		return "board/list";

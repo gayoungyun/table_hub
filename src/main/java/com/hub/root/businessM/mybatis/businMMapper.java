@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
+
 import com.hub.root.businessM.DTO.businMDTO;
 import com.hub.root.businessM.DTO.storeReviewDTO;
 
-public interface businMMapper {	
+public interface businMMapper {
 	public businMDTO businMChk(@Param("store_id")String store_id);
 	public int register(businMDTO dto);
 	//public int storeImage01(@Param("file01Path") String file01Path, @Param("store_id")String store_id);

@@ -17,10 +17,10 @@ import com.hub.root.main.service.MainService;
 @RequestMapping("mainAPI")
 public class ApiController {
 	@Autowired MainService ms;
-	
+
 	@GetMapping("storeList")
 	public List<MainMapDTO> storeList(
-				@RequestParam(required=false) String keyword, 
+				@RequestParam(required=false) String keyword,
 				@RequestParam(required=false) String searchType,
 				@RequestParam(required=false) String category
 				) {
@@ -28,10 +28,10 @@ public class ApiController {
         params.put("keyword", !keyword.equals("null") ? keyword : "");
         params.put("searchType", !searchType.equals("null") ? searchType : "");
         params.put("category", !category.equals("null") ? category : "");
-		
+
         List<MainMapDTO> storeList123 = ms.getStoreInfo(params);
-        
+
         return storeList123;
 	}
-	
+
 }

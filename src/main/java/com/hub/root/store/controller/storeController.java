@@ -24,36 +24,37 @@ public class storeController {
 	private storeMenuDTO menuDTO;
 	private storeReviewDTO reviewDTO;
 	private storeReviewImgDTO reviewImgDTO;
-	
+
 	@Autowired
 	public storeController(storeService ser) {
 		this.ser = ser;
 		System.out.println("보선-가게 컨트롤러 생성자 실행");
 	}
-	
+
 	@GetMapping("store")
 	public String store(HttpServletRequest request, Model model,
-			@RequestParam(value="stord_id", required=false) String store_i) {
-		
+			@RequestParam(required=false) String store_id) {
+
 		HttpSession session = request.getSession();
-		
-		System.out.println("1111111111111111111111111111111111111 : " + store_i);
-	    String store_id = (String) session.getAttribute("storeId");
-		if(store_id == null) {
-			request.setAttribute("msg", "로그인이 필요한 서비스입니다");
-	        request.setAttribute("url", "member/login");
-	        
-	        return "businessM/businMalert";
-		}else {
-			Map<String, Object> Map = ser.store(request, store_id);
-			model.addAllAttributes(Map);
-			return "store/store";
-		}
+
+	System.out.println("1111111111111111111111111111111111111 : " + store_id);
+//	    String store_id = (String) session.getAttribute("storeId");
+//		if(store_id == null) {
+//			request.setAttribute("msg", "로그인이 필요한 서비스입니다");
+//	        request.setAttribute("url", "member/login");
+//
+//	        return "businessM/businMalert";
+//		}else {
+//			Map<String, Object> Map = ser.store(request, store_id);
+//			model.addAllAttributes(Map);
+//			return "store/store";
+//		}
+		return "store/store";
 	}
-	
+
 	@GetMapping("/store/info")
 	public String info(HttpServletRequest request, Model model) {
-		
+
 		HttpSession session = request.getSession();
 	    String store_id = (String) session.getAttribute("storeId");
 
@@ -61,22 +62,22 @@ public class storeController {
 		model.addAttribute(infoDTO);
 		return "store/info";
 	}
-	
+
 	@GetMapping("/store/menu")
 	public String menu(HttpServletRequest request, Model model) {
 		return "store/menu";
 	}
-	
+
 	@GetMapping("/store/review")
 	public String review(HttpServletRequest request, Model model) {
 		return "store/review";
 	}
-	
+
 	@GetMapping("/store/photo")
 	public String photo(HttpServletRequest request, Model model) {
 		return "store/photo";
 	}
-	
+
 	@GetMapping("/store/map")
 	public String map(HttpServletRequest request) {
 		return "store/map";

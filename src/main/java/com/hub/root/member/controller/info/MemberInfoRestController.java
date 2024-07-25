@@ -26,8 +26,8 @@ import com.hub.root.member.service.info.MemberInfoService;
 @RequestMapping("member/myPage")
 public class MemberInfoRestController {
 	@Autowired MemberInfoService mis;
-	
-	
+
+
     @PostMapping(value="memberImgModify", produces = "application/json; charset=utf-8")
 	public String memberImgModify(MultipartHttpServletRequest file, HttpSession session) {
     	System.out.println("memInfoRestCont memberImgModify 실행");
@@ -38,17 +38,17 @@ public class MemberInfoRestController {
 		} else {
 			msg = "저장하는 과정에서 문제가 발생하였습니다. 새로고침후 다시 진행해주세요";
 		}
-		
+
 		return msg;
 	}
-    
+
     @PostMapping(value="memberImgDelete", produces = "application/json;charset=utf-8")
     public String memberImgDelete(@RequestBody Map<String, Object> map) {
     	System.out.println("memInfoRestCont MemberImgDelete 실행");
     	String msg = mis.memberImgDelete((String)map.get("imgName"), (String)map.get("id"));
     	return msg;
     }
-    
+
     @PutMapping(value="memberNickModify", produces="application/json; charset=utf-8")
     public String memberNickModify(@RequestBody Map<String, Object> map, HttpSession session) {
     	System.out.println("memInfoRestCont memberNickModify 실행");
@@ -59,7 +59,7 @@ public class MemberInfoRestController {
     public String memberStatusModify(@RequestBody Map<String, Object> map, HttpSession session) {
     	System.out.println("memInfoRestCont memberStatusModify 실행");
     	String msg = mis.memberStatusModify((String)map.get("status"), (String)session.getAttribute("userId"));
-    	
+
     	return msg;
     }
     @PatchMapping(value="memberPhone", produces="application/json; charset=utf-8")
@@ -68,11 +68,11 @@ public class MemberInfoRestController {
     	String msg = mis.memberPhoneModify((String)map.get("phone"), (String)session.getAttribute("userId"));
     	return msg;
     }
-    
+
     @PatchMapping(value="memberEmail", produces="application/json; charset=utf-8")
     public Map<String, Object> memberEmail(@RequestBody Map<String, Object> map, HttpSession session, HttpServletRequest req) {
     	System.out.println("memInfoRestCont memberEmail 실행");
-    	
+
     	Cookie[] cookie = req.getCookies();
 		String code = (String)map.get("code");
 
@@ -83,7 +83,7 @@ public class MemberInfoRestController {
 					email = c.getValue();
 					break;
 				}
-			}			
+			}
 		}
 		String ses = (String)session.getAttribute(email);
 		int result;
@@ -93,10 +93,10 @@ public class MemberInfoRestController {
 			map.put("result", -1);
 			map.put("msg", "인증코드가 일치하지 않습니다. 다시 확인해주세요");
 		}
-		
+
     	return map;
     }
-    
+
     @PatchMapping(value="memberPassword", produces="application/json; charset=utf-8")
     public Map<String, Object> memberPassword (@RequestBody Map<String, Object> map, HttpSession session) {
     	System.out.println("memInfoRestCont memberPassword 실행");
@@ -108,16 +108,16 @@ public class MemberInfoRestController {
     	}
     	return map;
     }
-    
-     
-    
-    
+
+
+
+
     @GetMapping(value="bookingReady", produces="application/json; charset=utf-8")
     public Map<String, Object> bookingReady(HttpSession session, @RequestParam String page) {
     	System.out.println("memInfoRestCont bookingReady 실행");
     	String id = (String)session.getAttribute("userId");
     	Map<String, Object> map = mis.getReadyBooking(page, id);
-    	
+
     	return map;
     }
     @GetMapping(value="bookingAlready", produces="application/json; charset=utf-8")
@@ -127,20 +127,20 @@ public class MemberInfoRestController {
     	Map<String, Object> map = mis.getAlreadyBooking(page, id);
     	return map;
     }
-    
+
     @GetMapping(value="getBookingInfo", produces="application/json; charset=utf-8")
-    public Map<String, Object> getBookingInfo (@RequestParam String storeId, 
+    public Map<String, Object> getBookingInfo (@RequestParam String storeId,
     					@RequestParam(value = "bookingId", required = false, defaultValue = "0") int bookingId) {
     	System.out.println("memInfoRestCont getBookingInfo 실행");
     	Map<String, Object> map = mis.getBookingInfo(storeId, bookingId);
     	return map;
     }
-    
+
     @DeleteMapping(value={"readyBooking", "alreadyBooking"}, produces="application/json; charset=utf-8")
     public String booking(@RequestParam int bookId) {
-    	System.out.println("memInfoRestCont readyBooking 실행"); 
+    	System.out.println("memInfoRestCont readyBooking 실행");
     	int result = mis.deleteBooking(bookId);
-    	
+
     	return null;
     }
 
@@ -156,7 +156,7 @@ public class MemberInfoRestController {
 		}
 		return map;
 	}
-    
+
 	@DeleteMapping(value="deleteUser")
 	public Map<String, Object> deleteUser(HttpSession session) {
 		System.out.println("memInfoRestCont deleteUser 실행");
@@ -164,21 +164,21 @@ public class MemberInfoRestController {
 		session.invalidate();
 		return map;
 	}
-	
+
 	@GetMapping(value="board", produces="application/json; charset=utf-8")
 	public Map<String, Object> getBoard(HttpSession session, @RequestParam String page) {
 		System.out.println("memInfoRestCont getBoard 실행");
 		Map<String, Object> map = mis.getBoard((String)session.getAttribute("userId"), page);
 		return map;
 	}
-	
+
 	@GetMapping(value="board/replyCount", produces="application/json; charset=utf-8")
 	public Map<String, Object> getBoardReplyCount(@RequestParam int boardId){
 		System.out.println("boardId : " + boardId);
 		Map<String, Object> map = mis.getBoardReplyCount(boardId);
 		return map;
 	}
-	
+
 	@DeleteMapping(value="board", produces="application/json; charset=utf-8")
 	public Map<String, Object> deleteBoard(@RequestBody Map<String, int[]> boards) {
 		System.out.println("memInfoRestCont deleteBoard 실행");
@@ -186,14 +186,14 @@ public class MemberInfoRestController {
 		Map<String, Object> map = mis.deleteBoard(boardsArr);
 		return map;
 	}
-	
+
 	@GetMapping(value="review", produces="application/json; charset=utf-8")
 	public Map<String, Object> getReview(HttpSession session, @RequestParam String page) {
 		System.out.println("memInfoRestCont getReview 실행");
 		Map<String, Object> map = mis.getReview((String)session.getAttribute("userId"), page);
 		return map;
 	}
-	
+
 	@GetMapping(value="review/reviewInfo", produces="application/json; charset=utf-8")
 	public Map<String, Object> getReviewStoreInfo(@RequestParam String storeId, @RequestParam int reviewNum) {
 		System.out.println("memInfoRestCont getReviewStoreName 실행");
@@ -201,7 +201,7 @@ public class MemberInfoRestController {
 		Map<String, Object> map = mis.getReviewInfo(storeId, reviewNum);
 		return map;
 	}
-	
+
 	@DeleteMapping(value="review", produces="application/json; charset=utf-8")
 	public Map<String, Object> deleteReview(@RequestBody Map<String, Object> map) {
 		System.out.println("memInfoRestCont deleteReview 실행");
@@ -209,10 +209,10 @@ public class MemberInfoRestController {
 		map = mis.deleteReview((int)map.get("storeNum"));
 		return map;
 	}
-	
-	
-	
-	/* 
+
+
+
+	/*
 	 * 게시판 불러오기 및 삭제하기
 	 */
 	@GetMapping(value="reply", produces="application/json; charset=utf-8")
@@ -233,7 +233,7 @@ public class MemberInfoRestController {
 		Map<String, Object> map = mis.getBoardInfo2(reviewId);
 		return map;
 	}
-	
+
 	@DeleteMapping(value="reply", produces="application/json; charset=utf-8")
 	public Map<String, Object> deleteReply(@RequestBody Map<String, int[]> replys) {
 		System.out.println("memInfoRestCont deleteReply 실행");
@@ -241,9 +241,9 @@ public class MemberInfoRestController {
 		Map<String, Object> map = mis.deleteReply(replysArr);
 		return map;
 	}
-	
-	
-	
+
+
+
 	// 내 활동 관리 상단의 내 정보 간략하게 표시하는 메뉴의 데이터 불러오기
 	@GetMapping(value="myContentMyInfo", produces="application/json; charset=utf-8")
 	public Map<String, Object> myContentMyInfo (HttpSession session, Model model) {
@@ -256,8 +256,8 @@ public class MemberInfoRestController {
 		map.put("userNick", userNick);
 		return map;
 	}
-	
-	
-	
-	
+
+
+
+
 }

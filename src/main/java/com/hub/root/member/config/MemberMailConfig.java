@@ -16,7 +16,7 @@ public class MemberMailConfig {
 		jms.setPort(587);
 		jms.setUsername("smooth9906@gmail.com");
 		jms.setPassword("gkes bqkc amir njop");
-		
+
 		Properties prop = new Properties();
 		prop.setProperty("mail.transport.protocol", "smtp");
 		prop.setProperty("mail.smtp.auth", "true");

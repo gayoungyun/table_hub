@@ -70,10 +70,16 @@
 		
 	</div>
 </div>
+	<div class="div_footer">
+		<footer class="footer">
+			<%@ include file="../main/footer.jsp" %>
+		</footer>
+	</div>
 
-<footer class="footer">
-<%@ include file="../main/footer.jsp" %>
-</footer>
+<script type="text/javascript">
+	
+
+</script>
 
 </body>
 </html>

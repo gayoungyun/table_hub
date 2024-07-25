@@ -10,7 +10,7 @@ public class MainReviewDTO {
 	public String member_id;
 	public String store_review_body;
 	public Date store_review_date_create;
-	
+
 	public int getStore_review_num() {
 		return store_review_num;
 	}
@@ -53,6 +53,6 @@ public class MainReviewDTO {
 	public void setStore_review_date_create(Date store_review_date_create) {
 		this.store_review_date_create = store_review_date_create;
 	}
-	
-	
+
+
 }

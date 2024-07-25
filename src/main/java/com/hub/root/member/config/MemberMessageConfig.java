@@ -7,7 +7,7 @@ import net.nurigo.sdk.message.service.DefaultMessageService;
 
 @Configuration
 public class MemberMessageConfig {
-	
+
 	public DefaultMessageService messageService = null;
 
     public MemberMessageConfig() {

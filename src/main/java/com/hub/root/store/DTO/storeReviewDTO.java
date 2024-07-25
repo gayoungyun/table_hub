@@ -3,11 +3,11 @@ package com.hub.root.store.DTO;
 import java.util.Date;
 
 public class storeReviewDTO {
-	
+
 	String store_id, member_id, store_review_body;
 	int store_review_num, store_review_score, booking_id;
 	Date store_review_date_create;
-	
+
 	public String getStore_id() {
 		return store_id;
 	}

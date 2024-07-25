@@ -7,7 +7,7 @@ public class MainDTO {
 	public String store_menu_detail;
 	public String store_menu_category;
 	public int store_menu_price;
-	
+
 	public String getStore_id() {
 		return store_id;
 	}
@@ -44,6 +44,6 @@ public class MainDTO {
 	public void setStore_menu_price(int store_mene_price) {
 		this.store_menu_price = store_mene_price;
 	}
-	
-	
+
+
 }

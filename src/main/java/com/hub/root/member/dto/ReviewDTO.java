@@ -6,7 +6,7 @@ public class ReviewDTO {
 	String storeId, memberId, body;
 	int num, score;
 	Date create;
-	
+
 	public String getStoreId() {
 		return storeId;
 	}
@@ -43,5 +43,5 @@ public class ReviewDTO {
 	public void setCreate(Date create) {
 		this.create = create;
 	}
-	
+
 }

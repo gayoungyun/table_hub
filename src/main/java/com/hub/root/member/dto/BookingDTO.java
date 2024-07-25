@@ -6,8 +6,8 @@ public class BookingDTO {
 	String storeId, memberId, time, phone;
 	Date date;
 	int person, status, id;
-	
-	
+
+
 	public int getId() {
 		return id;
 	}
@@ -56,6 +56,6 @@ public class BookingDTO {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
-	
+
+
 }

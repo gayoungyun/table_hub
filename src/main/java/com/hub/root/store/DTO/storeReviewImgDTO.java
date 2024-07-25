@@ -1,10 +1,10 @@
 package com.hub.root.store.DTO;
 
 public class storeReviewImgDTO {
-	
+
 	String store_id, store_review_img_image;
 	int store_review_num;
-	
+
 	public String getStore_id() {
 		return store_id;
 	}
@@ -23,7 +23,7 @@ public class storeReviewImgDTO {
 	public void setStore_review_num(int store_review_num) {
 		this.store_review_num = store_review_num;
 	}
-	
-	
+
+
 
 }

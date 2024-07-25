@@ -17,19 +17,19 @@ public interface MainService {
 	//public List<MainImgDTO> getMenuByCategory(String category);
 	//public List<MainImgDTO> getStoreImg(String category);
 	public List<List<MainImgDTO>> getStoreImgToMain(List<String> storeIds);
-	
+
 	//public List<MainDTO> getStoreByLocation(double latitude, double longitude);
-	
+
 	public List<MainMapDTO> getStoreInfo(Map<String, Object> params);
-	
+
 	public List<MainMapDTO> getStoreInfoByCategory(String category);
 	//public List<Map<String, Object>> getMenuImage(Map<String, Object> params);
 	//public List<MainMapDTO> getStoreImgList(Map<String, Object> params);
-	
+
 	public List<MainImgDTO> getStoreImage(String storeId);
 	//public List<MainImgDTO> getStoreSmallImage(String storeId);
 	public List<List<MainImgDTO>> getStoreSmallImages(List<String> storeIds);
-	
+
 	//public List<MainReviewDTO> getReviewList(String userId);
 	public List<MainReviewDTO> getReviewList(Map<String, Object> params);
 	public List<MainReviewDTO> getPopularityList(Map<String, Object> params);

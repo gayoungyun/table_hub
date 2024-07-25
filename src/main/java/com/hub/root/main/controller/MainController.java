@@ -3,9 +3,7 @@ package com.hub.root.main.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,30 +13,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.hub.root.main.dto.MainDTO;
 import com.hub.root.main.dto.MainImgDTO;
 import com.hub.root.main.dto.MainMapDTO;
 import com.hub.root.main.dto.MainReviewDTO;
 import com.hub.root.main.service.MainFileService;
 import com.hub.root.main.service.MainService;
-
-import retrofit2.http.GET;
 
 @Controller
 @RequestMapping("main")//main이라는 경로에 대한 요청
@@ -56,25 +43,25 @@ public class MainController {
 
 		String user = (String) session.getAttribute("userId");
 		String store = (String) session.getAttribute("storeId");
-		
+
 		Map<String, Object> params = new HashMap<>();
 		String cat = (category != null) ? category : "null";
 		params.put("category", category);
-		
+
 		System.out.println("parameter:" +params);
-		
+
 		if(user != null) {
 			model.addAttribute("user", user);
 		}	else if (store != null) {
 	        model.addAttribute("store", store);
 	    }
-		
+
 		List<String> categories = ms.getAllCategories();//?
 		//List<MainDTO> dtoList = ms.mainPage1(model);//?
-		
+
 		List<MainMapDTO> storeList = ms.getStoreInfo(params);//?
-		
-		
+
+
 //		if (storeList.isEmpty()) {
 //	        System.out.println("No store information found for the given parameters.");
 //	        model.addAttribute("storeList", null);
@@ -82,24 +69,24 @@ public class MainController {
 //	        List<String> storeIds = new ArrayList<>();
 //	        for (MainMapDTO storeInfo : storeList) {
 //	            storeIds.add(storeInfo.getStore_id());
-//	        } 
-		
+//	        }
+
 		List<String> storeIds = new ArrayList<>();
 	    for (MainMapDTO storeInfo : storeList) {
 	        storeIds.add(storeInfo.getStore_id());
-	    }	
-		
+	    }
+
 		// 위에서 처리시 모든 store_id에 대해 이미지 추가 방식이므로, store_id별로 분리
 	    List<List<MainImgDTO>> storeImgToMain = ms.getStoreImgToMain(storeIds);
-		
-	    
+
+
 //	    for (List<MainImgDTO> imgList : storeImgToMain) {
 //	        for (MainImgDTO img : imgList) {
 //	            System.out.println("Store ID: " + img.getStore_id() + " Image Path: " + img.getStore_img_root());
 //	        }
 //	    }
 
-	    
+
 //	    // store_img 테이블에서 이미지를 가져오는 부분 추가
 //	    List<MainImgDTO> storeImgList = new ArrayList<>();
 //	    for(MainMapDTO storeInfo : storeList) {
@@ -115,41 +102,41 @@ public class MainController {
 	    System.out.println("Categories: " + categories);
 	    System.out.println("Store List: " + storeList);
 	    System.out.println("Store Images: " + storeImgToMain);
-		
+
 		model.addAttribute("categories", categories);
 		//model.addAttribute("dtoList", dtoList);
 		model.addAttribute("storeImgToMain", storeImgToMain);
 		model.addAttribute("storeList", storeList);
 		//model.addAttribute("storeImgList", storeImgList);
 		return "main/mainPage1";
-	    
+
 	}
-	
-	
+
+
 	// mainPage1에 카테고리별 이미지 가져오기 =====================
 //	@GetMapping("menuByCategory")
 //	public String getMenuByCategory(@RequestParam String category, HttpSession session, Model model) {
 //		String user = (String) session.getAttribute("userId");
 //		String store = (String) session.getAttribute("storeId");
-//		
+//
 //		//List<MainImgDTO> dtoList = ms.getMenuByCategory(category);
 //		List<String> categories = ms.getAllCategories();
-//		
+//
 //		List<MainImgDTO> dtoList = ms.getStoreImg(category);
-//		
+//
 //		List<String> storeIds = new ArrayList<>();
 //	    for (MainImgDTO storeInfo : dtoList) {
 //	        storeIds.add(storeInfo.getStore_id());
-//	    }	
-//		
+//	    }
+//
 //		//List<List<MainImgDTO>> storeSmallImgLists = ms.getStoreSmallImages(storeIds);
-//		 
+//
 //		//model.addAttribute("storeList", storeList);
 //		model.addAttribute("dtoList", dtoList);
 //		model.addAttribute("categories", categories);
 //		return "main/mainPage1";
 //	}
-	
+
 //	// mainPage1에 현재 위치 기반 가게 정보 가져오기 ===============
 //	@PostMapping("/getStoresByLocation")
 //	@ResponseBody
@@ -168,7 +155,7 @@ public class MainController {
 	/*
 	@Value("${kakao.api.key}")
 	private String kakaoApikey;
-	
+
 	@PostMapping("/getAddr")
 	@ResponseBody
 	public ResponseEntity<?> getAddr(@RequestBody Map<String, Object> location) {
@@ -193,20 +180,20 @@ public class MainController {
 	*/
 	// mainPage2 요청 처리===================================
 	@RequestMapping("mainPage2")
-	public String mainPage2(@RequestParam(required=false) String keyword, 
+	public String mainPage2(@RequestParam(required=false) String keyword,
 	                        @RequestParam(required=false) String searchType,
 	                        @RequestParam(required=false) String category,
 	                        @RequestParam(required=false) String sortType,
-	                        HttpSession session, Model model) {   
+	                        HttpSession session, Model model) {
 		String user = (String) session.getAttribute("userId");
 		String store = (String) session.getAttribute("storeId");
-	    
+
 		if(user != null) {
 			model.addAttribute("user", user);
 		}	else if (store != null) {
 	        model.addAttribute("store", store);
 	    }
-		
+
 	    Map<String, Object> params = new HashMap<>();
 	    String key = (keyword != null) ? keyword : "null";
 	    String search = (searchType != null) ? searchType : "null";
@@ -218,7 +205,7 @@ public class MainController {
 	    params.put("sortType", sortType);
 
 	    //List<MainMapDTO> storeList = ms.getStoreInfo(params);
-	   
+
 //	    if (storeList == null) {
 //	        storeList = new ArrayList<>();
 //	    }
@@ -226,8 +213,8 @@ public class MainController {
 	   // if (imgList == null) {
 	     //   imgList = new ArrayList<>();
 	   // }
-	    
-	    
+
+
 	    if("review".equals(sortType)) {
 	    	List<MainReviewDTO> reviewList = ms.getReviewList(params);
 	    	model.addAttribute("reviewList", reviewList);
@@ -237,13 +224,13 @@ public class MainController {
 	    }else {
 	    	List<MainMapDTO> storeList = ms.getStoreInfo(params);
 	    	model.addAttribute("storeList", storeList);
-	    	
-	    	
+
+
 		List<String> storeIds = new ArrayList<>();
 	    for (MainMapDTO storeInfo : storeList) {
 	        storeIds.add(storeInfo.getStore_id());
-	    }	
-	    
+	    }
+
 	    List<MainImgDTO> storeImgList = new ArrayList<>();
 	    for(MainMapDTO storeInfo : storeList) {
 	    	List<MainImgDTO> storeImage = ms.getStoreImage(storeInfo.getStore_id());
@@ -255,7 +242,7 @@ public class MainController {
 	              storeImgList.add(null); // 이미지가 없는 경우
 	          }
 	    }
-	    
+
 //	    List<MainImgDTO> storeSmallImgList = new ArrayList<>();
 //	    for(MainMapDTO storeInfo : storeList) {
 //	    	List<MainImgDTO> storeSmallImage = ms.getStoreSmallImage(storeInfo.getStore_id());
@@ -272,8 +259,8 @@ public class MainController {
 
 	    // 위에서 처리시 모든 store_id에 대해 이미지 추가 방식이므로, store_id별로 분리
 	    List<List<MainImgDTO>> storeSmallImgLists = ms.getStoreSmallImages(storeIds);
-	    
-	    
+
+
 	    //model.addAttribute("storeList", storeList);
 	    model.addAttribute("storeListSize", storeList.size());
 	    //model.addAttribute("imgList", imgList);
@@ -288,7 +275,7 @@ public class MainController {
 
 	    return "main/mainPage2";
 	}
-	
+
 	// 정보 입력 페이지 요청 처리(store_menu)====================
 	@RequestMapping("inputInfo")
 	public String inputInfo() {
@@ -306,7 +293,7 @@ public class MainController {
 							HttpSession session, Model model) throws IOException{
 		String imagePath  = ms.saveMenuImage(mul);
 		String store = (String) session.getAttribute("storeId");
-	    
+
 		if(store != null) {
 			model.addAttribute("store", store);
 		}
