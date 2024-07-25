@@ -36,22 +36,21 @@ public class storeService {
 		String mainImg = mapper.storeImgMain(store_id);
 		storeImg = mapper.storeImg(store_id);
 		Integer totalBookmark = mapper.storeBookmark(store_id);
-
-		//reviewDTO = mapper.storeReview(store_id);
+		reviewDTO = mapper.storeReview(store_id);
 		//reviewImgDTO = mapper.storeReviewImg(store_id);
 
 		if(totalBookmark == null)
 			totalBookmark = 0;
 
-		//infoDTO.setStore_add(statefix(infoDTO.getStore_add()));
-
+		infoDTO.setStore_add(statefix(infoDTO.getStore_add()));
+		//infoDTO.setStore_category(infoDTO.getStore_category().replace("/", ", "));
 		mainImg = mainImgname(mainImg);
 		storeImg = Imgsname(storeImg);
 
 
 
 		System.out.println("보선--infoDTO확인--"
-						+"\n store_id : "+infoDTO.getStore_id()
+						+"\n store_category : "+infoDTO.getStore_category()
 						+"\n store_name : "+infoDTO.getStore_name()
 						+"\n store_add : "+infoDTO.getStore_add()
 						+"\n store_max_person : "+infoDTO.getStore_max_person()
@@ -77,12 +76,15 @@ public class storeService {
 
 	public String statefix(String store_add) {
 
-		String storeAdd = store_add;
-	    String[] parts = storeAdd.split(" ");
+	    String[] parts = store_add.split(" ");
+	    String state = parts[1];// 서울 가나다 > 가나다 할당 (인덱스 1번에 해당하는 문장)
+	    String stateFix = state.substring(0, 2); // 가나다 > 가나 만 할당 (인덱스 0번부터 1번까지)
+	    /* 안전한 변환을 위해 체크를 해서 할당하는 방식도 있으나 주소가 일관되게 들어오므로 체크없이 할당함
 	    String state = parts.length > 1 ? parts[1] : "";
 	    String statePrefix = state.length() >= 2 ? state.substring(0, 2) : "";
+	    */
 
-	    return statePrefix;
+	    return stateFix;
 	}
 
     public static String mainImgname(String mainImg) {

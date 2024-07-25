@@ -35,21 +35,14 @@ public class storeController {
 	public String store(HttpServletRequest request, Model model,
 			@RequestParam(required=false) String store_id) {
 
-		HttpSession session = request.getSession();
+		if(store_id == null) {
+			HttpSession session = request.getSession();
+		    store_id = (String) session.getAttribute("storeId");		
+		}
+			Map<String, Object> Map = ser.store(request, store_id);
+			model.addAllAttributes(Map);
+			return "store/store";
 
-	System.out.println("1111111111111111111111111111111111111 : " + store_id);
-//	    String store_id = (String) session.getAttribute("storeId");
-//		if(store_id == null) {
-//			request.setAttribute("msg", "로그인이 필요한 서비스입니다");
-//	        request.setAttribute("url", "member/login");
-//
-//	        return "businessM/businMalert";
-//		}else {
-//			Map<String, Object> Map = ser.store(request, store_id);
-//			model.addAllAttributes(Map);
-//			return "store/store";
-//		}
-		return "store/store";
 	}
 
 	@GetMapping("/store/info")
@@ -82,5 +75,18 @@ public class storeController {
 	public String map(HttpServletRequest request) {
 		return "store/map";
 	}
+	
+	/*
+	 	HttpSession session = request.getSession();
+	    String store_id = (String) session.getAttribute("storeId");
+		if(store_id == null) {
+			request.setAttribute("msg", "로그인이 필요한 서비스입니다");
+			request.setAttribute("url", "member/login");
+
+	        return "businessM/businMalert";
+	        } 
+	 
+	  
+	 * */
 }
 
