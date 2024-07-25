@@ -15,7 +15,7 @@
 }
 
 .nowTime {
-	width: 50%;
+	width: 70%;
 	display: flex;
 	justify-content: center;
 	align-items: center;	
@@ -38,7 +38,6 @@
 .book_button {
 	width: 300px;
 	height: 100px;
-	
 	border-radius: 10px;
 	cursor: pointer;
 }
@@ -53,7 +52,6 @@
 .table_wrapper{
 	display: inline-block;
 	width: 80%;
-	min-width: 800px;
 	
 	height: 30px;
 	flex-direction: row;
