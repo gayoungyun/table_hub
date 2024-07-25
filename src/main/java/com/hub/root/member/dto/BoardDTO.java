@@ -6,7 +6,7 @@ public class BoardDTO {
 	String title, content, memId;
 	Date create, modify;
 	int id, view;
-	
+
 	public String getTitle() {
 		return title;
 	}
@@ -49,6 +49,6 @@ public class BoardDTO {
 	public void setView(int view) {
 		this.view = view;
 	}
-	
-	
+
+
 }

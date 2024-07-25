@@ -4,7 +4,7 @@ public class MainImgDTO {
 	public String store_id;
 	public String store_img_root;
 	public int store_img_main;
-	
+
 	public String getStore_id() {
 		return store_id;
 	}

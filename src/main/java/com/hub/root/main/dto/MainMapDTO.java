@@ -13,8 +13,8 @@ public class MainMapDTO {
 	public String store_note;
 	public String store_introduce;
 	public String store_business_hours;
-	
-	
+
+
 	public String getStore_id() {
 		return store_id;
 	}
@@ -87,5 +87,5 @@ public class MainMapDTO {
 	public void setStore_business_hours(String store_business_hours) {
 		this.store_business_hours = store_business_hours;
 	}
-	
+
 }

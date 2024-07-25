@@ -6,7 +6,7 @@ public class ReplyDTO {
 	int reviewId, boardId;
 	String memberId, reviewContent;
 	Date reviewCreate;
-	
+
 	public int getReviewId() {
 		return reviewId;
 	}
@@ -37,6 +37,6 @@ public class ReplyDTO {
 	public void setReviewCreate(Date reviewCreate) {
 		this.reviewCreate = reviewCreate;
 	}
-	
-	
+
+
 }

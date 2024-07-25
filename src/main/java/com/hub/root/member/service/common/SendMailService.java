@@ -11,17 +11,17 @@ import org.springframework.stereotype.Service;
 public class SendMailService {
 
 	@Autowired JavaMailSender sender;
-	
 
-	
+
+
 	public void sendMail(String to, String subject, String body) {
 		MimeMessage message = sender.createMimeMessage();
-		
+
 		try {
 			MimeMessageHelper h = new MimeMessageHelper(message, true, "UTF-8");
 			h.setSubject(subject);
 			h.setTo(to);
-			
+
 			// true값이 있어야 html 형식으로 메일이 전달됨
 			h.setText(body, true);
 			sender.send(message);
@@ -29,6 +29,6 @@ public class SendMailService {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 }

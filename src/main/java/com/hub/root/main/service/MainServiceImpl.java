@@ -1,8 +1,6 @@
 package com.hub.root.main.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -24,11 +22,13 @@ public class MainServiceImpl implements MainService{
 	mainMapper mapper;
 	@Autowired
 	MainFileService mfs;
+	@Override
 	public List<MainDTO> mainPage1(Model model) {
 		List<MainDTO> dtoList = mapper.mainPage1();
 		model.addAttribute("dtoList", dtoList);
 		return dtoList;
 	}
+	@Override
 	public List<String> getAllCategories() {
 		List<String> categories = mapper.getAllCategories();
 	    Set<String> uniqueCategories = new HashSet<>();
@@ -40,33 +40,39 @@ public class MainServiceImpl implements MainService{
 	    }
 	    return new ArrayList<>(uniqueCategories);
 	}
+	@Override
 	public List<MainDTO> getMenuByCategory(String category){
 		return mapper.getMenuByCategory(category);
 	}
-	
+
+	@Override
 	public List<MainDTO> getStoreByLocation(double latitude, double longitude){
 		return mapper.findStoreByLocation(latitude, longitude);
 	}
-	
+
+	@Override
 	public List<MainMapDTO> getStoreInfo(Map<String, Object> params) {
 		return mapper.getStoreInfo(params);
 	}
-	
+
+	@Override
 	public List<MainMapDTO> getStoreInfoByCategory(String category) {
 	    List<MainMapDTO> storeList = mapper.getStoreInfoByCategory(category);
 	    return storeList;
 	}
-	
+
 	/*
 	public List<Map<String, Object>> getMenuImage(Map<String, Object> params){
 	    //return imgList;
 		return mapper.getMenuImage(params);
 	}
 	*/
-	
+
+	@Override
 	public List<MainImgDTO> getStoreImage(String storeId) {
 		return mapper.getStoreImage(storeId);
 	}
+	@Override
 	public List<MainImgDTO> getStoreSmallImage(String storeId) {
 		return mapper.getStoreSmallImage(storeId);
 	}
@@ -76,8 +82,9 @@ public class MainServiceImpl implements MainService{
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
-		}	
+		}
 	}
+	@Override
 	public void infoSave(String store_id,String store_menu_name,int store_menu_price,
 						String store_menu_detail,String store_menu_category, String imagePath) {
 		MainDTO dto = new MainDTO();
@@ -89,7 +96,7 @@ public class MainServiceImpl implements MainService{
 		dto.setStore_menu_img(imagePath  != null ? imagePath  : "nan");
 
 		//dto.setStore_menu_img("nan");
-		
+
 		/*
 		if(!mul.isEmpty()) {
 			dto.setStore_menu_img(mfs.saveFile(mul));//이미지 있을경우 처리
@@ -120,10 +127,12 @@ public class MainServiceImpl implements MainService{
 		}
 		*/
 	}
+	@Override
 	public String saveMenuImage(MultipartFile mul) {
 		return mfs.saveFile(mul);
 	}
-	public void saveImagePathToStoreImg(String store_id, String store_img_root) {		
+	@Override
+	public void saveImagePathToStoreImg(String store_id, String store_img_root) {
 		MainImgDTO dto = new MainImgDTO();
 	    dto.setStore_id(store_id);
 	    dto.setStore_img_root(store_img_root);
@@ -131,6 +140,7 @@ public class MainServiceImpl implements MainService{
 	    mapper.saveImagePathToStoreImg(dto);
 	}
 
+	@Override
 	public void storeSave(String store_id,String store_pwd,String store_email,String store_phone,String store_main_phone,String store_name,String store_add,
 			    String store_add_info,String store_category,String store_note,String store_introduce,String store_business_hours) {
 		MainMapDTO dto = new MainMapDTO();
@@ -148,5 +158,5 @@ public class MainServiceImpl implements MainService{
 		dto.setStore_business_hours(store_business_hours);
 		mapper.storeSave(dto);
 	}
-		
+
 }

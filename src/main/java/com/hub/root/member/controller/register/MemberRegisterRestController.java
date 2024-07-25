@@ -24,23 +24,23 @@ import com.hub.root.member.service.register.MemberRegisterService;
 @RequestMapping("member/register")
 public class MemberRegisterRestController {
 	@Autowired MemberRegisterService mrs;
-	
+
 	@PostMapping(value="idChk", produces = "application/json; charset=utf-8")
 	public int idChk(@RequestBody Map<String, Object> map) {
 		System.out.println("map : " + map);
 		int result = mrs.idChk((String)map.get("id"));
-		
+
 		return result;
 	}
 	@GetMapping(value="nickChk", produces = "application/json; charset=utf-8")
 	public int nickChk(@RequestParam String nick) {
 		System.out.println("nickChk 컨트롤러 연동");
 		int result = mrs.nickChk(nick);
-		
+
 		return result;
 	}
-	
-	
+
+
 	@PostMapping(value="registerChk", produces = "application/json; charset=utf-8")
 	public int registerChk(@RequestBody Map<String, Object> map) {
 		System.out.println("id : " + (String)map.get("id"));
@@ -49,13 +49,13 @@ public class MemberRegisterRestController {
 		System.out.println("phone : " + (String)map.get("phone"));
 		System.out.println("email : " + (String)map.get("email"));
 		System.out.println("birth : " + (String)map.get("birth"));
-		System.out.println("gender : " + (Integer)map.get("gender"));
+		System.out.println("gender : " + map.get("gender"));
 		MemberDTO dto = new MemberDTO();
 		dto.setId((String)map.get("id"));
 		if (map.get("pwd") == null) {
 			dto.setPwd("none");
 		} else {
-			dto.setPwd((String)map.get("pwd"));			
+			dto.setPwd((String)map.get("pwd"));
 		}
 		dto.setNick((String)map.get("nick"));
 		dto.setPhone((String)map.get("phone"));
@@ -66,13 +66,13 @@ public class MemberRegisterRestController {
 		System.out.println("result : " + result);
 		return result;
 	}
-	
+
 	@PostMapping(value="registerCodeChk", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public Map<String, Object> registerCodeChk(@RequestBody Map<String, Object> map, HttpServletRequest req, HttpServletResponse res, HttpSession session,
 			Model model) {
 		String code = (String)map.get("code");
-		
+
 		Cookie[] Cookies = req.getCookies();
 		String email = "";
 		if (Cookies != null) {
@@ -81,7 +81,7 @@ public class MemberRegisterRestController {
 					email = c.getValue();
 					break;
 				}
-			}			
+			}
 		}
 		String ses = (String)session.getAttribute(email);
 		int result;
@@ -93,7 +93,7 @@ public class MemberRegisterRestController {
 		map.put("result", result);
 		return map;
 	}
-	
+
 	@PostMapping(value="storeRegisterChk", produces = "application/json; charset=utf-8")
 	public String storeRegisterChk(@RequestBody Map<String, Object> map) {
 		System.out.println("id : " + map.get("id"));
@@ -105,7 +105,7 @@ public class MemberRegisterRestController {
 		String msg = mrs.storeRegisterChk(map);
 		return msg;
 	}
-	
-	
-	
+
+
+
 }

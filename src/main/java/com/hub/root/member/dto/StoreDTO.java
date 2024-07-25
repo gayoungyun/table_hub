@@ -113,6 +113,6 @@ public class StoreDTO {
 	public void setOpenStatus(int openStatus) {
 		this.openStatus = openStatus;
 	}
-	
-	
+
+
 }

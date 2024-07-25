@@ -23,12 +23,12 @@ import com.hub.root.member.mybatis.MemberInfoMapper;
 @Service
 public class MemberInfoServiceImpl implements MemberInfoService{
 	@Autowired MemberInfoMapper mapper;
-	
+
 	BCryptPasswordEncoder en;
 	public MemberInfoServiceImpl () {
 		en = new BCryptPasswordEncoder();
 	}
-	
+
 	@Override
 	public int memberImgModify(MultipartHttpServletRequest file, String id, String imgName) {
     	System.out.println("memInfoSer memberImgModify 실행");
@@ -41,11 +41,11 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 		}
 		return result;
 	}
-	
-	
+
+
 	public String saveFile( MultipartFile mul, String id) {
     	System.out.println("memInfoSer saveFile 실행");
-		String fileName = id + "_" + mul.getOriginalFilename(); 
+		String fileName = id + "_" + mul.getOriginalFilename();
 		File saveFile = new File(IMAGE_REPO + "/" + fileName);
 		try {
 			System.out.println("try실행");
@@ -56,7 +56,7 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 			return null;
 		}
 	}
-	
+
 	public void deleteFile(String id, String imgName) {
     	System.out.println("memInfoSer deleteFile 실행");
 		File file = new File(IMAGE_REPO + "/" + (id + "_" + imgName));
@@ -72,7 +72,7 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	@Override
 	public String memberImgDelete(String imgName, String id) {
     	System.out.println("memInfoSer memberImgDelete 실행");
-		
+
 		int result = mapper.memberImgDelete(id);
 		String msg;
 		if (result == 1) {
@@ -148,7 +148,7 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	public Map<String, Object> memberPasswordModify(String currentPwd, String changePwd, String id) {
     	System.out.println("memInfoSer memberPasswordModify 실행");
 		String pwd = mapper.memberPasswordChk(id);
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		int result;
 		String msg;
 		if (en.matches(currentPwd, pwd)) {
@@ -177,9 +177,9 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	@Override
 	public Map<String, Object> getBookingInfo(String storeId, int id) {
     	System.out.println("memInfoSer getBookingInfo 실행");
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("storeName",(String)mapper.getStoreName(storeId));
-		map.put("storeImg", (String)mapper.getStoreImg(storeId));
+		Map<String, Object> map = new HashMap<>();
+		map.put("storeName",mapper.getStoreName(storeId));
+		map.put("storeImg", mapper.getStoreImg(storeId));
 		int result = mapper.getReviewScore(id);
 		System.out.println("result : "+ result);
 		map.put("reviewScore", result);
@@ -214,17 +214,17 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	public int deleteBooking(int bookId) {
     	System.out.println("memInfoSer deleteBooking 실행");
 		int result = mapper.deleteBooking(bookId);
-		
+
 		return result;
 	}
 
 	@Override
 	public Map<String, Object> pwdCheck(String pwd, String id) {
     	System.out.println("memInfoSer pwdCheck 실행");
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 
 		String result = mapper.pwdCheck(id);
-		
+
 		map.put("result", result);
 		if (result != "") {
 			System.out.println("1");
@@ -233,11 +233,11 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 				map.put("result", 1);
 			} else {
 				map.put("result", 0);
-				map.put("msg", "비밀번호가 일치하지 않습니다. 확인 후 다시 시도해주세요");				
+				map.put("msg", "비밀번호가 일치하지 않습니다. 확인 후 다시 시도해주세요");
 			}
 		} else {
 			map.put("result", 0);
-			map.put("msg", "비밀번호가 일치하지 않습니다. 확인 후 다시 시도해주세요");				
+			map.put("msg", "비밀번호가 일치하지 않습니다. 확인 후 다시 시도해주세요");
 		}
 		return map;
 	}
@@ -245,7 +245,7 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	@Override
 	public Map<String, Object> deleteUser(String id) {
 		System.out.println("memInfoSer deleteUser 실행");
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		System.out.println("id : " + id);
 		int result = mapper.deleteUser(id);
 		map.put("result", result);
@@ -262,7 +262,7 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	public Map<String, Object> getBoard(String id, String page) {
 		System.out.println("memInfoSer getBoard 실행");
 		int totalCount = mapper.getBoardCount(id);
-		
+
 		Map<String, Object> map = pageCalc(Integer.parseInt(page), totalCount, 10);
 		System.out.println("page : " + map.get("page"));
 		System.out.println("count : " + map.get("count"));
@@ -280,13 +280,13 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 		}
 		return map;
 	}
-	
-	
-	
+
+
+
 
 	@Override
 	public Map<String, Object> getBoardReplyCount(int boardId) {
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		System.out.println("serviceboardId : " + boardId);
 		int boardReplyCount = mapper.getBoardReplyCount(boardId);
 		System.out.println("boardReplyCount : " + boardReplyCount);
@@ -298,7 +298,7 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	public Map<String, Object> deleteBoard(int[] content) {
     	System.out.println("memInfoSer deleteBoard 실행");
 		int result = mapper.deleteBoard(content);
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		String msg = "";
 		if (result == content.length) {
 			msg = "선택한 항목이 삭제되었습니다.";
@@ -314,7 +314,7 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	public Map<String, Object> getReview(String id, String page) {
 		System.out.println("memInfoSer getReview 실행");
 		int totalCount = mapper.getReviewCount(id);
-		
+
 		Map<String, Object> map = pageCalc(Integer.parseInt(page), totalCount, 5);
 		System.out.println("page : " + map.get("page"));
 		System.out.println("count : " + map.get("count"));
@@ -324,7 +324,7 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 		List<ReviewDTO> list = mapper.getReview(id,
 											(int)map.get("startNum"),
 											(int)map.get("endNum"));
-		
+
 		if (!list.isEmpty()) {
 			map.put("result", 1);
 			map.put("list", list);
@@ -334,10 +334,10 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 		return map;
 	}
 
-	
+
 	public Map<String, Object> pageCalc(int page, int count, int pageContent) {
     	System.out.println("memInfoSer pageCalc 실행");
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		int totalPage = count / pageContent;
 		if (count % pageContent != 0) {
 			totalPage += 1;
@@ -364,7 +364,7 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	public Map<String, Object> deleteReview(int storeNum) {
 		System.out.println("memInfoSer deleteReview 실행");
 		int result = mapper.deleteReview(storeNum);
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("result", result);
 		String msg = "";
 		if (result == 1) {
@@ -380,15 +380,15 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	public Map<String, Object> getReply(String memId, int page) {
 		System.out.println("memInfoSer getReply 실행");
 		int totalCount = mapper.getReplyCount(memId);
-		Map<String, Object> map = new HashMap<String, Object>();
-		
+		Map<String, Object> map = new HashMap<>();
+
 		if (totalCount > 0) {
 			map = pageCalc(page, totalCount, 6);
-			
-			List<Map<String, Object>> list1 =  mapper.getReply(memId, 
+
+			List<Map<String, Object>> list1 =  mapper.getReply(memId,
 										(int)map.get("startNum"),
 										(int)map.get("endNum"));
-//			List<Reply2DTO> list2 = mapper.getReply2(memId, 
+//			List<Reply2DTO> list2 = mapper.getReply2(memId,
 //										(int)map.get("startNum"),
 //										(int)map.get("endNum"));
 //			if (!list1.isEmpty() && !list2.isEmpty()) {
@@ -407,22 +407,22 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 		} else {
 			map.put("result", 0);
 		}
-		
+
 		return map;
 	}
-	
+
 	public List<Object> replyMerge(List<ReplyDTO> list1, List<Reply2DTO> list2) {
-		List<Object> lists = new ArrayList<Object>();
-		
+		List<Object> lists = new ArrayList<>();
+
 		int i = 0;
 		int x = 0;
 		int y = 0;
 		System.out.println("listempty : " + list1.isEmpty());
 		System.out.println("list2empty : " + list2.isEmpty());
-		
+
 
 		while (true) {
-			
+
 			if (!list1.isEmpty() && !list2.isEmpty()) {
 				System.out.println("if 1");
 				if (list1.get(0).getReviewCreate().after(list2.get(y).getReviewCreate())) {
@@ -446,24 +446,24 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 				System.out.println("if 4");
 				break;
 			}
-			
+
 			if (lists.size() == 10 ) {
 				System.out.println("size : " + lists.size());
 				break;
 			}
 		}
-		
-		
+
+
 		return lists;
 	}
-	
-	
-	
+
+
+
 
 	@Override
 	public Map<String, Object> getBoardInfo(int boardId) {
 		System.out.println("memInfoSer getBoardInfo 실행");
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map = mapper.getBoardInfo(boardId);
 		map.put("result", 0);
 		return map;
@@ -471,7 +471,7 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	@Override
 	public Map<String, Object> getBoardInfo2(int reviewId) {
 		System.out.println("memInfoSer getBoardInfo2 실행");
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map = mapper.getBoardInfo2(reviewId);
 		map.put("result", 0);
 		return map;
@@ -481,7 +481,7 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	public Map<String, Object> deleteReply(int[] content) {
     	System.out.println("memInfoSer deleteReply 실행");
 		int result = mapper.deleteReply(content);
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		String msg = "";
 		if (result == content.length) {
 			msg = "선택한 항목이 삭제되었습니다.";
@@ -507,9 +507,9 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 		String userNick = mapper.getNick(userId);
 		return userNick;
 	}
-	
-	
-	
+
+
+
 
 }
 

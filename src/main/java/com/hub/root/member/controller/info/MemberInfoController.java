@@ -30,21 +30,21 @@ public class MemberInfoController {
     	System.out.println("memInfoCont info 실행");
 		String id = (String)session.getAttribute("userId");
 		String loginType = id.split(":")[0];
-		
+
 		// 사용자가 네이버 로그인일 경우 바로 마이페이지로 이동
 		if (loginType.equals("N")) {
 			Cookie cook = new Cookie("myPage", id);
 			cook.setPath("/root/member");
 			res.addCookie(cook);
-			
+
 			return "redirect:detail";
-			
+
 		// 사용자가 로컬로그인 사용자이면 패스워드 확인 페이지로 이동
 		} else {
-			return "member/info/pwdCheck";			
+			return "member/info/pwdCheck";
 		}
 	}
-	
+
 	@GetMapping("detail")
 	public String detail (HttpSession session, HttpServletRequest req, Model model) {
     	System.out.println("memInfoCont detail 실행");
@@ -52,15 +52,15 @@ public class MemberInfoController {
 		model.addAttribute(session);
 		model.addAttribute("dto", dto);
 		return "member/info/detail";
-		
+
 	}
-	
+
 	@GetMapping("download")
 	public void download(@RequestParam String img, HttpServletResponse res) throws Exception {
     	System.out.println("memInfoCont download 실행");
     	String originImgName = null;
     	if (img.split("_").length > 1) {
-    		originImgName = img.split("_")[1];    		
+    		originImgName = img.split("_")[1];
     	} else {
     		originImgName = img;
     	}
@@ -68,53 +68,53 @@ public class MemberInfoController {
 		res.addHeader("Content-disposition", "attachment;fileName="+URLEncoder.encode(img, "UTF-8"));
 		File file;
 		if (originImgName.equals("default.jpg") || originImgName.equals("default")) {
-			file = new File(MemberInfoService.IMAGE_REPO + "/default.jpg");			
+			file = new File(MemberInfoService.IMAGE_REPO + "/default.jpg");
 		} else {
-			file = new File(MemberInfoService.IMAGE_REPO + "/" + img);			
+			file = new File(MemberInfoService.IMAGE_REPO + "/" + img);
 		}
 		if(file.exists()) {
 			FileInputStream in = new FileInputStream(file);
 			FileCopyUtils.copy(in, res.getOutputStream());
-			in.close();			
+			in.close();
 		}
 	}
-	
+
 	@GetMapping("myBooking")
 	public String myBooking(Model model, HttpSession session) {
     	System.out.println("memInfoCont myBooking 실행");
 		model.addAttribute(session);
 		return "member/info/myBooking";
 	}
-	
+
 	@GetMapping("deleteUser")
 	public String deleteUser(HttpSession session, Model model) {
     	System.out.println("memInfoCont deleteUser 실행");
 		String id = (String) session.getAttribute("userId");
 		String loginType = id.split(":")[0];
-		
+
     	model.addAttribute("loginType", loginType);
-		
+
 		return "member/info/deleteUser";
 	}
-	
+
 	@GetMapping("myReview")
 	public String myReview() {
     	System.out.println("memInfoCont myReview 실행");
-		
+
 		return "member/info/myReview";
 	}
-	
+
 	@GetMapping("myBoard")
 	public String myBoard() {
     	System.out.println("memInfoCont myBoard 실행");
-		
+
 		return "member/info/myBoard";
 	}
-	
+
 	@GetMapping("myReply")
 	public String myReply() {
     	System.out.println("memInfoCont myReply 실행");
-		
+
 		return "member/info/myReply";
 	}
 }

@@ -25,7 +25,7 @@ public class SearchPwdInterceptor extends HandlerInterceptorAdapter {
 				}
 			}
 		}
-		
+
 		if( id.equals("") ) {
 			response.setContentType("text/html; charset=utf-8");
 			PrintWriter out = response.getWriter();
@@ -41,5 +41,5 @@ public class SearchPwdInterceptor extends HandlerInterceptorAdapter {
 			ModelAndView modelAndView) throws Exception {
 		System.out.println("index 실행 후 동작");
 	}
-	
+
 }

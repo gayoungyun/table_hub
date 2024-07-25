@@ -3,9 +3,7 @@ package com.hub.root.main.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,17 +24,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.hub.root.main.dto.MainDTO;
 import com.hub.root.main.dto.MainImgDTO;
 import com.hub.root.main.dto.MainMapDTO;
 import com.hub.root.main.service.MainFileService;
 import com.hub.root.main.service.MainService;
-
-import retrofit2.http.GET;
 
 @Controller
 @RequestMapping("main")//main이라는 경로에 대한 요청
@@ -53,13 +46,13 @@ public class MainController {
 	public String main( HttpSession session,Model model) {
 		String user = (String) session.getAttribute("userId");
 		String store = (String) session.getAttribute("storeId");
-	    
+
 		if(user != null) {
 			model.addAttribute("user", user);
 		}	else if (store != null) {
 	        model.addAttribute("store", store);
 	    }
-		
+
 		List<String> categories = ms.getAllCategories();
 		List<MainDTO> dtoList = ms.mainPage1(model);
 		model.addAttribute("categories", categories);
@@ -91,7 +84,7 @@ public class MainController {
 	/*
 	@Value("${kakao.api.key}")
 	private String kakaoApikey;
-	
+
 	@PostMapping("/getAddr")
 	@ResponseBody
 	public ResponseEntity<?> getAddr(@RequestBody Map<String, Object> location) {
@@ -116,13 +109,13 @@ public class MainController {
 	*/
 	// mainPage2 요청 처리===================================
 	@RequestMapping("mainPage2")
-	public String mainPage2(@RequestParam(required=false) String keyword, 
+	public String mainPage2(@RequestParam(required=false) String keyword,
 	                        @RequestParam(required=false) String searchType,
 	                        @RequestParam(required=false) String category,
-	                        HttpSession session, Model model) {   
+	                        HttpSession session, Model model) {
 		//String user = (String) session.getAttribute("userId");
 		//String store = (String) session.getAttribute("storeId");
-	    
+
 	    Map<String, Object> params = new HashMap<>();
 	    String key = (keyword != null) ? keyword : "null";
 	    String search = (searchType != null) ? searchType : "null";
@@ -134,7 +127,7 @@ public class MainController {
 
 	    List<MainMapDTO> storeList = ms.getStoreInfo(params);
 	    //List<MainMapDTO> storeListBt = ms.getStoreInfo(params);
-	   
+
 	    if (storeList == null) {
 	        storeList = new ArrayList<>();
 	    }
@@ -142,7 +135,7 @@ public class MainController {
 	   // if (imgList == null) {
 	     //   imgList = new ArrayList<>();
 	   // }
-	    
+
 	    List<MainImgDTO> storeImgList = new ArrayList<>();
 	    for(MainMapDTO storeInfo : storeList) {
 	    	List<MainImgDTO> storeImage = ms.getStoreImage(storeInfo.getStore_id());
@@ -154,7 +147,7 @@ public class MainController {
 	              storeImgList.add(null); // 이미지가 없는 경우
 	          }
 	    }
-	    
+
 	    List<MainImgDTO> storeSmallImgList = new ArrayList<>();
 	    for(MainMapDTO storeInfo : storeList) {
 	    	List<MainImgDTO> storeSmallImage = ms.getStoreSmallImage(storeInfo.getStore_id());
@@ -174,14 +167,14 @@ public class MainController {
 	    //model.addAttribute("imgList", imgList);
 	    model.addAttribute("storeImgList", storeImgList);
 	    model.addAttribute("storeSmallImgList", storeSmallImgList);
-	    
+
 	    model.addAttribute("keyword", keyword);
 	    model.addAttribute("searchType", searchType);
 	    model.addAttribute("category", category);
 
 	    return "main/mainPage2";
 	}
-	
+
 	// 정보 입력 페이지 요청 처리(store_menu)====================
 	@RequestMapping("inputInfo")
 	public String inputInfo() {
@@ -199,7 +192,7 @@ public class MainController {
 							HttpSession session, Model model) throws IOException{
 		String imagePath  = ms.saveMenuImage(mul);
 		String store = (String) session.getAttribute("storeId");
-	    
+
 		if(store != null) {
 			model.addAttribute("store", store);
 		}

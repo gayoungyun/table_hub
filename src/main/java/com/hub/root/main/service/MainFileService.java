@@ -8,5 +8,5 @@ public interface MainFileService {
 	//public static final String IMAGE_REPO = "\\\\192.168.42.40\\공유폴더\\tableHub\\main";
 	public String saveFile(MultipartFile mul);
 	public void deleteImage(String originName);
-			
+
 }

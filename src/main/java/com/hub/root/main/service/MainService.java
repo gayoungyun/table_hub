@@ -14,15 +14,15 @@ public interface MainService {
 	public List<MainDTO> mainPage1(Model model);
 	public List<String> getAllCategories();
 	public List<MainDTO> getMenuByCategory(String category);
-	
+
 	public List<MainDTO> getStoreByLocation(double latitude, double longitude);
-	
+
 	public List<MainMapDTO> getStoreInfo(Map<String, Object> params);
-	
+
 	public List<MainMapDTO> getStoreInfoByCategory(String category);
 	//public List<Map<String, Object>> getMenuImage(Map<String, Object> params);
 	//public List<MainMapDTO> getStoreImgList(Map<String, Object> params);
-	
+
 	public List<MainImgDTO> getStoreImage(String storeId);
 	public List<MainImgDTO> getStoreSmallImage(String storeId);
 

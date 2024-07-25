@@ -27,6 +27,17 @@
 		<result property="store_max_team" column="store_max_team"/>
 		<result property="store_open_status" column="store_open_status"/>
 	</resultMap>
+	
+	<resultMap type="com.hub.root.businessM.DTO.BookPageDTO" id="bookPageDTO">
+		<id property="booking_id" column="BOOKING_ID" />
+		<result property="store_id" column="STORE_ID" />
+		<result property="member_id" column="MEMBER_ID" />
+		<result property="booking_date_booking" column="BOOKING_DATE_BOOKING" />
+		<result property="booking_time" column="BOOKING_TIME" />
+		<result property="booking_person" column="BOOKING_PERSON" />
+		<result property="booking_phone" column="BOOKING_PHONE" />
+		<result property="booking_status" column="BOOKING_STATUS" />
+	</resultMap>
 
 	<select id="businMChk" resultMap="businM">
 		SELECT store_name FROM store_info WHERE store_id = #{store_id}
@@ -108,4 +119,70 @@
 		select * from membership where id=#{id}
 	</select>
 -->
+
+ <!-- 민석 부분 -->
+ <select id="book" resultMap="bookPageDTO">	    
+	select 
+	    a.booking_id, 
+	    a.store_id, 
+	    a.booking_date_booking, 
+	    a.booking_time, 
+	    a.booking_person,
+	    a.booking_status,
+	    member_nick,
+	    member_phone
+	from (
+	        select 
+	            rownum as num,
+	            b.member_nick,
+	            b.member_phone,
+	            book.* 
+	        from 
+	        (
+	            select 
+	                c.*
+	            from booking_info c
+	            <choose>
+	        		<when test='type != null and type.equals("past")'>
+		        		<![CDATA[
+			        		where c.booking_date_booking < TO_DATE(CURRENT_DATE, 'YY/MM/DD')
+			        			and c.store_id = #{store_id}
+		        		]]>
+		        	</when>
+		        	<otherwise>
+		        		<![CDATA[
+			        		where c.booking_date_booking >= TO_DATE(CURRENT_DATE, 'YY/MM/DD')
+			        			and c.store_id = #{store_id}
+		        		]]>
+		        	</otherwise>
+	        	</choose> 
+	            order by c.booking_date_booking desc
+	        )book
+	        inner join member_info b 
+	            on book.member_id = b.member_id
+	      ) a
+	 where
+	    num between #{start} and #{end}
+ </select>
+
+<select id="totalPage" resultType="int">
+	select
+		 count(*) 
+	from 
+		booking_info
+		<choose>
+			<when test='type != null and type.equals("past")'>
+				<![CDATA[
+					where TO_CHAR(booking_date_booking, 'YY/MM/DD') < TO_CHAR(CURRENT_DATE, 'YY/MM/DD')
+			        	and store_id = #{store_id}	
+			    ]]>				
+			</when>
+			<otherwise>
+				<![CDATA[
+					where TO_CHAR(booking_date_booking, 'YY/MM/DD') >= TO_CHAR(CURRENT_DATE, 'YY/MM/DD')
+			        	and store_id = #{store_id}
+			    ]]>			
+			</otherwise>
+		</choose>
+</select> 
 </mapper>

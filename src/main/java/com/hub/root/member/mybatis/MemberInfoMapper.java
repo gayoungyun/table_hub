@@ -9,7 +9,6 @@ import com.hub.root.member.dto.BoardDTO;
 import com.hub.root.member.dto.BookingDTO;
 import com.hub.root.member.dto.MemberDTO;
 import com.hub.root.member.dto.Reply2DTO;
-import com.hub.root.member.dto.ReplyDTO;
 import com.hub.root.member.dto.ReviewDTO;
 
 public interface MemberInfoMapper {
@@ -22,18 +21,18 @@ public interface MemberInfoMapper {
 	public String memberPasswordChk(String id);
 	public int memberPasswordModify(@Param("pwd") String pwd, @Param("id") String id);
 	public MemberDTO getMemberInfo(String id);
-	
+
 	public List<BookingDTO> getMyBooking(String id);
 	public String getStoreName(String storeId);
 	public String getStoreImg(String storeId);
 	public int getReviewScore(int id);
 	public int getBookingReadyCount(String id);
 	public int getBookingAlreadyCount(String id);
-	public List<BookingDTO> getBookingReadyContent(@Param("id") String id, 
-							@Param("start") int start, 
+	public List<BookingDTO> getBookingReadyContent(@Param("id") String id,
+							@Param("start") int start,
 							@Param("end") int end);
-	public List<BookingDTO> getBookingAlreadyContent(@Param("id") String id, 
-			@Param("start") int start, 
+	public List<BookingDTO> getBookingAlreadyContent(@Param("id") String id,
+			@Param("start") int start,
 			@Param("end") int end);
 	public int deleteBooking(int bookId);
 	public String pwdCheck(@Param("id") String id);
@@ -59,9 +58,9 @@ public interface MemberInfoMapper {
 	public int deleteReply(@Param("content") int[] content);
 	public Map<String, Object> getMyContentMyInfo(@Param("userId") String userId);
 	public String getNick(@Param("userId") String userId);
-	
-	
-	
-	
-	
+
+
+
+
+
 }

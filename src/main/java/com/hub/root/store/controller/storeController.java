@@ -8,12 +8,12 @@ public class storeController {
 	public storeController() {
 		System.out.println("보선-가게 컨트롤러 생성자 실행");
 	}
-	
+
 	@GetMapping("store")
 	public String store() {
 		return "store/store";
 	}
-	
+
 	@GetMapping("/store/info")
 	public String info() {
 		return "store/info";

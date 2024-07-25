@@ -3,7 +3,7 @@ package com.hub.root.member.dto;
 public class MemberDTO {
 	String id, pwd, nick, email, phone, img, status, birth, dateCreate;
 	int gender, admin;
-	
+
 	public String getId() {
 		return id;
 	}
@@ -70,7 +70,7 @@ public class MemberDTO {
 	public void setAdmin(int admin) {
 		this.admin = admin;
 	}
-	
-	
-	
+
+
+
 }
