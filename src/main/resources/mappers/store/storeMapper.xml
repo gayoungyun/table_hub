@@ -47,6 +47,10 @@
 		<result property="store_review_num" column="store_review_num"/>
 		<result property="store_review_img_image" column="store_review_img_image"/>
 	</resultMap>
+<resultMap type="com.hub.root.store.DTO.storeBookmarkDTO" id="storeBookmark">
+		<id property="store_id" column="store_id" /> <!-- 사업자번호 -->
+		<result property="member_id" column="member_id"/>
+	</resultMap>
 	
 	
 	<select id="storeInfo" resultMap="storeInfo">
@@ -70,16 +74,34 @@
 		SELECT * FROM store_review WHERE store_id = #{store_id}
 	</select>	
 
-	<select id="storeReviewImg" resultMap="storeReviewImg">
-		SELECT * FROM store_review_img WHERE store_id = #{store_id}
+	<select id="reviewImage" resultMap="storeReviewImg">
+		SELECT * FROM store_review_img 
+			WHERE store_id = #{store_id}
+	</select>
+	
+	<select id="storeReviewImg" resultType="java.lang.String">
+		SELECT store_review_img_image FROM store_review_img 
+			WHERE store_id = #{store_id}
 	</select>
 		
-	<select id="storeBookmark" resultType="java.lang.Integer">
+	<select id="storeBookmark" resultMap="storeBookmark">
 		SELECT * FROM store_bookmark WHERE store_id = #{store_id}
-	</select>	
+	</select>
 	
+	<select id="jjimchk" resultType="java.lang.Integer">
+		select count(*) from store_bookmark 
+			where store_id = #{store_id} and member_id = #{user_id}
+	</select>
 	
+	<insert id="jjim">
+		insert into store_bookmark(store_id, member_id)
+			values (#{store_id}, #{user_id}) 
+	</insert>
 	
-	
+	<delete id="jjimcancle">
+		DELETE FROM store_bookmark 
+			WHERE store_id = #{store_id} and member_id = #{user_id}
+	</delete>
+
 	
 </mapper>

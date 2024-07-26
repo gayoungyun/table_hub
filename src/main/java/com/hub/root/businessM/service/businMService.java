@@ -253,7 +253,7 @@ public class businMService {
             for (Entry<String, Object> entry : param.entrySet()) {
                 String key = entry.getKey();
                 Object value = entry.getValue();
-                System.out.println("Key: " + key + ", Value: " + value);
+                System.out.println("보선- Key: " + key + ", Value: " + value);
             }
 
 
@@ -334,7 +334,8 @@ public class businMService {
 	    return null;
 	}
 
-	// 민석 서비스
+
+//----------------- 민석 서비스
 		
 	public List<BookPageDTO> book(int page, String store_id, String type) {
 
@@ -356,7 +357,73 @@ public class businMService {
 		
 		return result;
 	}
-	// 구현 작업 내용
+	
+	
+	
+
+
+	public String menuRegister(HttpServletRequest request, MultipartHttpServletRequest mul){
+
+		  HttpSession session = request.getSession();
+	      String store_id = (String) session.getAttribute("storeId");
+
+	  	  int rowCount = Integer.parseInt(request.getParameter("rowCount"));
+	  	  System.out.println("보선-메뉴 행 몇개? : "+ rowCount);
+
+	  	  List<String> categories = new ArrayList<>();
+	  	  List<String> names = new ArrayList<>();
+	  	  List<Integer> prices = new ArrayList<>();
+	  	  List<String> photos = new ArrayList<>();
+	  	  List<String> notes = new ArrayList<>();
+
+
+        for (int i = 1; i <= rowCount; i++) {
+            String category = request.getParameter("menu_category" + i);
+            String name = request.getParameter("menu_name" + i);
+            Integer price = Integer.parseInt(request.getParameter("menu_price" + i));
+            String note = request.getParameter("menu_note" + i);
+            String file;
+			try {
+				MultipartFile filePath = ((MultipartRequest) mul).getFile("menu_photo" + i);
+				file = saveFileAndGetPath(filePath);
+
+            categories.add(category);
+            names.add(name);
+            prices.add(price);
+            notes.add(note);
+            photos.add(file);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        }
+
+        Map<String, Object> menuparam = new HashMap<>();
+        menuparam.put("store_id", store_id);
+        menuparam.put("categories", categories);
+        menuparam.put("names", names);
+        menuparam.put("prices", prices);
+        menuparam.put("notes", notes);
+        menuparam.put("photos", photos);
+
+        System.out.println("보선-메뉴리스트들 확인 \n카테고리 : "+ categories+"\n이름 : "+names
+        		+"\n가격 : "+prices+"\n설명 : "+notes+"\n사진경로 : "+photos);
+
+        int result = mapper.menuRegister(menuparam);
+        if(result > 0)
+        	return "businessM/menu/menuRFinish";
+        else {
+        	request.setAttribute("msg", "오류발생\n 사진이 등록되지 않았습니다.\n 다시 시도해주세요");
+	        request.setAttribute("url", "/businessM/menuInfo");
+	        return "businessM/businMalert";
+        }
+	}
+	
+	
+	
+	
+//------------------------------ 구현 작업 내용
+	
 	public Map<String, Object> getReview(String storeId, int curPage) {
 		int totalReview = mapper.getTotalReview(storeId);
 		System.out.println("TotalReview : " + totalReview);
@@ -416,63 +483,8 @@ public class businMService {
 		return map;
 	}
 
-	public String menuRegister(HttpServletRequest request, MultipartHttpServletRequest mul){
 
-		  HttpSession session = request.getSession();
-	      String store_id = (String) session.getAttribute("storeId");
-
-	  	  int rowCount = Integer.parseInt(request.getParameter("rowCount"));
-	  	  System.out.println("보선-메뉴 행 몇개? : "+ rowCount);
-
-	  	  List<String> categories = new ArrayList<>();
-	  	  List<String> names = new ArrayList<>();
-	  	  List<Integer> prices = new ArrayList<>();
-	  	  List<String> photos = new ArrayList<>();
-	  	  List<String> notes = new ArrayList<>();
-
-
-        for (int i = 1; i <= rowCount; i++) {
-            String category = request.getParameter("menu_category" + i);
-            String name = request.getParameter("menu_name" + i);
-            Integer price = Integer.parseInt(request.getParameter("menu_price" + i));
-            String note = request.getParameter("menu_note" + i);
-            String file;
-			try {
-				MultipartFile filePath = ((MultipartRequest) mul).getFile("menu_photo" + i);
-				file = saveFileAndGetPath(filePath);
-
-            categories.add(category);
-            names.add(name);
-            prices.add(price);
-            notes.add(note);
-            photos.add(file);
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-        }
-
-        Map<String, Object> menuparam = new HashMap<>();
-        menuparam.put("store_id", store_id);
-        menuparam.put("categories", categories);
-        menuparam.put("names", names);
-        menuparam.put("prices", prices);
-        menuparam.put("notes", notes);
-        menuparam.put("photos", photos);
-
-        System.out.println("보선-메뉴리스트들 확인 \n카테고리 : "+ categories+"\n이름 : "+names
-        		+"\n가격 : "+prices+"\n설명 : "+notes+"\n사진경로 : "+photos);
-
-        int result = mapper.menuRegister(menuparam);
-        if(result > 0)
-        	return "businessM/menu/menuRFinish";
-        else {
-        	request.setAttribute("msg", "오류발생\n 사진이 등록되지 않았습니다.\n 다시 시도해주세요");
-	        request.setAttribute("url", "/businessM/menuInfo");
-	        return "businessM/businMalert";
-        }
-	}
-	// 민석 추가
+//------------------- 민석 추가
 	public ReservationDTO reservationInfo(String store_id)
 	{
 		ReservationDTO dto = mapper.reservationInfo(store_id);
@@ -480,7 +492,6 @@ public class businMService {
 		return dto;
 	}
 }
-
 
 
 

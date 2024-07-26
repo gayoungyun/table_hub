@@ -2,9 +2,17 @@ package com.hub.root.store.DTO;
 
 public class storeMenuDTO {
 
-	String store_menu_img, store_menu_name, store_menu_detail, store_menu_category;
+	String store_id, store_menu_img, store_menu_name, store_menu_detail, store_menu_category;
 	int store_menu_price;
 
+	
+	
+	public String getStore_id() {
+		return store_id;
+	}
+	public void setStore_id(String store_id) {
+		this.store_id = store_id;
+	}
 	public String getStore_menu_img() {
 		return store_menu_img;
 	}
