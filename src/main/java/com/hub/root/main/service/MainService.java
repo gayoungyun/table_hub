@@ -40,6 +40,3 @@ public interface MainService {
 	public void storeSave(String store_id,String store_pwd,String store_email,String store_phone,String store_main_phone,String store_name,String store_add,
 			String store_add_info,String store_category,String store_note,String store_introduce,String store_business_hours);
 }
-
-
-

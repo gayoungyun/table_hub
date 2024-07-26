@@ -14,6 +14,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -21,7 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartRequest;
 
+import com.hub.root.businessM.DTO.BookPageDTO;
 import com.hub.root.businessM.DTO.businMDTO;
+import com.hub.root.businessM.DTO.ReservationDTO;
 import com.hub.root.businessM.DTO.storeReviewDTO;
 import com.hub.root.businessM.mybatis.businMMapper;
 
@@ -148,6 +151,7 @@ public class businMService {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+
 		}
 		// 세션 전체 삭제 (invalidate)
 		// session.invalidate();
@@ -178,6 +182,7 @@ public class businMService {
 
 		int result = mapper.register(dto);
 
+
 		System.out.println("보선-가게등록 mapper에서 나온 result : " + result);
 		return result;
 
@@ -192,6 +197,8 @@ public class businMService {
 		}
 		return dto;
 	}
+
+
 
 	// 구현 추가
 	public String DOWNLOAD_FOLDER = "C:/tablehub_image/businessM";
@@ -227,6 +234,8 @@ public class businMService {
             System.out.println("보선-세션 아이디 store_id 확인 : "+store_id);
 
 
+
+
             String[] arr = {file01Path, file02Path, file03Path, file04Path, file05Path};
             List<String> FilePaths = new ArrayList<>();
 
@@ -247,7 +256,51 @@ public class businMService {
                 System.out.println("Key: " + key + ", Value: " + value);
             }
 
+
+
+           // int result01 = mapper.storeImage01(param);
+            /*
+            // 배열 순회하면서 null이 아닌 경우에만 리스트에 추가
+            if (FilePaths.size() > 0 && FilePaths.get(0) != null && !FilePaths.get(0).isEmpty())
+                System.out.println("보선-경로 배열 확인 2번 : " + FilePaths.get(0)); // file02Path
+            if (FilePaths.size() > 1 && FilePaths.get(1) != null && !FilePaths.get(1).isEmpty())
+                System.out.println("보선-경로 배열 확인 3번 : " + FilePaths.get(1)); // file03Path
+            if (FilePaths.size() > 2 && FilePaths.get(2) != null && !FilePaths.get(2).isEmpty())
+                System.out.println("보선-경로 배열 확인 4번 : " + FilePaths.get(2)); // file04Path
+            if (FilePaths.size() > 3 && FilePaths.get(3) != null && !FilePaths.get(3).isEmpty())
+                System.out.println("보선-경로 배열 확인 5번 : " + FilePaths.get(3)); // file05Path
+
+
+
+            int result01 = mapper.storeImage01(file01Path, store_id);
+
+            int result02=0, result=0;
+            if(file02Path != null) {
+            	String filePath = file02Path;
+            	result02 = mapper.storeImage09(filePath, store_id);
+            }
+            if(file03Path != null) {
+            	String filePath = file03Path;
+            	result = mapper.storeImage09(filePath, store_id);
+            	result02 += result;
+            }
+            if(file04Path != null) {
+            	String filePath = file04Path;
+            	result = mapper.storeImage09(filePath, store_id);
+            	result02 += result;
+            }
+            if(file05Path != null) {
+            	String filePath = file05Path;
+            	result = mapper.storeImage09(filePath, store_id);
+            	result02 += result;
+            }
+            System.out.println("보선-메인 사진이 등록되었나? : "+result01);
+            System.out.println("보선-메인 사진 외 추가 사진 갯수 : "+result02);
+            */
+
+
             int result01 = mapper.storeImage01(param);
+
             System.out.println("보선-사진이 행 추가? : "+result01);
 	         if(result01 > 0)
 	            	return "businessM/photo/photoRFinish";
@@ -268,7 +321,11 @@ public class businMService {
 		if (!file.isEmpty()) {
 	        byte[] bytes = file.getBytes();
 	        /* 파일을 바이트 배열로 변환하는 이유는 파일을 읽거나 다루기 쉽게 하기 위함입니다.
+
+
+
 	         * 예를 들어 파일을 디스크에 저장할 때나 네트워크를 통해 전송할 때는 바이트 배열 형태로 변환하여 다루는 것이 일반적. */
+
 	        String uniqueFileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
 	        Path path = Paths.get(UPLOAD_FOLDER + "/" + uniqueFileName);
 	        Files.write(path, bytes);
@@ -277,6 +334,28 @@ public class businMService {
 	    return null;
 	}
 
+	// 민석 서비스
+		
+	public List<BookPageDTO> book(int page, String store_id, String type) {
+
+		int start = (page - 1) * 8 + 1;
+		int end = page * 8;
+
+		System.out.println("값 확인!!!!!" + start);
+		System.out.println("값 확인!!!!!" + end);
+		
+		List<BookPageDTO> list= mapper.book(start, end, store_id, type);
+		
+		System.out.println(list.size());
+		
+		return list;
+	}
+	
+	public int totalPage(String store_id, String type) {
+		int result = mapper.totalPage(store_id, type);
+		
+		return result;
+	}
 	// 구현 작업 내용
 	public Map<String, Object> getReview(String storeId, int curPage) {
 		int totalReview = mapper.getTotalReview(storeId);
@@ -393,7 +472,13 @@ public class businMService {
 	        return "businessM/businMalert";
         }
 	}
-
+	// 민석 추가
+	public ReservationDTO reservationInfo(String store_id)
+	{
+		ReservationDTO dto = mapper.reservationInfo(store_id);
+		
+		return dto;
+	}
 }
 
 

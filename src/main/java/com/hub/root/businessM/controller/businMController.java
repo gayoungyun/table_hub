@@ -1,5 +1,7 @@
 package com.hub.root.businessM.controller;
 
+
+import java.util.List;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URLEncoder;
@@ -16,12 +18,14 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.hub.root.businessM.DTO.BookPageDTO;
 import com.hub.root.businessM.DTO.businMDTO;
 import com.hub.root.businessM.service.businMService;
 
@@ -220,15 +224,11 @@ public class businMController {
 	    	String result = ser.storeImage(request, file01, file02, file03, file04, file05);
 	    	return result;
 	    }
-
 	    @PostMapping("/businessM/menu/menuRegister")
 	    public String menuRegister(HttpServletRequest request, MultipartHttpServletRequest mul) {
 	    	System.out.println("보선-메뉴등록 컨트롤러 실행");
 	    	String result = ser.menuRegister(request, mul);
 	    	return result;
 	    }
-
-
-
 	}
 

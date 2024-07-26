@@ -72,8 +72,10 @@ public class MemberInfoController {
 		if (originImgName.equals("default.jpg") || originImgName.equals("default")) {
 			file = new File(MemberInfoService.IMAGE_REPO + "/default.jpg");
 		} else {
+
 			// 파일을 변경했으면 해당 이름으로 저장이되고 형식은 아이디_파일명 으로 저장된다.
 			// 해당 파일을 불러온다.
+
 			file = new File(MemberInfoService.IMAGE_REPO + "/" + img);
 		}
 		// 파일이 존재한다면 해당 파일을 사용자에게 전달한다.

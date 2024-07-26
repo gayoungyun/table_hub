@@ -42,8 +42,8 @@ public class storeController {
 			Map<String, Object> Map = ser.store(request, store_id);
 			model.addAllAttributes(Map);
 			return "store/store";
-
 	}
+
 
 	@GetMapping("/store/info")
 	public String info(HttpServletRequest request, Model model) {
@@ -88,5 +88,5 @@ public class storeController {
 	 
 	  
 	 * */
-}
+
 
