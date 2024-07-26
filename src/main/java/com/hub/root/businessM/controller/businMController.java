@@ -124,72 +124,10 @@ public class businMController {
 			return "businessM/info/photoInfo";
 		}
 
-
-		//구현 작업 영역 start
-		@GetMapping("/businessM/reviewInfo")//마이페이지 내 고객후기보기
-		public String reviewInfo() {
-			return "businessM/info/reviewInfo";
-		}
-
-		@GetMapping("/businessM/review")
-		@ResponseBody
-		public Map<String, Object> getReview(HttpSession session, @RequestParam int curPage) {
-			System.out.println("curPage : " + curPage);
-			String storeId = (String)session.getAttribute("storeId");
-			Map<String, Object> map = ser.getReview(storeId, curPage);
-			return map;
-		}
-
-		@GetMapping(value = "/businessM/reviewDetail", produces = "application/json; charset=utf-8")
-		@ResponseBody
-		public Map<String, Object> getReviewDetail(@RequestParam Map<String, Object> map) {
-			System.out.println("memId : " + map.get("memId"));
-			System.out.println("reviewNum : " + Integer.parseInt((String) map.get("reviewNum")));
-			String memId = (String)map.get("memId");
-			int reviewNum = Integer.parseInt((String) map.get("reviewNum"));
-			map = ser.getReviewDetail(memId, reviewNum);
-			return map;
-		}
-
-		@DeleteMapping(value="/businessM/review", produces = "application/json; charset=utf-8")
-		@ResponseBody
-		public Map<String, Object> deleteReview(@RequestBody Map<String, int[]> getReviews) {
-			int[] reviews = getReviews.get("reviews");
-			Map<String, Object> map = ser.deleteReview(reviews);
-			return map;
-		}
-
-		@GetMapping("/businessM/download")
-		public void download(@RequestParam String img, HttpServletResponse res) throws Exception {
-	    	System.out.println("businMCont download 실행");
-	    	String originImgName = img;
-	    	 System.out.println("Requested image: " + img); // 추가된 로그
-
-			res.setContentType("text/plain; charset=utf-8");
-			res.addHeader("Content-disposition", "attachment;fileName="+URLEncoder.encode(img, "UTF-8"));
-			File file;
-
-			// 해당 파일을 불러온다.
-			file = new File(ser.DOWNLOAD_FOLDER + "/" + img);
-
-			// 파일이 존재한다면 해당 파일을 사용자에게 전달한다.
-			if(file.exists()) {
-				FileInputStream in = new FileInputStream(file);
-				FileCopyUtils.copy(in, res.getOutputStream());
-				in.close();
-			} else {
-		        System.err.println("File not found: " + file.getAbsolutePath()); // 추가된 로그
-		        res.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
-		    }
-		}
-
-		// 구현 작업 영역 end
-
 		@GetMapping("/businessM/bookInfo")//마이페이지 내 예약관리
 		public String bookInfo() {
 			return "businessM/info/bookInfo";
 		}
-
 
 		@GetMapping("/businessM/menu/menuRegister")//메뉴등록화면
 		public String menuRegister() {
@@ -227,6 +165,73 @@ public class businMController {
 	    	String result = ser.menuRegister(request, mul);
 	    	return result;
 	    }
+	    
+	    
+	    
+	    
+	    
+//-------------------------------------구현 작업 영역 start
+	    
+	    
+	  		@GetMapping("/businessM/reviewInfo")//마이페이지 내 고객후기보기
+	  		public String reviewInfo() {
+	  			return "businessM/info/reviewInfo";
+	  		}
+
+	  		@GetMapping("/businessM/review")
+	  		@ResponseBody
+	  		public Map<String, Object> getReview(HttpSession session, @RequestParam int curPage) {
+	  			System.out.println("curPage : " + curPage);
+	  			String storeId = (String)session.getAttribute("storeId");
+	  			Map<String, Object> map = ser.getReview(storeId, curPage);
+	  			return map;
+	  		}
+
+	  		@GetMapping(value = "/businessM/reviewDetail", produces = "application/json; charset=utf-8")
+	  		@ResponseBody
+	  		public Map<String, Object> getReviewDetail(@RequestParam Map<String, Object> map) {
+	  			System.out.println("memId : " + map.get("memId"));
+	  			System.out.println("reviewNum : " + Integer.parseInt((String) map.get("reviewNum")));
+	  			String memId = (String)map.get("memId");
+	  			int reviewNum = Integer.parseInt((String) map.get("reviewNum"));
+	  			map = ser.getReviewDetail(memId, reviewNum);
+	  			return map;
+	  		}
+
+	  		@DeleteMapping(value="/businessM/review", produces = "application/json; charset=utf-8")
+	  		@ResponseBody
+	  		public Map<String, Object> deleteReview(@RequestBody Map<String, int[]> getReviews) {
+	  			int[] reviews = getReviews.get("reviews");
+	  			Map<String, Object> map = ser.deleteReview(reviews);
+	  			return map;
+	  		}
+
+	  		@GetMapping("/businessM/download")
+	  		public void download(@RequestParam String img, HttpServletResponse res) throws Exception {
+	  	    	System.out.println("businMCont download 실행");
+	  	    	String originImgName = img;
+	  	    	 System.out.println("Requested image: " + img); // 추가된 로그
+
+	  			res.setContentType("text/plain; charset=utf-8");
+	  			res.addHeader("Content-disposition", "attachment;fileName="+URLEncoder.encode(img, "UTF-8"));
+	  			File file;
+
+	  			// 해당 파일을 불러온다.
+	  			file = new File(ser.DOWNLOAD_FOLDER + "/" + img);
+
+	  			// 파일이 존재한다면 해당 파일을 사용자에게 전달한다.
+	  			if(file.exists()) {
+	  				FileInputStream in = new FileInputStream(file);
+	  				FileCopyUtils.copy(in, res.getOutputStream());
+	  				in.close();
+	  			} else {
+	  		        System.err.println("File not found: " + file.getAbsolutePath()); // 추가된 로그
+	  		        res.sendError(HttpServletResponse.SC_NOT_FOUND, "File not found");
+	  		    }
+	  		}
+
+//-----------------------------------------구현 작업 영역 end
+
 
 
 

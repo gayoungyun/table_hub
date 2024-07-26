@@ -103,13 +103,21 @@ public class storeService {
 		
 		HttpSession session = request.getSession();
 	    String user_id = (String) session.getAttribute("userId");
+		store_id = (String) session.getAttribute("storeId");		
+		
 	    
 	    
 	    int result01=0, result02=0;
 	    int num=0;
 	    Map<String, Object> Jmap = new HashMap<String, Object>();
 	    
-		if(user_id == null) {
+	    if(store_id != null) {
+	    	Jmap.put("result", 0);
+	    	Jmap.put("msg", "사업자 회원은 찜하기를 할 수 없습니다.");
+	    	Jmap.put("url", "member/login");
+	    	
+	    	return Jmap;	
+	    }else if(user_id == null) {
 			Jmap.put("result", 0);
 			Jmap.put("msg", "회원 로그인이 필요한 서비스입니다");
 			Jmap.put("url", "member/login");

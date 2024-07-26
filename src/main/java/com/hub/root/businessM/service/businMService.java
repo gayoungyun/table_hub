@@ -244,7 +244,7 @@ public class businMService {
             for (Entry<String, Object> entry : param.entrySet()) {
                 String key = entry.getKey();
                 Object value = entry.getValue();
-                System.out.println("Key: " + key + ", Value: " + value);
+                System.out.println("보선- Key: " + key + ", Value: " + value);
             }
 
             int result01 = mapper.storeImage01(param);
@@ -275,66 +275,6 @@ public class businMService {
 	        return path.toString();
 	    }
 	    return null;
-	}
-
-	// 구현 작업 내용
-	public Map<String, Object> getReview(String storeId, int curPage) {
-		int totalReview = mapper.getTotalReview(storeId);
-		System.out.println("TotalReview : " + totalReview);
-
-		// 리뷰의 총 갯수를 이용하여 페이징 처리 작업
-		Map<String, Object> map = pageCalc(totalReview, curPage);
-
-		// 해당되는 페이지에 맞춰 데이터 불러오기
-		List<storeReviewDTO> list = mapper.getReview(storeId,
-													(int)map.get("startNum"),
-													(int)map.get("endNum") );
-		map.put("list", list);
-		return map;
-	}
-
-	// getReview에서 불러온 데이터에서 다른 db를 참조해야하는 부분들의 정보를 불러옴
-	public Map<String, Object> getReviewDetail(String memId, int reviewNum) {
-		Map<String, Object> map = mapper.getReviewDetail(memId, reviewNum);
-		return map;
-	}
-
-	// getReview 페이징 처리
-	private Map<String, Object> pageCalc(int totalReview, int curPage) {
-		Map<String, Object> map = new HashMap<>();
-
-		// 한 페이지에 6개의 컨텐츠 표시
-		int viewCont = 6;
-
-		// 페이지의 시작, 끝 번호
-		int startNum = curPage * viewCont - (viewCont - 1);
-		int endNum = curPage * viewCont;
-		int totalPage = (totalReview / viewCont) + ((totalReview % viewCont) == 0 ? 0 : 1);
-
-		map.put("viewCont", viewCont);
-		map.put("startNum", startNum);
-		map.put("endNum", endNum);
-		map.put("totalReview", totalReview);
-		map.put("curPage", curPage);
-		map.put("totalPage", totalPage);
-
-		return map;
-	}
-
-	public Map<String, Object> deleteReview(int[] reviews) {
-		Map<String, Object> map = new HashMap<>();
-		int result = mapper.deleteReview(reviews);
-		String msg = "";
-
-		if (result == 0) {
-			msg = "삭제하는 중 문제가 발생하였습니다. 새로고침 후 다시 시도해주세요";
-		} else {
-			msg = "삭제가 완료되었습니다.";
-		}
-
-		map.put("msg", msg);
-
-		return map;
 	}
 
 	public String menuRegister(HttpServletRequest request, MultipartHttpServletRequest mul){
@@ -392,6 +332,69 @@ public class businMService {
 	        request.setAttribute("url", "/businessM/menuInfo");
 	        return "businessM/businMalert";
         }
+	}
+	
+	
+	
+	
+//------------------------------ 구현 작업 내용
+	public Map<String, Object> getReview(String storeId, int curPage) {
+		int totalReview = mapper.getTotalReview(storeId);
+		System.out.println("TotalReview : " + totalReview);
+
+		// 리뷰의 총 갯수를 이용하여 페이징 처리 작업
+		Map<String, Object> map = pageCalc(totalReview, curPage);
+
+		// 해당되는 페이지에 맞춰 데이터 불러오기
+		List<storeReviewDTO> list = mapper.getReview(storeId,
+													(int)map.get("startNum"),
+													(int)map.get("endNum") );
+		map.put("list", list);
+		return map;
+	}
+
+	// getReview에서 불러온 데이터에서 다른 db를 참조해야하는 부분들의 정보를 불러옴
+	public Map<String, Object> getReviewDetail(String memId, int reviewNum) {
+		Map<String, Object> map = mapper.getReviewDetail(memId, reviewNum);
+		return map;
+	}
+
+	// getReview 페이징 처리
+	private Map<String, Object> pageCalc(int totalReview, int curPage) {
+		Map<String, Object> map = new HashMap<>();
+
+		// 한 페이지에 6개의 컨텐츠 표시
+		int viewCont = 6;
+
+		// 페이지의 시작, 끝 번호
+		int startNum = curPage * viewCont - (viewCont - 1);
+		int endNum = curPage * viewCont;
+		int totalPage = (totalReview / viewCont) + ((totalReview % viewCont) == 0 ? 0 : 1);
+
+		map.put("viewCont", viewCont);
+		map.put("startNum", startNum);
+		map.put("endNum", endNum);
+		map.put("totalReview", totalReview);
+		map.put("curPage", curPage);
+		map.put("totalPage", totalPage);
+
+		return map;
+	}
+
+	public Map<String, Object> deleteReview(int[] reviews) {
+		Map<String, Object> map = new HashMap<>();
+		int result = mapper.deleteReview(reviews);
+		String msg = "";
+
+		if (result == 0) {
+			msg = "삭제하는 중 문제가 발생하였습니다. 새로고침 후 다시 시도해주세요";
+		} else {
+			msg = "삭제가 완료되었습니다.";
+		}
+
+		map.put("msg", msg);
+
+		return map;
 	}
 
 }

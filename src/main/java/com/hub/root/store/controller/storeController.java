@@ -41,10 +41,6 @@ public class storeController {
 	public String store(HttpServletRequest request, Model model,
 			@RequestParam(required=false) String store_id) {
 		
-		if(store_id == null) {
-			HttpSession session = request.getSession();
-		    store_id = (String) session.getAttribute("storeId");		
-		}
 			Map<String, Object> Map = ser.store(request, store_id);
 			
 			model.addAllAttributes(Map);
