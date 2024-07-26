@@ -1,5 +1,6 @@
 package com.hub.root.store.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,12 +11,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hub.root.store.DTO.reviewNumDTO;
 import com.hub.root.store.DTO.storeInfoDTO;
 import com.hub.root.store.DTO.storeMenuDTO;
 import com.hub.root.store.DTO.storeReviewDTO;
 import com.hub.root.store.DTO.storeReviewImgDTO;
 import com.hub.root.store.service.storeService;
+
+import retrofit2.http.GET;
 
 @Controller
 public class storeController {
@@ -24,6 +29,7 @@ public class storeController {
 	private storeMenuDTO menuDTO;
 	private storeReviewDTO reviewDTO;
 	private storeReviewImgDTO reviewImgDTO;
+	private reviewNumDTO numDTO;
 
 	@Autowired
 	public storeController(storeService ser) {
@@ -34,46 +40,76 @@ public class storeController {
 	@GetMapping("store")
 	public String store(HttpServletRequest request, Model model,
 			@RequestParam(required=false) String store_id) {
-
+		
 		if(store_id == null) {
 			HttpSession session = request.getSession();
 		    store_id = (String) session.getAttribute("storeId");		
 		}
 			Map<String, Object> Map = ser.store(request, store_id);
+			
 			model.addAllAttributes(Map);
 			return "store/store";
 
 	}
 
 	@GetMapping("/store/info")
-	public String info(HttpServletRequest request, Model model) {
+	public String info(HttpServletRequest request, Model model
+				,@RequestParam(required=false) String store_id) {
 
-		HttpSession session = request.getSession();
-	    String store_id = (String) session.getAttribute("storeId");
-
-		infoDTO = ser.storeInfo(store_id);
-		model.addAttribute(infoDTO);
+		storeInfoDTO dto = ser.storeInfo(store_id);
+		model.addAttribute("dto",dto);	
+		
 		return "store/info";
 	}
 
 	@GetMapping("/store/menu")
-	public String menu(HttpServletRequest request, Model model) {
+	public String menu(HttpServletRequest request, Model model
+			,@RequestParam(required=false) String store_id) {
+		
+		List<storeMenuDTO> menuDTO = ser.storeMenu(store_id);
+		model.addAttribute("dto",menuDTO);
+		
 		return "store/menu";
+		
 	}
 
 	@GetMapping("/store/review")
-	public String review(HttpServletRequest request, Model model) {
+	public String review(HttpServletRequest request, Model model
+			,@RequestParam(required=false) String store_id) {
+		List<reviewNumDTO> numDTO = ser.storeReview(store_id);
+		model.addAttribute("dto",numDTO);
 		return "store/review";
 	}
 
 	@GetMapping("/store/photo")
-	public String photo(HttpServletRequest request, Model model) {
+	public String photo(HttpServletRequest request, Model model
+			,@RequestParam(required=false) String store_id) {
+		
+		Map<String, Object> photoMap = ser.photos(store_id);
+		model.addAllAttributes(photoMap);
+		
 		return "store/photo";
+
 	}
 
 	@GetMapping("/store/map")
-	public String map(HttpServletRequest request) {
+	public String map(HttpServletRequest request, Model model
+			,@RequestParam(required=false) String store_id) {
+		
+		String storeAdd = ser.storeMap(store_id);
+		model.addAttribute("storeAdd", storeAdd);
+		
 		return "store/map";
+	}
+	
+	@GetMapping(value="store/jjim", produces="application/json; charset=utf-8" )
+	@ResponseBody
+	public Map<String, Object> jjim(HttpServletRequest request, 
+			@RequestParam String store_id) {
+
+		Map<String, Object> Jmap = ser.jjim(request, store_id);
+		return Jmap;
+
 	}
 	
 	/*
@@ -85,8 +121,7 @@ public class storeController {
 
 	        return "businessM/businMalert";
 	        } 
-	 
-	  
-	 * */
+
+	 */
 }
 

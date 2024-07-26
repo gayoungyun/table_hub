@@ -11,7 +11,7 @@
 	<button onclick="parent.changeParentUrl('http://localhost:8080/root/businessM/menu/menuRegister')">메뉴 등록 하기</button><br>
 	
 	<script>
-	for (let i = 1; i <= 100; i++) {
+	for (let i = 1; i <= 200; i++) {
 	    document.write(i + "<br>");
 	}
 </script>

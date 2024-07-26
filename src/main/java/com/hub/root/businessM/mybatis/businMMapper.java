@@ -20,6 +20,7 @@ public interface businMMapper {
 	public List<storeReviewDTO> getReview(@Param("storeId") String storeId ,
 										  @Param("startNum") int startNum ,
 										  @Param("endNum") int endNum);
-	public Map<String, Object> getReviewDetail(@Param("memId") String memId,@Param("reviewNum") int reviewNum);
+	public Map<String, Object> getReviewDetail(@Param("memId") String memId,
+												@Param("reviewNum") int reviewNum);
 	public int deleteReview(@Param("reviews") int[] reviews);
 }
