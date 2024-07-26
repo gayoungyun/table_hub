@@ -50,6 +50,14 @@
 		<result property="bookingId" column="booking_id"/>
 	</resultMap>
 	
+	<resultMap type="com.hub.root.businessM.DTO.ReservationDTO" id="reservationDTO">
+		<result property="store_max_team" column="store_max_team"/>
+		<result property="store_business_hours" column="store_business_hours"/>
+		<result property="store_add" column="store_add"/>
+		<result property="store_add_info" column="store_add_info"/>
+		<result property="store_name" column="store_name"/>
+	
+	</resultMap>
 
 	<select id="businMChk" resultMap="businM">
 		SELECT store_name FROM store_info WHERE store_id = #{store_id}
@@ -167,7 +175,13 @@
 	 where
 	    num between #{start} and #{end}
  </select>
-
+ 
+ 
+ <select id="reservationInfo" resultMap="reservationDTO">
+ 	select store_max_team, store_business_hours, store_add, store_add_info, store_name from store_info where store_id = #{store_id}
+ </select>
+ 
+<!--  !!!!!!끝!!!!!!! -->
 <select id="totalPage" resultType="int">
 	select
 		 count(*) 

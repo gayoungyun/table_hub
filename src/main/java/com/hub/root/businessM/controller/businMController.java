@@ -224,17 +224,11 @@ public class businMController {
 	    	String result = ser.storeImage(request, file01, file02, file03, file04, file05);
 	    	return result;
 	    }
-
-	    @GetMapping("/businessM/testNodal")
-	    public String test() {
-	    	return "businessM/book/bookingView";
-	    }
 	    @PostMapping("/businessM/menu/menuRegister")
 	    public String menuRegister(HttpServletRequest request, MultipartHttpServletRequest mul) {
 	    	System.out.println("보선-메뉴등록 컨트롤러 실행");
 	    	String result = ser.menuRegister(request, mul);
 	    	return result;
 	    }
-
 	}
 

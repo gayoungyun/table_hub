@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartRequest;
 
 import com.hub.root.businessM.DTO.BookPageDTO;
 import com.hub.root.businessM.DTO.businMDTO;
+import com.hub.root.businessM.DTO.ReservationDTO;
 import com.hub.root.businessM.DTO.storeReviewDTO;
 import com.hub.root.businessM.mybatis.businMMapper;
 
@@ -470,6 +471,13 @@ public class businMService {
 	        request.setAttribute("url", "/businessM/menuInfo");
 	        return "businessM/businMalert";
         }
+	}
+	// 민석 추가
+	public ReservationDTO reservationInfo(String store_id)
+	{
+		ReservationDTO dto = mapper.reservationInfo(store_id);
+		
+		return dto;
 	}
 }
 

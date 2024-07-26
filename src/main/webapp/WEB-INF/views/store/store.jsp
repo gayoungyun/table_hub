@@ -11,7 +11,7 @@
 <script src="${path}/resources/js/store/store.js"></script>
 <!-- margin 순서 위 왼쪽 아래 오른쪽 --> 
 </head>
-<body>
+<body class="_body">
 <header class="header">
 <%@ include file="../main/header.jsp" %>
 </header>
@@ -67,20 +67,11 @@
 			<iframe frameborder="0" scrolling="no" id="myIframe" onload="iHeight();" 
 				style="width:1500px; min-height:100px;" ></iframe>
 		</div>
-		
 	</div>
 </div>
 	<div class="div_footer">
-		<footer class="footer">
-			<%@ include file="../main/footer.jsp" %>
-		</footer>
+		<%@ include file="../main/footer.jsp" %>
 	</div>
-
-<script type="text/javascript">
-	
-
-</script>
-
 </body>
 </html>
 

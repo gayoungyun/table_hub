@@ -37,7 +37,6 @@ public class storeController {
 
 		HttpSession session = request.getSession();
 
-	System.out.println("1111111111111111111111111111111111111 : " + store_id);
 //	    String store_id = (String) session.getAttribute("storeId");
 //		if(store_id == null) {
 //			request.setAttribute("msg", "로그인이 필요한 서비스입니다");
@@ -82,5 +81,13 @@ public class storeController {
 	public String map(HttpServletRequest request) {
 		return "store/map";
 	}
+	
+    // 민석 추가
+    @GetMapping("/store/testModal")
+    public String test(@RequestParam String store_id,
+    		Model model) {
+    	model.addAttribute("store_id",store_id);
+    	return "store/register_test";
+    }
 }
 

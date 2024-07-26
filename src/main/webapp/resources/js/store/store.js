@@ -2,6 +2,7 @@ console.log("JavaScript 파일이 연결되었습니다.");
 
 window.onload = function() {
             category(0);
+            footer();
     };	     
 
 function category(n) {

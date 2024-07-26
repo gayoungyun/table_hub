@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hub.root.businessM.DTO.BookPageDTO;
+import com.hub.root.businessM.DTO.ReservationDTO;
 import com.hub.root.businessM.service.businMService;
 
 @RestController
@@ -43,5 +44,13 @@ public class businMAPIController {
     	int result = ser.totalPage(store_id, type);
     	
     	return result;
+    }
+    @GetMapping("/api/reservationInfo")
+    public ReservationDTO reservationInfo(
+    		@RequestHeader("store_id") String store_id
+    		) {
+    	ReservationDTO dto = ser.reservationInfo(store_id);
+    		
+    	return dto;
     }
 }
