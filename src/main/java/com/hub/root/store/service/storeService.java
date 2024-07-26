@@ -100,10 +100,11 @@ public class storeService {
 	
 	
 	public Map<String, Object> jjim(HttpServletRequest request, String store_id) {
+		System.out.println("찜하기 서비스");
 		
 		HttpSession session = request.getSession();
 	    String user_id = (String) session.getAttribute("userId");
-		store_id = (String) session.getAttribute("storeId");		
+		String storeId = (String) session.getAttribute("storeId");		
 		
 	    
 	    
@@ -111,7 +112,7 @@ public class storeService {
 	    int num=0;
 	    Map<String, Object> Jmap = new HashMap<String, Object>();
 	    
-	    if(store_id != null) {
+	    if(storeId != null) {
 	    	Jmap.put("result", 0);
 	    	Jmap.put("msg", "사업자 회원은 찜하기를 할 수 없습니다.");
 	    	Jmap.put("url", "member/login");

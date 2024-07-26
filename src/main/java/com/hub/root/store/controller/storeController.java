@@ -102,7 +102,7 @@ public class storeController {
 	@ResponseBody
 	public Map<String, Object> jjim(HttpServletRequest request, 
 			@RequestParam String store_id) {
-
+		System.out.println("찜하기 컨트롤러");
 		Map<String, Object> Jmap = ser.jjim(request, store_id);
 		return Jmap;
 
