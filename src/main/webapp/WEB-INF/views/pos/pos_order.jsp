@@ -509,7 +509,32 @@
 				// 예약관리 버튼이 눌리면 !!!!!(추후 추가) !!!!!!!!!!
 				else if(parent.classList.contains("management"))
 				{
+					const booking_id = parent.dataset.value;
+					
+					fetch("http://localhost:8080/root/api/bookingStatus", {
+						method : "PATCH",
+						headers : {"Content-Type": "application/json",},
+						body : JSON.stringify({
+							"booking_id" : booking_id,
+							"booking_status": 1
+						})
+					})
+					.then((response) => response.json())
+					.then((data) => {
+						if(data == '1')
+						{
+							const booking_wrapper = document.querySelectorAll('.booking_wrapper');
 							
+							for(let i = 0; i < booking_wrapper.length; i++)
+							{
+								if(booking_wrapper[i].dataset.id == booking_id)
+								{
+									booking_wrapper[i].remove();
+								}
+							}
+						}
+					})
+					break;
 				}
 				else{
 					parent = parent.parentElement;

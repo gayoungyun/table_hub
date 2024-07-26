@@ -7,6 +7,7 @@
 	<resultMap type="com.hub.root.pos.posDTO.PosDTO" id="posDTO">
 		<id property="store_id" column="store_id" />
 		<result property="store_name" column="store_name" />
+		<result property="store_pwd" column="store_pwd" />
 	</resultMap>
 	<resultMap type="com.hub.root.pos.posDTO.BookingDTO" id="bookingDTO">
 		<id property="booking_id" column="BOOKING_ID" />
@@ -34,7 +35,7 @@
 	</resultMap>
 	
 	<select id="login_chk" resultMap="posDTO">
-		select store_id, store_name from store_info where store_id=#{id} and store_pwd =#{pwd} 
+		select store_id, store_name, store_pwd from store_info where store_id=#{id}
 	</select>
 	
 	<select id="todayReservation" resultMap="bookingDTO">

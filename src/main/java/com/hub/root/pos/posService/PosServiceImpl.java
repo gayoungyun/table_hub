@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,6 +34,12 @@ public class PosServiceImpl implements PosService {
 	PosMapper mapper;
 	public static final String TABLE_HUB_REPO = "C:/spring/table_hub";
 
+	public BCryptPasswordEncoder en;
+	
+	public PosServiceImpl() {
+		en = new BCryptPasswordEncoder();
+	}
+	
 	@Override
 	public int login_chk(HttpServletRequest req,
 			String id,
@@ -42,11 +49,13 @@ public class PosServiceImpl implements PosService {
 
 		if(dto != null)
 		{
-			HttpSession session = req.getSession();
-			session.setAttribute("UserID", dto.getStore_id());
-			session.setAttribute("UserName", dto.getStore_name());
-			session.removeAttribute("key");
-			return 1;
+			if (en.matches(pwd, dto.getStore_pwd())) {
+				HttpSession session = req.getSession();
+				session.setAttribute("UserID", dto.getStore_id());
+				session.setAttribute("UserName", dto.getStore_name());
+				session.removeAttribute("key");
+				return 1;		
+			}	
 		}
 		return 0;
 	}
