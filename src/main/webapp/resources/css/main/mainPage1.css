@@ -121,6 +121,7 @@
 	.rest-line {
 		text-align: center;
 		margin-top: -40px;
+		margin-bottom: -200px;
 		font-size: 20px;
 		font-family: "Love Ya Like A Sister",cursive;
 	}
@@ -150,7 +151,7 @@
 		position: relative;
 		width: 100%;
 		height: 100%;
-		line-height: 0;
+		/* line-height: 0; */
 		gap: 100px;
 		justify-content: center;
 		overflow: hidden;
@@ -169,7 +170,7 @@
 	.food-img img {
 		width: 100%;
 		height: 80%;
-		/* object-fit: cover; */
+		/* object-fit: cover; */ 
 	}
 
 	/* menu image css end */

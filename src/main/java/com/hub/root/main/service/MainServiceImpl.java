@@ -26,14 +26,37 @@ public class MainServiceImpl implements MainService{
 	@Autowired
 	MainFileService mfs;
 	public List<MainDTO> mainPage1(Model model) {
-		try {
-		List<MainDTO> dtoList = mapper.mainPage1();
-		model.addAttribute("dtoList", dtoList);
-		return dtoList;
-		 } catch (Exception e) {
-	            e.printStackTrace(); // 콘솔에 예외 스택 트레이스 출력
-	            throw new RuntimeException("Error fetching main page data", e);
-	        }
+			try {
+			List<MainDTO> dtoList = mapper.mainPage1();
+			model.addAttribute("dtoList", dtoList);
+			return dtoList;
+			} catch (Exception e) {
+		           e.printStackTrace(); 
+		           throw new RuntimeException("Error fetching main page data", e);
+		    }
+	}
+	
+	public List<String> getAllCategories() {
+		  //System.out.println("Entering getAllCategories");
+		  List<String> categories = mapper.getAllCategories();
+		  //System.out.println("categories from mapper: " + categories);
+	      if (mapper == null) {
+	            System.err.println("Error: mainMapper is not injected!");
+	            return new ArrayList<>(); // 빈 리스트 반환
+	      }
+	      if (categories == null) {
+	    	  categories = new ArrayList<>();  // Null 체크 후 빈 리스트로 초기화
+	      }
+	      
+	      Set<String> uniqueCategories = new HashSet<>();
+	      for (String category : categories) {
+	    	  String[] splitCategories = category.split("/");
+	    	  for (String splitCategory : splitCategories) {
+	    		  uniqueCategories.add(splitCategory.trim());
+	    	  }
+	      }
+	      //System.out.println("Exiting getAllCategories with categories: " + uniqueCategories);
+	      return new ArrayList<>(uniqueCategories);
 	}
 	
 	public List<List<MainImgDTO>> getStoreImgToMain(List<String> storeIds){
@@ -46,42 +69,10 @@ public class MainServiceImpl implements MainService{
 		}
 		return storeImgToMain;
 		 } catch (Exception e) {
-	            e.printStackTrace(); // 콘솔에 예외 스택 트레이스 출력
+	            e.printStackTrace(); 
 	            throw new RuntimeException("Error fetching store images", e);
 	        }
-	}
-	
-	public List<String> getAllCategories() {
-		  System.out.println("Entering getAllCategories");
-		  List<String> categories = mapper.getAllCategories();
-		    System.out.println("categories from mapper: " + categories);
-	      if (mapper == null) {
-	            System.err.println("Error: mainMapper is not injected!");
-	            return new ArrayList<>(); // 빈 리스트 반환
-	        }
-		
-		//List<String> categories = mapper.getAllCategories();
-		if (categories == null) {
-            categories = new ArrayList<>();  // Null 체크 후 빈 리스트로 초기화
-        }
-	    Set<String> uniqueCategories = new HashSet<>();
-	    for (String category : categories) {
-	        String[] splitCategories = category.split("/");
-	        for (String splitCategory : splitCategories) {
-	            uniqueCategories.add(splitCategory.trim());
-	        }
-	    }
-	    System.out.println("Exiting getAllCategories with categories: " + uniqueCategories);
-	    return new ArrayList<>(uniqueCategories);
-	}
-	
-//	public List<MainImgDTO> getStoreImg(String category){
-//		return mapper.getStoreImg(category);
-//	}
-	
-//	public List<MainDTO> getStoreByLocation(double latitude, double longitude){
-//		return mapper.findStoreByLocation(latitude, longitude);
-//	}
+		}
 	
 	public List<MainReviewDTO> getPopularityList(Map<String, Object> params) {
         return mapper.getPopularityList(params);
@@ -91,9 +82,6 @@ public class MainServiceImpl implements MainService{
         return mapper.getReviewList(params);
     }
 	
-//	public List<MainMapDTO> getStoreInfo(Map<String, Object> params) {
-//		return mapper.getStoreInfo(params);
-//	}
     public List<MainMapDTO> getStoreInfo(Map<String, Object> params) {
         try {
         	System.out.println("Parameters in Service: " + params);
@@ -109,19 +97,11 @@ public class MainServiceImpl implements MainService{
             return null;
         }
     }
-
 	
 	public List<MainMapDTO> getStoreInfoByCategory(String category) {
 	    List<MainMapDTO> storeList = mapper.getStoreInfoByCategory(category);
 	    return storeList;
 	}
-	
-	/*
-	public List<Map<String, Object>> getMenuImage(Map<String, Object> params){
-	    //return imgList;
-		return mapper.getMenuImage(params);
-	}
-	*/
 	
 	public List<MainImgDTO> getStoreImage(String storeId) {
 		return mapper.getStoreImage(storeId);
@@ -137,12 +117,11 @@ public class MainServiceImpl implements MainService{
 	    }
 	    return storeSmallImgLists;
 	}
-	
-	
 
 	public List<MainReviewDTO> getReviewList(String userId){
 		return mapper.getReviewList(userId);
 	}
+	
 	public int inputInfo(MainDTO dto) {
 		try {
 			return mapper.infoSave(dto);
@@ -151,6 +130,7 @@ public class MainServiceImpl implements MainService{
 			return 0;
 		}	
 	}
+	
 	public void infoSave(String store_id,String store_menu_name,int store_menu_price,
 						String store_menu_detail,String store_menu_category, String imagePath) {
 		MainDTO dto = new MainDTO();
@@ -193,9 +173,11 @@ public class MainServiceImpl implements MainService{
 		}
 		*/
 	}
+	
 	public String saveMenuImage(MultipartFile mul) {
 		return mfs.saveFile(mul);
 	}
+	
 	public void saveImagePathToStoreImg(String store_id, String store_img_root) {		
 		MainImgDTO dto = new MainImgDTO();
 	    dto.setStore_id(store_id);

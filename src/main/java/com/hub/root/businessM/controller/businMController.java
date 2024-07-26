@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -176,8 +178,17 @@ public class businMController {
 		public void download(@RequestParam String img, HttpServletResponse res) throws Exception {
 	    	System.out.println("businMCont download 실행");
 	    	String originImgName = img;
-	    	 System.out.println("Requested image: " + img); // 추가된 로그
+	    	System.out.println("Requested image: " + img); // 추가된 로그
 	    	
+	    	 
+	    	 if (img == null || img.trim().isEmpty()) {
+	    	        System.err.println("Image name is null or empty");
+	    	        res.sendError(HttpServletResponse.SC_BAD_REQUEST, "Image name is required");
+	    	        return;
+	    	    }
+	    	 
+	    	 
+	    	 
 			res.setContentType("text/plain; charset=utf-8");
 			res.addHeader("Content-disposition", "attachment;fileName="+URLEncoder.encode(img, "UTF-8"));
 			File file;

@@ -298,16 +298,21 @@
 				</div>
 				
 				<!-- ===== 위치가져오기, 상세보기 부분 ===== -->
+				
+				<div class="location-condition">
+					<button class="loc_btn" >현 위치로 설정</button>
+					<button class="loc_btn1" onclick="getOtherLocation()">다른 지역 선택</button>
+				</div>
+				
 				<c:choose>
-			    <c:when test="${not empty storeList}">
-			        <c:forEach var="store" items="${storeList}" varStatus="status">
+			    	<c:when test="${not empty storeList}">
 					<div class="location-condition">		
-						<c:if test="${not empty store.store_category}">
+						<c:if test="${not empty storeList[0].store_category}">
 	                        <span># 
 	                        <c:set var="seenCategories" value="" />
 	                        
 	                        <!-- 특정 카테고리로 검색 시 -->
-	                        <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
+	                        <c:forEach var="category" items="${fn:split(storeList[0].store_category, '/')}">
 	                            <c:if test="${fn:contains(category, param.keyword)}">
 	                                <c:if test="${not fn:contains(seenCategories, category)}">
 	                                    <c:if test="${!empty seenCategories}">
@@ -319,105 +324,103 @@
 	                            </c:if>
 	                        </c:forEach>
 	                        
+	                        <!-- "ALL" 또는  메뉴 이름으로 검색 시 모든 카테고리 출력 -->
+	                        <c:if test="${param.searchType == 'menu_name' || param.searchType == 'all' || param.searchType == null}">
+                                <c:if test="${not fn:contains(seenCategories, keyword)}">
+                                    <c:if test="${!empty seenCategories}">
+                                        /
+                                    </c:if>
+                                    ${keyword}
+                                    <c:set var="seenCategories" value="${seenCategories}${keyword}/" />
+                                </c:if>
+	                        </c:if>
                         	</span><br>
                  	    </c:if>
 					</div>
-					<div class="location-condition">
-						<button class="loc_btn" >현 위치로 설정</button>
-						<button class="loc_btn1" onclick="getOtherLocation()">다른 지역 선택</button>
-					</div>
 				
-					<!-- ===== 메뉴 상세보기 부분 ===== -->
-			            <div class="menu-detail" id="listItem${status.index}" >
-			                <div class="detail-container-left">
-			                
-			                    <div class="menu-detail-imgBig">
-								    <c:if test="${not empty storeImgList[status.index]}">
-								        <img class="imgBig" src="${path}/businessM/download?img=${fn:substringAfter(storeImgList[status.index].store_img_root, 'C:\\tablehub_image\\businessM\\')}" alt="Store Image">  
-								    	<!-- <img class="imgBig" src="C:\\tablehub_image\\businessM\\${storeImgList[status.index].store_img_root}" alt="Store Image">-->
-								    </c:if>
-								</div>
-								<div class="menu-detail-imgSmall">
-									<c:forEach var="smallImg" items="${storeSmallImgLists[status.index]}" begin="0" end="2">
-								        <c:if test="${not empty smallImg}">
-								            <div class="imgSmall1${status.index }">
-								                <img class="imgSmall" src="${path}/businessM/download?img=${fn:substringAfter(smallImg.store_img_root, 'C:\\tablehub_image\\businessM\\')}" alt="Store Menu Image">
-								            	<!-- <img class="imgSmall" src="C:\\tablehub_image\\businessM\\${smallImg.store_img_root}" alt="Store Menu Image"> -->
-								            </div>
-								        </c:if>
-								  	</c:forEach>
-								</div>
-
-			                </div>
-                                <div class="detail-container-right">
-                                    <c:if test="${not empty store.store_name}">
-                                        <span>가게 이름 : ${store.store_name}</span><br>
-                                    </c:if>
-                                    <c:if test="${not empty store.store_phone}">
-                                        <span>전화번호 : ${store.store_phone}</span><br>
-                                    </c:if>
-                                    <c:if test="${not empty store.store_main_phone}">
-                                        <span>대표 전화번호 : ${store.store_main_phone}</span><br>
-                                    </c:if>
-                                    <c:if test="${not empty store.store_add}">
-                                        <span>주소 : ${store.store_add}</span><br>
-                                    </c:if>
-                                    <c:if test="${not empty store.store_add_info}">
-                                        <span>상세 주소 : ${store.store_add_info}</span><br>
-                                    </c:if>
-                                    <c:if test="${not empty store.store_category}">
-			                        <span>카테고리 : 
-			                        <c:set var="seenCategories" value="" />
-			                        
-			                        <!-- 특정 카테고리로 검색 시 -->
-			                        <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
-			                            <c:if test="${fn:contains(category, param.keyword)}">
-			                                <c:if test="${not fn:contains(seenCategories, category)}">
-			                                    <c:if test="${!empty seenCategories}">
-			                                        /
-			                                    </c:if>
-			                                    ${category}
-			                                    <c:set var="seenCategories" value="${seenCategories}${category}/" />
-			                                </c:if>
-			                            </c:if>
-			                        </c:forEach>
-			                        
-			                        <!-- "ALL" 또는  메뉴 이름으로 검색 시 모든 카테고리 출력 -->
-			                        <c:if test="${param.searchType == 'menu_name' || param.searchType == 'all' || param.searchType == null}">
-			                            <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
-			                                <c:if test="${not fn:contains(seenCategories, category)}">
-			                                    <c:if test="${!empty seenCategories}">
-			                                        /
-			                                    </c:if>
-			                                    ${category}
-			                                    <c:set var="seenCategories" value="${seenCategories}${category}/" />
-			                                </c:if>
-			                            </c:forEach>
-			                        </c:if>
-			                        </span><br>
-			                 	    </c:if>
-                                    <c:if test="${not empty store.store_note}">
-                                        <span>메모 : ${store.store_note}</span><br>
-                                    </c:if>
-                                    <c:if test="${not empty store.store_introduce}">
-                                        <span>소개 : ${store.store_introduce}</span><br>
-                                    </c:if>
-                                    <c:if test="${not empty store.store_business_hours}">
-                                        <span>영업 시간 : ${store.store_business_hours}</span><br>
-                                    </c:if>
-                                    <a href="${path}/store?store_id=${store.store_id}" class="detail-link">상세 페이지로 이동</a>
-                         
-                                </div>
-                            </div>
-                        </c:forEach>
+				<!-- ===== 메뉴 상세보기 부분 ===== -->
+				<c:forEach var="store" items="${storeList}" varStatus="status">
+		            <div class="menu-detail" id="listItem${status.index}" >
+		                <div class="detail-container-left">
+		                    <div class="menu-detail-imgBig">
+							    <c:if test="${not empty storeImgList[status.index]}">
+							        <img class="imgBig" src="${path}/businessM/download?img=${fn:substringAfter(storeImgList[status.index].store_img_root, 'C:\\tablehub_image\\businessM\\')}" alt="Store Image">  
+							    	<!-- <img class="imgBig" src="C:\\tablehub_image\\businessM\\${storeImgList[status.index].store_img_root}" alt="Store Image">-->
+							    </c:if>
+							</div>
+							<div class="menu-detail-imgSmall">
+								<c:forEach var="smallImg" items="${storeSmallImgLists[status.index]}" begin="0" end="2">
+							        <c:if test="${not empty smallImg}">
+							            <div class="imgSmall1${status.index }">
+							                <img class="imgSmall" src="${path}/businessM/download?img=${fn:substringAfter(smallImg.store_img_root, 'C:\\tablehub_image\\businessM\\')}" alt="Store Menu Image">
+							            	<!-- <img class="imgSmall" src="C:\\tablehub_image\\businessM\\${smallImg.store_img_root}" alt="Store Menu Image"> -->
+							            </div>
+							        </c:if>
+							  	</c:forEach>
+							</div>
+		                </div>
+                               <div class="detail-container-right">
+                                   <c:if test="${not empty store.store_name}">
+                                       <span>가게 이름 : ${store.store_name}</span><br>
+                                   </c:if>
+                                   <c:if test="${not empty store.store_phone}">
+                                       <span>전화번호 : ${store.store_phone}</span><br>
+                                   </c:if>
+                                   <c:if test="${not empty store.store_main_phone}">
+                                       <span>대표 전화번호 : ${store.store_main_phone}</span><br>
+                                   </c:if>
+                                   <c:if test="${not empty store.store_add}">
+                                       <span>주소 : ${store.store_add}</span><br>
+                                   </c:if>
+                                   <c:if test="${not empty store.store_add_info}">
+                                       <span>상세 주소 : ${store.store_add_info}</span><br>
+                                   </c:if>
+                                   <c:if test="${not empty store.store_category}">
+		                        <span>카테고리 : 
+		                        <c:set var="seenCategories" value="" />
+		                        
+		                        <!-- 특정 카테고리로 검색 시 -->
+		                        <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
+		                            <c:if test="${fn:contains(category, param.keyword)}">
+		                                <c:if test="${not fn:contains(seenCategories, category)}">
+		                                    <c:if test="${!empty seenCategories}">
+		                                        /
+		                                    </c:if>
+		                                    ${category}
+		                                    <c:set var="seenCategories" value="${seenCategories}${category}/" />
+		                                </c:if>
+		                            </c:if>
+		                        </c:forEach>
+		                        
+		                        <!-- "ALL" 또는  메뉴 이름으로 검색 시 모든 카테고리 출력 -->
+		                        <c:if test="${param.searchType == 'menu_name' || param.searchType == 'all' || param.searchType == null}">
+		                            <c:forEach var="category" items="${fn:split(store.store_category, '/')}">
+		                                <c:if test="${not fn:contains(seenCategories, category)}">
+		                                    <c:if test="${!empty seenCategories}">
+		                                        /
+		                                    </c:if>
+		                                    ${category}
+		                                    <c:set var="seenCategories" value="${seenCategories}${category}/" />
+		                                </c:if>
+		                            </c:forEach>
+		                        </c:if>
+		                        </span><br>
+		                 	    </c:if>
+                                   <c:if test="${not empty store.store_note}">
+                                       <span>메모 : ${store.store_note}</span><br>
+                                   </c:if>
+                                   <c:if test="${not empty store.store_introduce}">
+                                       <span>소개 : ${store.store_introduce}</span><br>
+                                   </c:if>
+                                   <c:if test="${not empty store.store_business_hours}">
+                                       <span>영업 시간 : ${store.store_business_hours}</span><br>
+                                   </c:if>
+                                   <a href="${path}/store?store_id=${store.store_id}" class="detail-link">상세 페이지로 이동</a>
+                        
+                               </div>
+                           </div>
+                       </c:forEach>
                     </c:when>
-                    
-                    
-                    
-                    
-                    
-                    
-                    
                     
                     
                     

@@ -15,17 +15,11 @@ import com.hub.root.main.dto.MainReviewDTO;
 public interface mainMapper {
 	public List<MainDTO> mainPage1();
 	public List<String> getAllCategories();
-	//public List<MainImgDTO> getStoreImg(@Param("category") String category);
 	public List<MainImgDTO> getStoreImgToMain(String storeId);
-	
-	//public List<MainDTO> findStoreByLocation(@Param("latitude") double latitude, @Param("longitude") double longitude);
 	
 	public void mainPage2(MainMapDTO MapDTO);
 	public List<MainMapDTO> getStoreInfo(@Param("params") Map<String, Object> params);
-	
 	public List<MainMapDTO> getStoreInfoByCategory(@Param("category") String category);
-	//public List<Map<String, Object>> getMenuImage(@Param("params") Map<String, Object> params);
-	//public List<MainMapDTO> getStoreImgList(@Param("params") Map<String, Object> params);
 	
 	public List<MainImgDTO> getStoreImage(String storeId);
 	public List<MainImgDTO> getStoreSmallImage(String storeId);
