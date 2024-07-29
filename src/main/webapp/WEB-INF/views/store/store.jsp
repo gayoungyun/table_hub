@@ -7,11 +7,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script>
+	let store_id = '${infoDTO.store_id}';
+</script>
 <link rel="stylesheet" type="text/css" href="${path}/resources/css/store/storeCSS.css?after">
 <script src="${path}/resources/js/store/store.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <!-- margin 순서 위 왼쪽 아래 오른쪽 --> 
 </head>
-<body>
+<body class="_body">
 <header class="header">
 <%@ include file="../main/header.jsp" %>
 </header>
@@ -27,40 +32,55 @@
 			<img src="resources\img\Boseon\보정\로고.png" onclick="window.location.href='/root'">
 			<div>
 				<button class="button1 btn1Fade" onclick="">예약하기</button>
-				<button class="button2 btn2Fade" onclick="">찜하기</button>
+				<button class="button2 btn2Fade" onclick="Jjim(${infoDTO.store_id})">찜하기</button>
 			</div>
 		</div>
 	
 		<div class="main-photo">
-			<img src="resources\img\Boseon\카페 결\결01.jpg">
+			<button style="visibility: hidden;">${infoDTO.store_id}</button>
+			<img src="/root/businessM/download?img=${mainImg}">
 		</div>
-	
+	v
 		<div class="store_name">
-		    <span style="color: gray;">종로 | </span>
-		    <span style="color: gray;">브런치카페, 디저트</span><br>
-		    <span style="font-size: 50px; font-weight: bold;">결</span><br>
+		    <span style="color: gray;">${infoDTO.store_add} | </span>
+		    <span style="color: gray;">${infoDTO.store_category} </span><br>
+		    <span style="font-size: 50px; font-weight: bold;">${infoDTO.store_name}</span><br>
 		    
-		    <img src="resources/img/Boseon/보정/별.png" width="15px"> 4.3 &nbsp;&nbsp;&nbsp;
-		    리뷰 <a href=""><span style="color: #397BE6;">135</span></a> &nbsp;&nbsp;&nbsp;
-		    <img src="resources/img/Boseon/보정/하트.png" width="15px"> 32
+		    <img src="resources/img/Boseon/보정/별.png" width="15px"> ${scoreAvr} &nbsp;&nbsp;&nbsp;
+		    리뷰 <a href=""><span style="color: #397BE6;">${totalreview}</span></a> &nbsp;&nbsp;&nbsp;
+		    <img src="resources/img/Boseon/보정/하트.png" width="15px"> ${totalBookmark}
 		    <br><br>
 		    
-		    <span style="font-size: 18px;">#까눌레&nbsp;#브런치&nbsp;#커피&nbsp;#디저트맛집</span>
+		    <span style="font-size: 18px; visibility: hidden;">#&nbsp;#&nbsp;#&nbsp;#</span>
 		</div>
 	
 		<div class="review-photo">
-			<img src="resources\img\Boseon\카페 결\결01_4.jpg">
-			<img src="resources\img\Boseon\카페 결\결02.jpg">
-			<img src="resources\img\Boseon\카페 결\결02_2.jpg">
-			<img src="resources\img\Boseon\카페 결\결02_3.jpg">
+		<c:choose>
+		
+			<c:when test="${reviewImg.size() > 4 }">
+				<c:forEach var="Rimg" items="${reviewImg}">
+	                <img src="/root/businessM/download?img=${Rimg}">
+	            </c:forEach>
+	        </c:when>
+	            
+	        <c:otherwise>
+				<c:forEach var="Simg" items="${storeImg}">
+	                <img src="/root/businessM/download?img=${Simg}">
+	            </c:forEach>
+				<c:forEach var="Rimg" items="${reviewImg}">
+	                <img src="/root/businessM/download?img=${Rimg}">
+	            </c:forEach>
+            </c:otherwise>
+            
+        </c:choose>
 		</div>
 		
 		<div class="categories">
-			<button class="catebutton catebtnFade" onclick="category(0)">정보</button>
-			<button class="catebutton catebtnFade" onclick="category(2)">메뉴</button>
-			<button class="catebutton catebtnFade" onclick="category(3)">리뷰()</button>
-			<button class="catebutton catebtnFade" onclick="category(4)">사진()</button>
-			<button class="catebutton catebtnFade" onclick="category(5)">지도</button>
+			<button class="catebutton catebtnFade" onclick="category(0, '${infoDTO.store_id}')">정보</button>
+			<button class="catebutton catebtnFade" onclick="category(2, '${infoDTO.store_id}')">메뉴</button>
+			<button class="catebutton catebtnFade" onclick="category(3, '${infoDTO.store_id}')">리뷰()</button>
+			<button class="catebutton catebtnFade" onclick="category(4, '${infoDTO.store_id}')">사진()</button>
+			<button class="catebutton catebtnFade" onclick="category(5, '${infoDTO.store_id}')">지도</button>
 			<hr>
 		</div>
 		
@@ -68,13 +88,11 @@
 			<iframe frameborder="0" scrolling="no" id="myIframe" onload="iHeight();" 
 				style="width:1500px; min-height:100px;" ></iframe>
 		</div>
-		
+	</div>
+	<div class="div_footer">
+		<%@ include file="../main/footer.jsp" %>
 	</div>
 </div>
-
-<footer class="footer">
-<%@ include file="../main/footer.jsp" %>
-</footer>
 
 </body>
 </html>

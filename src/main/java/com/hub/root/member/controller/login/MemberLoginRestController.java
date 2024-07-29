@@ -3,7 +3,6 @@ package com.hub.root.member.controller.login;
 import java.util.Map;
 import java.util.Random;
 
-import javax.mail.Session;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,68 +10,58 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hub.root.member.config.MemberMessageConfig;
-import com.hub.root.member.dto.MemberDTO;
-import com.hub.root.member.service.common.RandomCodeService;
 import com.hub.root.member.service.login.MemberLoginService;
-
-import net.nurigo.sdk.NurigoApp;
-import net.nurigo.sdk.message.model.Message;
-import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
-import net.nurigo.sdk.message.response.SingleMessageSentResponse;
-import net.nurigo.sdk.message.service.DefaultMessageService;
 
 @RestController
 @RequestMapping("member")
 public class MemberLoginRestController {
 	@Autowired MemberLoginService ms;
 	@Autowired MemberMessageConfig mmc;
-    
+
     public int randomNumber() {
     	Random random = new Random();
     	int num = 1000 + random.nextInt(9000);
     	System.out.println("num : " + num);
     	return num;
     }
-    
+
     @PostMapping(value="sendMessage", produces = "application/json; charset=utf-8")
     public String sendOne(@RequestBody Map<String, Object> map, HttpSession session, Model model) {
 
     	int code = randomNumber();
-    	
+
     	String phoneNumber = (String)map.get("phoneNumber");
 //        Message message = new Message();
 //		 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
 //        message.setFrom("01099062986");
 //		message.setTo(phoneNumber);
 //		message.setText("인증 코드는 [ " + code + " ] 입니다. 코드 입력 후 회원가입을 진행하세요");
-    	
+
 //		SingleMessageSentResponse response = mmc.messageService.sendOne(new SingleMessageSendingRequest(message));
-    	
+
     	session.setAttribute("phoneNumber", phoneNumber);
     	session.setAttribute(phoneNumber, code);
     	model.addAttribute(session);
-    	
-    	
+
+
     	return "문자로 4자리 코드가 발송되었습니다.";
     }
-    
+
     @PostMapping(value="codeChk", produces = "application/json; charset=utf-8")
     public int codeChk(@RequestBody Map<String, Object> map, HttpSession session, Model model) {
-    	
+
     	String phoneNumber = (String)session.getAttribute("phoneNumber");
     	int inputCode = Integer.parseInt((String)map.get("inputCode"));
     	int code = (Integer)session.getAttribute(phoneNumber);
-    	
-    	
+
+
     	if (inputCode == code) {
     		System.out.println("인증코드 일치함");
     		return 1;
@@ -80,7 +69,7 @@ public class MemberLoginRestController {
     		System.out.println("인증코드 불일치");
     		return 0;
     	}
-    	
+
     }
 
 	@PostMapping(value="register", produces = "application/json; charset=utf-8")
@@ -88,7 +77,7 @@ public class MemberLoginRestController {
 	public Map<String, Object> register(@RequestBody Map<String, Object> map, HttpServletRequest req, HttpServletResponse res, HttpSession session,
 			Model model) {
 		String code = (String)map.get("code");
-		
+
 		Cookie[] Cookies = req.getCookies();
 		String email = "";
 		if (Cookies != null) {
@@ -97,7 +86,7 @@ public class MemberLoginRestController {
 					email = c.getValue();
 					break;
 				}
-			}			
+			}
 		}
 		String ses = (String)session.getAttribute(email);
 		int result;
@@ -138,12 +127,12 @@ public class MemberLoginRestController {
 				model.addAttribute(session);
 			} else {
 				map.put("result", "입력 정보가 일치하지 않습니다. <br>아이디 또는 비밀번호를 확인해주세요");
-			}			
+			}
 		}
-		
+
 		return map;
 	}
-	
+
 	@PostMapping(value="storeLoginChk", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public Map<String, Object> storeLoginChk(@RequestBody Map<String, Object> map, Model model, HttpSession session) {
@@ -159,10 +148,10 @@ public class MemberLoginRestController {
 		} else {
 			map.put("result", "입력 정보가 일치하지 않습니다. <br>아이디 또는 비밀번호를 확인해주세요");
 		}
-	
+
 		return map;
 	}
-	
+
 	@PostMapping(value="sendMail", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public Map<String, Object> sendMail(@RequestBody Map<String, Object> map, HttpServletRequest req, HttpServletResponse res, HttpSession session,
@@ -177,23 +166,23 @@ public class MemberLoginRestController {
 			Cookie cookie = new Cookie("email", email);
 			cookie.setMaxAge(5 * 60); // 5분
 			res.addCookie(cookie);
-			
+
 	    	int code = ms.sendMailCode(email);
-	    	
-	    	// 랜덤값을 문자열로 변환하여 세션에 저장 
+
+	    	// 랜덤값을 문자열로 변환하여 세션에 저장
 	    	// 저장된 쿠키의 이메일 값으로 코드값을 저장한다. 추후 코드 인증 확인시 필요
 			String codeKey = String.valueOf(code);
 			session.setAttribute(email, codeKey);
-			
+
 			map.put("msg", "인증 코드가 전송되었습니다.");
 			map.put("result", 0);
 			model.addAttribute(session);
 		}
-		
-		
+
+
 		return map;
 	}
-	
+
 	@PostMapping(value="storeNumChk", produces = "application/json; charset=utf-8")
 	public Map<String, Object> storeNumChk(@RequestBody Map<String, Object> map) {
 		System.out.println("id : " + map.get("storeId"));
@@ -201,7 +190,7 @@ public class MemberLoginRestController {
 		map = ms.storeNumChk(storeId);
 		return map;
 	}
-	
+
 	@PostMapping(value="storeSendMail", produces = "application/json; charset=utf-8")
 	public Map<String, Object> storeSendMail(@RequestBody Map<String, Object> map, HttpServletRequest req, HttpServletResponse res, HttpSession session,
 			Model model) {
@@ -214,30 +203,30 @@ public class MemberLoginRestController {
 			Cookie cookie = new Cookie("storeEmail", email);
 			cookie.setMaxAge(5 * 60); // 5분
 			res.addCookie(cookie);
-			
+
 	    	int code = ms.sendMailCode(email);
-	    	
+
 			String codeKey = String.valueOf(code);
 			session.setAttribute(email, codeKey);
-			
+
 			map.put("msg", "인증 코드가 전송되었습니다.");
 			map.put("result", 0);
-			model.addAttribute(session);			
+			model.addAttribute(session);
 		}
-		
-		
+
+
 		return map;
 	}
-	
+
 	@PostMapping(value="sendMail/id", produces="application/json; charset=utf-8")
 	public Map<String, Object> sendMailId(@RequestBody Map<String, Object> map) {
 		System.out.println("MemLoginRestCont sendMailId 실행");
 		map = ms.sendMailId((String)map.get("email"));
-		
-		
+
+
 		return map;
 	}
-	
+
 	@PostMapping(value="sendMail/pwd", produces="application/json; charset=utf-8")
 	public Map<String, Object> sendMailPwd(@RequestBody Map<String, Object> map, HttpServletResponse res, HttpSession session, Model model) {
 		System.out.println("MemLoginRestCont sendMailPwd 실행");
@@ -245,39 +234,39 @@ public class MemberLoginRestController {
 		System.out.println("email : " + map.get("inputEmail"));
 		Map<String, Object> result = ms.idEmailChk((String)map.get("inputId"),
 									(String)map.get("inputEmail"));
-		
+
 		// 링크 접속시 제어를 위해 5분간 쿠키 및 세션 발급
 		if ((int)result.get("result") == 1) {
 			Cookie cookie = new Cookie("id", (String)result.get("encodeId"));
 			cookie.setMaxAge(5 * 60);
 			cookie.setPath("/root/member/login/searchPwd/modifyPwd");
-			
+
 			res.addCookie(cookie);
-			
-			session.setAttribute("inputId", (String)map.get("inputId"));
+
+			session.setAttribute("inputId", map.get("inputId"));
 			model.addAttribute(session);
-			
+
 		}
-		
+
 		result.remove("encodeId");
-		
+
 		return result;
 	}
-	
+
 	@PostMapping(value="login/searchPwd/modifyPwd", produces="application/json; charset=utf-8")
 	public Map<String, Object> modifyPwd(@RequestBody Map<String, Object> map, HttpSession session) {
 		System.out.println("session : " + session.getAttribute("inputId"));
 		String id = (String)session.getAttribute("inputId");
 //		session.removeAttribute("inputId");
 		map = ms.modifyPwd((String)map.get("pwd"), id);
-		
+
 		return map;
 	}
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
 }

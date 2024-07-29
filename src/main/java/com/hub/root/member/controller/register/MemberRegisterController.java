@@ -26,7 +26,7 @@ public class MemberRegisterController {
 				if (c.getName().equals("email")) {
 					email = c.getValue();
 				}
-			}			
+			}
 		}
 		model.addAttribute("email", email);
 		return "member/register/user";
@@ -42,21 +42,21 @@ public class MemberRegisterController {
 				if (c.getName().equals("storeEmail")) {
 					email = c.getValue();
 				}
-			}			
+			}
 		}
 //		String emailLocal[] = email.split("@");
 		model.addAttribute("storeEmail", email);
 		model.addAttribute("storeNum", storeNum);
-		
+
 		return "member/register/store";
 	}
-	
+
 	@GetMapping("naver")
 	public String snsNaver() {
-		
+
 		return "member/register/naver";
 	}
 
-	
+
 
 }

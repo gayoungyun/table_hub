@@ -77,7 +77,7 @@ function changeParentUrl(newUrl) {
 
 
 
-// 구현 내용 추가
+//--------------------------------- 구현 내용 추가
 // reviewInfo 높이 조절을 위한 코드
 window.addEventListener('message', function(event) {
 	console.log("event : ", event)

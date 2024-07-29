@@ -1,8 +1,6 @@
 package com.hub.root.main.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +24,7 @@ public class MainServiceImpl implements MainService{
 	mainMapper mapper;
 	@Autowired
 	MainFileService mfs;
+	@Override
 	public List<MainDTO> mainPage1(Model model) {
 			try {
 			List<MainDTO> dtoList = mapper.mainPage1();
@@ -50,8 +49,8 @@ public class MainServiceImpl implements MainService{
 	      }
 	      // null값 필터링
 	      categories = categories.stream()
-                  .filter(category -> category != null)
-                  .collect(Collectors.toList());
+                .filter(category -> category != null)
+                .collect(Collectors.toList());
 	      
 //	      List<String> nonNull = new ArrayList<>();
 //	      for(String category : categories) {
@@ -88,28 +87,28 @@ public class MainServiceImpl implements MainService{
 		}
 	
 	public List<MainReviewDTO> getPopularityList(Map<String, Object> params) {
-        return mapper.getPopularityList(params);
-    }
+      return mapper.getPopularityList(params);
+  }
 
-    public List<MainReviewDTO> getReviewList(Map<String, Object> params) {
-        return mapper.getReviewList(params);
-    }
+  public List<MainReviewDTO> getReviewList(Map<String, Object> params) {
+      return mapper.getReviewList(params);
+  }
 	
-    public List<MainMapDTO> getStoreInfo(Map<String, Object> params) {
-        try {
-        	System.out.println("Parameters in Service: " + params);
-            List<MainMapDTO> storeInfo = mapper.getStoreInfo(params);
-            if (storeInfo == null || storeInfo.isEmpty()) {
-                System.out.println("No store information found for the given parameters.");
-            } else {
-                System.out.println("storeInfo size: " + storeInfo.size());
-            }
-            return storeInfo;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+  public List<MainMapDTO> getStoreInfo(Map<String, Object> params) {
+      try {
+      	System.out.println("Parameters in Service: " + params);
+          List<MainMapDTO> storeInfo = mapper.getStoreInfo(params);
+          if (storeInfo == null || storeInfo.isEmpty()) {
+              System.out.println("No store information found for the given parameters.");
+          } else {
+              System.out.println("storeInfo size: " + storeInfo.size());
+          }
+          return storeInfo;
+      } catch (Exception e) {
+          e.printStackTrace();
+          return null;
+      }
+  }
 	
 	public List<MainMapDTO> getStoreInfoByCategory(String category) {
 	    List<MainMapDTO> storeList = mapper.getStoreInfoByCategory(category);

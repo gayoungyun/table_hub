@@ -3,9 +3,7 @@ package com.hub.root.main.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,30 +13,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.hub.root.main.dto.MainDTO;
 import com.hub.root.main.dto.MainImgDTO;
 import com.hub.root.main.dto.MainMapDTO;
 import com.hub.root.main.dto.MainReviewDTO;
 import com.hub.root.main.service.MainFileService;
 import com.hub.root.main.service.MainService;
-
-import retrofit2.http.GET;
 
 @Controller
 @RequestMapping("main")//main이라는 경로에 대한 요청
@@ -96,28 +83,28 @@ public class MainController {
 	}
 	
 	// mainPage1에 카테고리별 이미지 가져오기 =====================
-//	@GetMapping("menuByCategory")
-//	public String getMenuByCategory(@RequestParam String category, HttpSession session, Model model) {
-//		String user = (String) session.getAttribute("userId");
-//		String store = (String) session.getAttribute("storeId");
-//		
-//		//List<MainImgDTO> dtoList = ms.getMenuByCategory(category);
-//		List<String> categories = ms.getAllCategories();
-//		
-//		List<MainImgDTO> dtoList = ms.getStoreImg(category);
-//		
-//		List<String> storeIds = new ArrayList<>();
-//	    for (MainImgDTO storeInfo : dtoList) {
-//	        storeIds.add(storeInfo.getStore_id());
-//	    }	
-//		
-//		//List<List<MainImgDTO>> storeSmallImgLists = ms.getStoreSmallImages(storeIds);
-//		 
-//		//model.addAttribute("storeList", storeList);
-//		model.addAttribute("dtoList", dtoList);
-//		model.addAttribute("categories", categories);
-//		return "main/mainPage1";
-//	}
+//		@GetMapping("menuByCategory")
+//		public String getMenuByCategory(@RequestParam String category, HttpSession session, Model model) {
+//			String user = (String) session.getAttribute("userId");
+//			String store = (String) session.getAttribute("storeId");
+//			
+//			//List<MainImgDTO> dtoList = ms.getMenuByCategory(category);
+//			List<String> categories = ms.getAllCategories();
+//			
+//			List<MainImgDTO> dtoList = ms.getStoreImg(category);
+//			
+//			List<String> storeIds = new ArrayList<>();
+//		    for (MainImgDTO storeInfo : dtoList) {
+//		        storeIds.add(storeInfo.getStore_id());
+//		    }	
+//			
+//			//List<List<MainImgDTO>> storeSmallImgLists = ms.getStoreSmallImages(storeIds);
+//			 
+//			//model.addAttribute("storeList", storeList);
+//			model.addAttribute("dtoList", dtoList);
+//			model.addAttribute("categories", categories);
+//			return "main/mainPage1";
+//		}
 	
 	// mainPage2 요청 처리===================================
 	@RequestMapping("mainPage2")
@@ -129,20 +116,20 @@ public class MainController {
 		String user = (String) session.getAttribute("userId");
 		String store = (String) session.getAttribute("storeId");
 	    
-//		if(user != null) {
-//			model.addAttribute("user", user);
-//		}	else if (store != null) {
-//	        model.addAttribute("store", store);
-//	    }
-//	    Map<String, Object> params = new HashMap<>();
-//	    String key = (keyword != null) ? keyword : "null";
-//	    String search = (searchType != null) ? searchType : "null";
-//	    String cat = (category != null) ? category : "null";
+//			if(user != null) {
+//				model.addAttribute("user", user);
+//			}	else if (store != null) {
+//		        model.addAttribute("store", store);
+//		    }
+//		    Map<String, Object> params = new HashMap<>();
+//		    String key = (keyword != null) ? keyword : "null";
+//		    String search = (searchType != null) ? searchType : "null";
+//		    String cat = (category != null) ? category : "null";
 //
-//	    params.put("keyword", key);
-//	    params.put("searchType", search);
-//	    params.put("category", cat);
-//	    params.put("sortType", sortType);
+//		    params.put("keyword", key);
+//		    params.put("searchType", search);
+//		    params.put("category", cat);
+//		    params.put("sortType", sortType);
 	    
 	    Map<String, Object> params = new HashMap<>();
         if (keyword != null) {
@@ -158,10 +145,10 @@ public class MainController {
             params.put("sortType", sortType);
         }
 
-//	    List<MainMapDTO> storeList = ms.getStoreInfo(params);
-//	    if (storeList == null) {
-//	        storeList = new ArrayList<>();
-//	    }
+//		    List<MainMapDTO> storeList = ms.getStoreInfo(params);
+//		    if (storeList == null) {
+//		        storeList = new ArrayList<>();
+//		    }
 	    
 	    if("review".equals(sortType)) {
 	    	List<MainReviewDTO> reviewList = ms.getReviewList(params);
@@ -190,19 +177,19 @@ public class MainController {
 	          }
 	    }
 	    
-//	    List<MainImgDTO> storeSmallImgList = new ArrayList<>();
-//	    for(MainMapDTO storeInfo : storeList) {
-//	    	List<MainImgDTO> storeSmallImage = ms.getStoreSmallImage(storeInfo.getStore_id());
-//	    	  if (!storeSmallImage.isEmpty()) {
-//	    		  int maxImages = Math.min(4, storeSmallImage.size());
-//	    		  for(int i = 0; i < maxImages; i++) {
-//	    			  storeSmallImgList.add(storeSmallImage.get(i));
-//	              //System.out.println("image path: "+storeSmallImage.get(i).getStore_img_root());
-//	    		  }
-//	          } else {
-//	        	  storeSmallImage.add(null); // 이미지가 없는 경우
-//	          }
-//	    }
+//		    List<MainImgDTO> storeSmallImgList = new ArrayList<>();
+//		    for(MainMapDTO storeInfo : storeList) {
+//		    	List<MainImgDTO> storeSmallImage = ms.getStoreSmallImage(storeInfo.getStore_id());
+//		    	  if (!storeSmallImage.isEmpty()) {
+//		    		  int maxImages = Math.min(4, storeSmallImage.size());
+//		    		  for(int i = 0; i < maxImages; i++) {
+//		    			  storeSmallImgList.add(storeSmallImage.get(i));
+//		              //System.out.println("image path: "+storeSmallImage.get(i).getStore_img_root());
+//		    		  }
+//		          } else {
+//		        	  storeSmallImage.add(null); // 이미지가 없는 경우
+//		          }
+//		    }
 
 	    // 위에서 처리시 모든 store_id에 대해 이미지 추가 방식이므로, store_id별로 분리
 	    List<List<MainImgDTO>> storeSmallImgLists = ms.getStoreSmallImages(storeIds);
@@ -293,4 +280,3 @@ public class MainController {
 				store_add_info,store_category,store_note,store_introduce,store_business_hours);
 	}
 }
-

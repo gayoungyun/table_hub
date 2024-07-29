@@ -1,13 +1,12 @@
-package com.hub.root.main.dto;
+package com.hub.root.store.DTO;
 
-public class MainDTO {
-	public String store_id;
-	public String store_menu_img;
-	public String store_menu_name;
-	public String store_menu_detail;
-	public String store_menu_category;
-	public int store_menu_price;
+public class storeMenuDTO {
 
+	String store_id, store_menu_img, store_menu_name, store_menu_detail, store_menu_category;
+	int store_menu_price;
+
+	
+	
 	public String getStore_id() {
 		return store_id;
 	}
@@ -41,8 +40,8 @@ public class MainDTO {
 	public int getStore_menu_price() {
 		return store_menu_price;
 	}
-	public void setStore_menu_price(int store_mene_price) {
-		this.store_menu_price = store_mene_price;
+	public void setStore_menu_price(int store_menu_price) {
+		this.store_menu_price = store_menu_price;
 	}
 
 

@@ -7,12 +7,21 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript">
+window.onload = function() {
+    console.log('${dto}');
+};	     
+
+
+
+</script>
 <link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM/businessMstore.css?after">
 </head>
+
 <body>
 	<h1>가게정보 확인 메뉴입니다</h1>
 	<c:choose>
-		<c:when test="${dto == null}">
+		<c:when test="${dto.store_zip == null}">
 			<button type="button" onclick="parent.changeParentUrl('http://localhost:8080/root/register01')">가게 등록하러 가기</button>
 		</c:when>
 		<c:otherwise>
@@ -30,6 +39,7 @@
 			소개글 : ${ dto.store_introduce }<br>
 			최대 수용 인원 : ${ dto.store_max_person }<br>
 			예약 규정 : ${ dto.store_booking_rule }<br>
+			<br>
 			<button type="button" onclick="parent.changeParentUrl('http://localhost:8080/root/register01')"> 수정하기 </button><br>
 		</c:otherwise>
 	</c:choose>
