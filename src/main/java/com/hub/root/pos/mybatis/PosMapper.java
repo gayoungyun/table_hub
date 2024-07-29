@@ -32,7 +32,7 @@ public interface PosMapper {
 	public int wait_num();
 	public List<WaitDTO> todayWait(@Param("store_id") String store_id);
 
-	public int wait(@Param("store_id") String store_id, @Param("wait_time") int wait_time, @Param("wait_num") int wait_num);
+	public void wait123(@Param("store_id") String store_id, @Param("wait_time") int wait_time, @Param("wait_num") int wait_num);
 	public String[] averageTime(@Param("store_id") String store_id);
 
 	public String nowWaitNum(@Param("store_id") String store_id);

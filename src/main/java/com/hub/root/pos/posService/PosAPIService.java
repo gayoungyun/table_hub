@@ -19,7 +19,7 @@ public interface PosAPIService {
 	public int registerWait(String name, String person_num, String store_id);
 	public List<WaitDTO> todayWait(String store_id);
 
-	public int wait(String Store_id, int wait_time, int wait_num);
+	public void wait123(String Store_id, int wait_time, int wait_num);
 
 	public String averageTime(String store_id);
 	public String nowWaitNum(String store_id);

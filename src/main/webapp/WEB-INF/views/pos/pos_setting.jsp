@@ -299,7 +299,7 @@
 				if(modal_Inbody.children.length <= 2)
 				{
 					console.log("유저 세선 아이디 : " + ${UserID})
-					fetch("http://localhost:8080/root/api/key", {
+					fetch("/root/api/key1", {
 						method : "POST",
 						headers : {"Content-Type": "application/json",},
 						body : JSON.stringify({
@@ -318,7 +318,7 @@
 				const moadl_Inbody = document.querySelector('.modal_Inbody');
 			
 				console.log("유저 세선 아이디 : " + ${UserID});
-				fetch("http://localhost:8080/root/api/key?userId=" + ${UserID})
+				fetch("/root/api/key1?userId=" + ${UserID})
 				.then((response) => response.json())
 				.then((data) => {
 					for(let i = 0; i < data.length; i++)
@@ -333,7 +333,7 @@
 				const key_name = target.dataset.keyname;
 				
 				console.log("유저 세선 아이디 : " + ${UserID})
-				fetch("http://localhost:8080/root/api/key", {
+				fetch("/root/api/key1", {
 					method : "DELETE",
 					headers : {"Content-Type": "application/json",},
 					body : JSON.stringify({

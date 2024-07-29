@@ -312,7 +312,7 @@
 		let socket = null;
 		const body = document.getElementById("body");
 		const main_layout = document.querySelector(".main_layout");
-		let sse = new EventSource("http://localhost:8080/root/con/connect?articleId=${UserID}");	
+		let sse = new EventSource("/root/con/connect?articleId=${UserID}");	
 		
 		// 나중에 변경하기(넓이 지정 방식)
 		$(document).ready(function() {
@@ -338,7 +338,7 @@
 		// 소켓
 		function connectWs(){
 			console.log("tttttt")
-			const ws = new SockJS("http://localhost:8080/root/send");
+			const ws = new SockJS("/root/send");
 			socket = ws;
 			console.log(socket);
 			ws.onopen = function(e) {
@@ -367,7 +367,7 @@
 		sse.addEventListener('newBooking', (e) => {
 			let data = JSON.parse(e.data);
 			console.log(data);
-			fetch("http://localhost:8080/root/api/bookingCount", {
+			fetch("/root/api/bookingCount", {
 				method : "POST",
 				headers : {"Content-Type": "application/json",},
 				body : JSON.stringify({
@@ -413,8 +413,10 @@
 										{
 											let data = wait_table_time[i].innerText.split(':');
 											let wait_time = Number(data[0]) * 60 + Number(data[1]);
-
-											fetch("http://localhost:8080/root/api/wait", {
+											
+											console.log("히히히" + wait_time);
+											console.log("히히히" + parent.dataset.wait_num);
+											fetch("/root/api/wait1", {
 												method : "PATCH",
 												headers : {"Content-Type": "application/json",},
 												body : JSON.stringify({
@@ -422,6 +424,17 @@
 													"wait_time": wait_time,
 													"wait_num" : parent.dataset.wait_num
 													})
+												})
+												.then((response) => response.json())
+												.then((data) => {
+													if(data == '1')
+													{
+														console.log("patch 성공!!");
+													}
+													else {
+														console.log("patch 실패!!")
+														console.log(data);
+													}
 												})
 											wait_table[i].remove();
 											
@@ -511,7 +524,7 @@
 				{
 					const booking_id = parent.dataset.value;
 					
-					fetch("http://localhost:8080/root/api/bookingStatus", {
+					fetch("/root/api/bookingStatus", {
 						method : "PATCH",
 						headers : {"Content-Type": "application/json",},
 						body : JSON.stringify({
@@ -543,7 +556,7 @@
 		})
 		// 오늘 대기 가져오기
 		function todayWaiting() {
-			fetch("http://localhost:8080/root/api/todayWait", {
+			fetch("/root/api/todayWait", {
 				headers : {"Content-Type": "application/json",
 							"store_id" : '${UserID}'},
 			})
@@ -671,7 +684,7 @@
 		
 		// 가게에서 예약 수락시
 		function acceptBooking(booking_id) {	
-			fetch("http://localhost:8080/root/api/bookingStatus", {
+			fetch("/root/api/bookingStatus", {
 				method : "PATCH",
 				headers : {"Content-Type": "application/json",},
 				body : JSON.stringify({
@@ -715,7 +728,7 @@
 		}
 		// 가게에서 예약 취소시
 		function cancelBooking(data) {
-			fetch("http://localhost:8080/root/api/bookingStatus", {
+			fetch("/root/api/bookingStatus", {
 				method : "PATCH",
 				headers : {"Content-Type": "application/json",},
 				body : JSON.stringify({
@@ -737,7 +750,7 @@
 		
 		// 오늘 예약 가져오기
 		function todayReservation() {
-			fetch("http://localhost:8080/root/api/todayReservation")
+			fetch("/root/api/todayReservation")
 			.then((response) => response.json())
 			.then((data) => {
 				for(let i = 0; i < data.length; i++)

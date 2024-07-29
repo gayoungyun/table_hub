@@ -39,7 +39,7 @@
 	</select>
 	
 	<select id="todayReservation" resultMap="bookingDTO">
-		select * from booking_info where store_id = #{store_id} and booking_date_booking = TO_CHAR(CURRENT_DATE, 'YYYY/MM/DD') and (booking_status = 0 or booking_status = 4) ORDER BY booking_time
+		select * from booking_info where store_id = #{store_id} and TO_CHAR(booking_date_booking, 'YYYY/MM/DD') = TO_CHAR(CURRENT_DATE, 'YYYY/MM/DD') and (booking_status = 0 or booking_status = 4) ORDER BY booking_time
 	</select>
 	
 	<select id="todayWait" resultMap="waitDTO">
@@ -47,7 +47,7 @@
 	</select>
 	
 	<insert id="register_booking">
-		 insert into BOOKING_INFO(booking_id, store_id, member_id, booking_date_booking, booking_time, booking_person, booking_phone, booking_status) values(BOOKING_INFO_SEQ.nextval, #{store_id}, #{member_id}, #{booking_date_booking}, #{booking_time}, #{booking_person}, #{booking_phone}, #{booking_status})
+		 insert into BOOKING_INFO(booking_id, store_id, member_id, booking_date_booking, booking_time, booking_person, booking_phone, booking_status) values(BOOKING_INFO_SEQ.nextval, #{store_id}, #{member_id}, TO_DATE(#{booking_date_booking}, 'YYYY/MM/DD'), #{booking_time}, #{booking_person}, #{booking_phone}, #{booking_status})
 	</insert>
 
 	<select id="check_booking_maxNum" resultType="int">
@@ -58,7 +58,7 @@
 		update booking_info set booking_status = #{booking_status} where booking_id = #{booking_id}
 	</update>
 	
-	<update id="wait">
+	<update id="wait123">
 		update store_wait set wait_time = #{wait_time}, wait_status = 1  where store_id = #{store_id} and TO_CHAR(wait_date, 'YYYY/MM/DD') = TO_CHAR(CURRENT_DATE, 'YYYY/MM/DD') and wait_num = #{wait_num} 
 	</update>
 	
@@ -99,18 +99,18 @@
 	</select>
 	
 	<select id="averageTime" resultType="String">
-		select wait_time from store_wait where store_id = #{store_id} and wait_status = 1 and wait_date >= to_date(add_months(CURRENT_DATE, -1)) 
+		select wait_time from store_wait where store_id = #{store_id} and wait_status = 1 and to_date(wait_date, 'YYYY/MM/DD')  >= to_date(add_months(CURRENT_DATE, -1), 'YYYY/MM/DD') 
 	</select>
 	
 	<select id="nowWaitNum" resultType="String">
 		SELECT wait_num FROM
 			(
-    			SELECT *
+    			SELECT a.*, rownum
     			FROM store_wait a
     			ORDER BY WAIT_NUM desc
 			)
 			<![CDATA[
-			WHERE ROWNUM <= 1 and wait_status = 1 and TO_CHAR(wait_date, 'YYYY/MM/DD') = TO_CHAR(CURRENT_DATE, 'YYYY/MM/DD')
+			WHERE rownum <= 1 and wait_status = 1 and TO_CHAR(wait_date, 'YYYY/MM/DD') = TO_CHAR(CURRENT_DATE, 'YYYY/MM/DD')
 			]]>
 	</select>
 	

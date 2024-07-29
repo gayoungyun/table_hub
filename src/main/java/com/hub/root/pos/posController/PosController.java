@@ -42,12 +42,22 @@ public class PosController {
 	public String order() {
 		return "pos/pos_order";
 	}
+	
+	@GetMapping("qr")
+	public String qr(@RequestParam("store_name") String store_name
+					,@RequestParam("store_id") String store_id
+					,Model model) {
+		model.addAttribute("store_name", store_name);
+		model.addAttribute("store_id", store_id);
+		return "pos/pos_qr";
+	}
+	
 	@GetMapping("wait")
 	public String wait1(Model model,
 						HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		String store_name = session.getAttribute("store_name").toString();
-		String link = "http://localhost:8080/root/pos/qr?store_name=" + store_name ;
+		String link = "http://34.47.108.10:8080/root/pos/qr?store_name=" + store_name + "&store_id=" + session.getAttribute("store_id").toString();
 
 		try {
 
@@ -99,7 +109,6 @@ public class PosController {
 								@RequestParam String key)
 	{
 		int result = service.wait_keyCheck(req, key);
-		System.out.println("로그인서어어어어어어어엉공?????????? : " + result);
 
 		return "redirect:/pos/wait";
 	}

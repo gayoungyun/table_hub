@@ -1,7 +1,9 @@
 package com.hub.root.pos.posService;
 
 import java.security.SecureRandom;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -140,10 +142,14 @@ public class PosAPIServiceImpl implements PosAPIService{
 	}
 
 	@Override
-	public int wait(String store_id, int wait_time, int wait_num) {
-		int result = mapper.wait(store_id, wait_time, wait_num);
-
-		return 0;
+	public void wait123(String store_id, int wait_time, int wait_num) {
+		
+		mapper.wait123(store_id, wait_time, wait_num);
+		System.out.println("store_id : " + store_id);
+		System.out.println("wait_time : " + wait_time);
+		System.out.println("wait_num : " + wait_num);
+		
+		
 	}
 
 	@Override

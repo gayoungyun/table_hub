@@ -390,7 +390,7 @@ body {
 				
 			</div>
 			<div class="store_waitingNumber_wrapper">
-				<p class="store_name p_center">${store_id}</p>
+				<p class="store_name p_center">${store_name}</p>
 				<p class="store_waitingNumber p_center">현재 입장번호</p>
 				<div class="store_circleNumber color_orange store_circleNumber_white">
 					<span>0</span>
@@ -459,7 +459,7 @@ body {
 	$(document).ready(function() {
 		connectWs();
 		
-		fetch("http://localhost:8080/root/api/todayWait", {
+		fetch("/root/api/todayWait", {
 			headers : {"Content-Type": "application/json",
 						"store_id" : '${store_id}'},
 		})
@@ -478,7 +478,7 @@ body {
 	})
 	// 현재 대기 번호 가져오기
 	function nowWaitNum() {
-		fetch("http://localhost:8080/root/api/nowWaitNum", {
+		fetch("/root/api/nowWaitNum", {
 			headers : {"Content-Type": "application/json",
 						"store_id" : '${store_id}'},
 		})
@@ -495,7 +495,7 @@ body {
 	}
 	// 평균 시간 가져오기
 	function averageTime() {
-		fetch("http://localhost:8080/root/api/averageTime", {
+		fetch("/root/api/averageTime1", {
 			headers : {"Content-Type": "application/json",
 						"store_id" : '${store_id}'},
 		})
@@ -595,7 +595,7 @@ body {
 	// 소켓
 	function connectWs() {
 		console.log("tttttt")
-		var ws = new SockJS("http://localhost:8080/root/send");
+		var ws = new SockJS("/root/send");
 		socket = ws;
 		
 		ws.onopen = function(e) {
