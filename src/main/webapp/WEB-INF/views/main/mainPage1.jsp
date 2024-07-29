@@ -11,8 +11,7 @@
 <link rel="stylesheet" href="${path}/resources/css/main/mainPage1.css?after"/>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 <script  type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-
+<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/main/image_slide.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3/dist/js/splide.min.js"></script>
 
 <%@ include file="./header.jsp" %> 
@@ -24,7 +23,7 @@
 		<div class="content1">
 			<div class="main-img">
 				<div>
-					<img src="${path}/resources/img/main/test8.jpg">
+					<img src="${path}/resources/img/main/메인.png">
 				</div>
 			</div>
 		</div>
@@ -71,46 +70,6 @@
  <%@ include file="./footer.jsp" %> 
 </body>
 </html>
-
-<script>
-
-document.addEventListener('DOMContentLoaded', function() {
-    var sliders = document.querySelectorAll('.menu-img');
-    
-    sliders.forEach(function(slider) {
-        var li = slider.querySelectorAll('ul.image-slide > li'); // 모든 슬라이드 요소 선택
-        console.log(li); // 선택된 슬라이드 요소를 콘솔에 출력
-        var liLength = li.length; // 슬라이드의 총 개수 저장
-
-        if (liLength > 0) { // 슬라이드 요소가 존재하는지 확인
-            var index = 0; // 현재 슬라이드의 인덱스 추적
-            li[index].classList.add('on'); // 초기 상태 설정: 첫 번째 슬라이드를 보이도록 설정
-
-            function updateSlider() {
-                var prevIndex = (index - 1 + liLength) % liLength; 
-                li[prevIndex].classList.remove('on');
-                li[prevIndex].classList.add('out');
-                li[index].classList.remove('out');
-                li[index].classList.add('on');
-                index = (index + 1) % liLength; // 인덱스 증가, 마지막 슬라이드 이후에 첫 번째 슬라이드로 돌아가도록
-            }
-
-            setInterval(updateSlider, 3000);
-        } else {
-            console.error("No slide elements found for this slider."); // 슬라이드 요소가 없을 때 경고를 출력합니다.
-        }
-    });
-    
-
-    
-});
-
-
-
-
-</script>
-
-
 
 
 

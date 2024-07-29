@@ -234,7 +234,7 @@
 	<select id="getReview" resultMap="review">
 		select B.* from (
 			select rownum rn, A.*  from (
-				select * from store_review where member_id = #{id} order by store_review_num ) A ) B 
+			select * from store_review where member_id = #{id} order by store_review_num ) A ) B 
 		where rn between #{start} and #{end}
 	</select>
 	

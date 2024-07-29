@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,9 +38,9 @@ public class MainServiceImpl implements MainService{
 	}
 	
 	public List<String> getAllCategories() {
-		  //System.out.println("Entering getAllCategories");
+		  // System.out.println("Entering getAllCategories");
 		  List<String> categories = mapper.getAllCategories();
-		  //System.out.println("categories from mapper: " + categories);
+		  // System.out.println("categories from mapper: " + categories);
 	      if (mapper == null) {
 	            System.err.println("Error: mainMapper is not injected!");
 	            return new ArrayList<>(); // 빈 리스트 반환
@@ -47,15 +48,27 @@ public class MainServiceImpl implements MainService{
 	      if (categories == null) {
 	    	  categories = new ArrayList<>();  // Null 체크 후 빈 리스트로 초기화
 	      }
+	      // null값 필터링
+	      categories = categories.stream()
+                  .filter(category -> category != null)
+                  .collect(Collectors.toList());
 	      
+//	      List<String> nonNull = new ArrayList<>();
+//	      for(String category : categories) {
+//	    	  if(category != null) {
+//	    		  nonNull.add(category);
+//	    	  }
+//	      }
+	      
+	      //객체 중복저장X, 하나의 null값만 저장(중복을 자동으로 제거)
 	      Set<String> uniqueCategories = new HashSet<>();
 	      for (String category : categories) {
 	    	  String[] splitCategories = category.split("/");
 	    	  for (String splitCategory : splitCategories) {
-	    		  uniqueCategories.add(splitCategory.trim());
+	    		  uniqueCategories.add(splitCategory.trim()); //각 분리된 카테고리 항목의 앞뒤 공백 제거 후 추가
 	    	  }
 	      }
-	      //System.out.println("Exiting getAllCategories with categories: " + uniqueCategories);
+	      // System.out.println("Exiting getAllCategories with categories: " + uniqueCategories);
 	      return new ArrayList<>(uniqueCategories);
 	}
 	
@@ -64,7 +77,7 @@ public class MainServiceImpl implements MainService{
 		List<List<MainImgDTO>> storeImgToMain = new ArrayList<>();
 		for (String storeId : storeIds) {
 			List<MainImgDTO> storeImageToMain = mapper.getStoreImgToMain(storeId);
-			 System.out.println("Store ID: " + storeId + ", Images: " + storeImageToMain);
+			// System.out.println("Store ID: " + storeId + ", Images: " + storeImageToMain);
 			storeImgToMain.add(storeImageToMain);
 		}
 		return storeImgToMain;

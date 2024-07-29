@@ -64,6 +64,9 @@ public class MainController {
 	    }
 		
 		List<String> categories = ms.getAllCategories();
+		if (categories == null) {
+	        categories = new ArrayList<>(); // 널일 경우 빈 리스트로 초기화
+	    }
 
 		Map<String, List<MainMapDTO>> categoryStoreMap = new HashMap<>();
 		Map<String, List<List<MainImgDTO>>> categoryImagesMap = new HashMap<>();
