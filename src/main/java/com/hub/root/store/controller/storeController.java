@@ -39,7 +39,8 @@ public class storeController {
 			@RequestParam(required=false) String store_id) {
 
 			Map<String, Object> Map = ser.store(request, store_id);
-
+			model.addAttribute("store_id", store_id);
+			
 			model.addAllAttributes(Map);
 			return "store/store";
 	}

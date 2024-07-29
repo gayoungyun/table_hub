@@ -17,6 +17,7 @@
 <!-- 민석 추가 -->
 <style type="text/css">
 .modal {
+	z-index: 10005;
 	position: absolute;
 	display: none;
 	justify-content: center;
@@ -196,7 +197,7 @@
 				<div class="check_table_wrapper">
 					<p class="check_date"></p>
 					<p class="check_time"></p>
-					<p class="check_name"></p>
+					<p class="check_id"></p>
 					<p class="check_person"></p>
 					<br>
 					<p class="check_store_name"></p>
@@ -392,11 +393,21 @@
 	})
 
 	function reservation() {
+		const check_id = document.querySelector('.check_id');
+		if('${userId}' != "")
+			check_id.innerText = "예약자 아이디 : " + '${userId}';
+		else
+		{
+			alert("로그인이 필요합니다!");
+			return ;	
+		}
+		
 		const modal = document.querySelector(".modal");
 		modal.style.display = "flex";
 		
 		const first_page = document.querySelector('.first_page');
 		const check_page = document.querySelector('.check_page');		
+		
 		
 		first_page.style.display = 'block';
 		check_page.style.display = 'none';
@@ -429,7 +440,6 @@
 		})
 		.then((response) => response.json())
 		.then((data) => {
-			console.log(data);
 			
 			makePersonButton(data.store_max_team);
 			makeTime(data.store_business_hours);
@@ -438,15 +448,12 @@
 	}
 	function makeCheckPage(store_add, store_add_info, store_name)
 	{
-		console.log(store_name);	
 		const check_store_name = document.querySelector('.check_store_name');
 		check_store_name.innerText = "예약 가게 : " + store_name;
 		
 		const check_add = document.querySelector('.check_add');
 		const add =  store_add.split(' ');
 		check_add.innerText = "예약 위치 : " + add[1];
-		
-		console.log(add);
 		
 		const check_add_info = document.querySelector('.check_add_info');
 		check_add_info.innerText = "상세 주소 : " + store_add + " " + store_add_info;
