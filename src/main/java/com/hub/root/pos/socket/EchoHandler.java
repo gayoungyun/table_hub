@@ -12,13 +12,13 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import com.hub.root.pos.posService.APIService;
+import com.hub.root.pos.posService.PosAPIService;
 
 @Component
 @RequestMapping("/send")
 public class EchoHandler extends TextWebSocketHandler{
 	@Autowired
-	APIService apiService;
+	PosAPIService apiService;
 
 	//*************** 추후 수정 *******************
 	// 로그인중인 개별유저 - 사업자 번호 키값

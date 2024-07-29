@@ -7,7 +7,7 @@ import com.hub.root.pos.posDTO.KeyDTO;
 import com.hub.root.pos.posDTO.UpdateStatusDTO;
 import com.hub.root.pos.posDTO.WaitDTO;
 
-public interface APIService {
+public interface PosAPIService {
 	public List<BookingDTO> todayReservation(String userID);
 	public int bookingStatus(UpdateStatusDTO updateStatus);
 	public BookingDTO updateSseDTO(BookingDTO bookingDTO);

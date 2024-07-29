@@ -19,14 +19,14 @@ import com.hub.root.pos.posDTO.BookingDTO;
 import com.hub.root.pos.posDTO.KeyDTO;
 import com.hub.root.pos.posDTO.UpdateStatusDTO;
 import com.hub.root.pos.posDTO.WaitDTO;
-import com.hub.root.pos.posService.APIService;
+import com.hub.root.pos.posService.PosAPIService;
 
 @RestController
 @RequestMapping("api")
-public class APIController {
+public class PosAPIController {
 
 	@Autowired
-	APIService apiService;
+	PosAPIService apiService;
 
 	@GetMapping("todayReservation")
 	public List<BookingDTO> todayReservation(HttpSession session) {

@@ -13,7 +13,7 @@ import com.hub.root.pos.posDTO.UpdateStatusDTO;
 import com.hub.root.pos.posDTO.WaitDTO;
 
 @Service
-public class APIServiceImpl implements APIService{
+public class PosAPIServiceImpl implements PosAPIService{
 
 	@Autowired
 	PosMapper mapper;
