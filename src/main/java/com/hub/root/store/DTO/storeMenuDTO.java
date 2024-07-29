@@ -5,8 +5,8 @@ public class storeMenuDTO {
 	String store_id, store_menu_img, store_menu_name, store_menu_detail, store_menu_category;
 	int store_menu_price;
 
-	
-	
+
+
 	public String getStore_id() {
 		return store_id;
 	}

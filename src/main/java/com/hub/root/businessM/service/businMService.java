@@ -23,8 +23,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartRequest;
 
 import com.hub.root.businessM.DTO.BookPageDTO;
-import com.hub.root.businessM.DTO.businMDTO;
 import com.hub.root.businessM.DTO.ReservationDTO;
+import com.hub.root.businessM.DTO.businMDTO;
 import com.hub.root.businessM.DTO.storeReviewDTO;
 import com.hub.root.businessM.mybatis.businMMapper;
 
@@ -336,7 +336,7 @@ public class businMService {
 
 
 //----------------- 민석 서비스
-		
+
 	public List<BookPageDTO> book(int page, String store_id, String type) {
 
 		int start = (page - 1) * 8 + 1;
@@ -344,22 +344,22 @@ public class businMService {
 
 		System.out.println("값 확인!!!!!" + start);
 		System.out.println("값 확인!!!!!" + end);
-		
+
 		List<BookPageDTO> list= mapper.book(start, end, store_id, type);
-		
+
 		System.out.println(list.size());
-		
+
 		return list;
 	}
-	
+
 	public int totalPage(String store_id, String type) {
 		int result = mapper.totalPage(store_id, type);
-		
+
 		return result;
 	}
-	
-	
-	
+
+
+
 
 
 	public String menuRegister(HttpServletRequest request, MultipartHttpServletRequest mul){
@@ -418,12 +418,12 @@ public class businMService {
 	        return "businessM/businMalert";
         }
 	}
-	
-	
-	
-	
+
+
+
+
 //------------------------------ 구현 작업 내용
-	
+
 	public Map<String, Object> getReview(String storeId, int curPage) {
 		int totalReview = mapper.getTotalReview(storeId);
 		System.out.println("TotalReview : " + totalReview);
@@ -488,7 +488,7 @@ public class businMService {
 	public ReservationDTO reservationInfo(String store_id)
 	{
 		ReservationDTO dto = mapper.reservationInfo(store_id);
-		
+
 		return dto;
 	}
 }

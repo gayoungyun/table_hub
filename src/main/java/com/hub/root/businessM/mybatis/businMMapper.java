@@ -5,9 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
-
 import com.hub.root.businessM.DTO.BookPageDTO;
-import com.hub.root.businessM.DTO.businMDTO;
 import com.hub.root.businessM.DTO.ReservationDTO;
 import com.hub.root.businessM.DTO.businMDTO;
 import com.hub.root.businessM.DTO.storeReviewDTO;
@@ -27,8 +25,8 @@ public interface businMMapper {
 	public int totalPage(@Param("store_id") String store_id, @Param("type") String type);
 	public ReservationDTO reservationInfo(@Param("store_id") String store_id);
 	//----
-	
-	
+
+
 	public int getTotalReview(String storeId);
 	public List<storeReviewDTO> getReview(@Param("storeId") String storeId ,
 										  @Param("startNum") int startNum ,

@@ -1,7 +1,6 @@
 package com.hub.root.businessM.controller;
 
 
-import java.util.List;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URLEncoder;
@@ -18,14 +17,12 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.hub.root.businessM.DTO.BookPageDTO;
 import com.hub.root.businessM.DTO.businMDTO;
 import com.hub.root.businessM.service.businMService;
 
@@ -169,13 +166,13 @@ public class businMController {
 	    	return result;
 	    }
 
-	    
-	    
-	    
-	    
+
+
+
+
 //-------------------------------------구현 작업 영역 start
-	    
-	    
+
+
 	  		@GetMapping("/businessM/reviewInfo")//마이페이지 내 고객후기보기
 	  		public String reviewInfo() {
 	  			return "businessM/info/reviewInfo";
