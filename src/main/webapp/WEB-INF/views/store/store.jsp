@@ -152,7 +152,11 @@
 .check_table_wrapper > p {
 	margin-left: 15px;
 }
-
+.last_page {
+	display: none;
+	justify-content: center;
+	align-items: center;
+}
 </style>
 <!-- 민석 추가 끝!! -->
 
@@ -428,9 +432,17 @@
 								"booking_status" : 0
 							})
 						})
-						.then((response) => response.json())
 						.then((res) => {
+							console.log(res);
 							
+							if(res.status == "200")
+							{
+								const last_page = document.querySelector('.last_page');
+								last_page.style.display = "flex";
+								const last_span = document.createElement('span');
+								last_span.innerText = "예약 신청이 완료되었습니다!!";
+								last_page.appendChild(last_span);
+							}
 						})
 					});
 					
