@@ -306,6 +306,11 @@
 			else if(parent.classList.contains('modal')) {
 				const modal = document.querySelector(".modal");
 				modal.style.display = "none";
+				
+				const last_page = document.querySelector('.last_page');
+				
+				while(last_page.firstChild)
+					last_page.removeChild(last_page.firstChild);
 				break;
 			}
 			// 달력을 누르면
