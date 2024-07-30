@@ -37,9 +37,10 @@ public class SseController {
 
 	@CrossOrigin
 	@PostMapping("/book")
-	public ResponseEntity<Void> sendComment(@RequestBody BookingDTO bookingDTO,
+	public Object sendComment(@RequestBody BookingDTO bookingDTO,
 													HttpServletResponse res) {
 		res.addHeader("Access-Control-Allow-Credentials", "true");
+		
 		int booking_id = service.register_booking(bookingDTO);
 
 		if(booking_id != 0)
@@ -48,8 +49,9 @@ public class SseController {
 
 			bookingDTO.setBooking_id(check_booking_maxNum);
 			sseService.booking(bookingDTO);
+			
 		}
-	    return ResponseEntity.ok().build();
+	    return ResponseEntity.ok().build().getBody();
 	}
 
 }
