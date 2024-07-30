@@ -156,13 +156,13 @@
 	            <choose>
 	        		<when test='type != null and type.equals("past")'>
 		        		<![CDATA[
-			        		where c.booking_date_booking < TO_DATE(CURRENT_DATE, 'YY/MM/DD')
+			        		where TO_DATE(c.booking_date_booking, 'YY/MM/DD')< TO_DATE(CURRENT_DATE, 'YY/MM/DD')
 			        			and c.store_id = #{store_id}
 		        		]]>
 		        	</when>
 		        	<otherwise>
 		        		<![CDATA[
-			        		where c.booking_date_booking >= TO_DATE(CURRENT_DATE, 'YY/MM/DD')
+			        		where TO_DATE(c.booking_date_booking, 'YY/MM/DD') >= TO_DATE(CURRENT_DATE, 'YY/MM/DD')
 			        			and c.store_id = #{store_id}
 		        		]]>
 		        	</otherwise>

@@ -415,7 +415,7 @@
 					.then((response) => response.json())
 					.then((data) => {
 						phone = data.member_phone;
-						
+						// 예약 요청 보내기
 						fetch("http://34.47.108.10:8080/root/con/book", {
 							method : "POST",
 							headers : {"Content-Type": "application/json"},
