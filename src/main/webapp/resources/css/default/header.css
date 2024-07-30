@@ -48,14 +48,14 @@
 		    font-size: 14px;
 		    font-family: "Love Ya Like A Sister", fantasy;
 		    background-color: white; 
-		    color: gray; 
+		    color: #5d5d5d; 
 		    padding: 3px;
 		}
 		
 		/* 드롭다운 목록 옵션 스타일 */
 		
 		#search_category option {
-		    color: gray; /* 드롭다운 목록 글자색 설정 */
+		    color: #5d5d5d; /* 드롭다운 목록 글자색 설정 */
 		}
 		#search_category option .search_option:hover {
 			color: green; 

@@ -42,12 +42,10 @@
 
 
 <select id="mainPage1" resultMap="main">
-	select * from store_menu
+	SELECT * FROM store_menu
 </select>
+
 <!-- 
-<select id="getAllCategories" resultType="String">
-    SELECT DISTINCT store_menu_category FROM store_menu
-</select>
 <select id="getMenuByCategory" resultMap="main">
     SELECT m.store_menu_img, m.store_menu_name 
     FROM store_menu m 
@@ -57,34 +55,21 @@
   -->
  
 <select id="getAllCategories" resultType="String">
-	SELECT DISTINCT store_category FROM store_info
+	SELECT DISTINCT store_category 
+	FROM store_info
 </select>
+
 <select id="getStoreImgToMain" resultMap="mainImg">
- 	SELECT * FROM store_img 
+ 	SELECT store_img_root 
+ 	FROM store_img 
     WHERE store_id = #{storeId} 
     AND store_img_main = 9
     ORDER BY store_img_root DESC 
 </select>
-
-
-<select id="getStoreByLocation" resultMap="main">
-    SELECT 
-        si.store_id, 
-        si.store_name, 
-        si.store_add, 
-        si.store_category,
-        sm.store_menu_img 
-    FROM 
-        store_info si
-    JOIN 
-        store_menu sm ON si.store_id = sm.store_id
-    WHERE 
-        si.store_add LIKE '%' || #{address} || '%'
-</select>
- 
  
 <select id="getStoreImage" resultMap="mainImg">
-    SELECT * FROM store_img 
+    SELECT * 
+    FROM store_img 
     WHERE store_id = #{storeId} 
     AND store_img_main = 1
     AND ROWNUM = 1
@@ -92,7 +77,8 @@
 </select>
 
 <select id="getStoreSmallImage" resultMap="mainImg">
-    SELECT * FROM store_img 
+    SELECT * 
+    FROM store_img 
     WHERE store_id = #{storeId} 
     AND store_img_main = 9
     ORDER BY store_img_root DESC 
@@ -118,7 +104,7 @@
 			</choose>
 		</if>
 		<if test="params.category != null and params.category != ''">
-			AND si.store_category LIKE #{params.category} 
+			AND si.store_category LIKE '%' || #{params.category} || '%'
 		</if>
 	</where>
 </select>
@@ -162,9 +148,6 @@
     </where>
 </select>
  -->
- 
- 
- 
 
 <select id="getStoreInfoByCategory" resultMap="mainMap">
     SELECT si.*, sm.store_menu_img, sm.store_menu_name, sm.store_menu_price, sm.store_menu_detail, sm.store_menu_category 
@@ -173,92 +156,24 @@
     WHERE si.store_category LIKE '%' || #{category} || '%'
 </select>
  
- 
- <!-- 
- <select id="getReview" resultMap="mainReview">
- 	select B.* 
- 	from (select rownum rn, A.* 
- 	from (select * from store_review where member_id = #{member_id} 
- 	order by store_review_num ) A ) B
- 	where rn between #{start} and #{end}		
- </select>
-  -->
-  
 <select id="getPopularityList" resultMap="mainReview">
     SELECT sr.*, mi.*
     FROM store_review sr
-    LEFT JOIN member_info mi ON sr.member_id = mi.member_id
+    LEFT JOIN store_info mi ON sr.store_id = mi.store_id
     ORDER BY sr.store_review_score DESC
 </select>
 
 <select id="getReviewList" resultMap="mainReview">
     SELECT sr.*, mi.*
     FROM store_review sr
-    LEFT JOIN member_info mi ON sr.member_id = mi.member_id
+    LEFT JOIN store_info mi ON sr.store_id = mi.store_id
     ORDER BY sr.store_review_score DESC
 </select>
 
-  
-  
-  
-  
-<!--  
-<select id="getMenuImage" resultMap="main">
-	SELECT sm.store_menu_img
-	FROM store_menu sm
-	JOIN store_info si ON sm.store_id = si.store_id
-	<where>
-		<if test=""></if>
-	</where>
-</select>
--->
-
-
-
-
-<!-- 
-<select id="getMenuImage" resultMap="main">
-    SELECT sm.store_menu_img
-    FROM store_menu sm
-    JOIN store_info si ON sm.store_id = si.store_id
-    <where>
-        <if test="params != null and params.keyword != null and params.keyword != ''">
-            <choose>
-                <when test="params.searchType == 'menu_name'">
-                    si.store_name LIKE '%' || #{params.keyword} || '%'
-                </when>
-                <when test="params.searchType == 'menu_category'">
-                    EXISTS (
-                        SELECT 1 FROM dual
-                        WHERE REGEXP_SUBSTR(si.store_category, '[^/]+', 1, LEVEL) = #{params.keyword}
-                        CONNECT BY REGEXP_SUBSTR(si.store_category, '[^/]+', 1, LEVEL) IS NOT NULL
-                    )
-                </when>
-                <otherwise>
-                    si.store_name LIKE '%' || #{params.keyword} || '%'
-                    OR EXISTS (
-                        SELECT 1 FROM dual
-                        WHERE REGEXP_SUBSTR(si.store_category, '[^/]+', 1, LEVEL) = #{params.keyword}
-                        CONNECT BY REGEXP_SUBSTR(si.store_category, '[^/]+', 1, LEVEL) IS NOT NULL
-                    )
-                </otherwise>
-            </choose>
-        </if>
-        <if test="params != null and params.category != null and params.category != ''">
-            AND si.store_category LIKE '%' || #{params.category} || '%'
-        </if>
-    </where>
-</select>
- -->
-
-
-
-
-
 
 <insert id="infoSave">
-	insert into store_menu(store_id, store_menu_img, store_menu_name, store_menu_price, store_menu_detail, store_menu_category) 
-	values (#{store_id},#{store_menu_img},#{store_menu_name},#{store_menu_price},#{store_menu_detail},#{store_menu_category})
+	INSERT INTO store_menu(store_id, store_menu_img, store_menu_name, store_menu_price, store_menu_detail, store_menu_category) 
+	VALUES (#{store_id},#{store_menu_img},#{store_menu_name},#{store_menu_price},#{store_menu_detail},#{store_menu_category})
 </insert>
 
 <insert id="saveImagePathToStoreImg">
@@ -272,6 +187,5 @@
     VALUES (#{store_id}, #{store_pwd},#{store_email},#{store_phone}, #{store_main_phone}, #{store_name}, #{store_add}, 
        #{store_add_info}, #{store_category}, #{store_note}, #{store_introduce}, #{store_business_hours})
 </insert>
-
 
 </mapper>
