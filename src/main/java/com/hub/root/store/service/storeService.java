@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.hub.root.store.DTO.MDTO;
 import com.hub.root.store.DTO.reviewNumDTO;
 import com.hub.root.store.DTO.storeBookmarkDTO;
 import com.hub.root.store.DTO.storeInfoDTO;

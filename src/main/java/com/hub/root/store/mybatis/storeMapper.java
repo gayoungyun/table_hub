@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.hub.root.store.DTO.MDTO;
 import com.hub.root.store.DTO.storeBookmarkDTO;
 import com.hub.root.store.DTO.storeInfoDTO;
 import com.hub.root.store.DTO.storeMenuDTO;
