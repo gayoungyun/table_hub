@@ -51,6 +51,9 @@
 		<id property="store_id" column="store_id" /> <!-- 사업자번호 -->
 		<result property="member_id" column="member_id"/>
 	</resultMap>
+	<resultMap type="com.hub.root.store.DTO.MDTO" id="mDTO">
+		<result property="member_phone" column="member_phone"/>
+	</resultMap>
 	
 	
 	<select id="storeInfo" resultMap="storeInfo">
@@ -102,6 +105,8 @@
 		DELETE FROM store_bookmark 
 			WHERE store_id = #{store_id} and member_id = #{user_id}
 	</delete>
-
+	<select id="phone" resultType="java.lang.String">
+		select member_phone from member_info where member_id = #{user_id}
+	</select>
 	
 </mapper>

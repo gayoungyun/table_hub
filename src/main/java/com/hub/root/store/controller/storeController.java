@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,17 +19,15 @@ import com.hub.root.store.DTO.storeReviewDTO;
 import com.hub.root.store.DTO.storeReviewImgDTO;
 import com.hub.root.store.service.storeService;
 
-import retrofit2.http.GET;
-
 @Controller
 public class storeController {
-	private final storeService ser;
 	private storeInfoDTO infoDTO;
 	private storeMenuDTO menuDTO;
 	private storeReviewDTO reviewDTO;
 	private storeReviewImgDTO reviewImgDTO;
 	private reviewNumDTO numDTO;
 
+	private final storeService ser;
 	@Autowired
 	public storeController(storeService ser) {
 		this.ser = ser;
@@ -40,9 +37,10 @@ public class storeController {
 	@GetMapping("store")
 	public String store(HttpServletRequest request, Model model,
 			@RequestParam(required=false) String store_id) {
-		
+
 			Map<String, Object> Map = ser.store(request, store_id);
-			
+			model.addAttribute("store_id", store_id);
+
 			model.addAllAttributes(Map);
 			return "store/store";
 	}
@@ -53,20 +51,20 @@ public class storeController {
 				,@RequestParam(required=false) String store_id) {
 
 		storeInfoDTO dto = ser.storeInfo(store_id);
-		model.addAttribute("dto",dto);	
-		
+		model.addAttribute("dto",dto);
+
 		return "store/info";
 	}
 
 	@GetMapping("/store/menu")
 	public String menu(HttpServletRequest request, Model model
 			,@RequestParam(required=false) String store_id) {
-		
+
 		List<storeMenuDTO> menuDTO = ser.storeMenu(store_id);
 		model.addAttribute("dto",menuDTO);
-		
+
 		return "store/menu";
-		
+
 	}
 
 	@GetMapping("/store/review")
@@ -80,10 +78,10 @@ public class storeController {
 	@GetMapping("/store/photo")
 	public String photo(HttpServletRequest request, Model model
 			,@RequestParam(required=false) String store_id) {
-		
+
 		Map<String, Object> photoMap = ser.photos(store_id);
 		model.addAllAttributes(photoMap);
-		
+
 		return "store/photo";
 
 	}
@@ -91,16 +89,16 @@ public class storeController {
 	@GetMapping("/store/map")
 	public String map(HttpServletRequest request, Model model
 			,@RequestParam(required=false) String store_id) {
-		
+
 		String storeAdd = ser.storeMap(store_id);
 		model.addAttribute("storeAdd", storeAdd);
-		
+
 		return "store/map";
 	}
-	
+
 	@GetMapping(value="store/jjim", produces="application/json; charset=utf-8" )
 	@ResponseBody
-	public Map<String, Object> jjim(HttpServletRequest request, 
+	public Map<String, Object> jjim(HttpServletRequest request,
 			@RequestParam String store_id) {
 		System.out.println("찜하기 컨트롤러");
 		Map<String, Object> Jmap = ser.jjim(request, store_id);
@@ -116,7 +114,7 @@ public class storeController {
 			request.setAttribute("url", "member/login");
 
 	        return "businessM/businMalert";
-	        } 
+	        }
 	        */
 
 

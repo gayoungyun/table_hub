@@ -3,12 +3,12 @@ package com.hub.root.store.DTO;
 import java.util.Date;
 
 public class reviewNumDTO { //리뷰 테이블, 리뷰 이미지 테이블 합쳐놓은 DTO
-	
+
 	String store_id, member_id, store_review_body, store_review_img_image;
 	int store_review_num, store_review_score, booking_id;
 	Date store_review_date_create;
-	
-	
+
+
 	public String getStore_id() {
 		return store_id;
 	}
@@ -55,9 +55,9 @@ public class reviewNumDTO { //리뷰 테이블, 리뷰 이미지 테이블 합�
 		return store_review_date_create;
 	}
 	public void setStore_review_date_create(java.util.Date date) {
-		this.store_review_date_create = (Date) date;
+		this.store_review_date_create = date;
 	}
-	
-	
+
+
 
 }

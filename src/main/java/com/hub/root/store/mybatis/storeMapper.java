@@ -23,4 +23,6 @@ public interface storeMapper {
 	public int jjimcancle(@Param("user_id") String user_id, @Param("store_id") String store_id);
 	public int jjim(@Param("user_id") String user_id, @Param("store_id") String store_id);
 
+	//민석
+	public String phone(@Param("user_id") String user_id);
 }

@@ -19,11 +19,11 @@ public class businMAPIController {
 
 	@Autowired
 	private final businMService ser;
-	
+
 	public businMAPIController(businMService ser) {
 		this.ser = ser;
 	}
-		
+
     // 민석 예약 부분
     @GetMapping("/api/book")
     public List<BookPageDTO> book(
@@ -40,9 +40,9 @@ public class businMAPIController {
     public int totalPage(
     		@RequestHeader("store_id") String store_id,
     		@RequestHeader("type") String type	) {
-    	
+
     	int result = ser.totalPage(store_id, type);
-    	
+
     	return result;
     }
     @GetMapping("/api/reservationInfo")
@@ -50,7 +50,7 @@ public class businMAPIController {
     		@RequestHeader("store_id") String store_id
     		) {
     	ReservationDTO dto = ser.reservationInfo(store_id);
-    		
+
     	return dto;
     }
 }

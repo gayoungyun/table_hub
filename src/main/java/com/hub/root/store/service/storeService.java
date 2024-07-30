@@ -44,16 +44,16 @@ public class storeService {
 		List<storeBookmarkDTO> Bmark  = mapper.storeBookmark(store_id);
 		List<storeReviewDTO> review = mapper.storeReview(store_id);
 		reviewImg = mapper.storeReviewImg(store_id);
-		
+
 		int totalBookmark = Bmark.size();
 		int totalreview = review.size();
 		int scoreAvr= averageScore(review);
-		
+
 		infoDTO.setStore_add(statefix(infoDTO.getStore_add()));
 		infoDTO.setStore_category(infoDTO.getStore_category().replace("/", ", "));
 		mainImg = mainImgname(mainImg);
 		storeImg = Imgsname(storeImg);
-		
+
 		System.out.println("review 사이즈01' :"+reviewImg);
 
 		reviewImg = reviewImage(reviewImg);
@@ -90,100 +90,100 @@ public class storeService {
 
 		return MainInfoMap;
 	}
- 
+
 
 	public storeInfoDTO storeInfo(String store_id) {
 		storeInfoDTO dto = new storeInfoDTO();
 		dto = mapper.storeInfo(store_id);
 		return dto;
 	}
-	
-	
+
+
 	public Map<String, Object> jjim(HttpServletRequest request, String store_id) {
 		System.out.println("찜하기 서비스");
-		
+
 		HttpSession session = request.getSession();
 	    String user_id = (String) session.getAttribute("userId");
-		String storeId = (String) session.getAttribute("storeId");		
-		
-	    
-	    
+		String storeId = (String) session.getAttribute("storeId");
+
+
+
 	    int result01=0, result02=0;
 	    int num=0;
-	    Map<String, Object> Jmap = new HashMap<String, Object>();
-	    
+	    Map<String, Object> Jmap = new HashMap<>();
+
 	    if(storeId != null) {
 	    	Jmap.put("result", 0);
 	    	Jmap.put("msg", "사업자 회원은 찜하기를 할 수 없습니다.");
 	    	Jmap.put("url", "member/login");
-	    	
-	    	return Jmap;	
+
+	    	return Jmap;
 	    }else if(user_id == null) {
 			Jmap.put("result", 0);
 			Jmap.put("msg", "회원 로그인이 필요한 서비스입니다");
 			Jmap.put("url", "member/login");
-			
+
 	        return Jmap;
 	    }else {
 	    	result01 = mapper.jjimchk(user_id, store_id);
-	    	
+
 	    	if(result01 == 1){
 	    		result02 = mapper.jjimcancle(user_id, store_id);
-	    		
+
 	    		if(result02 == 0) {
 	    			Jmap.put("result", 0);
 	    			Jmap.put("msg", "찜 취소 실패\n고객센터로 문의주세요");
 	    			Jmap.put("url", "store/store");
-	    			
+
 	    	        return Jmap;
 	    		}else {
 	    			Jmap.put("result", 1);
 	    			Jmap.put("msg", "찜이 취소되었습니다");
-	    			
+
 	    			return Jmap;
 	    		}
-	    		
+
 	    	}else {
 	    		num = mapper.jjim(user_id, store_id);
-	    		
+
 	    		if(num == 1) {
 	    			Jmap.put("result", 1);
 	    			Jmap.put("msg", "가게를 찜했습니다");
-	    			
+
 	    			return Jmap;
 	    		}else {
 	    			Jmap.put("result", 0);
 	    			Jmap.put("msg", "찜 실패\n고객센터로 문의주세요");
 	    			Jmap.put("url", "store/store");
-	    			
+
 	    			return Jmap;
 	    		}
 	    	}
 	    }
 	}
-	
+
 	public List<storeMenuDTO> storeMenu(String store_id) {
 		List<storeMenuDTO> menuDTO = mapper.storeMenu(store_id);
 		menuDTO = (menuImg(menuDTO));
 
 		return menuDTO;
 	}
-	
-	
+
+
 	public List<reviewNumDTO> storeReview(String store_id){
 		List<storeReviewDTO> reviewDTO = mapper.storeReview(store_id);
 		List<storeReviewImgDTO> reviewImgDTO = mapper.reviewImage(store_id);
-		List<reviewNumDTO> numDTO = new ArrayList<reviewNumDTO>();
-		
+		List<reviewNumDTO> numDTO = new ArrayList<>();
+
 		for (storeReviewDTO reviewNum : reviewDTO) {
 		int revNum = reviewNum.getStore_review_num();
-		
+
 			for (storeReviewImgDTO imageNum : reviewImgDTO) {
 				int imgNum = imageNum.getStore_review_num();
-				
+
 					if(revNum == imgNum) {
 					    reviewNumDTO num = new reviewNumDTO();
-					    
+
 		                num.setStore_review_num(revNum);
 		                num.setStore_id(store_id);
 		                num.setMember_id(reviewNum.getMember_id());
@@ -193,58 +193,58 @@ public class storeService {
 		                num.setBooking_id(reviewNum.getBooking_id());
 		                String imgPath = mainImgname(imageNum.getStore_review_img_image());
 		                num.setStore_review_img_image(imgPath);
-		                
+
 		                numDTO.add(num);
 					}
 			}
 		}
-		return numDTO;		
+		return numDTO;
 	}
-	
-	
-	
-	
+
+
+
+
 	public  Map<String, Object> photos (String store_id) {
-		
-		List<String> storeImg = new ArrayList<String>();
-		List<String> reviewImg = new ArrayList<String>();
+
+		List<String> storeImg = new ArrayList<>();
+		List<String> reviewImg = new ArrayList<>();
 		storeImg = mapper.storeImg(store_id);
 		reviewImg = mapper.storeReviewImg(store_id);
 
 		storeImg = Imgsname(storeImg);
 		reviewImg = reviewImage(reviewImg);
-		
-		Map<String, Object> photoMap = new HashMap<String, Object>();
+
+		Map<String, Object> photoMap = new HashMap<>();
 		photoMap.put("storeImg", storeImg);
 		photoMap.put("reviewImg", reviewImg);
 
 		return photoMap;
-	
+
 	}
-	
+
 	public String storeMap(String store_id) {
-		
+
 		infoDTO = mapper.storeInfo(store_id);
 		String storeAdd = infoDTO.getStore_add();
-		
+
 		return storeAdd;
-		
+
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	//-------------------------------------------
-	
+
 
 	public int averageScore(List<storeReviewDTO> review) {
 		if(review.size() == 0) {
 			return 0;
 		}else {
 			int total = 0;
-			
+
 			for(storeReviewDTO score : review) {
 				total += score.getStore_review_score();
 			}
@@ -253,7 +253,7 @@ public class storeService {
 		}
 	}
 
-	
+
 	public String statefix(String store_add) {
 
 	    String[] parts = store_add.split(" ");
@@ -266,7 +266,7 @@ public class storeService {
 
 	    return stateFix;
 	}
-	
+
 	   public static String mainImgname(String mainImg) {
 	    	String[] parts = mainImg.split("\\\\");
 	        String splitImgPath = parts[parts.length - 1];
@@ -289,36 +289,43 @@ public class storeService {
 
 	    	    return fileNames;
 	    	}
-	    
+
 	    public static List<String> reviewImage (List<String> reviewImg) {
 	    	List<String> fileNames = new ArrayList<>();
-	    	
+
 	    	for (String imgPath : reviewImg) {
 	    		// 파일 경로를 역슬래시(\\) 또는 슬래시(/)로 분할하여 배열로 변환
 	    		String[] parts = imgPath.split("\\\\");
 	    		String fileName = parts[parts.length - 1];
-	    		
+
 	    		fileNames.add(fileName);
 	    	}
-	    	
+
 	    	return fileNames;
 	    }
 
 
 	public static List<storeMenuDTO> menuImg(List<storeMenuDTO> menuDTO) {
-    	
+
     	for (storeMenuDTO imgPath : menuDTO) {
     		// 파일 경로를 역슬래시(\\) 또는 슬래시(/)로 분할하여 배열로 변환
     		String[] parts = imgPath.getStore_menu_img().split("\\\\");
     		String fileName = parts[parts.length - 1];
-    		
+
     		imgPath.setStore_menu_img(fileName);
     	}
-    	
+
     	return menuDTO;
     }
+	// 민석
+	public String phone(String user_id) {
+		String result = mapper.phone(user_id);
+		System.out.println("user_id : " + user_id);
+		return result;
+	}
+
 
 	/*
-		
+
 	 */
 }

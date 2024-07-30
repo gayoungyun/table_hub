@@ -6,8 +6,8 @@ public class ReservationDTO {
 	String store_add;
 	String store_add_info;
 	String store_name;
-	
-	
+
+
 	public String getStore_name() {
 		return store_name;
 	}
