@@ -91,7 +91,7 @@ public class PosAPIController {
 	public void wait(@RequestBody WaitDTO wait) {
 		System.out.println("왜 안나와??? : " + wait.getWait_time());
 		apiService.wait123(wait.getStore_id(), wait.getWait_time(), wait.getWait_num());
-			
+
 	}
 
 	@GetMapping("averageTime1")

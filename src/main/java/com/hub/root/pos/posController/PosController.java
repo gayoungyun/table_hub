@@ -42,7 +42,7 @@ public class PosController {
 	public String order() {
 		return "pos/pos_order";
 	}
-	
+
 	@GetMapping("qr")
 	public String qr(@RequestParam("store_name") String store_name
 					,@RequestParam("store_id") String store_id
@@ -51,7 +51,7 @@ public class PosController {
 		model.addAttribute("store_id", store_id);
 		return "pos/pos_qr";
 	}
-	
+
 	@GetMapping("wait")
 	public String wait1(Model model,
 						HttpServletRequest req) {

@@ -1,5 +1,7 @@
 package com.hub.root.pos.posController;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,9 +34,12 @@ public class SseController {
 	    SseEmitter emitter = sseService.connect(articleId);
 	    return ResponseEntity.ok(emitter);
 	}
+
 	@CrossOrigin
 	@PostMapping("/book")
-	public ResponseEntity<Void> sendComment(@RequestBody BookingDTO bookingDTO) {
+	public ResponseEntity<Void> sendComment(@RequestBody BookingDTO bookingDTO,
+													HttpServletResponse res) {
+		res.addHeader("Access-Control-Allow-Credentials", "true");
 		int booking_id = service.register_booking(bookingDTO);
 
 		if(booking_id != 0)
