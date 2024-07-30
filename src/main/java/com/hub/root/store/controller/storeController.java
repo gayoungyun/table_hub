@@ -21,13 +21,13 @@ import com.hub.root.store.service.storeService;
 
 @Controller
 public class storeController {
-	private final storeService ser;
 	private storeInfoDTO infoDTO;
 	private storeMenuDTO menuDTO;
 	private storeReviewDTO reviewDTO;
 	private storeReviewImgDTO reviewImgDTO;
 	private reviewNumDTO numDTO;
 
+	private final storeService ser;
 	@Autowired
 	public storeController(storeService ser) {
 		this.ser = ser;
@@ -40,7 +40,7 @@ public class storeController {
 
 			Map<String, Object> Map = ser.store(request, store_id);
 			model.addAttribute("store_id", store_id);
-			
+
 			model.addAllAttributes(Map);
 			return "store/store";
 	}

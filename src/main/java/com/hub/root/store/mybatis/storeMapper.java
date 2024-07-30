@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.hub.root.store.DTO.MDTO;
 import com.hub.root.store.DTO.storeBookmarkDTO;
 import com.hub.root.store.DTO.storeInfoDTO;
 import com.hub.root.store.DTO.storeMenuDTO;
@@ -23,4 +24,6 @@ public interface storeMapper {
 	public int jjimcancle(@Param("user_id") String user_id, @Param("store_id") String store_id);
 	public int jjim(@Param("user_id") String user_id, @Param("store_id") String store_id);
 
+	//민석
+	public MDTO phone(@Param("user_id") String user_id);
 }

@@ -222,7 +222,7 @@
 			</div>
 			<img src="resources\img\Boseon\보정\로고.png" onclick="window.location.href='/root'">
 			<div>
-				<button class="button1 btn1Fade" onclick="reservation()">예약하기</button>
+				<button class="button1 btn1Fade res" onclick='reservation()'>예약하기</button>
 				<button class="button2 btn2Fade" onclick="Jjim(${infoDTO.store_id})">찜하기</button>
 			</div>
 		</div>
@@ -291,7 +291,7 @@
 <script type="text/javascript">
 	const body = document.querySelector(".body");
 	
-	body.addEventListener("click", function(event) {
+	body.addEventListener('click', function(event) {
 		let parent = event.target;
 		for(let i = 0; i < 3; i++)
 		{
@@ -381,7 +381,55 @@
 				{
 					first_page.style.display = 'none';
 					check_page.style.display = 'none';	
-				}
+					// 년 월 일
+					const arr1 = document.querySelector('.check_date').innerText;
+					const arr2 = arr1.split(' ');
+					const year = arr2[0].split('년');
+					const month = arr2[1].split('월');
+					const day = arr2[2].split('일');
+					// 시간
+					const time = document.querySelector('.check_time').innerText;
+					const time_arr = time.split(' ');
+					
+					//인원
+					const person = document.querySelector('.check_person').innerText;
+					const person_arr = person.split(' ');
+					
+					
+					let phone;
+					// 전화 번호 가져오기
+					fetch("http://localhost:8080/root/store/phone", {
+						headers : {"Content-Type": "application/json",
+									"user_id" : '${userId}'},
+					})
+					.then((response) => response.json())
+					.then((data) => {
+						phone = data.member_phone;
+					})		
+					console.log('${store_id}');
+					console.log('${userId}');
+					console.log(year[0] + "/" + month[0] + "/" + day[0])
+					console.log(time_arr[2]);
+					fetch("http://34.47.108.10:8080/root/con/book", {
+						method : "POST",
+						headers : {"Content-Type": "application/json",
+									"Access-Control-Allow-Credentials" : "true"},
+						body : JSON.stringify({
+							"store_id" : '${store_id}',
+							"member_id" : '${userId}',
+							"booking_date_booking" : year[0] + "/" + month[0] + "/" + day[0],
+							"booking_time" : time_arr[2],
+							"booking_person" : person_arr[2],
+							"booking_phone" : phone,
+							"booking_status" : 0
+						})
+					})
+					.then((response) => response.json())
+					.then((res) => {
+						
+					})
+					
+				} 
 				// 추후 보선님 패이지 연동후 패치 만들기
 				break;
 			}
@@ -391,7 +439,7 @@
 			
 		}
 	})
-
+	
 	function reservation() {
 		const check_id = document.querySelector('.check_id');
 		if('${userId}' != "")
