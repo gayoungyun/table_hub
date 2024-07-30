@@ -33,7 +33,7 @@
 			
 			<div class="flex-item">
 				<c:if test="${storeId != null }">
-					<a href="/root/store" class="a-item">MyStore</a>
+					<a href="/root/store?store_id=${storeId}" class="a-item">MyStore</a>
 				</c:if>
 			</div>
 			<div class="flex-item">
