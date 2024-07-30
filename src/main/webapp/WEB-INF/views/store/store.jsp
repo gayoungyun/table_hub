@@ -397,6 +397,7 @@
 					
 					
 					let phone;
+					
 					// 전화 번호 가져오기
 					fetch("http://localhost:8080/root/store/phone", {
 						headers : {"Content-Type": "application/json",
@@ -404,30 +405,35 @@
 					})
 					.then((response) => response.json())
 					.then((data) => {
+						console.log(data);
 						phone = data.member_phone;
-					})		
-					console.log('${store_id}');
-					console.log('${userId}');
-					console.log(year[0] + "/" + month[0] + "/" + day[0])
-					console.log(time_arr[2]);
-					fetch("http://34.47.108.10:8080/root/con/book", {
-						method : "POST",
-						headers : {"Content-Type": "application/json",
-									"Access-Control-Allow-Credentials" : "true"},
-						body : JSON.stringify({
-							"store_id" : '${store_id}',
-							"member_id" : '${userId}',
-							"booking_date_booking" : year[0] + "/" + month[0] + "/" + day[0],
-							"booking_time" : time_arr[2],
-							"booking_person" : person_arr[2],
-							"booking_phone" : phone,
-							"booking_status" : 0
-						})
-					})
-					.then((response) => response.json())
-					.then((res) => {
 						
-					})
+						console.log('${store_id}');
+						console.log('${userId}');
+						console.log(year[0] + "/" + month[0] + "/" + day[0])
+						console.log(time_arr[3]);
+						console.log(person_arr[3]);
+						console.log(phone);
+						
+						fetch("http://34.47.108.10:8080/root/con/book", {
+							method : "POST",
+							headers : {"Content-Type": "application/json"},
+							body : JSON.stringify({
+								"store_id" : '${store_id}',
+								"member_id" : '${userId}',
+								"booking_date_booking" : year[0] + "/" + month[0] + "/" + day[0],
+								"booking_time" : time_arr[3],
+								"booking_person" : person_arr[3],
+								"booking_phone" : phone,
+								"booking_status" : 0
+							})
+						})
+						.then((response) => response.json())
+						.then((res) => {
+							
+						})
+					});
+					
 					
 				} 
 				// 추후 보선님 패이지 연동후 패치 만들기

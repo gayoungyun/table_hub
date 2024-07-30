@@ -319,9 +319,9 @@ public class storeService {
     	return menuDTO;
     }
 	// 민석
-	public MDTO phone(String user_id) {
-		MDTO result = mapper.phone(user_id);
-
+	public String phone(String user_id) {
+		String result = mapper.phone(user_id);
+		System.out.println("user_id : " + user_id);
 		return result;
 	}
 

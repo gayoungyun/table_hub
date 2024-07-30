@@ -25,5 +25,5 @@ public interface storeMapper {
 	public int jjim(@Param("user_id") String user_id, @Param("store_id") String store_id);
 
 	//민석
-	public MDTO phone(@Param("user_id") String user_id);
+	public String phone(@Param("user_id") String user_id);
 }

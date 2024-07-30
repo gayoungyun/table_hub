@@ -1,5 +1,8 @@
 package com.hub.root.store.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -19,8 +22,13 @@ public class StoreAPIController {
 	}
 
 	@GetMapping("/store/phone")
-	public MDTO phone(@RequestHeader("user_id") String user_id) {
-		MDTO result = ser.phone(user_id);
-		return result;
+	public Map<String, String> phone(@RequestHeader("user_id") String user_id) {
+		
+		Map<String, String> map = new HashMap<String, String>();
+		String result = ser.phone(user_id);
+		System.out.println("전화번호 : " + result);
+		map.put("member_phone", result);
+		
+		return map;
 	}
 }

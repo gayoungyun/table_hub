@@ -105,7 +105,7 @@
 		DELETE FROM store_bookmark 
 			WHERE store_id = #{store_id} and member_id = #{user_id}
 	</delete>
-	<select id="phone" resultMap="mDTO">
+	<select id="phone" resultType="java.lang.String">
 		select member_phone from member_info where member_id = #{user_id}
 	</select>
 	
