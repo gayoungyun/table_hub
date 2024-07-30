@@ -33,7 +33,12 @@ public class MainController {
 	@Autowired MainService ms;
 	// 헤더 페이지 요청 처리===================================
 	@GetMapping("header")
-	public String header() {
+	public String header(@RequestParam(required=false) String store_id, Model model) {
+		Map<String, Object> params = new HashMap<>();
+	       if (store_id != null) {
+	           params.put("storeId", store_id);
+	       }
+	       model.addAttribute("storeId", store_id);
 		return "main/header";
 	}
 	
