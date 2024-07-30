@@ -409,15 +409,7 @@
 					})
 					.then((response) => response.json())
 					.then((data) => {
-						console.log(data);
 						phone = data.member_phone;
-						
-						console.log('${store_id}');
-						console.log('${userId}');
-						console.log(year[0] + "/" + month[0] + "/" + day[0])
-						console.log(time_arr[3]);
-						console.log(person_arr[3]);
-						console.log(phone);
 						
 						fetch("http://34.47.108.10:8080/root/con/book", {
 							method : "POST",
