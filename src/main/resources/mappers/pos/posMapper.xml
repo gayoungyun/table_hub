@@ -79,7 +79,7 @@
 	</select>
 	
 	<update id="update_keyStatus">
-		update store_key set key_status= 1 where store_key = #{store_key} 
+		update store_key set key_status= 1 where CRYPTPACK.DECRYPT(store_key,'ora_java_table') = #{store_key} 
 	</update>
 	
 	<delete id="delete_key">

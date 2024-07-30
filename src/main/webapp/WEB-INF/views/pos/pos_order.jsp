@@ -425,7 +425,6 @@
 													"wait_num" : parent.dataset.wait_num
 													})
 												})
-												.then((response) => response.json())
 												.then((data) => {
 													if(data == '1')
 													{
