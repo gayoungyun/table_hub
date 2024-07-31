@@ -636,7 +636,6 @@
 <%@ include file="../../main/header.jsp" %>
 </head>
 <body>
-	<img alt="" src="D:\tablehub_image\member\aaaa_p3.png">
 	<div id="myPageWrapper">
 		<%@ include file="./myPageMenu.jsp" %>
 		<div id="myPageContentWrapper">

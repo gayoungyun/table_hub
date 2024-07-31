@@ -76,7 +76,7 @@
 				    					
 				     					// 가게정보부분에서 왼쪽 이미지를 나타내는 영역
 										html += `<div class="storeInfoLeft">`
-					 						html += `<img class="storeImg" alt="" src="download?img=` + result.STORE_IMG_ROOT + `">`				
+					 						html += `<img class="storeImg" alt="" src="/root/businessM/download?img=` + result.STORE_IMG_ROOT + `">`				
 					 					html += `</div>`
 				    						
 				     					//가운데 가게이름과 평점을 나타내는 영역

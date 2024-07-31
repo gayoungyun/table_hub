@@ -61,7 +61,7 @@
 		                    content += `<label class="bookingStoreName" title="`+result.storeName+`">`+result.storeName+`</label>`;
 		                    content += `<label class="bookingStatusReady">방문 대기</label>`;
 		                    content += `<a class="bookingDelete" onclick="readyBookingDelete(`+item.id+`)">X</a><br>`;
-		                    content += `<img class="bookingStoreImg" alt="" src="download?img=` + result.storeImg + `"><br>`;
+		                    content += `<img class="bookingStoreImg" alt="" src="/root/businessM/download?img=` + result.storeImg + `"><br>`;
 // 		                    content += `<img class="bookingStoreImg" alt="" src="https://www.gyeongju.go.kr/upload/content/thumb/20200529/4368708A9CC649CDB1EC5DD0C389804C.jpg"><br>`;
 
 		                    content += `<label class="bookingDate">`+bookingDate+`</label><br>`;
@@ -209,7 +209,7 @@
 							content += `<label class="bookingStoreName" title="`+result.storeName+`">`+result.storeName+`</label>`;
 							content += `<label class="bookingStatusAlready">방문 완료</label>`
 							content += `<a class="bookingDelete" onclick="alreadyBookingDelete(`+item.id+`)">X</a><br>`
-							content += `<img class="bookingStoreImg" alt="" src="download?img=` + result.storeImg + `"><br>`;
+							content += `<img class="bookingStoreImg" alt="" src="/root/businessM/download?img=` + result.storeImg + `"><br>`;
 							content += `<label class="bookingDate">` + bookingDate + `</label><br>`
 							content += `<label class="bookingPerson">성인 ` + item.person + `명</label>`
 							content += `<hr>`

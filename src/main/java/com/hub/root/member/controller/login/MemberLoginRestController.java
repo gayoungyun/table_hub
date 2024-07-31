@@ -199,6 +199,13 @@ public class MemberLoginRestController {
 			String codeKey = String.valueOf(code);
 			session.setAttribute(email, codeKey);
 			
+			/*
+			 * 세션과 쿠키값으로 저장하는 이유
+			 * 쿠키값으로만 저장하게 되면 쿠키값 변경이 가능해서 보안적으로 취약할것이고
+			 * 세션값으로만 저장하게 되면 주소가 다른 값으로 여러 번 요청할 경우
+			 * 문제가 발생될수 있어서 이 방법을 사용
+			 */
+			
 			map.put("msg", "인증 코드가 전송되었습니다.");
 			map.put("result", 0);
 			model.addAttribute(session);

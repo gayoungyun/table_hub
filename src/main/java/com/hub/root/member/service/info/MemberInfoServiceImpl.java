@@ -179,7 +179,10 @@ public class MemberInfoServiceImpl implements MemberInfoService{
     	System.out.println("memInfoSer getBookingInfo 실행");
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("storeName",(String)mapper.getStoreName(storeId));
-		map.put("storeImg", (String)mapper.getStoreImg(storeId));
+		String[] storeImgs = (String[])mapper.getStoreImg(storeId).split("\\\\");
+		String storeImg = storeImgs[storeImgs.length - 1];
+		map.put("storeImg", storeImg);
+		
 		int result = mapper.getReviewScore(id);
 		System.out.println("result : "+ result);
 		map.put("reviewScore", result);
@@ -356,6 +359,10 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	public Map<String, Object> getReviewInfo(String storeId, int reviewNum) {
 		Map<String, Object> map = mapper.getReviewStoreInfo(storeId);
 		String reviewImg = mapper.getReviewImgInfo(reviewNum);
+		System.out.println("reviewImg : " + map.get("STORE_IMG_ROOT"));
+		String[] storeImg = ((String) map.get("STORE_IMG_ROOT")).split("\\\\");
+		map.put("STORE_IMG_ROOT", storeImg[storeImg.length-1]);
+		
 		map.put("reviewImg", reviewImg);
 		return map;
 	}
