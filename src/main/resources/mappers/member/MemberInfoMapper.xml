@@ -198,7 +198,7 @@
 	<select id="getBoard" resultMap="board">
 		select B.* from (
 			select rownum rn, A.*  from (
-				select * from board where board_mem_id = #{id} order by board_id ) A ) B 
+				select * from board where board_mem_id = #{id} order by board_id desc) A ) B 
 		where rn between #{start} and #{end}
 	</select>
 	<select id="getBoardReplyCount" resultType="int">
@@ -404,13 +404,14 @@
 	</delete>
 	
 	<select id="getMyContentMyInfo" resultType="map">
-		select a.*, b.*, c.*, d.* from 
+		select a.*, b.*, c.*, d.*, e.* from 
 		    (select count(*) as board_count from board where board_mem_id = #{userId}) a,
 		    (select 
 		        (select count(*) as reply_count from board_review where member_id = #{userId})+
 		        (select count(*) as reply_count from board_review2 where member_id = #{userId}) as reply_count from dual) b,
 		    (select count(*) as review_count from store_review where member_id = #{userId}) c,
-		    (select avg(store_review_score) as review_score from store_review where member_id = #{userId}) d
+		    (select avg(store_review_score) as review_score from store_review where member_id = #{userId}) d,
+		    (select member_img from member_info where member_id = #{userId}) e
 	</select>
 	
 	<select id="getNick" resultType="String">

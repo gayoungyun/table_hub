@@ -61,7 +61,8 @@ public class MemberLoginController {
 	}
 
 	@GetMapping("login/searchPwd/modifyPwd")
-	public String modifyPwd(@RequestParam String id, Model model, HttpServletRequest req, HttpServletResponse res) throws IOException {
+	public String modifyPwd(@RequestParam String id, Model model, 
+			HttpServletRequest req, HttpServletResponse res) throws IOException {
 		System.out.println("id : " + id);
 		Map<String, Object> map = new HashMap<>();
 

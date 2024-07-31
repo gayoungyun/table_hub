@@ -25,20 +25,26 @@
 	
 	let inputId, inputNick, inputPwd, inputPhone, inputGender, inputYear, inputMonth, inputDay;
 
+	
+	let accessToken = null;
 
 
 	var naver_id_login = new naver_id_login("NY8JwdpMRrDBs7eqhg8A", "http://localhost:8080/root/member/registerNaver");
   // 접근 토큰 값 출력
 //   alert(naver_id_login.oauthParams.access_token);
   // 네이버 사용자 프로필 조회
+	console.log(naver_id_login)
 	naver_id_login.get_naver_userprofile("naverSignInCallback()");
+  
   // 네이버 사용자 프로필 조회 이후 프로필 정보를 처리할 callback function
 	function naverSignInCallback() {
-		inputId = "N:"+naver_id_login.getProfileData("id");
+		inputId = "N="+naver_id_login.getProfileData("id");
 		let nick = naver_id_login.getProfileData("nickname");
 		let email = naver_id_login.getProfileData("email");
 		let phone = naver_id_login.getProfileData("mobile");
 		let gender = naver_id_login.getProfileData("gender");
+// 		alert(naver_id_login.oauthParams.access_token);
+		accessToken = naver_id_login.oauthParams.access_token;
 		let form = {id : inputId}
 		$.ajax({
 			url : "idChk",
@@ -49,7 +55,8 @@
 			success : function ( result ) {
 				if (result == 1) {
 // 					alert("이미 가입된 계정입니다.\n로그인 후 메인페이지로 이동합니다.")
-					let form = {id : inputId}
+					let form = {id : inputId,
+								token : accessToken}
 						$.ajax({
 							url : "/root/member/loginChk",
 							type : "post",
@@ -107,6 +114,31 @@
 			}
 		})
 		
+  }
+  
+  function test () {
+	  
+	  console.log("token : ", testToken)
+// 	  $.ajax({
+// 		  url : "https://nid.naver.com/oauth2.0/token?grant_type=delete&client_id=NY8JwdpMRrDBs7eqhg8A&client_secret=4_1nA0P4RP&access_token="+testToken,
+// 		  type : "post",
+// 		  data : {
+// 			  grant_type : "delete",
+// 			  client_id : "NY8JwdpMRrDBs7eqhg8A",
+// 			  client_secret : "4_1nA0P4RP",
+// 			  access_token : testToken
+// 		  },
+// 		  success : function (result ) {
+// 			  console.log("result : ", result);
+// 		  },
+// 		  error : function ( error ) {
+// 			  console.log("error : ", error)
+// 		  }
+		  
+							  
+// 	  })
+	  
+	  location.href='/root/member/myPage/test?token='+testToken
   }
 
 	
@@ -207,6 +239,7 @@
 				</table>
 			</form>
 		</div>
+		<input type="button" onclick="test()" value="test">
 	</div>
 	<script type="text/javascript">
 		
@@ -395,7 +428,7 @@
 				contentType : "application/json; charset=utf-8",
 				success : function ( result ) {
 					alert(`회원가입이 완료되었습니다.\n로그인을 진행해주세요`)
-					location.href="/root/main/mainPage1"
+					location.href="/root/member/login"
 					
 				},
 				error : function (e) {

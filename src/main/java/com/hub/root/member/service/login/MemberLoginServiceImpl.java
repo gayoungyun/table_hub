@@ -1,5 +1,11 @@
 package com.hub.root.member.service.login;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -8,6 +14,7 @@ import java.util.Map;
 
 import javax.servlet.http.Cookie;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -132,6 +139,72 @@ public class MemberLoginServiceImpl implements MemberLoginService{
 		}
 		return map;
 	}
+	
+	
+	
+// 실제 사업자 번호 조회하는 코드(테스트때는 로컬 db에 임의로 만들어둔 번호를 사용)
+	private Map<String, Object> storeNumCheck(String storeId) {
+		System.out.println("StoreId : " + storeId);
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		try {
+            // URL 설정
+            URL url = new URL("https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=FrSTW3gKGmavFRi%2F71%2BVpVzdvRwsWoeIwRm3oBzmkUV7iJ2aISbuqqCvQoFRLgshZrbptxsfQfzTxbdUU26pXw%3D%3D");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            
+            String jsonInputString = "{\"b_no\" : [\"1111111111\"]}";
+            
+            // 요청 설정
+            connection.setRequestMethod("POST");
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Content-Type", "application/json");
+
+            // 요청 바디 설정
+            byte[] postData = jsonInputString.getBytes(StandardCharsets.UTF_8);
+
+            // 요청 바디 전송
+            try (OutputStream outputStream = connection.getOutputStream()) {
+            	
+                outputStream.write(postData);
+            }
+
+            // 응답 코드 확인
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+            
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                    String line;
+                    StringBuilder response = new StringBuilder();
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
+                    }
+                    System.out.println("response : " + response);
+                    System.out.println("response.match_cnt : " + response.equals("match_cnt"));
+                    
+                 // StringBuilder의 값을 문자열로 변환
+                    String responseBody = response.toString();
+                    System.out.println("Response Body: " + responseBody);
+
+                    // JSON 파싱
+                    JSONObject jsonResponse = new JSONObject(responseBody);
+                    if (jsonResponse.isNull("match_cnt")) {
+                    	map.put("result", 0);
+                    } else {
+                    	int matchCount = jsonResponse.getInt("match_cnt"); // match_cnt 값을 추출
+                    	map.put("result", matchCount);
+                    }
+                }
+            } else {
+            	System.out.println("error : " + responseCode);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		
+		return map;
+	}
 
 	@Override
 	public int storeMailChk(String email) {
@@ -146,6 +219,9 @@ public class MemberLoginServiceImpl implements MemberLoginService{
 		String[] memberIds = mapper.getMemId(email);
 		String memberId = "";
 		String msg = "";
+		System.out.println("memberIds.length : " + memberIds.length);
+		
+		// 정보가 없을경우 사용자에게 메세지 전달
 		if (memberIds.length == 0) {
 			System.out.println("if 실행");
 			msg = "가입되지 않은 이메일 주소입니다. \n확인후 다시 시도해주세요";
@@ -156,15 +232,34 @@ public class MemberLoginServiceImpl implements MemberLoginService{
 			System.out.println("elseif 실행");
 
 			//불러온 데이터중 _으로 구분되는 첫번째 자리의 값이 N이 아닌 값을 대입한다.
-			for (String memberId2 : memberIds) {
-				String[] check = memberId2.split("_");
+
+			for (int i = 0; i < memberIds.length; i++) {
+				String[] check = memberIds[i].split("=");
 				if (check[0] != "N") {
-					memberId = memberId2;
+					memberId = memberIds[i];
 					break;
 				}
 			}
 
-		} else {
+		// 불러온 데이터가 sns계정인지 비교
+		} else if (memberIds.length == 1) {
+			System.out.println("length가 1일때");
+			if (memberIds[0].split("=")[0].equals("N")) {
+				
+				System.out.println("1일때 if실행");
+				msg = "SNS회원가입 계정입니다. 간편인증을 통해 로그인해주세요";
+				map.put("result", 0);
+				map.put("msg", msg);
+				return map;
+				
+			} else {
+				System.out.println("1일때 else실행");
+				memberId = memberIds[0];
+			}
+		}
+		
+		// 안쓰는 코드..??
+		else {
 			memberId = memberIds[0];
 		}
 		msg = "이메일로 아이디가 전송되었으니 확인 후 로그인을 진행해주세요";
@@ -201,8 +296,8 @@ public class MemberLoginServiceImpl implements MemberLoginService{
 			map.put("msg", msg);
 
 			String title = "[테이블허브] 패스워드 초기화 링크";
-			String body = "["+id+"] 님의 패스워드 초기화 링크입니다.";
-			body += "아래 링크를 클릭하여 패스워드를 재설정해주세요";
+			String body = "["+id+"] 님의 패스워드 초기화 링크입니다.<br>";
+			body += "아래 링크를 클릭하여 패스워드를 재설정해주세요<br>";
 			body += "<a href=http:localhost:8080/root/member/login/searchPwd/modifyPwd?id="+encodeId+">패스워드 초기화</a>";
 
 			map.put("encodeId", encodeId);

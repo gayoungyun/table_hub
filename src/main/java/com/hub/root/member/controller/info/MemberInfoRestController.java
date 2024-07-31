@@ -1,5 +1,11 @@
 package com.hub.root.member.controller.info;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -158,9 +164,69 @@ public class MemberInfoRestController {
 	}
 
 	@DeleteMapping(value="deleteUser")
-	public Map<String, Object> deleteUser(HttpSession session) {
+	public Map<String, Object> deleteUser(HttpSession session, HttpServletRequest req) {
 		System.out.println("memInfoRestCont deleteUser 실행");
 		Map<String, Object> map = mis.deleteUser((String)session.getAttribute("userId"));
+		String token = null;
+		if ((int)map.get("result") == 1) {
+			System.out.println("if문실행");
+			
+			Cookie[] cookies = req.getCookies();
+			if (cookies != null) {
+				for (Cookie c : cookies) {
+					if (c.getName().equals("snsToken")) {
+						token = c.getValue();
+					}
+				}
+			}
+			
+			if (token != null) {
+				try {
+		            // URL 설정
+		            URL url = new URL("https://nid.naver.com/oauth2.0/token");
+		            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		            
+		            // 요청 설정
+		            connection.setRequestMethod("POST");
+		            connection.setDoOutput(true);
+		            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+		            // 요청 바디 설정
+		            String parameters = "grant_type=delete"
+				    				+ "&client_id=NY8JwdpMRrDBs7eqhg8A"
+				    				+ "&client_secret=4_1nA0P4RP"
+				    				+ "&access_token="+token;
+		            byte[] postData = parameters.getBytes(StandardCharsets.UTF_8);
+
+		            // 요청 바디 전송
+		            try (OutputStream outputStream = connection.getOutputStream()) {
+		                outputStream.write(postData);
+		            }
+
+		            // 응답 코드 확인
+		            int responseCode = connection.getResponseCode();
+		            System.out.println("Response Code: " + responseCode);
+
+//		            if (responseCode == HttpURLConnection.HTTP_OK) {
+//		                try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+//		                    String line;
+//		                    StringBuilder response = new StringBuilder();
+//		                    while ((line = reader.readLine()) != null) {
+//		                        response.append(line);
+//		                    }
+//		                    return response.toString();
+//		                }
+//		            } else {
+//		                return "Request failed with response code: " + responseCode;
+//		            }
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+			}
+			
+		} else {
+			System.out.println("else문실행");
+		}
 		session.invalidate();
 		return map;
 	}
@@ -256,8 +322,4 @@ public class MemberInfoRestController {
 		map.put("userNick", userNick);
 		return map;
 	}
-
-
-
-
 }

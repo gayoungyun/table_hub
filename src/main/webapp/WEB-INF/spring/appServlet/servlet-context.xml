@@ -43,6 +43,10 @@
 			<mapping path="/member/login/searchPwd/*"/>
 			<beans:ref bean="idChkInterCeptor"/>
 		</interceptor>
+		<interceptor>
+			<mapping path="/member/myPage/*"/>
+			<beans:ref bean="loginChk"/>
+		</interceptor>
 
 	</interceptors>
 	

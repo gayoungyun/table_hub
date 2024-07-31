@@ -520,6 +520,7 @@
 			pwdModify();
 		})
 		
+		
 		pwdChk = () => {
 			const changePwd = $("#changePwd").val();
 			const changePwdAgain = $("#changePwdAgain").val();
@@ -635,7 +636,6 @@
 <%@ include file="../../main/header.jsp" %>
 </head>
 <body>
-	<img alt="" src="D:\tablehub_image\member\aaaa_p3.png">
 	<div id="myPageWrapper">
 		<%@ include file="./myPageMenu.jsp" %>
 		<div id="myPageContentWrapper">
@@ -715,17 +715,19 @@
 							<label class="infoMsg" id="infoEmailCodeChkMsg">전달받은 코드를 입력후 번호 수정을 눌러주세요</label>
 						</td>
 					</tr>
-					<tr>
-						<th>비밀번호</th>
-						<td>
-							<input type="password" class="inputText" id="currentPwd" placeholder="현재 비밀번호 입력"><br>
-							<label class="infoMsg" id="currentPwdMsg">비밀번호를 변경하면 로그인 페이지로 이동합니다.</label><br><br>
-							<input type="password" class="inputText" id="changePwd" oninput="pwdChk()" placeholder="변경할 비밀번호 입력"><br>
-							<input type="password" class="inputText" id="changePwdAgain" oninput="pwdChk()" placeholder="변경할 비밀번호 입력 확인">
-							<input type="button" id="changePwdBtn" value="비밀번호 변경" disabled><br>
-							<label class="infoMsg" id="changePwdMsg"></label>
-						</td>
-					</tr>
+					<c:if test="${userId.split('=')[0] != 'N' }">
+						<tr>
+							<th>비밀번호</th>
+							<td>
+								<input type="password" class="inputText" id="currentPwd" placeholder="현재 비밀번호 입력"><br>
+								<label class="infoMsg" id="currentPwdMsg">비밀번호를 변경하면 로그인 페이지로 이동합니다.</label><br><br>
+								<input type="password" class="inputText" id="changePwd" oninput="pwdChk()" placeholder="변경할 비밀번호 입력"><br>
+								<input type="password" class="inputText" id="changePwdAgain" oninput="pwdChk()" placeholder="변경할 비밀번호 입력 확인">
+								<input type="button" id="changePwdBtn" value="비밀번호 변경" disabled><br>
+								<label class="infoMsg" id="changePwdMsg"></label>
+							</td>
+						</tr>					
+					</c:if>
 				</table>
 			</div>
 		</div>

@@ -21,7 +21,7 @@
 				var html = ""
 				html += `<tr>`
 				html += `<td>`
-				html += `<img id="myContentmyImg" alt="" src="">`
+				html += `<img id="myContentmyImg" alt="" src="/root/member/myPage/download?img=`+result.MEMBER_IMG+`">`
 				html += `</td>`
 				html += `<td>`
 				html += `<b id="myContentmyId">` + result.userNick + `</b><br>`
