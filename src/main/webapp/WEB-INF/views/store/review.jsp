@@ -12,8 +12,6 @@
 </head>
 <body>
 <div class="container">
-  <h1>리뷰 페이지입니다</h1>
-
   <c:choose>
     <c:when test="${dto != null}">
       <c:forEach var="item" items="${dto}">

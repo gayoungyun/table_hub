@@ -57,9 +57,10 @@
 				style="width:785px; min-height:500px;" ></iframe>
 			</div>
 	</div>
-</div>
-<div class="div_footer">
+	<div class="div_footer">
 		<%@ include file="../main/footer.jsp" %>
 	</div>
+</div>
 </body>
+	
 </html>
