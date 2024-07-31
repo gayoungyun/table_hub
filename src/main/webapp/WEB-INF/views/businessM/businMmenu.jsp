@@ -8,7 +8,25 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM/businMinfo.css?after">
-<script src="${path}/resources/js/businessM/businMmenu.js?after"></script>
+<script src="${path}/resources/js/businessM/businMmenu.js"></script>
+<style>
+*{
+	user-select: none;
+}
+
+.center-box{
+	width: 1500px;
+	display: flex;
+ 	flex-direction: column;
+  	align-items: center;
+	margin: 150px auto;
+	
+}
+
+.content{
+ cursor : pointer;
+}
+</style>
 </head>
 <body onload="category()">
 
@@ -40,6 +58,8 @@
 			</div>
 	</div>
 </div>
-
+<div class="div_footer">
+		<%@ include file="../main/footer.jsp" %>
+	</div>
 </body>
 </html>

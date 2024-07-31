@@ -28,7 +28,22 @@
 		<result property="store_open_status" column="store_open_status"/>
 	</resultMap>
 	
-
+	<resultMap type="com.hub.root.businessM.DTO.businMMenuDTO" id="businMMenu">
+		<id property="store_id" column="store_id" /> <!-- 사업자번호 -->
+		<result property="store_menu_img" column="store_menu_img"/>
+		<result property="store_menu_name" column="store_menu_name"/>
+		<result property="store_menu_detail" column="store_menu_detail"/>
+		<result property="store_menu_category" column="store_menu_category"/>
+		<result property="store_menu_price" column="store_menu_price"/>
+	</resultMap>
+	
+	<resultMap type="com.hub.root.businessM.DTO.businMPhotoDTO" id="businMPhoto">
+		<id property="store_id" column="store_id" /> <!-- 사업자번호 -->
+		<result property="store_img_root" column="store_img_root"/>
+		<result property="store_img_main" column="store_img_main"/>
+	</resultMap>
+	
+	
 	<resultMap type="com.hub.root.businessM.DTO.BookPageDTO" id="bookPageDTO">
 		<id property="booking_id" column="BOOKING_ID" />
 		<result property="store_id" column="STORE_ID" />
@@ -62,6 +77,13 @@
 	<select id="businMChk" resultMap="businM">
 		SELECT store_name FROM store_info WHERE store_id = #{store_id}
 	</select>
+	<select id="businMChk2" resultMap="businM">
+		SELECT store_zip, store_add, store_add_info FROM store_info 
+			WHERE store_id = #{store_id}
+	</select>
+	<select id="businMChk3" resultMap="businM">
+		SELECT store_name FROM store_info WHERE store_id = #{store_id}
+	</select>
 	
 	
 	<update id="register">
@@ -74,9 +96,29 @@
 			WHERE store_id = #{store_id}
 	</update>
 	
-	<select id="infochk" resultMap="businM">
+	<select id="infoChk" resultMap="businM">
 		SELECT * FROM store_info WHERE store_id = #{store_id}
 	</select>	
+	
+	<select id="menuChk" resultMap="businMMenu">
+		SELECT * FROM store_menu WHERE store_id = #{store_id}
+	</select>	
+	
+	<select id="menuNum" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM store_menu WHERE store_id = #{store_id}
+	</select>
+	
+	<delete id="menuDel">
+		DELETE FROM store_menu WHERE store_id = #{store_id}
+	</delete>
+	
+	<select id="photoChk" resultMap="businMPhoto">
+		SELECT * FROM store_img WHERE store_id = #{store_id} and store_img_main = 9
+	</select>
+	
+	<select id="photoMainChk" resultType="java.lang.String">
+		SELECT store_img_root FROM store_img WHERE store_id = #{store_id} and store_img_main = 1
+	</select>
 	
 	 <!--  
 	<insert id="storeImage01">

@@ -27,15 +27,18 @@
 	<div class="white_box">
 	<h1 class="top_title">회원정보 확인하기</h1><br>
 		<div class="text_leftAlign">
-			<label>
-				가게 이름
-				<input type="text" id="store_name" name="store_name" placeholder="${storeName}">
-			</label>
-			<br>
-			<label>
-				사업자번호 &nbsp;
-				<span class="line">${storeId}</span>
-			</label>
+			<table>
+				<tr>
+					 <td><strong>가게 이름</strong></td>
+                    <td>
+                    <input type="text" id="store_name" name="store_name" 
+                    	placeholder="${storeName}"></td>
+				</tr>
+				<tr>
+				 <td><strong>사업자번호</strong></td>
+                  <td>${storeId}</td>
+				</tr>
+			</table>
 			<hr>
 		</div>
 			<div>
@@ -49,5 +52,8 @@
 	</div>
 	</form>
 </div>
+	<div class="div_footer">
+		<%@ include file="../../main/footer.jsp" %>
+	</div>
 </body>
 </html>

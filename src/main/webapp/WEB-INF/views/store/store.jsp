@@ -40,7 +40,6 @@
 			<button style="visibility: hidden;">${infoDTO.store_id}</button>
 			<img src="/root/businessM/download?img=${mainImg}">
 		</div>
-	v
 		<div class="store_name">
 		    <span style="color: gray;">${infoDTO.store_add} | </span>
 		    <span style="color: gray;">${infoDTO.store_category} </span><br>

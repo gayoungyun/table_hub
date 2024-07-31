@@ -1,8 +1,4 @@
-*{
-	user-select: none;
-}
-
-body {
+body{
 	background-color: #e8e8e8;
 }
 
@@ -49,6 +45,7 @@ body {
 }
 
 
+
 /*대표사진*/
 .mainphoto-text{
 	display: inline-block; /* 라벨 요소를 블록 수준으로 표시 */
@@ -61,7 +58,8 @@ body {
     position: relative;
     top : -4%;
 	right : 34%;
-    transform: translate(-50%, 50%);	
+    transform: translate(-50%, 50%);
+    z-index : 1000;
 }
 
 .custom-file-upload01 {
@@ -169,6 +167,27 @@ body {
     transform: translate(-50%, -50%); /* 정중앙 정렬을 위한 이동 */
     max-width: 100%; /* 너비가 넘치지 않도록 설정 */
     max-height: 100%; /* 높이가 넘치지 않도록 설정 */
+}
+
+
+.button1 {
+  position: relative;
+  float: right;
+  width: 100px;
+  height: 40px;
+  margin: 5px 10px 5px 0px;
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
+  background: #E9F1FF  ;
+  border: 1px solid #397BE6;
+  border-radius: 5px;
+  transition: all 0.2s ;
+}
+.btn1Fade:hover {
+  background: #397BE6 ;
+  color: #ffffff;
+  font-weight: bolder;
 }
 
 

@@ -110,5 +110,8 @@
 </form>
     
 </div>
+<div class="div_footer">
+		<%@ include file="../../main/footer.jsp" %>
+	</div>
 </body>
 </html>

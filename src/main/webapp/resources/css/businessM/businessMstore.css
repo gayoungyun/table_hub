@@ -1,8 +1,8 @@
-
 *{
-	user-select: none;
+	user-select : none;
 }
-body {
+
+body{
 	background-color: #e8e8e8;
 }
 
@@ -11,6 +11,17 @@ label{
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405-3@1.1/MangoDdobak-B.woff2') format('woff2');
     font-weight: 700;
     font-style: normal;
+}
+
+textarea{
+	width : 350px;
+	height : 80px;
+	resize : none;
+	padding : 10px; 
+}
+
+td:first-child {
+    vertical-align: top;
 }
 
 .header {
@@ -50,6 +61,26 @@ label{
   font-weight: bolder;
 }
 
+.button2 {
+  position: relative;
+  float: right;
+  width: 130px;
+  height: 40px;
+  margin: 5px 10px 5px 0px;
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
+  background: #E9F1FF  ;
+  border: 1px solid #397BE6;
+  border-radius: 5px;
+  transition: all 0.2s ;
+}
+.btn2Fade:hover {
+  background: #397BE6 ;
+  color: #ffffff;
+  font-weight: bolder;
+}
+
 
 .white_box{
 	width : 1000px;
@@ -76,6 +107,14 @@ label{
 	width : 500px;
 	text-align : left;
 	line-height: 3; /* 행간을 1.5로 설정 (기본 글꼴 크기의 1.5배) */
+	margin-left : 50px;
+}
+
+.text_leftAlign2 {
+	width : 600px;
+	text-align : left;
+	line-height: 3; /* 행간을 1.5로 설정 (기본 글꼴 크기의 1.5배) */
+	margin-left : 50px;
 }
 
 .top_title{
@@ -83,10 +122,34 @@ label{
 	
 }
 
+.text_leftAlign strong {
+    width : 150px;
+    color: black;
+    display: inline-block;
+}
+
+.text_leftAlign1 strong {
+    width : 150px;
+    color: black;
+    display: inline-block;
+}
+
+.text_leftAlign2 strong {
+    width : 150px;
+    color: black;
+    display: inline-block;
+}
+
+
+
+
+
 .center-box{
 	width: 1500px;
+	min-height : 550px;
 	display: flex;
  	flex-direction: column;
+ 	justify-content: center; /* 세로 방향 중앙 정렬 */
   	align-items: center;
 	margin: 150px auto;
 	
@@ -331,66 +394,32 @@ label{
 	border-botton : 1px;
 	width : 20px;
 }
+   
 
-  .timebutton {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            border: 1px solid #007bff;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .timebutton:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
-        }
-        
-        
-        
-           
-        
-        
-        
 .time-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 10px; /* 각 버튼 사이의 간격 설정 */
     margin-bottom: 20px;
+	user-select: none;
+
 }
 
-.checkbox-button {
-    position: relative;
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #C8DDFF;
-    color: black;
-    cursor: pointer;
-    border: 1px solid #397BE6;
-    border-radius: 5px;
-    text-align: center;
-}
-
-/*
-.checkbox-button input[type="checkbox"] {
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0; /* opacity를 사용하여 숨김 처리 
-}
-*/
-.checkbox-button label {
-    z-index: 1;
-    pointer-events: none;
-}
-
-	*/
-/* 체크된 상태일 때의 스타일 */
-.checkbox-button input[type="checkbox"]:checked + label {
-    background-color: #397BE6; /* 체크된 상태일 때 배경색 변경 */
-    color: red; /* 글자색 변경 */
-}
+ .checkbox-button input[type="checkbox"] {
+            display: none; /* 체크박스를 숨김 */
+        }
+        .checkbox-button label {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .checkbox-button input[type="checkbox"]:checked + label {
+            background-color: #397BE6; /* 체크된 상태의 배경색 */
+            border-color: #699BEC; /* 체크된 상태의 테두리 색상 */
+            color: #fff; /* 체크된 상태의 글자 색상 */
+        }

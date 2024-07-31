@@ -1,10 +1,11 @@
 package com.hub.root.businessM.controller;
 
 
-import java.util.List;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,15 +19,15 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.hub.root.businessM.DTO.BookPageDTO;
 import com.hub.root.businessM.DTO.businMDTO;
+import com.hub.root.businessM.DTO.businMMenuDTO;
+import com.hub.root.businessM.DTO.businMPhotoDTO;
 import com.hub.root.businessM.service.businMService;
 
 @Controller
@@ -55,9 +56,9 @@ public class businMController {
 		}
 
 		@PostMapping("register02")//첫째 페이지 정보 받고, 둘째 페이지로
-		public String register02(HttpServletRequest request,
+		public String register02(HttpServletRequest request, Model model , 
 				@RequestParam("store_name") String store_name) {
-			String result = ser.register02(request, store_name);
+			String result = ser.register02(request, model, store_name);
 			return result;
 		}
 
@@ -97,6 +98,7 @@ public class businMController {
 
 		@GetMapping("businMmenu")//사업자 마이페이지
 		public String businMmenu(HttpServletRequest request) {
+			System.out.println("보선-아이프레임은 컨트롤러가 없다구");
 			HttpSession session = request.getSession();
 		    String store_id = (String) session.getAttribute("storeId");
 			if(store_id == null) {
@@ -108,7 +110,13 @@ public class businMController {
 		}
 
 		@GetMapping("/businessM/menuInfo")//마이페이지 내 메뉴정보확인
-		public String menuInfo() {
+		public String menuInfo(HttpServletRequest request, Model model) {
+			HttpSession session = request.getSession();
+			String store_id = (String) session.getAttribute("storeId");
+
+			List<businMMenuDTO> dto =  new ArrayList<businMMenuDTO>();
+			dto = ser.menuChk(store_id);
+			model.addAttribute("Mdto", dto);
 			return "businessM/info/menuInfo";
 		}
 
@@ -118,13 +126,18 @@ public class businMController {
 			String store_id = (String) session.getAttribute("storeId");
 
 			businMDTO dto = new businMDTO();
-			dto = ser.infochk(store_id);
+			dto = ser.infoChk(store_id);
 			model.addAttribute("dto", dto);
 			return "businessM/info/storeInfo";
 		}
 
 		@GetMapping("/businessM/photoInfo")//마이페이지 내 사진정보확인
-		public String photoInfo() {
+		public String photoInfo(HttpServletRequest request, Model model) {
+			HttpSession session = request.getSession();
+			String store_id = (String) session.getAttribute("storeId");
+
+			Map<String, Object> PMap = ser.photoChk(store_id);
+			model.addAttribute("PMap", PMap);
 			return "businessM/info/photoInfo";
 		}
 
@@ -134,7 +147,12 @@ public class businMController {
 		}
 
 		@GetMapping("/businessM/menu/menuRegister")//메뉴등록화면
-		public String menuRegister() {
+		public String menuRegister(HttpServletRequest request, Model model) {
+			HttpSession session = request.getSession();
+			String store_id = (String) session.getAttribute("storeId");
+			
+			List<businMMenuDTO> dto = ser.menuChk(store_id);
+			model.addAttribute("dto", dto);
 			return "businessM/menu/menuRegister";
 		}
 		@GetMapping("/businessM/menu/menuRFinish")//메뉴등록 완료화면
@@ -162,10 +180,13 @@ public class businMController {
 	    	String result = ser.storeImage(request, file01, file02, file03, file04, file05);
 	    	return result;
 	    }
-	    @PostMapping("/businessM/menu/menuRegister")
+	    @PostMapping("/businessM/menu/menuSave")
 	    public String menuRegister(HttpServletRequest request, MultipartHttpServletRequest mul) {
 	    	System.out.println("보선-메뉴등록 컨트롤러 실행");
-	    	String result = ser.menuRegister(request, mul);
+	    	HttpSession session = request.getSession();
+		    String store_id = (String) session.getAttribute("storeId");
+	
+	    	String result = ser.menuRegisterChk(request, mul, store_id);
 	    	return result;
 	    }
 
@@ -213,7 +234,6 @@ public class businMController {
 	  		public void download(@RequestParam String img, HttpServletResponse res) throws Exception {
 	  	    	System.out.println("businMCont download 실행");
 	  	    	String originImgName = img;
-	  	    	 System.out.println("Requested image: " + img); // 추가된 로그
 
 	  			res.setContentType("text/plain; charset=utf-8");
 	  			res.addHeader("Content-disposition", "attachment;fileName="+URLEncoder.encode(img, "UTF-8"));
@@ -221,7 +241,8 @@ public class businMController {
 
 	  			// 해당 파일을 불러온다.
 	  			file = new File(ser.DOWNLOAD_FOLDER + "/" + img);
-
+	  			System.out.println("보선-파일찾기 : "+file);
+	  			System.out.println("보선-img : " + img);
 	  			// 파일이 존재한다면 해당 파일을 사용자에게 전달한다.
 	  			if(file.exists()) {
 	  				FileInputStream in = new FileInputStream(file);

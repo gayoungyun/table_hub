@@ -11,17 +11,30 @@
 <script>
 let storeAdd = '${storeAdd}';
 </script>
-<link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM/businessMstore.css?after">
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=f96a93ad7623e257e539c299c4c8fcb6&libraries=services"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f96a93ad7623e257e539c299c4c8fcb6"></script>
 <script type="text/javascript" src="${path}/resources/js/store/storeMap.js"></script>
 
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+  }
+  #map {
+    width: 900px;
+    height: 600px;
+  }
+</style>
 </head>
 <body>
-
-<h1>지도 페이지입니다</h1>
-${stoerAdd}
+<h3 style="text-align : center;">${storeAdd}</h3>
+<br>
 <div id="map"></div>
+
 </body>
 </html>
