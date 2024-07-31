@@ -7,28 +7,33 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="${path}/resources/css/storeCSS.css">
+<link rel="stylesheet" type="text/css" href="${path}/resources/css/store/storeMenu.css">
+<script src="${path}/resources/js/store/storePhoto.js"></script>
 </head>
 <body>
-<h1>메뉴 페이지입니다</h1>
 <script>
 	console.log("${dto}");
 </script>
-<c:choose>
-	<c:when test="${dto != null}">
-		<c:forEach var="item" items="${dto}">
-			카테고리 : ${item.store_menu_category} &nbsp;
-			메뉴 이름 : ${ item.store_menu_name } &nbsp;
-			가격 : ${item.store_menu_price} &nbsp;
-			사진 : <img src="/root/businessM/download?img=${ item.store_menu_img}"> &nbsp;
-			설명 : ${item.store_menu_detail}<br>
-		</c:forEach>
-	</c:when>
-	<c:otherwise>
-		등록된 메뉴가 없습니다.
-	</c:otherwise>
-
-</c:choose>
-
+  <c:choose>
+        <c:when test="${dto != null}">
+            <div class="menu-container">
+                <c:forEach var="item" items="${dto}">
+                    <div class="menu-item">
+                            <p class="menu-category">${item.store_menu_category}</p>
+                        <img src="/root/businessM/download?img=${item.store_menu_img}" alt="${item.store_menu_name}" class="menu-image">
+                        <div class="menu-details">
+                            <h2 class="menu-name">${item.store_menu_name}</h2>
+                            <p class="menu-price">${item.store_menu_price}원</p>
+                            <p class="menu-description"><strong>${item.store_menu_detail}</strong></p>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <p>등록된 메뉴가 없습니다.</p>
+        </c:otherwise>
+    </c:choose>
+<br><br>
 </body>
 </html>

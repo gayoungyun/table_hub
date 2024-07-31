@@ -260,10 +260,13 @@
         
 		<div style="display: flex; justify-content: space-between;">
 			<button type="button" class="button1 btn1Fade" onclick=" window.history.back()">이전</button>
-			<button type="submit" class="button1 btn1Fade">가게 등록<br> 완료</button>
+			<button type="submit" class="button1 btn1Fade"
+				style="width:140px">가게 등록 완료</button>
 		</div>
 	</form>
 </div>
-
+	<div class="div_footer">
+		<%@ include file="../../main/footer.jsp" %>
+	</div>
 </body>
 </html>

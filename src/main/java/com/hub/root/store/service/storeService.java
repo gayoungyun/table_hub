@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hub.root.member.dto.MemberDTO;
 import com.hub.root.store.DTO.reviewNumDTO;
 import com.hub.root.store.DTO.storeBookmarkDTO;
 import com.hub.root.store.DTO.storeInfoDTO;
@@ -28,6 +29,7 @@ public class storeService {
 	private storeReviewImgDTO reviewImgDTO;
 	private storeBookmarkDTO bookmarkDTO;
 	private reviewNumDTO numDTO;
+	private MemberDTO memDTO;
 
 	@Autowired
 	public storeService(storeMapper mapper) {
@@ -92,10 +94,17 @@ public class storeService {
 	}
 
 
-	public storeInfoDTO storeInfo(String store_id) {
+	public Map<String, Object> storeInfo(String store_id) {
 		storeInfoDTO dto = new storeInfoDTO();
 		dto = mapper.storeInfo(store_id);
-		return dto;
+		String imgPath = mapper.storeImgMain(store_id);
+		String mainImg = mainImgname(imgPath);
+		
+		Map<String, Object> infoMap = new HashMap<String, Object>();
+		infoMap.put("dto", dto);
+		infoMap.put("mainImg", mainImg);
+		
+		return infoMap;
 	}
 
 
@@ -173,35 +182,44 @@ public class storeService {
 	public List<reviewNumDTO> storeReview(String store_id){
 		List<storeReviewDTO> reviewDTO = mapper.storeReview(store_id);
 		List<storeReviewImgDTO> reviewImgDTO = mapper.reviewImage(store_id);
-		List<reviewNumDTO> numDTO = new ArrayList<>();
+		List<reviewNumDTO> numDTO = new ArrayList<reviewNumDTO>();
+		String matchID = null;
+		String memberImgPath = null;
+		String memberImg = null;
+	
+			for (storeReviewDTO reviewNum : reviewDTO) {
+			matchID = reviewNum.getMember_id();
+			memberImgPath = mapper.memberInfo(matchID);
+				if(memberImgPath == null) {
+					memberImg = "non";
+				}else {
+					memberImg = mainImgname(memberImgPath);
+				}
+			int revNum = reviewNum.getStore_review_num();
+			
+				for (storeReviewImgDTO imageNum : reviewImgDTO) {
+					int imgNum = imageNum.getStore_review_num();
+						
+						if(revNum == imgNum) {
+						    reviewNumDTO num = new reviewNumDTO();
+			                num.setStore_review_num(revNum);
+			                num.setStore_id(store_id);
+			                num.setMember_id(reviewNum.getMember_id());
+			                num.setStore_review_body(reviewNum.getStore_review_body());
+			                num.setStore_review_date_create(reviewNum.getStore_review_date_create());
+			                num.setStore_review_score(reviewNum.getStore_review_score());
+			                num.setBooking_id(reviewNum.getBooking_id());
+			                String imgPath = mainImgname(imageNum.getStore_review_img_image());
+			                num.setStore_review_img_image(imgPath);
+			                num.setMember_img(memberImg);
+			                
+			                numDTO.add(num);
+						}
 
-		for (storeReviewDTO reviewNum : reviewDTO) {
-		int revNum = reviewNum.getStore_review_num();
-
-			for (storeReviewImgDTO imageNum : reviewImgDTO) {
-				int imgNum = imageNum.getStore_review_num();
-
-					if(revNum == imgNum) {
-					    reviewNumDTO num = new reviewNumDTO();
-
-		                num.setStore_review_num(revNum);
-		                num.setStore_id(store_id);
-		                num.setMember_id(reviewNum.getMember_id());
-		                num.setStore_review_body(reviewNum.getStore_review_body());
-		                num.setStore_review_date_create(reviewNum.getStore_review_date_create());
-		                num.setStore_review_score(reviewNum.getStore_review_score());
-		                num.setBooking_id(reviewNum.getBooking_id());
-		                String imgPath = mainImgname(imageNum.getStore_review_img_image());
-		                num.setStore_review_img_image(imgPath);
-
-		                numDTO.add(num);
 					}
-			}
-		}
+				}	
 		return numDTO;
 	}
-
-
 
 
 	public  Map<String, Object> photos (String store_id) {

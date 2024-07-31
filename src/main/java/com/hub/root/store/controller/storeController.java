@@ -1,5 +1,6 @@
 package com.hub.root.store.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,9 +51,10 @@ public class storeController {
 	public String info(HttpServletRequest request, Model model
 				,@RequestParam(required=false) String store_id) {
 
-		storeInfoDTO dto = ser.storeInfo(store_id);
-		model.addAttribute("dto",dto);
-
+		Map<String, Object> infoMap = new HashMap<String, Object>();
+		infoMap = ser.storeInfo(store_id);
+		model.addAttribute("Map",infoMap);	
+		
 		return "store/info";
 	}
 

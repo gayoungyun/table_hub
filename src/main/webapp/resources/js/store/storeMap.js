@@ -58,6 +58,6 @@ function showMap(address) {
             alert('주소를 찾을 수 없습니다.');
             document.getElementById('map').style.display = 'none';
         }
-        sendHeight(1000)
+        sendHeight(700)
     });
 }

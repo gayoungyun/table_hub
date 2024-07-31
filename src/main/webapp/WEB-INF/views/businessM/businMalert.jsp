@@ -8,8 +8,11 @@
 </head>
 <body>
 <script>
-    var msg = "${msg}";
-    var url = "${url}";
+    let msg = "${msg}";
+    let url = "${url}";
+    
+    console.log(msg);
+    console.log(url);
     alert(msg);
     location.href = url;
 </script>

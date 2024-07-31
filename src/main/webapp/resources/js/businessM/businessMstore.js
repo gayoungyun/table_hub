@@ -1,3 +1,10 @@
+window.onload = function(){
+	if(storeAdd != null) {
+		showMap(storeAdd)
+	}
+		 
+}
+
 function daumPost() {
     new daum.Postcode({
         oncomplete: function(data) {
@@ -69,6 +76,12 @@ function showMap(address) {
         }
     });
 }
+
+
+function sendHeight(n) {
+		console.log("sendHeight 실행")
+		parent.postMessage({ height: n}, '*');
+    }
 
 
 function inputcheck00() {

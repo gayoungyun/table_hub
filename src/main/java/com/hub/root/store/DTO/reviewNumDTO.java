@@ -2,12 +2,19 @@ package com.hub.root.store.DTO;
 
 import java.util.Date;
 
-public class reviewNumDTO { //리뷰 테이블, 리뷰 이미지 테이블 합쳐놓은 DTO
-
-	String store_id, member_id, store_review_body, store_review_img_image;
+public class reviewNumDTO { //리뷰 , 리뷰 이미지, 멤버 인포 테이블 합쳐놓은 DTO
+	
+	String store_id, member_id, store_review_body, store_review_img_image, member_img;
 	int store_review_num, store_review_score, booking_id;
 	Date store_review_date_create;
-
+	
+	
+	public String getMember_img() {
+		return member_img;
+	}
+	public void setMember_img(String member_img) {
+		this.member_img = member_img;
+	}
 
 	public String getStore_id() {
 		return store_id;

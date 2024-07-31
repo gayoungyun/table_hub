@@ -55,6 +55,20 @@
 		<result property="member_phone" column="member_phone"/>
 	</resultMap>
 	
+	<resultMap type="com.hub.root.member.dto.MemberDTO" id="member">
+		<id property="id" column="member_id" />
+		<result property="pwd" column="member_pwd"/>
+		<result property="nick" column="member_nick"/>
+		<result property="email" column="member_email"/>
+		<result property="phone" column="member_phone"/>
+		<result property="birth" column="member_birth"/>
+		<result property="gender" column="member_gender"/>
+		<result property="img" column="member_img"/>
+		<result property="status" column="member_status"/>
+		<result property="dateCreate" column="member_date_create"/>
+		<result property="admin" column="member_admin"/>
+	</resultMap>
+	
 	
 	<select id="storeInfo" resultMap="storeInfo">
 		SELECT * FROM store_info WHERE store_id = #{store_id}
@@ -105,8 +119,11 @@
 		DELETE FROM store_bookmark 
 			WHERE store_id = #{store_id} and member_id = #{user_id}
 	</delete>
-	<select id="phone" resultType="java.lang.String">
-		select member_phone from member_info where member_id = #{user_id}
+
+	<select id="memberInfo" resultType="java.lang.String">
+		SELECT member_img FROM member_info 
+			WHERE member_id = #{matchID}
+	
 	</select>
 	
 </mapper>

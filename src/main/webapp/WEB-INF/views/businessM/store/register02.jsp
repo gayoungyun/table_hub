@@ -7,6 +7,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script>
+let storeAdd = '${dto.store_add}';
+</script>
 <link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM/businessMstore.css?after">
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=f96a93ad7623e257e539c299c4c8fcb6&libraries=services"></script>
@@ -27,38 +30,65 @@
 		</span>
 	</div>
 </div>
-
     <form action="register03" method="post" onsubmit="return inputcheck01()">
+		
 	<div class="white_box">
     <h1 class="top_title">주소 등록하기</h1><br>
     <h5>*표시 항목은 필수항목입니다</h5>
-    <div class="text_leftAlign1">
-    	<label>
-        *우편번호 
-        <input type="text" id="addr1" name="store_zip" readonly placeholder="우편번호를 검색해주세요">
-        <button type="button" onclick="daumPost()">우편번호 검색</button>
-        </label>
-        <br>
-        <label>
-        주소 
-        <input type="text" id="addr2" name="store_add" readonly placeholder="주소">
-        </label>
-        <br>
-        <label>
-        *상세주소
-        <input type="text" id="addr3" name="store_add_info" placeholder="상세주소를 입력해주세요">
-        </label>
-        </div>
-<div id="map"></div>
-        <hr>
-</div>
+    
+	<c:choose>
+		<c:when test="${dto != null }">
+	    	<div class="text_leftAlign1">
+		    	<table>
+				    <tr>
+				    	<td><strong>*우편번호 </strong></td>
+				        <td>  <input type="text" id="addr1" name="store_zip" value="${dto.store_zip }"></td>
+			        	<td><button type="button" onclick="daumPost()">우편번호 검색</button></td>
+				    </tr>
+				    <tr>
+				    	<td><strong>&nbsp;&nbsp;주&nbsp;&nbsp;소</strong></td>
+				    	<td><input type="text" id="addr2" name="store_add" value="${dto.store_add }"></td>
+				    </tr>
+			   		<tr>
+			   			<td><strong>*상세주소</strong></td>
+			   			<td><input type="text" id="addr3" name="store_add_info" value="${dto.store_add_info}"></td>
+			   		</tr>
+		   		</table>
+	        </div>
+	        <div id="map"></div>
+	        <hr>
+		</c:when>
+		
+		<c:otherwise>
+	    	<div class="text_leftAlign1">
+			<table>
+			    <tr>
+			    	<td><strong>*우편번호 </strong></td>
+			        <td>  <input type="text" id="addr1" name="store_zip" readonly placeholder="우편번호를 검색해주세요"></td>
+		        	<td><button type="button" onclick="daumPost()">우편번호 검색</button></td>
+			    </tr>
+			    <tr>
+			    	<td><strong>주소</strong></td>
+			    	<td><input type="text" id="addr2" name="store_add" readonly placeholder="주소"></td>
+			    </tr>
+		   		<tr>
+		   			<td><strong>*상세주소</strong></td>
+		   			<td><input type="text" id="addr3" name="store_add_info" placeholder="상세주소를 입력해주세요"></td>
+		   		</tr>
+	   		</table>
+	        </div>
+	        <div id="map"></div>
+	        <hr>
+		</c:otherwise>
+    </c:choose>
+		</div>
         <div style="display: flex; justify-content: space-between;">
             <button type="button" class="button1 btn1Fade" onclick="window.history.back()">이전</button>
             <button type="submit" class="button1 btn1Fade">다음</button>
         </div>
     </form>
 </div>
-
+  
 <!--  
 
 
@@ -98,5 +128,9 @@ function initMap() {
         });
 </script>
 -->
+
+	<div class="div_footer">
+		<%@ include file="../../main/footer.jsp" %>
+	</div>
 </body>
 </html>

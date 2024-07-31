@@ -7,31 +7,68 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="${path}/resources/css/storeCSS.css?after">
+<link rel="stylesheet" type="text/css" href="${path}/resources/css/store/storeInfo.css?after">
 </head>
 <body>
-<div style= text-align:center>
-	<img src="resources/img/결01.jpg" width="100px">
-	<div class="infoBox">
-		아침엔 상쾌한 브런치카페, 저녁엔 조용한 혼밥플레이스
-	</div>
-</div>
-
-	가게 이름 : ${ dto.store_name }<br>
-	사업자번호 : ${ dto.store_id }<br>
-	주소 : ${dto.store_add}<br>${dto.store_add_info}<br>
-	우편번호 : ${dto.store_zip}<br>
-	가게 종류 : ${ dto.store_category }<br>
-	이메일 : ${ dto.store_email }<br>
-	가게 전화번호 : ${ dto.store_phone }<br>
-	사장님 전화번호 : ${ dto.store_main_phone }<br>
-	예약 가능시간 : ${ dto.store_business_hours }<br>
-	편의 시설 : ${ dto.store_amenities }<br>
-	특이 사항 : ${ dto.store_note }<br>
-	소개글 : ${ dto.store_introduce }<br>
-	최대 수용 인원 : ${ dto.store_max_person }<br>
-	예약 규정 : ${ dto.store_booking_rule }<br>
-
-
+<div class="container">
+        <div class="store-header">
+            <img class="store-main-img" src="/root/businessM/download?img=${Map.mainImg}" alt="Store Image">
+            <p class="store-introduce">${ Map.dto.store_introduce }</p>
+        </div>
+        <div class="store-details">
+        
+            <table>
+                <tr>
+                    <td><strong>가게 이름</strong></td>
+                    <td>${ Map.dto.store_name }</td>
+                </tr>
+                <tr>
+                    <td><strong>가게 종류</strong></td>
+                    <td>${ Map.dto.store_category }</td>
+                </tr>
+                <tr>
+                    <td><strong>가게 전화번호</strong></td>
+                    <td>${ Map.dto.store_phone }</td>
+                </tr>
+                <tr>
+                    <td><strong>주소</strong></td>
+                    <td>${ Map.dto.store_add }${ Map.dto.store_add_info }</td>
+                </tr>
+                <tr>
+                    <td><strong>예약 가능시간</strong></td>
+                    <td>${ Map.dto.store_business_hours }</td>
+                </tr>
+                <tr>
+                    <td><strong>편의 시설</strong></td>
+                    <td>${ Map.dto.store_amenities }</td>
+                </tr>
+                <tr>
+                    <td><strong>특이 사항</strong></td>
+                    <td>${ Map.dto.store_note }</td>
+                </tr>
+                <tr>
+                    <td><strong>최대 수용 인원</strong></td>
+                    <td>${ Map.dto.store_max_person }</td>
+                </tr>
+                <tr>
+                    <td><strong>예약 규정</strong></td>
+                    <td>${ Map.dto.store_booking_rule }</td>
+                </tr>
+                <tr>
+                    <td><strong>사업자번호</strong></td>
+                    <td>${ Map.dto.store_id }</td>
+                </tr>
+                <tr>
+                    <td><strong>이메일</strong></td>
+                    <td>${ Map.dto.store_email }</td>
+                </tr>
+            </table>
+            
+            <p style="display:none;"><strong>우편번호:</strong> ${ Map.dto.store_zip }</p>
+            <p style="display:none;"><strong>사장님 전화번호:</strong> ${ Map.dto.store_main_phone }</p>
+        </div>
+    </div>
+    
+	<br>
 </body>
 </html>

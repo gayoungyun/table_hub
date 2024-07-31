@@ -1,17 +1,15 @@
 console.log("자바스크립트 가동 ");
 
-var rowIndex = 2; // 행의 인덱스 시작값 설정
-
  function addRow() {
 		console.log("행 추가 함수 가동 ");
             var table = document.getElementById("menuBody");
             var newRow = table.insertRow();
         
-            var cell00 = newRow.insertCell(0)
-            var cell01 = newRow.insertCell(1)
-            var cell02 = newRow.insertCell(2)
-            var cell03 = newRow.insertCell(3)
-            var cell04 = newRow.insertCell(4)
+            var cell00 = newRow.insertCell(0);
+            var cell01 = newRow.insertCell(1);
+            var cell02 = newRow.insertCell(2);
+            var cell03 = newRow.insertCell(3);
+            var cell04 = newRow.insertCell(4);
            
             cell00.innerHTML = '<select name="menu_category' + rowIndex + '">' +
 	                              '<option value="에피타이저">에피타이저</option>' +
@@ -31,8 +29,8 @@ var rowIndex = 2; // 행의 인덱스 시작값 설정
         
     function submitForm() {
             // 추가된 행의 수를 계산
-            var rowCount = rowIndex - 1; //document.querySelectorAll('#menuBody tr').length;
-
+            var rowCount = rowIndex; //document.querySelectorAll('#menuBody tr').length;
+			
             // hidden input을 통해 rowCount 값을 폼 데이터로 추가
             var form = document.getElementById('menuForm');
             var rowCountInput = document.createElement('input');

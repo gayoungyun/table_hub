@@ -274,7 +274,6 @@
 <body>
 	<div id="reviewContainer" class="white_box">
 		<div id="reviewTitleWrapper">
-			<h1>후기정보 확인 메뉴입니다</h1>
 			<hr>
 		</div>
 		<div id="reviewContentWrapper">
