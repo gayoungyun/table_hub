@@ -65,18 +65,18 @@ public class businMController {
 		}
 
 		@PostMapping("register03")//둘째 페이지 정보 받고, 셋째 페이지로
-		public String register03(HttpServletRequest request,
+		public String register03(HttpServletRequest request, Model model,
 				@RequestParam("store_zip") String store_zip,
 				@RequestParam("store_add") String store_add,
 				@RequestParam("store_add_info") String store_add_info) {
 			//파라미터 만드는건 입력폼의 name, 한번에 여러줄로 만들 수 없음
 
-			String result = ser.register03(request, store_zip, store_add, store_add_info);
+			String result = ser.register03(request, model, store_zip, store_add, store_add_info);
 			return result;
 		}
 
 		@PostMapping("register04")//셋째 페이지 정보 받고, 넷째 페이지로
-		public String register04(HttpServletRequest request,
+		public String register04(HttpServletRequest request, Model model,
 				@RequestParam("store_introduce") String store_introduce,
 				@RequestParam("store_category") String[] store_categoryS,
 				@RequestParam("store_amenities") String[] store_amenitiesS,
@@ -84,7 +84,7 @@ public class businMController {
 				@RequestParam("store_max_person") int store_max_person,
 				@RequestParam("store_booking_rule") String store_booking_rule) {
 
-			String result = ser.register04(request, store_introduce, store_categoryS,
+			String result = ser.register04(request, model, store_introduce, store_categoryS,
 					store_amenitiesS, store_note, store_max_person, store_booking_rule);
 			return result;
 		}
@@ -138,9 +138,8 @@ public class businMController {
 			HttpSession session = request.getSession();
 			String store_id = (String) session.getAttribute("storeId");
 
-			Map<String, Object> PMap = ser.photoChk(store_id);
-			model.addAttribute("PMap", PMap);
-			return "businessM/info/photoInfo";
+			String result = ser.photoChk(model, store_id);
+			return result;
 		}
 
 		@GetMapping("/businessM/bookInfo")//마이페이지 내 예약관리
@@ -243,9 +242,8 @@ public class businMController {
 
 	  			// 해당 파일을 불러온다.
 	  			file = new File(ser.DOWNLOAD_FOLDER + "/" + img);
-	  			System.out.println("보선-파일찾기 : "+file);
-	  			System.out.println("보선-img : " + img);
 	  			// 파일이 존재한다면 해당 파일을 사용자에게 전달한다.
+	  			
 	  			if(file.exists()) {
 	  				FileInputStream in = new FileInputStream(file);
 	  				FileCopyUtils.copy(in, res.getOutputStream());

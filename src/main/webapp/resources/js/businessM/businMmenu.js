@@ -83,7 +83,7 @@ window.addEventListener('message', function(event) {
 	console.log("event : ", event)
     const iframe = document.getElementById('myIframe');
     if (event.data.height) {
-        iframe.style.height = event.data.height + 'px';
+        document.getElementById('myIframe').height = event.data.height + 'px';
     }
 });
 

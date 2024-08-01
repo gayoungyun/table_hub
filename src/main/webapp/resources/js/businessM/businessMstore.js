@@ -70,7 +70,10 @@ function showMap(address) {
 		    // 크기를 변경한 이후에는 반드시  map.relayout 함수를 호출해야 합니다 
 		    // window의 resize 이벤트에 의한 크기변경은 map.relayout 함수가 자동으로 호출됩니다
 			  
-        } else {
+        }else if(storeZip == "") {
+        	console.log("로그를 생활화");
+        
+        }else {
             alert('주소를 찾을 수 없습니다.');
             document.getElementById('map').style.display = 'none';
         }

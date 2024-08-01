@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import com.hub.root.member.dto.MemberDTO;
 import com.hub.root.store.DTO.reviewNumDTO;
@@ -35,9 +36,46 @@ public class storeService {
 	public storeService(storeMapper mapper) {
 		this.mapper = mapper;
 	}
+	
+	public String storeChk(HttpServletRequest request, Model model,
+				String store_id){
+		HttpSession session = request.getSession();
+	    String businessM_id = (String) session.getAttribute("storeId");
+	    System.out.println("보선-세션 사업자아이디 : "+businessM_id);
+	    
+	    String result = "";
+	   
+	    if(businessM_id == null) {
+	    	System.out.println("사업자 아이디 없으므로 세부페이지 온");
+	    	return result;
+	    }else {
+	    	System.out.println("사업자 아이디 있을때");
+	    	infoDTO = mapper.storeInfo(store_id);
+	    	String mainImg = mapper.storeImgMain(store_id);
+	    	
+	    	System.out.println("보선 비교 : "+(infoDTO.getStore_zip() != null)
+	    			+"따옴표"+(infoDTO.getStore_zip() != ""));
+	    	
+	    	if(infoDTO.getStore_zip() == null) {
+	    		System.out.println("가게 등록 안됨");
+	    		result = "가게";
+	    		return result;
+		    }else if(mainImg == null){
+		    	System.out.println("대표사진 없음");
+		    	result = "대표사진";
+		    	return result;
+		    }else {
+		    	System.out.println("가게등록 되어있음");
+		    	return result;	
+		    }
+	    	
+	    }
+		
+	}
 
-	public Map<String, Object> store(HttpServletRequest request, String store_id) {
-
+	public Map<String, Object> store(HttpServletRequest request, Model model,
+			String store_id) {
+		System.out.println("스토어가 돌아가긴 해?");
 		List<String> storeImg = new ArrayList<>();
 		List<String> reviewImg = new ArrayList<>();
 		infoDTO = mapper.storeInfo(store_id);
@@ -89,20 +127,41 @@ public class storeService {
 		MainInfoMap.put("totalreview", totalreview); // Integer
 		MainInfoMap.put("scoreAvr", scoreAvr); // Integer
 		MainInfoMap.put("reviewImg", reviewImg); // List
-
+		
 		return MainInfoMap;
-	}
+	    }
+
 
 
 	public Map<String, Object> storeInfo(String store_id) {
-		storeInfoDTO dto = new storeInfoDTO();
-		dto = mapper.storeInfo(store_id);
+		System.out.println("아이디는 있어? : "+store_id);
+		Map<String, Object> infoMap = new HashMap<String, Object>();
+		
+		/*
+		storeInfoDTO infoDTO = mapper.storeInfo(store_id);
+		
+		System.out.println("보선- ??무슨일이야??? : "+ (infoDTO == null)
+				+"\n 그래서 있어 없어? : "+infoDTO);
+		if(infoDTO == null) {
+			System.out.println("그래도 이게 돌아가야 정상 아니냐고");
+		}else {
+			System.out.println("DTO는 값이 존재한다!!");
+		}
+		if(infoDTO.getStore_zip() != null) {
+			String[] businHours = infoDTO.getStore_business_hours().split("/");
+			int lastNum = businHours.length - 1;
+			String hours =  businHours[0] + " ~ " + businHours[lastNum];
+			infoDTO.setStore_business_hours(hours);
 		String imgPath = mapper.storeImgMain(store_id);
 		String mainImg = mainImgname(imgPath);
 		
-		Map<String, Object> infoMap = new HashMap<String, Object>();
-		infoMap.put("dto", dto);
+		infoMap.put("dto", infoDTO);
 		infoMap.put("mainImg", mainImg);
+		
+		}else {
+			infoMap = null;
+		}
+		*/
 		
 		return infoMap;
 	}
@@ -275,6 +334,7 @@ public class storeService {
 	public String statefix(String store_add) {
 
 	    String[] parts = store_add.split(" ");
+	    System.out.println("보선-주소가 어떻게 되나요 : "+ parts);
 	    String state = parts[1];// 서울 가나다 > 가나다 할당 (인덱스 1번에 해당하는 문장)
 	    String stateFix = state.substring(0, 2); // 가나다 > 가나 만 할당 (인덱스 0번부터 1번까지)
 	    /* 안전한 변환을 위해 체크를 해서 할당하는 방식도 있으나 주소가 일관되게 들어오므로 체크없이 할당함

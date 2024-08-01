@@ -13,8 +13,14 @@
 	
 	<c:choose>
 		<c:when test="${Mdto == null}">
+		<div class="center-box2">
+		<img src="/root/businessM/download?img=../BoSeon/보정/메뉴정보.png" width="350px">
+		<br><br>
+			<b>등록된 메뉴가 없습니다</b>
+		<br><br><br>
 			<button type="button" class="button1 btn1Fade"
 				onclick="parent.changeParentUrl('http://localhost:8080/root/businessM/menu/menuRegister')">메뉴 등록하기</button>
+		</div>
 		</c:when>
 		<c:otherwise>
 				<table class="menu-form" id="menuTable" border="1">
@@ -33,16 +39,20 @@
 	                	<td>${item.store_menu_category}</td>
 	                    <td>${item.store_menu_name}</td>
 	                    <td>${item.store_menu_price}</td>
-	                    <td><img src="/root/businessM/download?img=${item.store_menu_img}"></td>
+	                    <td><img src="/root/businessM/download?img=${item.store_menu_img}"
+	                    	style="width:100px;"></td>
 	                    <td>${item.store_menu_detail}</td>
 	                </tr>
 	          	 </tbody>
 			</c:forEach>		
 	           </table>
+	           <div class="center-box2">
 		<button type="button" class="button1 btn1Fade"
 			onclick="parent.changeParentUrl('http://localhost:8080/root/businessM/menu/menuRegister')">메뉴 수정하기</button>
+		</div>
+		<br>
 		</c:otherwise>
 		</c:choose>
-
+<br>
 </body>
 </html>

@@ -39,18 +39,33 @@ public class storeController {
 	public String store(HttpServletRequest request, Model model,
 			@RequestParam(required=false) String store_id) {
 
-			Map<String, Object> Map = ser.store(request, store_id);
-			model.addAttribute("store_id", store_id);
+			String result = ser.storeChk(request, model, store_id);
+			System.out.println("result가 뭐야? : "+result);
+			if(result == "가게") {
+				request.setAttribute("msg", "등록된 가게가 없습니다");
+		        request.setAttribute("url", "register01");
 
-			model.addAllAttributes(Map);
-			return "store/store";
+		        return "businessM/businMalert";
+		    }else if (result == "대표사진"){ 
+		    	request.setAttribute("msg", "대표사진을 등록해주세요");
+		    	request.setAttribute("url", "businessM/photo/photoRegister");
+		    	
+		    	return "businessM/businMalert";
+		        	
+			}else {
+				Map<String, Object> MainInfoMap = ser.store(request, model, store_id);
+				model.addAttribute("store_id", store_id);
+				model.addAttribute("Map",MainInfoMap);
+				return "store/store";
+			}
+			
 	}
 
 
 	@GetMapping("/store/info")
 	public String info(HttpServletRequest request, Model model
 				,@RequestParam(required=false) String store_id) {
-
+		System.out.println("!!!!스토어 인포입니다!!!!");
 		Map<String, Object> infoMap = new HashMap<String, Object>();
 		infoMap = ser.storeInfo(store_id);
 		model.addAttribute("Map",infoMap);	

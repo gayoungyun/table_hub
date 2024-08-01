@@ -9,6 +9,8 @@
 <title>Insert title here</title>
 <script>
 let storeAdd = '${dto.store_add}';
+let storeZip = '${dto.store_zip}';
+console.log("우편번호? : ",storeZip == null,"\n 쌍따옴표 : ",storeZip == "");
 </script>
 <link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM/businessMstore.css?after">
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -37,8 +39,29 @@ let storeAdd = '${dto.store_add}';
     <h5>*표시 항목은 필수항목입니다</h5>
     
 	<c:choose>
-		<c:when test="${dto != null }">
-	    	<div class="text_leftAlign1">
+		<c:when test="${dto.store_zip == null }">
+	    		<div class="text_leftAlign1">
+			<table>
+			    <tr>
+			    	<td><strong>*우편번호 </strong></td>
+			        <td>  <input type="text" id="addr1" name="store_zip" readonly placeholder="우편번호를 검색해주세요"></td>
+		        	<td><button type="button" onclick="daumPost()">우편번호 검색</button></td>
+			    </tr>
+			    <tr>
+			    	<td><strong>&nbsp;&nbsp;주&nbsp;&nbsp;소</strong></td>
+			    	<td><input type="text" id="addr2" name="store_add" readonly placeholder="주소"></td>
+			    </tr>
+		   		<tr>
+		   			<td><strong>*상세주소</strong></td>
+		   			<td><input type="text" id="addr3" name="store_add_info" placeholder="상세주소를 입력해주세요"></td>
+		   		</tr>
+	   		</table>
+	        </div>
+	        <div id="map"></div>
+	        <hr>
+		</c:when>
+		<c:otherwise>
+		<div class="text_leftAlign1">
 		    	<table>
 				    <tr>
 				    	<td><strong>*우편번호 </strong></td>
@@ -54,28 +77,6 @@ let storeAdd = '${dto.store_add}';
 			   			<td><input type="text" id="addr3" name="store_add_info" value="${dto.store_add_info}"></td>
 			   		</tr>
 		   		</table>
-	        </div>
-	        <div id="map"></div>
-	        <hr>
-		</c:when>
-		
-		<c:otherwise>
-	    	<div class="text_leftAlign1">
-			<table>
-			    <tr>
-			    	<td><strong>*우편번호 </strong></td>
-			        <td>  <input type="text" id="addr1" name="store_zip" readonly placeholder="우편번호를 검색해주세요"></td>
-		        	<td><button type="button" onclick="daumPost()">우편번호 검색</button></td>
-			    </tr>
-			    <tr>
-			    	<td><strong>주소</strong></td>
-			    	<td><input type="text" id="addr2" name="store_add" readonly placeholder="주소"></td>
-			    </tr>
-		   		<tr>
-		   			<td><strong>*상세주소</strong></td>
-		   			<td><input type="text" id="addr3" name="store_add_info" placeholder="상세주소를 입력해주세요"></td>
-		   		</tr>
-	   		</table>
 	        </div>
 	        <div id="map"></div>
 	        <hr>

@@ -6,12 +6,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -84,7 +86,7 @@ public class businMService {
 		}
 		
 		businMDTO dto = mapper.businMChk2(store_id);
-		if(!dto.getStore_zip().isEmpty()) {
+		if(dto.getStore_zip() != null) {
 			model.addAttribute("dto", dto);
 			return "businessM/store/register02";
 		}else {
@@ -92,17 +94,58 @@ public class businMService {
 		}	
 	}
 
-	public String register03(HttpServletRequest request, String store_zip,
+	public String register03(HttpServletRequest request, Model model, String store_zip,
 								String store_add, String store_add_info) {
+		
 		HttpSession session = request.getSession();
 		session.setAttribute("store_zip", store_zip);
 		session.setAttribute("store_add", store_add);
 		session.setAttribute("store_add_info", store_add_info);
 
-		return "businessM/store/register03";
+		String store_id = (String) session.getAttribute("storeId");
+		String storeName = businMChk(store_id);
+		
+		businMDTO dto = mapper.businMChk2(store_id);
+		if(dto.getStore_zip() != null) {
+		
+		    String storeCategory = dto.getStore_category();
+		    String otherCategory = "";
+		    	
+		    if (storeCategory != null) {
+		        String[] categories = storeCategory.split("/");
+		        List<String> categoryList = Arrays.asList(categories);
+		        otherCategory = categoryList.stream()
+                  .filter(cat -> !cat.equals("한식") && !cat.equals("양식") 
+                		  && !cat.equals("중식") && !cat.equals("일식")
+                		  && !cat.equals("뷔페") && !cat.equals("카페")
+                		  && !cat.equals("디저트"))
+                  .collect(Collectors.joining(", "));
+		    }
+		    
+		    String storeAmenities = dto.getStore_amenities();
+		    String otherAmenities = "";
+		    
+		    if (storeAmenities != null) {
+		    	String[] amenities = storeAmenities.split("/");
+		    	List<String> amenitiesList = Arrays.asList(amenities);
+		    	otherAmenities = amenitiesList.stream()
+		    			.filter(cat -> !cat.equals("포장") && !cat.equals("주차") 
+		    					&& !cat.equals("화장실") && !cat.equals("인터넷")
+		    					&& !cat.equals("아기의자") && !cat.equals("장애인")
+		    					&& !cat.equals("수유방") && !cat.equals("놀이시설"))
+		    			.collect(Collectors.joining(", "));
+		    }
+	
+			model.addAttribute("dto", dto);
+			model.addAttribute("otherCategory",otherCategory);
+			model.addAttribute("otherAmenities",otherAmenities);
+			return "businessM/store/register03";
+		}else {
+			return "businessM/store/register03";
+		}	
 	}
 
-	public String register04(HttpServletRequest request, String store_introduce,
+	public String register04(HttpServletRequest request, Model model, String store_introduce,
 								String[] store_categoryS, String[] store_amenitiesS, String store_note,
 								int store_max_person, String store_booking_rule) {
 		HttpSession session = request.getSession();
@@ -116,7 +159,15 @@ public class businMService {
 		session.setAttribute("store_max_person", store_max_person);
 		session.setAttribute("store_booking_rule", store_booking_rule);
 
-		return "businessM/store/register04";
+		String store_id = (String) session.getAttribute("storeId");
+		
+		businMDTO dto = mapper.businMChk2(store_id);
+		if(dto.getStore_zip() != null) {
+			model.addAttribute("dto", dto);
+			return "businessM/store/register04";
+		}else {
+			return "businessM/store/register04";
+		}	
 	}
 
 	public String registerFinish(businMDTO dto, HttpServletRequest request,
@@ -202,6 +253,12 @@ public class businMService {
 		businMDTO dto = new businMDTO();
 		try {
 			dto = mapper.infoChk(store_id);
+			if(dto != null) {
+				String[] businHours = dto.getStore_business_hours().split("/");
+				int lastNum = businHours.length - 1;
+				String hours =  businHours[0] + " ~ " + businHours[lastNum];
+				dto.setStore_business_hours(hours);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -215,11 +272,12 @@ public class businMService {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			if(dto != null) {
-				for(int i=0 ; dto.size() < i ; i++) {
+			if(!dto.isEmpty()) {
+				for(int i=0 ; dto.size() > i ; i++) {
 					String menuImgPath = null;
 					menuImgPath = saveFileAndGetPath_Menu(dto.get(i).getStore_menu_img());
 					dto.get(i).setStore_menu_img(menuImgPath);
+					System.out.println("보선-메뉴에 사진 안나온다 : "+dto.get(i).getStore_menu_img());
 				}
 			}else {
 				dto = null;
@@ -227,11 +285,22 @@ public class businMService {
 			return dto;
 	}
 	
-	public Map<String, Object> photoChk(String store_id){
+	public String photoChk(Model model, String store_id){
+		
 		List<businMPhotoDTO> dto = new ArrayList<businMPhotoDTO>();
-		dto = mapper.photoChk(store_id);
+		Map<String, Object> PMap = new HashMap<String, Object>();
+		
 		String storeMainImage = mapper.photoMainChk(store_id);
-		storeMainImage = saveFileAndGetPath_Menu(storeMainImage);
+		if(storeMainImage != null) {
+			storeMainImage = saveFileAndGetPath_Menu(storeMainImage);	
+		}else {
+			storeMainImage = null;
+			PMap = null;
+			model.addAttribute("PMap", PMap);
+			return "businessM/info/photoInfo";
+		}
+		
+		dto = mapper.photoChk(store_id);
 		if(!dto.isEmpty()) {
 			String imgPath = null;
 			for(int i=0 ; dto.size() > i ; i++) {
@@ -242,13 +311,11 @@ public class businMService {
 			dto = null;
 		}
 		
-		Map<String, Object> PMap = new HashMap<String, Object>();
 		PMap.put("dto", dto);
 		PMap.put("storeMainImage", storeMainImage);
+		model.addAttribute("PMap", PMap);
 		
-		return PMap;
-		
-		
+		return "businessM/info/photoInfo";
 	}
 
 	
@@ -273,14 +340,21 @@ public class businMService {
 	            if (!Files.exists(Paths.get(UPLOAD_FOLDER))) {
 	                Files.createDirectories(Paths.get(UPLOAD_FOLDER));
 	            }
-
+	        
+	        String file01Path=null, file02Path=null, file03Path=null, file04Path=null, file05Path=null;
             // 각 파일을 업로드 폴더에 저장
-            String file01Path = saveFileAndGetPath(file01);
-            String file02Path = saveFileAndGetPath(file02);
-            String file03Path = saveFileAndGetPath(file03);
-            String file04Path = saveFileAndGetPath(file04);
-            String file05Path = saveFileAndGetPath(file05);
-
+	        if(!file01.isEmpty()) {
+	        	file01Path = saveFileAndGetPath(file01);
+	        }if(!file02.isEmpty()) {
+	        	file02Path = saveFileAndGetPath(file02);
+	        }if(!file03.isEmpty()) {
+	        	file03Path = saveFileAndGetPath(file03);
+		   	}if(!file04.isEmpty()) {
+	        	file04Path = saveFileAndGetPath(file04);
+			}if(!file05.isEmpty()) {
+	        	file05Path = saveFileAndGetPath(file05);
+			}
+			
             System.out.println("보선-값이 들어온 사진은? : \n 01 : "+file01Path+"\n 02 : "+file02Path+"\n 03 : "+file03Path
             					+"\n 04 : "+file04Path+"\n 05 : "+file05Path);
 
@@ -288,7 +362,12 @@ public class businMService {
             String store_id = (String) session.getAttribute("storeId");
             System.out.println("보선-세션 아이디 store_id 확인 : "+store_id);
 
-
+            int result02 = mapper.storeImageDelete(store_id);
+            if(result02>0) {
+            	System.out.println("기존 이미지 삭제");
+            }else {
+            	System.out.println("기존 이미지 없음");
+            }
 
 
             String[] arr = {file01Path, file02Path, file03Path, file04Path, file05Path};
@@ -311,49 +390,6 @@ public class businMService {
                 System.out.println("보선- Key: " + key + ", Value: " + value);
             }
 
-
-
-           // int result01 = mapper.storeImage01(param);
-            /*
-            // 배열 순회하면서 null이 아닌 경우에만 리스트에 추가
-            if (FilePaths.size() > 0 && FilePaths.get(0) != null && !FilePaths.get(0).isEmpty())
-                System.out.println("보선-경로 배열 확인 2번 : " + FilePaths.get(0)); // file02Path
-            if (FilePaths.size() > 1 && FilePaths.get(1) != null && !FilePaths.get(1).isEmpty())
-                System.out.println("보선-경로 배열 확인 3번 : " + FilePaths.get(1)); // file03Path
-            if (FilePaths.size() > 2 && FilePaths.get(2) != null && !FilePaths.get(2).isEmpty())
-                System.out.println("보선-경로 배열 확인 4번 : " + FilePaths.get(2)); // file04Path
-            if (FilePaths.size() > 3 && FilePaths.get(3) != null && !FilePaths.get(3).isEmpty())
-                System.out.println("보선-경로 배열 확인 5번 : " + FilePaths.get(3)); // file05Path
-
-
-
-            int result01 = mapper.storeImage01(file01Path, store_id);
-
-            int result02=0, result=0;
-            if(file02Path != null) {
-            	String filePath = file02Path;
-            	result02 = mapper.storeImage09(filePath, store_id);
-            }
-            if(file03Path != null) {
-            	String filePath = file03Path;
-            	result = mapper.storeImage09(filePath, store_id);
-            	result02 += result;
-            }
-            if(file04Path != null) {
-            	String filePath = file04Path;
-            	result = mapper.storeImage09(filePath, store_id);
-            	result02 += result;
-            }
-            if(file05Path != null) {
-            	String filePath = file05Path;
-            	result = mapper.storeImage09(filePath, store_id);
-            	result02 += result;
-            }
-            System.out.println("보선-메인 사진이 등록되었나? : "+result01);
-            System.out.println("보선-메인 사진 외 추가 사진 갯수 : "+result02);
-            */
-
-
             int result01 = mapper.storeImage01(param);
 
             System.out.println("보선-사진이 행 추가? : "+result01);
@@ -373,7 +409,6 @@ public class businMService {
 
 	// 파일을 저장하는 메서드
 	private String saveFileAndGetPath(MultipartFile file) throws IOException {
-		System.out.println("보선-메뉴등록 사진은? : "+file);
 		if (file != null) {
 	        byte[] bytes = file.getBytes();
 	        /* 파일을 바이트 배열로 변환하는 이유는 파일을 읽거나 다루기 쉽게 하기 위함입니다.
@@ -388,7 +423,6 @@ public class businMService {
 	}
 	
 	   public static String saveFileAndGetPath_Menu(String mainImg) {
-		   System.out.println("보선-이미지 경로 자르기?");
 	    	String[] parts = mainImg.split("\\\\");
 	        String splitImgPath = parts[parts.length - 1];
 	        // 분할한 파일경로의 마지막이 파일 이름이므로 배열의 마지막요소 할당
@@ -450,7 +484,6 @@ public class businMService {
 	        String file;
 	       
 	            if (priceStr != null && !priceStr.trim().isEmpty()) {
-	            	System.out.println("보선-메뉴가격 값은? : "+priceStr);
 	                price = Integer.parseInt(priceStr.trim());
 	            } else {
 	                System.out.println("Invalid price value: " + priceStr);

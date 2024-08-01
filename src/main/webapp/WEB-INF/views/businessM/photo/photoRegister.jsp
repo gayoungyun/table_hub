@@ -10,7 +10,7 @@
 <link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM/businMphoto.css?after">
 <script src="${path}/resources/js/businessM/businMphoto.js"></script>
 </head>
-<body>
+<body style="background:#e8e8e8;">
 <header class="header">
 <%@ include file="../../main/header.jsp" %>
 </header>

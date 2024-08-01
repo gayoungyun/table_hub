@@ -11,6 +11,16 @@
 </head>
 <body>
 <div class="container">
+<c:choose>
+<c:when test="${Map == null }">
+<div class="center-box">
+		<img src="/root/businessM/download?img=../BoSeon/보정/가게정보.png" width="350px">
+		<br><br>
+			<b>등록된 가게가 없습니다</b>
+		<br><br><br>
+		</div>
+</c:when>
+<c:otherwise>
         <div class="store-header">
             <img class="store-main-img" src="/root/businessM/download?img=${Map.mainImg}" alt="Store Image">
             <p class="store-introduce">${ Map.dto.store_introduce }</p>
@@ -67,6 +77,8 @@
             <p style="display:none;"><strong>우편번호:</strong> ${ Map.dto.store_zip }</p>
             <p style="display:none;"><strong>사장님 전화번호:</strong> ${ Map.dto.store_main_phone }</p>
         </div>
+    </c:otherwise>
+</c:choose>
     </div>
     
 	<br>

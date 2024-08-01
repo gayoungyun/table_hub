@@ -18,8 +18,14 @@ window.onload = function() {
 <body>
 	<c:choose>
 		<c:when test="${dto.store_zip == null}">
+		<div class="center-box">
+		<img src="/root/businessM/download?img=../BoSeon/보정/가게정보.png" width="350px">
+		<br><br>
+			<b>등록된 가게가 없습니다</b>
+		<br><br><br>
 			<button type="button" class="button1 btn1Fade" 
-				onclick="parent.changeParentUrl('http://localhost:8080/root/register01')">가게 등록하러 가기</button>
+				onclick="parent.changeParentUrl('http://localhost:8080/root/register01')">가게 등록하기</button>
+		</div>
 		</c:when>
 		<c:otherwise>
 		<div class="container">
@@ -83,8 +89,11 @@ window.onload = function() {
                     <td>${ dto.store_email }</td>
                 </tr>
             </table>
+            <div class="center-box">
 			<button type="button" class="button1 btn1Fade"
 				onclick="parent.changeParentUrl('http://localhost:8080/root/register01')">가게 정보 수정하기 </button><br>
+       		</div>
+       		<br>
         </div>
     </div>
 		</c:otherwise>

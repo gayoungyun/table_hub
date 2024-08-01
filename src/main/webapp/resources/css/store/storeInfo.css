@@ -22,6 +22,16 @@ td{
 	color : black;
 }
 
+.center-box{
+	display: flex;
+ 	flex-direction: column;
+ 	justify-content: center;
+  	align-items: center;
+  	padding : 80px;
+	
+}
+
+
 /* Header section with image and stoSre name */
 .store-header {
 	width : 500px;

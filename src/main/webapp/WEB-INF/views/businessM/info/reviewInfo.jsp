@@ -54,91 +54,121 @@
 						viewCont	// 한 페이지에 표시될 리뷰 갯수 (6개)
 				*/
 
-				console.log("data : ", data);
-				
-				totalReview = data.totalReview;
-				totalPage = data.totalPage;
-				count = data.list.length;
-				
-				// forEach 실행
-				data.list.forEach(function (result) {
+				console.log("비교 : " , data != null)
+				console.log("비교 : " , data == null)
+					console.log("data : ", data);
+				console.log("test11111: " , data.list.length)
+				if (data.list.length != 0) {
 					
-					// 불러온 데이터에서 다른db를 참조하는 다른 값들 불러오기
-					$.ajax({
-						url : "/root/businessM/reviewDetail",
-						type : "get",
-						data : {
-							memId : result.memberId,
-							reviewNum : result.storeReviewNum
-						},
-						async : false,
-						contentType : "application/json; charset=utf-8",
-						dataType : "json",
-						success : function ( result1 ) {
-							
-							// reviewContent div start
-							html += `<div class="reviewContent">`
-							
-								// reviewLeft div start
-								html += `<div class="reviewLeft">`
-									
-									// reviewLeftTop div start
-									// 리뷰어 이미지, 닉네임 표시 구역
-									html += `<div class="reviewLeftTop">`
-										html += `<img class="reviewerImg" alt="" src="/root/member/myPage/download?img=` + result.memberId + `_` + result1.MEMBER_IMG + `">`
-									
-										// reviewerNick div start
-										html += `<div class="reviewerNick">`
-											html += result1.MEMBER_NICK
-											html += `<label class="reviewNum">` + result.storeReviewNum + `</label>`
-										
-										// reviewerNick div end
-										html += `</div>`
+					totalReview = data.totalReview;
+					totalPage = data.totalPage;
+					count = data.list.length;
+					
+					// forEach 실행
+					data.list.forEach(function (result) {
 						
-									// reviewLeftTop div end
-									html += `</div>`
+						// 불러온 데이터에서 다른db를 참조하는 다른 값들 불러오기
+						$.ajax({
+							url : "/root/businessM/reviewDetail",
+							type : "get",
+							data : {
+								memId : result.memberId,
+								reviewNum : result.storeReviewNum
+							},
+							async : false,
+							contentType : "application/json; charset=utf-8",
+							dataType : "json",
+							success : function ( result1 ) {
 								
-									// reviewLeftBottom div start
-									// 리뷰 내용 표시 구역
-									html += `<div class="reviewLeftBottom">`
-// 										html += `<label class="reviewText" title="` + result.storeReviewBody + `">`
-										html += `<label class="reviewText" title="asdfasdf">`
-											html += result.storeReviewBody
-										html += `</label>`
-									
-									// reviewLeftBottom div end
-									html += `</div>`
+								// reviewContent div start
+								html += `<div class="reviewContent">`
+								
+									// reviewLeft div start
+									html += `<div class="reviewLeft">`
 										
-								// reviewLeft div end
-								html += `</div>`
-								
-								// reviewRight div start
-								// 리뷰 이미지 표시 구역
-								html += `<div class="reviewRight">`
-									html += `<img class="reviewImg" alt="" src="/root/businessM/download?img=` + result1.STORE_REVIEW_IMG_IMAGE + `">`
-								
-								// reviewRight div end
-								html += `</div>`
-								
-								//reviewDelete div start
-								html += `<div class="reviewDelete">`
-									html += `<label class="reviewDeleteBtn" onclick="reviewDeleteOne(`+result.storeReviewNum+`)">X</label>`
-								html += `</div>`
-				
-							// reviewContent div end
-							html += `</div>`
+										// reviewLeftTop div start
+										// 리뷰어 이미지, 닉네임 표시 구역
+										html += `<div class="reviewLeftTop">`
+											html += `<img class="reviewerImg" alt="" src="/root/member/myPage/download?img=` + result.memberId + `_` + result1.MEMBER_IMG + `">`
+										
+											// reviewerNick div start
+											html += `<div class="reviewerNick">`
+												html += result1.MEMBER_NICK
+												html += `<label class="reviewNum">` + result.storeReviewNum + `</label>`
+											
+											// reviewerNick div end
+											html += `</div>`
 							
-							html += `<hr>`
-							
-							
-						}, // ajax success end
-						error : function ( error ) {
-							console.log("error : ", error)
-						}
-					}) // ajax end
+										// reviewLeftTop div end
+										html += `</div>`
+									
+										// reviewLeftBottom div start
+										// 리뷰 내용 표시 구역
+										html += `<div class="reviewLeftBottom">`
+	// 										html += `<label class="reviewText" title="` + result.storeReviewBody + `">`
+											html += `<label class="reviewText" title="asdfasdf">`
+												html += result.storeReviewBody
+											html += `</label>`
+										
+										// reviewLeftBottom div end
+										html += `</div>`
+											
+									// reviewLeft div end
+									html += `</div>`
+									
+									// reviewRight div start
+									// 리뷰 이미지 표시 구역
+									html += `<div class="reviewRight">`
+										html += `<img class="reviewImg" alt="" src="/root/businessM/download?img=` + result1.STORE_REVIEW_IMG_IMAGE + `">`
+									
+									// reviewRight div end
+									html += `</div>`
+									
+									//reviewDelete div start
+									html += `<div class="reviewDelete">`
+										html += `<label class="reviewDeleteBtn" onclick="reviewDeleteOne(`+result.storeReviewNum+`)">X</label>`
+									html += `</div>`
 					
-				// forEach 실행 종료
-				})
+								// reviewContent div end
+								html += `</div>`
+								
+								html += `<hr>`
+									
+								// iframe 높이 조절을 위한 코드, 컨텐츠 수량에 맞춰서 늘어난다.
+								height = ((count * 138) + 200);
+								console.log("height : ", height)
+								sendHeight();
+								
+								reviews = [];
+								
+								
+							}, // ajax success end
+							error : function ( error ) {
+								console.log("error : ", error)
+							}
+						}) // ajax end
+						
+					// forEach 실행 종료
+					})
+				// if 문 종료
+				} else {
+					console.log("test")
+					html += `<div class="center-box">`
+					html += `<img src="/root/businessM/download?img=../BoSeon/보정/리뷰정보.png" width="350px">`
+					html += `<br><br>`
+					html += `<b>등록된 리뷰가 없습니다</b>`
+					html += `<br><br><br>`
+					html += `</div>`
+					
+					$("#reviewContainer").html(html);
+					
+					height = 700;
+					sendHeight();
+					
+				}
+				
+				
+				
 			},
 			error : function ( error ) {
 				console.log("error : ", error)
@@ -201,13 +231,6 @@
 			console.log("pageTest : ", Math.floor((currentPage-1) / 10) + (currentPage % 10))
 			console.log("test1 : ", (currentPage-1) % 10)
 			$(".reviewPage").eq((currentPage-1) % 10).css("color", "blue")
-			
-			// iframe 높이 조절을 위한 코드, 컨텐츠 수량에 맞춰서 늘어난다.
-			height = ((count * 138) + 200);
-			console.log("height : ", height)
-			sendHeight();
-			
-			reviews = [];
 		})
 		
 	} // getReview function end

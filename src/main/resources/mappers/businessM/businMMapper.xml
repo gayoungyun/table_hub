@@ -77,12 +77,9 @@
 	<select id="businMChk" resultMap="businM">
 		SELECT store_name FROM store_info WHERE store_id = #{store_id}
 	</select>
+	
 	<select id="businMChk2" resultMap="businM">
-		SELECT store_zip, store_add, store_add_info FROM store_info 
-			WHERE store_id = #{store_id}
-	</select>
-	<select id="businMChk3" resultMap="businM">
-		SELECT store_name FROM store_info WHERE store_id = #{store_id}
+		SELECT * FROM store_info WHERE store_id = #{store_id}
 	</select>
 	
 	
@@ -110,6 +107,10 @@
 	
 	<delete id="menuDel">
 		DELETE FROM store_menu WHERE store_id = #{store_id}
+	</delete>
+	
+	<delete id="storeImageDelete">
+		DELETE FROM store_img WHERE store_id = #{store_id}
 	</delete>
 	
 	<select id="photoChk" resultMap="businMPhoto">
