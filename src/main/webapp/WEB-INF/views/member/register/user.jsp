@@ -132,7 +132,7 @@
 		console.log("email : " , '${email}')
 		if('${email}' == "") {
 			alert("잘못된 접근입니다. \n이메일 인증을 다시 진행해주세요")
-			location.href="login"
+			location.href="/root/member/login"
 		} else {
 			console.log("이메일 있음")
 		}
@@ -147,11 +147,25 @@
 		idChk = () => {
 			inputId = $("#inputId").val();
 			let form = {id : inputId};
-			if (inputId.length < 3) {
+			
+			const regex = /[^a-zA-Z0-9]/;
+			
+			// 영문 소,대문자 숫자를 제외한 나머지 문자가 들어가 있을 경우
+			if (regex.test(inputId)) {
+				$("#idInfoMsg").html("영문자 및 숫자만 입력할 수 있습니다.")
+				$("#idInfoMsg").css("color", "#ff6868")
+				idPass = false;
+			} else if (inputId.length < 3) {
 				$("#idInfoMsg").html("3자 이상 입력해주세요")
 				$("#idInfoMsg").css("color", "#ff6868")
 				idPass = false;
-			} else {
+			} else if (inputId.length > 20) {
+				$("#inputId").val($("#inputId").val().substring(0, 20));
+				$("#idInfoMsg").html("20자 이내로 입력해주세요")
+				$("#idInfoMsg").css("color", "#ff6868")
+				idPass = false;
+			} 
+			else {
 				console.log("inputId : ", inputId)
 				$.ajax({
 					url : "idChk",

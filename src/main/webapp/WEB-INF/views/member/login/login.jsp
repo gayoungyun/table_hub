@@ -98,6 +98,20 @@
 		
 		
 		
+		//이메일 입력시 엔터키 누르면 메일 전송
+		document.getElementById("emailLocal").addEventListener('keydown', function (event) {
+			if (event.key === 'Enter') {
+				sendMail();
+			}
+		})
+		document.getElementById("storeEmailLocal").addEventListener('keydown', function (event) {
+			if (event.key === 'Enter') {
+				sendMail();
+			}
+		})
+		
+		
+		
 	}); // dom loaded end
 	
 	
@@ -138,10 +152,12 @@
 		}
 	}
 	
+
+	
 	function sendMail() {
 		let local = $("#emailLocal").val();
 		$("#codeSendBtn").prop("disabled", true);
-		var koreanPattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+		const regex = /[^a-zA-Z0-9]/;
 		
 		// 이메일 주소를 입력하지 않고 버튼을 클릭할 경우
 		if (local == "") {
@@ -149,13 +165,11 @@
 			$("#emailInfoMsg").css("color", "#ff6868")
 			$("#emailLocal").focus();
 			$("#codeSendBtn").prop("disabled", false);
-			
-		// 이메일 주소에 한글이 포함되어있을 경우 메세지 표시
-		} else if (koreanPattern.test(local)) {
-			$("#emailInfoMsg").html( "한글은 입력할 수 없습니다." );
+		// 이메일 주소에 특수문자가 포함되어있을 경우 메세지 표시
+		} else if (regex.test(local)) {
+			$("#emailInfoMsg").html( "영문자 또는 숫자만 입력할 수 있습니다." );
 			$("#emailInfoMsg").css("color", "#ff6868")
 			$("#codeSendBtn").prop("disabled", false);
-			
 		// 이메일 주소가 20자 이상 넘어갈경우 메세지 표시
 		} else if (local.length > 20) {
 			$("#emailInfoMsg").html( "이메일주소의 길이는 20를 초과할 수 없습니다." );
@@ -378,16 +392,18 @@
 			let domain = $("#storeEmailDomain").val();
 			$("#storeCodeSendBtn").prop("disabled", true);
 			var koreanPattern = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+			const regex = /[^a-zA-Z0-9]/;
 			
+			console.log("test")
 			// 입력된 이메일 내용이 없을경우 if문 실행
 			if (local == "") {
 				$("#storeEmailInfoMsg").html("이메일 주소를 입력해주세요");
 				$("#storeEmailInfoMsg").css("color", "#ff6868")
 				$("#storeEmailLocal").focus();
 				$("#storeCodeSendBtn").prop("disabled", false);
-			// 이메일 주소에 한글을 입력했을 경우 실행되는 코드
-			} else if (koreanPattern.test(local)) { 
-				$("#storeEmailInfoMsg").html( "한글은 입력할 수 없습니다." );
+			// 이메일 주소에 영문자 및 숫자를 제외하고 다른 기호를 입력했을 경우 실행되는 코드
+			} else if (regex.test(local)) {
+				$("#storeEmailInfoMsg").html("영문자 또는 숫자만 입력할 수 있습니다.");
 				$("#storeEmailInfoMsg").css("color", "#ff6868")
 				$("#storeCodeSendBtn").prop("disabled", false);
 			// 이메일 주소가 일정 길이 이상일 경우 실행되는 코드
@@ -395,8 +411,7 @@
 				$("#storeEmailInfoMsg").html( "이메일은 20자 이상 입력할 수 없습니다." );
 				$("#storeEmailInfoMsg").css("color", "#ff6868")
 				$("#storeCodeSendBtn").prop("disabled", false);
-			}
-				else {
+			} else {
 				$("#storeEmailInfoMsg").html( "메일이 잠시 후 전달됩니다." );
 				$("#storeEmailInfoMsg").css("color", "#6262ff")
 				let email = local + "@" + domain; 

@@ -145,7 +145,7 @@
 			const pwdChk = $("#inputPwdChk").val();
 			const regex1 = /[^a-zA-Z0-9\s]/;
 			const regex2 = /[A-Z]/;
-			if (inputPwd.length < 6 && inputPwd.length > 1) {
+			if (inputPwd.length < 6 && inputPwd.length >= 1) {
 				$("#pwdInfoMsg").html("6자 이상 입력하세요")
 				$("#pwdInfoMsg").css("color", "#ff6868")
 				pwdPass = false;

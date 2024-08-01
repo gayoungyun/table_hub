@@ -29,7 +29,8 @@ public class MemberInfoController {
 	public String memberInfo(HttpSession session, Model model, HttpServletRequest req, HttpServletResponse res) {
     	System.out.println("memInfoCont info 실행");
 		String id = (String)session.getAttribute("userId");
-		String loginType = id.split(":")[0];
+
+		String loginType = id.split("=")[0];
 
 		// 사용자가 네이버 로그인일 경우 바로 마이페이지로 이동
 		if (loginType.equals("N")) {
@@ -97,7 +98,8 @@ public class MemberInfoController {
 	public String deleteUser(HttpSession session, Model model) {
     	System.out.println("memInfoCont deleteUser 실행");
 		String id = (String) session.getAttribute("userId");
-		String loginType = id.split(":")[0];
+
+		String loginType = id.split("=")[0];
 
     	model.addAttribute("loginType", loginType);
 
@@ -124,4 +126,9 @@ public class MemberInfoController {
 
 		return "member/info/myReply";
 	}
+	
+	
+
+	
+	
 }
