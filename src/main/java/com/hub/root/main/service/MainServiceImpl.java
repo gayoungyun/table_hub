@@ -98,10 +98,18 @@ public class MainServiceImpl implements MainService{
       try {
       	System.out.println("Parameters in Service: " + params);
           List<MainMapDTO> storeInfo = mapper.getStoreInfo(params);
+          
           if (storeInfo == null || storeInfo.isEmpty()) {
               System.out.println("No store information found for the given parameters.");
           } else {
+        	  for( MainMapDTO info : storeInfo ) {
+        		String businessHour = info.getStore_business_hours();
+        	    String[] businHours = businessHour.split("/");
+  				int lastNum = businHours.length - 1;
+  				String hours =  businHours[0] + " ~ " + businHours[lastNum];
+  				info.setStore_business_hours(hours);
               System.out.println("storeInfo size: " + storeInfo.size());
+        	  }
           }
           return storeInfo;
       } catch (Exception e) {

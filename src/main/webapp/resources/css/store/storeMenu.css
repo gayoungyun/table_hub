@@ -25,6 +25,16 @@ footer {
     bottom: 0;
 }
 
+.center-box{
+	width: 1500px;
+	display: flex;
+ 	flex-direction: column;
+ 	justify-content: center;
+  	align-items: center;
+	margin: 50px auto;
+	
+}
+
 /* 메뉴 항목 스타일 */
 .menu-container {
     display: flex;

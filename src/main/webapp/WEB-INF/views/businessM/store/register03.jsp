@@ -10,7 +10,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Insert title here</title>	
+	<script>
+	function CatetoggleECT() {
+		    var checkbox = document.getElementById('category_etc_checkbox');
+		    var textInput = document.getElementById('category_ect');
+		    textInput.disabled = !checkbox.checked;
+	}
+	function AmenitoggleECT() {
+		    var checkbox2 = document.getElementById('amenities_ect_checkbox');
+		    var textInput2 = document.getElementById('amenities_ect');
+		    textInput2.disabled = !checkbox2.checked;
+		}
+	</script>
 <link rel="stylesheet" type="text/css" href="${path}/resources/css/businessM/businessMstore.css?after">
 <script src="${path}/resources/js/businessM/businessMstore.js"></script>
 </head>
@@ -69,9 +81,15 @@
 				<label><input type="checkbox" name="store_category" 
 				<c:if test="${fn:contains(dto.store_category, '디저트')}">checked</c:if>
 				value="디저트"> 디저트</label>&nbsp;
-		        <label for="category_ect"> 기타</label>
-				<input type="text" name="store_category" id="category_ect"
-					value="${otherCategory}"><br>
+				<label>
+			    <input type="checkbox" name="store_category" id="category_etc_checkbox" 
+			        <c:if test="${fn:contains(dto.store_category, '기타')}">checked</c:if>
+			        value="기타" onclick="CatetoggleECT()">
+				    기타
+				</label>
+				
+				<input type="text" name="store_category" id="category_ect" 
+				    value="${otherCategory}" disabled><br>
 			</td>
 		</tr>
 		<tr>
@@ -111,9 +129,15 @@
 		<tr>
 			<td></td>
 			<td>
-				<label for="amenities_ect">기타</label>
-				<input type="text" name="store_amenities" id="amenities_ect"
-					value="${otherAmenities}"><br>
+				<label>
+					 <input type="checkbox" name="store_amenities" id="amenities_ect_checkbox" 
+			        <c:if test="${fn:contains(dto.store_category, '기타')}">checked</c:if>
+			        value="기타" onclick="AmenitoggleECT()">
+				    기타
+				</label>
+				
+				<input type="text" name="store_category" id="amenities_ect" 
+				    value="${otherAmenities}" disabled><br>
 			</td>
 		</tr>
 		<tr>
@@ -215,5 +239,6 @@
 	<div class="div_footer">
 		<%@ include file="../../main/footer.jsp" %>
 	</div>
+
 </body>
 </html>

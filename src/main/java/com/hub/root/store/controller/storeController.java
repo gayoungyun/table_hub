@@ -37,8 +37,8 @@ public class storeController {
 
 	@GetMapping("store")
 	public String store(HttpServletRequest request, Model model,
-			@RequestParam(required=false) String store_id) {
-
+			@RequestParam String store_id) {
+			//info(request, model, store_id);
 			String result = ser.storeChk(request, model, store_id);
 			System.out.println("result가 뭐야? : "+result);
 			if(result == "가게") {
@@ -64,7 +64,9 @@ public class storeController {
 
 	@GetMapping("/store/info")
 	public String info(HttpServletRequest request, Model model
-				,@RequestParam(required=false) String store_id) {
+				,@RequestParam String store_id) {
+		System.out.println("로딩은 됌");
+		System.out.println("리퀘스트 값"+ store_id);
 		System.out.println("!!!!스토어 인포입니다!!!!");
 		Map<String, Object> infoMap = new HashMap<String, Object>();
 		infoMap = ser.storeInfo(store_id);
@@ -75,7 +77,7 @@ public class storeController {
 
 	@GetMapping("/store/menu")
 	public String menu(HttpServletRequest request, Model model
-			,@RequestParam(required=false) String store_id) {
+			,@RequestParam String store_id) {
 
 		List<storeMenuDTO> menuDTO = ser.storeMenu(store_id);
 		model.addAttribute("dto",menuDTO);
@@ -86,7 +88,7 @@ public class storeController {
 
 	@GetMapping("/store/review")
 	public String review(HttpServletRequest request, Model model
-			,@RequestParam(required=false) String store_id) {
+			,@RequestParam String store_id) {
 		List<reviewNumDTO> numDTO = ser.storeReview(store_id);
 		model.addAttribute("dto",numDTO);
 		return "store/review";
@@ -94,7 +96,7 @@ public class storeController {
 
 	@GetMapping("/store/photo")
 	public String photo(HttpServletRequest request, Model model
-			,@RequestParam(required=false) String store_id) {
+			,@RequestParam String store_id) {
 
 		Map<String, Object> photoMap = ser.photos(store_id);
 		model.addAllAttributes(photoMap);
@@ -105,7 +107,7 @@ public class storeController {
 
 	@GetMapping("/store/map")
 	public String map(HttpServletRequest request, Model model
-			,@RequestParam(required=false) String store_id) {
+			,@RequestParam String store_id) {
 
 		String storeAdd = ser.storeMap(store_id);
 		model.addAttribute("storeAdd", storeAdd);
@@ -123,15 +125,4 @@ public class storeController {
 
 	}
 }
-	/*
-	 	HttpSession session = request.getSession();
-	    String store_id = (String) session.getAttribute("storeId");
-		if(store_id == null) {
-			request.setAttribute("msg", "로그인이 필요한 서비스입니다");
-			request.setAttribute("url", "member/login");
-
-	        return "businessM/businMalert";
-	        }
-	        */
-
 

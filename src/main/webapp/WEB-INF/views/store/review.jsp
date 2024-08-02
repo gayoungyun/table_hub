@@ -13,7 +13,15 @@
 <body>
 <div class="container">
   <c:choose>
-    <c:when test="${dto != null}">
+    <c:when test="${dto == null}">
+      	<div class="center-box">
+			<img src="/root/businessM/download?img=../BoSeon/보정/리뷰정보.png" width="350px">
+			<br><br>
+				<b>등록된 리뷰가 없습니다</b>
+			<br><br><br>
+		</div>
+    </c:when>
+    <c:otherwise>
       <c:forEach var="item" items="${dto}">
         <div class="review">
           
@@ -40,9 +48,6 @@
           </div>
         </div>
       </c:forEach>
-    </c:when>
-    <c:otherwise>
-      <p class="no-reviews">등록된 리뷰가 없습니다.</p>
     </c:otherwise>
   </c:choose>
 </div>

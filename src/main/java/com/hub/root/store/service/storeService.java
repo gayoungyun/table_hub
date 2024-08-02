@@ -136,8 +136,7 @@ public class storeService {
 	public Map<String, Object> storeInfo(String store_id) {
 		System.out.println("아이디는 있어? : "+store_id);
 		Map<String, Object> infoMap = new HashMap<String, Object>();
-		
-		/*
+
 		storeInfoDTO infoDTO = mapper.storeInfo(store_id);
 		
 		System.out.println("보선- ??무슨일이야??? : "+ (infoDTO == null)
@@ -161,7 +160,7 @@ public class storeService {
 		}else {
 			infoMap = null;
 		}
-		*/
+
 		
 		return infoMap;
 	}
@@ -232,16 +231,27 @@ public class storeService {
 
 	public List<storeMenuDTO> storeMenu(String store_id) {
 		List<storeMenuDTO> menuDTO = mapper.storeMenu(store_id);
+		
+		if(menuDTO.isEmpty()) {
+			menuDTO = null;
+			return menuDTO;
+		}else {
 		menuDTO = (menuImg(menuDTO));
-
 		return menuDTO;
+		}
 	}
 
 
 	public List<reviewNumDTO> storeReview(String store_id){
 		List<storeReviewDTO> reviewDTO = mapper.storeReview(store_id);
-		List<storeReviewImgDTO> reviewImgDTO = mapper.reviewImage(store_id);
 		List<reviewNumDTO> numDTO = new ArrayList<reviewNumDTO>();
+		
+		if(reviewDTO.isEmpty()) {
+			numDTO = null;
+			return numDTO;
+		}
+		
+		List<storeReviewImgDTO> reviewImgDTO = mapper.reviewImage(store_id);
 		String matchID = null;
 		String memberImgPath = null;
 		String memberImg = null;
