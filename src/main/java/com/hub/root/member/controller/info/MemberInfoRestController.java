@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -164,22 +165,35 @@ public class MemberInfoRestController {
 	}
 
 	@DeleteMapping(value="deleteUser")
-	public Map<String, Object> deleteUser(HttpSession session, HttpServletRequest req) {
+	public Map<String, Object> deleteUser(HttpSession session, HttpServletRequest req, HttpServletResponse res) {
 		System.out.println("memInfoRestCont deleteUser 실행");
 		Map<String, Object> map = mis.deleteUser((String)session.getAttribute("userId"));
 		String token = null;
+		Cookie[] cookies = req.getCookies();
+		
+		// 삭제가 완료되었으면 1 아니면 0
 		if ((int)map.get("result") == 1) {
 			System.out.println("if문실행");
 			
-			Cookie[] cookies = req.getCookies();
+			//쿠키값이 존재한다면 if문 실행
 			if (cookies != null) {
 				for (Cookie c : cookies) {
 					if (c.getName().equals("snsToken")) {
 						token = c.getValue();
+						c.setMaxAge(0);
+						res.addCookie(c);
+					}
+					if (c.getName().equals("myPage")) {
+						System.out.println("myPage Cookie 삭제");
+						c.setMaxAge(0);
+						res.addCookie(c);
 					}
 				}
 			}
 			
+			//쿠키값 삭제
+			
+			//삭제된 사용자가 간편로그인 계정이면 if문 실행
 			if (token != null) {
 				try {
 		            // URL 설정
@@ -301,10 +315,10 @@ public class MemberInfoRestController {
 	}
 
 	@DeleteMapping(value="reply", produces="application/json; charset=utf-8")
-	public Map<String, Object> deleteReply(@RequestBody Map<String, int[]> replys) {
+	public Map<String, Object> deleteReply(@RequestBody Map<String, List<int[]>> replys) {
 		System.out.println("memInfoRestCont deleteReply 실행");
-		int[] replysArr = replys.get("content");
-		Map<String, Object> map = mis.deleteReply(replysArr);
+		List<int[]> test = replys.get("content");
+		Map<String, Object> map = mis.deleteReply(test);
 		return map;
 	}
 
@@ -314,10 +328,6 @@ public class MemberInfoRestController {
 	@GetMapping(value="myContentMyInfo", produces="application/json; charset=utf-8")
 	public Map<String, Object> myContentMyInfo (HttpSession session, Model model) {
 		Map<String, Object> map = mis.getMyContentMyInfo((String)session.getAttribute("userId"));
-		System.out.println("boardCount : " + map.get("BOARD_COUNT"));
-		System.out.println("replyCount : " + map.get("REPLY_COUNT"));
-		System.out.println("reviewCount : " + map.get("REVIEW_COUNT"));
-		System.out.println("reviewscore : " + map.get("REVIEW_SCORE"));
 		String userNick = mis.getNick((String)session.getAttribute("userId"));
 		map.put("userNick", userNick);
 		return map;

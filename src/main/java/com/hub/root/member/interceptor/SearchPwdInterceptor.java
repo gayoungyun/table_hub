@@ -16,6 +16,8 @@ public class SearchPwdInterceptor extends HandlerInterceptorAdapter {
 			throws Exception {
 		System.out.println("index 실행 전 출력");
 		Cookie[] cookies = request.getCookies();
+		String test = request.getParameter("id");
+		System.out.println("test : " + test);
 
 		String id = "";
 		if (cookies != null) {

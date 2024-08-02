@@ -50,7 +50,8 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 		try {
 			System.out.println("try실행");
 			mul.transferTo(saveFile);
-			return mul.getOriginalFilename();
+			return fileName;
+//			return mul.getOriginalFilename();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -486,15 +487,43 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 	}
 
 	@Override
-	public Map<String, Object> deleteReply(int[] content) {
+	public Map<String, Object> deleteReply(List<int[]> content) {
     	System.out.println("memInfoSer deleteReply 실행");
-		int result = mapper.deleteReply(content);
-		Map<String, Object> map = new HashMap<>();
+    	List<Integer> boardReply = new ArrayList<Integer>();
+    	List<Integer> board2Reply = new ArrayList<Integer>();
+    	for (int[] is : content) {
+    		System.out.println("is[0] : " + is[0]);
+			if (is[1] == 1) {
+				boardReply.add(is[0]);
+			} else if (is[1] == 2) {
+				board2Reply.add(is[0]);
+			}
+		}
+    	System.out.println("boardReply : " + boardReply);
+    	System.out.println("board2Reply : " + board2Reply);
+    	int result = 0;
+    	System.out.println("replySize : " + boardReply.size());
+    	System.out.println("reply2Size : " + boardReply.size());
+    	if (boardReply.size() != 0) {
+    		int boardResult = mapper.deleteReply(boardReply);
+    		System.out.println("boardResult : " + boardResult);
+    		result += boardResult;
+    	}
+    	if (board2Reply.size() != 0) {
+    		int board2Result = mapper.delete2Reply(board2Reply);
+    		System.out.println("board2Result : " + board2Result);
+    		result += board2Result;
+    	}
+    	
+    	
+    	Map<String, Object> map = new HashMap<>();
+		
 		String msg = "";
-		if (result == content.length) {
+		System.out.println("결과값 result : " + result);
+		if (result == content.size()) {
 			msg = "선택한 항목이 삭제되었습니다.";
 		} else {
-			msg = "삭제하는 중 문제가 발생하였습니다.";
+			msg = "삭제하는 중 문제가 발생하였습니다."; 
 		}
 		map.put("msg", msg);
 		map.put("result", result);
@@ -507,6 +536,7 @@ public class MemberInfoServiceImpl implements MemberInfoService{
 		if (map.get("REVIEW_SCORE") == null) {
 			map.put("REVIEW_SCORE", 0);
 		}
+		
 		return map;
 	}
 

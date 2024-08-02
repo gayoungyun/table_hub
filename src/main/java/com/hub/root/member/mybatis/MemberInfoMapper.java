@@ -55,7 +55,8 @@ public interface MemberInfoMapper {
 			@Param("end") int endNum);
 	public Map<String, Object> getBoardInfo(@Param("boardId") int boardId);
 	public Map<String, Object> getBoardInfo2(@Param("reviewId") int reviewId);
-	public int deleteReply(@Param("content") int[] content);
+	public int deleteReply(@Param("content") List<Integer> content);
+	public int delete2Reply(@Param("content") List<Integer> content);
 	public Map<String, Object> getMyContentMyInfo(@Param("userId") String userId);
 	public String getNick(@Param("userId") String userId);
 

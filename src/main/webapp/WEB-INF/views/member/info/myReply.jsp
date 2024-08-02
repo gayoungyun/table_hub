@@ -30,6 +30,7 @@
 	var pageContent = 0; // 현재 페이지에서 보여지는 수량
 	
 	function getReply(page) {
+		getMyInfo();
 		currentPage = page
 		deleteReplys = []
 		// 내가 작성한 댓글 불러오기
@@ -82,9 +83,7 @@
 		                }
 						
 		                // 게시판 제목과 해당 게시판의 댓글 수량을 불러오기 위한 ajax요청
-		                console.log("test1 : ", item.BOARD_REVIEW2_ID)
 		                if (item.BOARD_REVIEW2_ID == null) {
-		                	console.log("댓글")
 							$.ajax({ //내부 ajax start
 								url : "/root/member/myPage/reply/board?boardId="+item.BOARD_ID,
 								type : "get",
@@ -97,11 +96,11 @@
 									html += `<div class="myReplyContent">`
 									
 									html += `<div class="myReplyContentLeft">`
-									html += `<input type="checkbox" class="myReplyContentCheck" onchange="replyCheck(this,+`+item.reviewId+`)">`
+									html += `<input type="checkbox" class="myReplyContentCheck" onchange="replyCheck(this,+`+item.BOARD_REVIEW_ID+`, 1)">`
 									html += `</div>`
 									
 									html += `<div class="myReplyContentMiddle">`
-									html += `<label class="myReplyContentReply">`+item.BOARD_REVIEW_CONTENT+`</label><br>`
+									html += `<label class="myReplyContentReply"><label class="replyType">[댓&nbsp;&nbsp;&nbsp;글]</label>`+item.BOARD_REVIEW_CONTENT+`</label>`
 									html += `<label class="myReplyContentBody">`+result.BOARD_TITLE+`</label> <label class="myReplyContentCount">[`+ result.TOTAL_COUNT +`]</label>`
 									html += `</div>`
 									
@@ -120,7 +119,6 @@
 								
 							}) // 내부 ajax end
 		                } else {
-		                	console.log("대댓글")							
 		                	$.ajax({ //내부 ajax start
 								url : "/root/member/myPage/reply2/board?reviewId="+item.BOARD_REVIEW_ID,
 								type : "get",
@@ -132,11 +130,11 @@
 									html += `<div class="myReplyContent">`
 									
 									html += `<div class="myReplyContentLeft">`
-									html += `<input type="checkbox" class="myReplyContentCheck" onchange="replyCheck(this,+`+item.reviewId+`)">`
+									html += `<input type="checkbox" class="myReplyContentCheck" onchange="replyCheck(this,+`+item.BOARD_REVIEW2_ID+`, 2)">`
 									html += `</div>`
 									
 									html += `<div class="myReplyContentMiddle">`
-									html += `<label class="myReplyContentReply">`+item.BOARD_REVIEW2_CONTENT+`</label><br>`
+									html += `<label class="myReplyContentReply"><label class="replyType">[대댓글]</label> `+item.BOARD_REVIEW2_CONTENT+`</label>`
 									html += `<label class="myReplyContentBody">`+result.BOARD_TITLE+`</label> <label class="myReplyContentCount">[`+ result.TOTAL_COUNT +`]</label>`
 									html += `</div>`
 									
@@ -230,7 +228,6 @@
 				$("#myReplyContentWrapper").html(html);
 				
 				var btnBold = currentPage - Math.floor((currentPage - 1) / contentCount) * contentCount
-				console.log("test: ", btnBold)
 				$(".pageBtn").eq(btnBold-1).css("color", "black")
 				
 			},
@@ -242,12 +239,16 @@
 	}
 	var deleteReplys = [];
 	
-	function replyCheck(item, num) {
+	function replyCheck(item, num, type) {
+		
+		var test = [];
+		test.push(num);
+		test.push(type);
 		if (item.checked) {
-			deleteReplys.push(num);
+			deleteReplys.push(test);
 		} else {
 			deleteReplys = deleteReplys.filter(function(item) {
-			    return item !== num;
+			    return item[0] !== num;
 			});
 		}
 		console.log("checked : ", deleteReplys)
@@ -265,6 +266,7 @@
 	}
 	
 	function deleteReply() {
+		console.log("deleteReplys : " , deleteReplys)
 		if (deleteReplys == "") {
 			alert("삭제할 항목을 선택해주세요")
 		} else {
@@ -279,7 +281,7 @@
 				contentType : "application/json; charset=utf-8",
 				success : function ( result ) {
 					
-					console.log("result : ", result)
+					console.log("result123 : ", result)
 					
 					alert(result.msg);
 					
@@ -288,10 +290,8 @@
 					var test = ((lastPage-1) * contentCount) - totalContent;
 					
 					if (currentPage == lastPage && test == 0 ) {
-						console.log("11")
 						getReply(currentPage-1);
 					} else {
-						console.log("22")
 						getReply(currentPage);					
 					}
 					

@@ -29,6 +29,7 @@
 	lastPage = 1;
 	totalContent = 0;
 	function reviewPage(page) {
+		getMyInfo();
 		currentPage = page;
 		console.log("currentPage : " , currentPage)
 		$.ajax({
