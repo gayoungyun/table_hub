@@ -26,7 +26,7 @@
 					<a href="/root/member/myPage/detail" class="a-item">Profile</a>
 				</c:if>
 				<c:if test="${storeId != null }">
-					<a href="/root/businMmenu" class="a-item">Profile</a>
+					<a href="/root/businMmenu?category=0" class="a-item">Profile</a>
 					
 				</c:if>
 			</div>
@@ -43,7 +43,7 @@
 		
 		<!-- ===== Title 부분 ===== -->
 		<div class="flex-item-title">
-			<a href="/root/main/mainPage1" class="a-title">Tabel HUB</a>
+			<a href="/root/main/mainPage1" class="a-title">Table HUB</a>
 		</div>
 		
 		<!-- ===== item2 ===== -->

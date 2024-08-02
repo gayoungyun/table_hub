@@ -28,7 +28,7 @@
 }
 </style>
 </head>
-<body onload="category()">
+<body onload="category('${cateNum}')">
 
 <header class="header">
 <%@ include file="../main/header.jsp" %>
@@ -62,5 +62,4 @@
 	</div>
 </div>
 </body>
-	
-</html>
+	</html>

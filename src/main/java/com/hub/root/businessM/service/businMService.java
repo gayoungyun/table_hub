@@ -151,9 +151,12 @@ public class businMService {
 		HttpSession session = request.getSession();
 		session.setAttribute("store_introduce", store_introduce);
 		String store_category = String.join("/", store_categoryS);
+		store_category = store_category.replace("기타/", "");
+		System.out.println("보서나 카테고리 : "+store_category);
 		session.setAttribute("store_category", store_category);
 		//List<String> amenityList = Arrays.asList(store_amenities.split(","));
 		String store_amenities = String.join("/", store_amenitiesS);
+		store_amenities = store_amenities.replace("기타/", "");
 		session.setAttribute("store_amenities", store_amenities);
 		session.setAttribute("store_note", store_note);
 		session.setAttribute("store_max_person", store_max_person);

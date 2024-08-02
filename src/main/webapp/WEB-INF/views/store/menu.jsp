@@ -15,7 +15,15 @@
 	console.log("${dto}");
 </script>
   <c:choose>
-        <c:when test="${dto != null}">
+        <c:when test="${dto == null}">
+        <div class="center-box">
+			<img src="/root/businessM/download?img=../BoSeon/보정/메뉴정보.png" width="350px">
+			<br><br>
+				<b>등록된 메뉴가 없습니다</b>
+			<br><br><br>
+		</div>
+        </c:when>
+        <c:otherwise>
             <div class="menu-container">
                 <c:forEach var="item" items="${dto}">
                     <div class="menu-item">
@@ -29,9 +37,6 @@
                     </div>
                 </c:forEach>
             </div>
-        </c:when>
-        <c:otherwise>
-            <p>등록된 메뉴가 없습니다.</p>
         </c:otherwise>
     </c:choose>
 <br><br>

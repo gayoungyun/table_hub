@@ -99,8 +99,11 @@ public class businMController {
 		}
 
 		@GetMapping("businMmenu")//사업자 마이페이지
-		public String businMmenu(HttpServletRequest request) {
-			System.out.println("보선-아이프레임은 컨트롤러가 없다구");
+		public String businMmenu(HttpServletRequest request,
+				@RequestParam String category) {
+			
+			System.out.println("보선-카테고리 넘버는? : "+ category);
+	
 			HttpSession session = request.getSession();
 		    String store_id = (String) session.getAttribute("storeId");
 			if(store_id == null) {
@@ -108,6 +111,7 @@ public class businMController {
 		        request.setAttribute("url", "member/login");
 		        return "businessM/businMalert";
 			}
+			request.setAttribute("cateNum", category);
 			return "businessM/businMmenu";
 		}
 

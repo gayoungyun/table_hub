@@ -34,10 +34,10 @@
 	</div>
 	<br>
 	<div style="display:grid; justify-items: center;">
-		<button type="button" class="button2 btn2Fade" onclick="window.location.href='http://localhost:8080/root/businMmenu?category=menuInfo'">메뉴 등록 하기</button><br>
-		<button type="button" class="button2 btn2Fade" onclick="window.location.href='http://localhost:8080/root/businMmenu?category(3)'">사진 등록 하기</button><br>
-		<button type="button" class="button2 btn2Fade" onclick="window.location.href='/root/main/mainPage1">메인 화면</button><br>
-		<button type="button" class="button2 btn2Fade" onclick="window.location.href='http://localhost:8080/root/businMmenu'">내 가게 정보보기</button>
+		<button type="button" class="button2 btn2Fade" onclick="window.location.href='http://localhost:8080/root/businMmenu?category=2'">메뉴 보기</button><br>
+		<button type="button" class="button2 btn2Fade" onclick="window.location.href='http://localhost:8080/root/businMmenu?category=3'">사진 보기</button><br>
+		<button type="button" class="button2 btn2Fade" onclick="window.location.href='http://localhost:8080/root/main/mainPage1'">메인 화면</button><br>
+		<button type="button" class="button2 btn2Fade" onclick="window.location.href='http://localhost:8080/root/businMmenu?category=0'">내 가게 정보 보기</button>
 	</div>
 </div>
 </div>

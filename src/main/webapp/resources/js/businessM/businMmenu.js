@@ -30,21 +30,12 @@ function category(n) {
 	    if(menuIframe == "") {
 		    if(cateNum == 2) {
 		    	cateVal = "http://localhost:8080/root/businessM/menuInfo";
-			    // History API를 사용하여 URL을 업데이트
-			    var newUrl = 'http://localhost:8080/root/businMmenu?category=menuInfo';
-			    history.replaceState(null, null, newUrl); 
 		    }else if(cateNum == 3) {
-		    	cateVal = "http://localhost:8080/root/businessM/photoInfo";
-			    var newUrl = 'http://localhost:8080/root/businMmenu?category=photoInfo';
-			    history.replaceState(null, null, newUrl);
+		    	cateVal = "http://localhost:8080/root/businessM/photoInfo"; 
 		    }else if(cateNum == 4) {
 		    	cateVal = "http://localhost:8080/root/businessM/reviewInfo";
-		    	var newUrl = 'http://localhost:8080/root/businMmenu?category=reviewInfo';
-			    history.replaceState(null, null, newUrl);
 		    }else if(cateNum == 5) {
 		    	cateVal = "http://localhost:8080/root/businessM/bookInfo";
-		    	var newUrl = 'http://localhost:8080/root/businMmenu?category=bookInfo';
-			    history.replaceState(null, null, newUrl);
 		    }else{
 		    	cateVal = "http://localhost:8080/root/businessM/storeInfo";
 		    }
@@ -62,6 +53,11 @@ function category(n) {
 		console.log("cateVal 주소는? : ", cateVal);
 	}
 
+			    /*
+			    History API를 사용하여 URL을 업데이트
+			    var newUrl = 'http://localhost:8080/root/businMmenu?category='+menuInfo;
+			    history.replaceState(null, null, newUrl); 
+			    */
 
 
 function iHeight(){

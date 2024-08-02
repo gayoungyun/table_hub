@@ -1,8 +1,6 @@
 console.log("JavaScript 파일이 연결되었습니다.");
 
-window.onload = function() {
-            category(0,store_id);
-    };	     
+     
 
 function category(n, store_id) {
 		const cateNum = n;
@@ -23,7 +21,6 @@ function category(n, store_id) {
 
 		console.log("cateVal 주소는? : ", cateVal);
 	}
-
 
 
 function iHeight(){

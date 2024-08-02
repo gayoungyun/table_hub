@@ -227,22 +227,22 @@
 			<img src="resources\img\Boseon\보정\로고.png" onclick="window.location.href='/root'">
 			<div>
 				<button class="button1 btn1Fade res" onclick='reservation()'>예약하기</button>
-				<button class="button2 btn2Fade" onclick="Jjim(${infoDTO.store_id})">찜하기</button>
+				<button class="button2 btn2Fade" onclick="Jjim(${Map.infoDTO.store_id})">찜하기</button>
 			</div>
 		</div>
 	
 		<div class="main-photo">
-			<button style="visibility: hidden;">${infoDTO.store_id}</button>
-			<img src="/root/businessM/download?img=${mainImg}">
+			<button style="visibility: hidden;">${Map.infoDTO.store_id}</button>
+			<img src="/root/businessM/download?img=${Map.mainImg}">
 		</div>
 		<div class="store_name">
-		    <span style="color: gray;">${infoDTO.store_add} | </span>
-		    <span style="color: gray;">${infoDTO.store_category} </span><br>
-		    <span style="font-size: 50px; font-weight: bold;">${infoDTO.store_name}</span><br>
+		    <span style="color: gray;">${Map.infoDTO.store_add} | </span>
+		    <span style="color: gray;">${Map.infoDTO.store_category} </span><br>
+		    <span style="font-size: 50px; font-weight: bold;">${Map.infoDTO.store_name}</span><br>
 		    
-		    <img src="resources/img/Boseon/보정/별.png" width="15px"> ${scoreAvr} &nbsp;&nbsp;&nbsp;
-		    리뷰 <a href=""><span style="color: #397BE6;">${totalreview}</span></a> &nbsp;&nbsp;&nbsp;
-		    <img src="resources/img/Boseon/보정/하트.png" width="15px"> ${totalBookmark}
+		    <img src="resources/img/Boseon/보정/별.png" width="15px"> ${Map.scoreAvr} &nbsp;&nbsp;&nbsp;
+		    리뷰 <span style="color: #397BE6;">${Map.totalreview}</span> &nbsp;&nbsp;&nbsp;
+		    <img src="resources/img/Boseon/보정/하트.png" width="15px"> ${Map.totalBookmark}
 		    <br><br>
 		    
 		    <span style="font-size: 18px; visibility: hidden;">#&nbsp;#&nbsp;#&nbsp;#</span>
@@ -251,17 +251,17 @@
 		<div class="review-photo">
 		<c:choose>
 		
-			<c:when test="${reviewImg.size() > 4 }">
-				<c:forEach var="Rimg" items="${reviewImg}">
+			<c:when test="${Map.reviewImg.size() > 4 }">
+				<c:forEach var="Rimg" items="${Map.reviewImg}">
 	                <img src="/root/businessM/download?img=${Rimg}">
 	            </c:forEach>
 	        </c:when>
 	            
 	        <c:otherwise>
-				<c:forEach var="Simg" items="${storeImg}">
+				<c:forEach var="Simg" items="${Map.storeImg}">
 	                <img src="/root/businessM/download?img=${Simg}">
 	            </c:forEach>
-				<c:forEach var="Rimg" items="${reviewImg}">
+				<c:forEach var="Rimg" items="${Map.reviewImg}">
 	                <img src="/root/businessM/download?img=${Rimg}">
 	            </c:forEach>
             </c:otherwise>
@@ -270,11 +270,11 @@
 		</div>
 		
 		<div class="categories">
-			<button class="catebutton catebtnFade" onclick="category(0, '${infoDTO.store_id}')">정보</button>
-			<button class="catebutton catebtnFade" onclick="category(2, '${infoDTO.store_id}')">메뉴</button>
-			<button class="catebutton catebtnFade" onclick="category(3, '${infoDTO.store_id}')">리뷰()</button>
-			<button class="catebutton catebtnFade" onclick="category(4, '${infoDTO.store_id}')">사진()</button>
-			<button class="catebutton catebtnFade" onclick="category(5, '${infoDTO.store_id}')">지도</button>
+			<button class="catebutton catebtnFade" onclick="category(0, '${Map.infoDTO.store_id}')">정보</button>
+			<button class="catebutton catebtnFade" onclick="category(2, '${Map.infoDTO.store_id}')">메뉴</button>
+			<button class="catebutton catebtnFade" onclick="category(3, '${Map.infoDTO.store_id}')">리뷰()</button>
+			<button class="catebutton catebtnFade" onclick="category(4, '${Map.infoDTO.store_id}')">사진()</button>
+			<button class="catebutton catebtnFade" onclick="category(5, '${Map.infoDTO.store_id}')">지도</button>
 			<hr>
 		</div>
 		
@@ -292,6 +292,10 @@
 
 <!-- 민석 추가!! -->
 <script type="text/javascript">
+window.onload = function() {
+    category(0,${Map.infoDTO.store_id});
+};	
+
 	const body = document.querySelector(".body");
 	
 	body.addEventListener('click', function(event) {
