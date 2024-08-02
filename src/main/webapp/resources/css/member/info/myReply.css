@@ -53,10 +53,11 @@
 }
 .myReplyContentReply {
 	margin: 5px 0 5px 0;
-	display: inline-block;
+	display: flex;
+	font-weight: bold;
 }
 .myReplyContentBody {
-	color: #adadad;
+	color: #909090;
 	font-size: 15px;
 	margin: 0 0 5px 0;
 	display: inline-block;
@@ -117,4 +118,12 @@
 .myReplyHr {
 	color: #cfcfcf;
 	margin: 5px;
+}
+
+.replyType {
+	font-size: 14px;
+	color: #bfbfbf;
+	justify-content: center;
+	display: inline-block;
+	margin-right: 10px;
 }

@@ -197,6 +197,9 @@
 										item.time;
 						let reviewPermitDate = new Date(date.getTime() + (7 * 24 * 60 * 60 * 1000))
 						let currentDate = new Date();
+						console.log("시간비교 : ", currentDate < reviewPermitDate)
+						console.log("시간출력 1 : ", currentDate)
+						console.log("시간출력 2 : ", reviewPermitDate)
 						
 						let promise = $.ajax({
 							url : "getBookingInfo?storeId="+item.storeId+"&bookingId="+item.id,
@@ -215,7 +218,7 @@
 							content += `<hr>`
 							
 							if (item.status == 1 && currentDate < reviewPermitDate) { // 리뷰 작성 가능 상태
-								content += `<label class="bookingStatusReviewReady">예약 대기</label>`							
+								content += `<label class="bookingStatusReviewReady">후기 작성하기</label>`							
 							} else if(item.status == 2) { // 후기 작성 완료된 상태
 								content += `<label class="bookingStatusReviewComplete"><a href="review">후기 작성 완료</a></label>`
 								content += `<label class="bookingStatusReviewScore">평점 : ` + result.reviewScore + `점</label>`

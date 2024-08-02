@@ -135,6 +135,8 @@
 						error : function ( error ) {
 							console.log("error : ", error)
 						}
+						
+						
 					}) // ajax end
 					
 				// forEach 실행 종료

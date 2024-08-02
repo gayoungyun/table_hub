@@ -57,12 +57,12 @@
 				$("#imgInfoMsg").html("파일명에 특수기호가 포함될 수 없습니다.")
 				$("#imgInfoMsg").css("color", "#ff6868")
 				$("#infoFileSaveBtn").prop("disabled", true);
-				$("#viewImg").attr('src', "download?img=${dto.id }_${dto.img}");
+				$("#viewImg").attr('src', "download?img=${dto.img}");
 			} else {
 				$("#imgInfoMsg").html("다른 사용자들에게 보여질 이미지를 선택해주세요")
 				$("#imgInfoMsg").css("color", "#b9b9b9")
 				$("#infoFileSaveBtn").prop("disabled", true);
-				$("#viewImg").attr('src', "download?img=${dto.id }_${dto.img}");
+				$("#viewImg").attr('src', "download?img=${dto.img}");
 				
 			}
 		}
@@ -141,7 +141,7 @@
 					success : function ( result ) {
 						$("#imgInfoMsg").html(result)
 						$("#imgInfoMsg").css("color", "#6262ff")
-						$("#viewImg").attr('src', "download?img=${dto.id}_default.jpg");
+						$("#viewImg").attr('src', "download?img=default.jpg");
 						$("#infoFileDeleteBtn").prop("disabled", true);
 						
 					},
@@ -647,7 +647,7 @@
 						<th>프로필 사진</th>
 						<td>
 							<div id="imgWrapper">
-								<img id="viewImg" alt="" src="download?img=${dto.id }_${dto.img}"/>
+								<img id="viewImg" alt="" src="download?img=${dto.img}"/>
 							</div>
 							<form id="imgFileForm" style="height:0;">
 								<input type="file" name="file" id="infoFile" onchange="changeImg(this)" hidden="true"><br>

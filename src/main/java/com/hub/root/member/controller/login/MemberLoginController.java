@@ -70,8 +70,7 @@ public class MemberLoginController {
 
 		// 아이디와 쿠키값이 일치하면 1, 아니면 0값을 가진다.
 		int result = ms.modifyPwdIdChk(id, cookies);
-
-
+		System.out.println("result : " + result);
 		return "member/login/modifyPwd";
 	}
 
