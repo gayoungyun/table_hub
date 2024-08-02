@@ -237,7 +237,6 @@ public class businMController {
 
 	  		@GetMapping("/businessM/download")
 	  		public void download(@RequestParam String img, HttpServletResponse res) throws Exception {
-	  	    	System.out.println("businMCont download 실행");
 	  	    	String originImgName = img;
 
 	  			res.setContentType("text/plain; charset=utf-8");

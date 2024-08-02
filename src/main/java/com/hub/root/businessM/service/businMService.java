@@ -152,7 +152,6 @@ public class businMService {
 		session.setAttribute("store_introduce", store_introduce);
 		String store_category = String.join("/", store_categoryS);
 		store_category = store_category.replace("기타/", "");
-		System.out.println("보서나 카테고리 : "+store_category);
 		session.setAttribute("store_category", store_category);
 		//List<String> amenityList = Arrays.asList(store_amenities.split(","));
 		String store_amenities = String.join("/", store_amenitiesS);
@@ -204,7 +203,6 @@ public class businMService {
 		int row;
 		try {
 			row = register(dto);
-			System.out.println("보선-서비스에서 나온 result : " + row);
 			if(row == 0) {
 				request.setAttribute("msg", "문제 발생\n다시 시도해주세요");
 		        request.setAttribute("url", "register01");
@@ -235,7 +233,7 @@ public class businMService {
 		while (attributeNames1.hasMoreElements()) {
 			String attributeName = attributeNames1.nextElement();
 			Object attributeValue = session.getAttribute(attributeName);
-			System.out.println("보선-가게등록 완료 후 세션 " + attributeName + "의 값: " + attributeValue);
+			System.out.println("\n보선-가게등록 완료 후 세션 " + attributeName + "의 값: " + attributeValue);
 		}
 
 		return "businessM/store/registerFinish";
@@ -246,8 +244,6 @@ public class businMService {
 
 		int result = mapper.register(dto);
 
-
-		System.out.println("보선-가게등록 mapper에서 나온 result : " + result);
 		return result;
 
 	}
@@ -276,11 +272,11 @@ public class businMService {
 				e.printStackTrace();
 			}
 			if(!dto.isEmpty()) {
+				System.out.println("보선-기존 메뉴 존재");
 				for(int i=0 ; dto.size() > i ; i++) {
 					String menuImgPath = null;
 					menuImgPath = saveFileAndGetPath_Menu(dto.get(i).getStore_menu_img());
 					dto.get(i).setStore_menu_img(menuImgPath);
-					System.out.println("보선-메뉴에 사진 안나온다 : "+dto.get(i).getStore_menu_img());
 				}
 			}else {
 				dto = null;
@@ -390,12 +386,12 @@ public class businMService {
             for (Entry<String, Object> entry : param.entrySet()) {
                 String key = entry.getKey();
                 Object value = entry.getValue();
-                System.out.println("보선- Key: " + key + ", Value: " + value);
+                System.out.println("\n보선- Key: " + key + ", Value: " + value);
             }
 
             int result01 = mapper.storeImage01(param);
 
-            System.out.println("보선-사진이 행 추가? : "+result01);
+            System.out.println("보선-사진 등록및수정 갯수 : "+result01);
 	         if(result01 > 0)
 	            	return "businessM/photo/photoRFinish";
 	         else {
@@ -439,15 +435,18 @@ public class businMService {
 		List<businMMenuDTO> dto = new ArrayList<businMMenuDTO>();
 		dto = mapper.menuChk(store_id);
 			if(!dto.isEmpty()) {
-				for(int i =0 ; dto.size() < i ; i++ ) {
+				System.out.println("기존 메뉴 존재");
+				/*
+				  for(int i =0 ; dto.size() < i ; i++ ) {
 					File file = new File(dto.get(i).getStore_menu_img());
 			        
 			    		if(file.delete()){
 			    			System.out.println("파일삭제 성공");
 			    		}else{
 			    			System.out.println("파일삭제 실패");
-			    		}	
+			    		}
 					}
+			    		*/
 				int menuDel = mapper.menuDel(store_id);
 					if(menuDel > 0) {
 						System.out.println("보선-메뉴 수정을 위한 삭제 완료");
@@ -459,7 +458,8 @@ public class businMService {
 						return "businessM/businMalert";
 					}
 			}else {
-			System.out.println("보선-기존메뉴 없어서 그냥 메뉴등록 시작");
+				
+			System.out.println("보선-기존메뉴 없음. 메뉴등록 시작");
 			String result = menuRegister(request, mul, store_id);
 			return result;
 			}
@@ -469,7 +469,13 @@ public class businMService {
 							String store_id){
 
 		int rowCount = Integer.parseInt(request.getParameter("rowCount"));
-		System.out.println("보선-메뉴등록 행 몇개? : "+ (rowCount));
+		System.out.println("보선-등록하는 메뉴 갯수 : "+ (rowCount));
+		/*
+		System.out.println("보선-파일이름 있냐!!!!!!"+  request.getParameter("menu_photo")
+						+"\n null? : "+ (request.getParameter("menu_photo") == null )
+			
+						);
+				*/
 		
 		List<String> categories = new ArrayList<>();
 		List<String> names = new ArrayList<>();
@@ -485,16 +491,32 @@ public class businMService {
 	        Integer price = null;
 	        String note = request.getParameter("menu_note" + i);
 	        String file;
-	       
+	        MultipartFile filePath = ((MultipartRequest) mul).getFile("menu_photo" + i);
+	        System.out.println("보선-!!!파일 이름!!"+ filePath
+	        			+"\n 멀티 : "+((MultipartRequest) mul).getFile("menu_photo" + i)
+	        			+"\n 파라미터 : "+request.getParameter("menu_photo")
+	        			);
+	        MultipartFile fileName = mul.getFile("menu_photo");
+	        if(fileName == null) {
+	        	System.out.println("파일 없음");
+	        }else {
+	        	String Name = fileName.getOriginalFilename().toString();
+	        	
+	        }
+
 	            if (priceStr != null && !priceStr.trim().isEmpty()) {
 	                price = Integer.parseInt(priceStr.trim());
 	            } else {
-	                System.out.println("Invalid price value: " + priceStr);
+	                System.out.println("보선-Invalid price value: " + priceStr);
 	                // 예외 처리 또는 기본값 설정
 	            }
-			  MultipartFile filePath = ((MultipartRequest) mul).getFile("menu_photo" + i);
-			  System.out.println(((MultipartRequest) mul).getFile("menu_photo" + i));
-			  file = saveFileAndGetPath(filePath);
+	            
+            
+	            if(fileName == null) {
+	            	file = "default.jpg";
+	            }else {
+	            	file = saveFileAndGetPath(filePath);
+	            }
 			  
 			  categories.add(category);
 			  names.add(name);
@@ -563,63 +585,6 @@ public class businMService {
 		return result;
 	}
 
-
-	public String menuRegister(HttpServletRequest request, MultipartHttpServletRequest mul){
-
-		  HttpSession session = request.getSession();
-	      String store_id = (String) session.getAttribute("storeId");
-
-	  	  int rowCount = Integer.parseInt(request.getParameter("rowCount"));
-	  	  System.out.println("보선-메뉴 행 몇개? : "+ rowCount);
-
-	  	  List<String> categories = new ArrayList<>();
-	  	  List<String> names = new ArrayList<>();
-	  	  List<Integer> prices = new ArrayList<>();
-	  	  List<String> photos = new ArrayList<>();
-	  	  List<String> notes = new ArrayList<>();
-
-
-        for (int i = 1; i <= rowCount; i++) {
-            String category = request.getParameter("menu_category" + i);
-            String name = request.getParameter("menu_name" + i);
-            Integer price = Integer.parseInt(request.getParameter("menu_price" + i));
-            String note = request.getParameter("menu_note" + i);
-            String file;
-			try {
-				MultipartFile filePath = ((MultipartRequest) mul).getFile("menu_photo" + i);
-				file = saveFileAndGetPath(filePath);
-
-            categories.add(category);
-            names.add(name);
-            prices.add(price);
-            notes.add(note);
-            photos.add(file);
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-        }
-
-        Map<String, Object> menuparam = new HashMap<>();
-        menuparam.put("store_id", store_id);
-        menuparam.put("categories", categories);
-        menuparam.put("names", names);
-        menuparam.put("prices", prices);
-        menuparam.put("notes", notes);
-        menuparam.put("photos", photos);
-
-        System.out.println("보선-메뉴리스트들 확인 \n카테고리 : "+ categories+"\n이름 : "+names
-        		+"\n가격 : "+prices+"\n설명 : "+notes+"\n사진경로 : "+photos);
-
-        int result = mapper.menuRegister(menuparam);
-        if(result > 0)
-        	return "businessM/menu/menuRFinish";
-        else {
-        	request.setAttribute("msg", "오류발생\n 사진이 등록되지 않았습니다.\n 다시 시도해주세요");
-	        request.setAttribute("url", "/businessM/menuInfo");
-	        return "businessM/businMalert";
-        }
-	}
 
 //------------------------------ 구현 작업 내용
 

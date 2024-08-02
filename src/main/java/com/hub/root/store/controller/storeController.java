@@ -40,7 +40,6 @@ public class storeController {
 			@RequestParam String store_id) {
 			//info(request, model, store_id);
 			String result = ser.storeChk(request, model, store_id);
-			System.out.println("result가 뭐야? : "+result);
 			if(result == "가게") {
 				request.setAttribute("msg", "등록된 가게가 없습니다");
 		        request.setAttribute("url", "register01");
@@ -65,9 +64,6 @@ public class storeController {
 	@GetMapping("/store/info")
 	public String info(HttpServletRequest request, Model model
 				,@RequestParam String store_id) {
-		System.out.println("로딩은 됌");
-		System.out.println("리퀘스트 값"+ store_id);
-		System.out.println("!!!!스토어 인포입니다!!!!");
 		Map<String, Object> infoMap = new HashMap<String, Object>();
 		infoMap = ser.storeInfo(store_id);
 		model.addAttribute("Map",infoMap);	
@@ -119,7 +115,6 @@ public class storeController {
 	@ResponseBody
 	public Map<String, Object> jjim(HttpServletRequest request,
 			@RequestParam String store_id) {
-		System.out.println("찜하기 컨트롤러");
 		Map<String, Object> Jmap = ser.jjim(request, store_id);
 		return Jmap;
 
