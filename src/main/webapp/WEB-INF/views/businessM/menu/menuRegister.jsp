@@ -23,7 +23,8 @@
        <form id="menuForm" action="menuSave" method="POST" enctype="multipart/form-data">
 		<button type="button" class="button01" onclick="addRow()">+</button>
 		<c:choose>
-			<c:when test="${dto.isEmpty()}">
+			<c:when test="${dto == null}">
+			값 없음
 			<c:set var="rowIndex" value="1" />
 		        <table class="menu-form" id="menuTable" border="1">
 		            <thead>
@@ -54,6 +55,7 @@
 		        </table>
         	</c:when>
        		<c:otherwise>
+       		있음
 			<c:set var="rowIndex" value="${dto.size()}" />
 		        <table class="menu-form" id="menuTable" border="1">
 		        <thead>
