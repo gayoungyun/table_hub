@@ -282,7 +282,7 @@
 	}
 	
 	function setPage(type) {
-		fetch("http://localhost:8080/root/store/api/totalPage", {
+		fetch("/root/store/api/totalPage", {
 			headers : {
 				"Content-Type": "application/json",
 				"store_id" : '${storeId}',
@@ -385,7 +385,7 @@
 	
 	function getBook(page, type) 
 	{
-		fetch("http://localhost:8080/root/store/api/book?page=" + page , {
+		fetch("/root/store/api/book?page=" + page , {
 			headers : {
 				"Content-Type": "application/json",
 				"store_id" : '${storeId}',

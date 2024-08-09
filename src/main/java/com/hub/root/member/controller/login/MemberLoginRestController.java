@@ -19,6 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hub.root.member.config.MemberMessageConfig;
 import com.hub.root.member.service.login.MemberLoginService;
 
+import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
+import net.nurigo.sdk.message.response.SingleMessageSentResponse;
+
 @RestController
 @RequestMapping("member")
 public class MemberLoginRestController {
@@ -40,17 +44,15 @@ public class MemberLoginRestController {
 
     	String phoneNumber = (String)map.get("phoneNumber");
 //        Message message = new Message();
-//		 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
+////		 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
 //        message.setFrom("01099062986");
 //		message.setTo(phoneNumber);
 //		message.setText("인증 코드는 [ " + code + " ] 입니다. 코드 입력 후 회원가입을 진행하세요");
-
 //		SingleMessageSentResponse response = mmc.messageService.sendOne(new SingleMessageSendingRequest(message));
 
     	session.setAttribute("phoneNumber", phoneNumber);
     	session.setAttribute(phoneNumber, code);
     	model.addAttribute(session);
-
 
     	return "문자로 4자리 코드가 발송되었습니다.";
     }

@@ -29,11 +29,11 @@
 		</div>
 		
 		<!-- ===== 소개글 부분 ===== -->
-		<section class="intro-hub">
+		<section class="intro-hub" style="margin-bottom: 200px;">
 			<div>
 				<p class="first-line">WELCOME!</p><br>
-				<p class="rest-line">qwerqwer qwerqwerqwerqwerqwer qwerqwerqwerqwerqwer<br>
-				qwerqwer qwerqwerqwerqwer qwerqwer</p>
+				<p class="rest-line">테이블 허브에 방문해주셔서 감사합니다.<br>
+				식당 예약과 후기를 확인할 수 있고 사용자들간에 맛집 정보를 공유해보세요</p>
 			</div>
 		</section>
 		

@@ -45,7 +45,25 @@ public class MainController {
 	// mainPage1 요청 처리===================================
 	@GetMapping("mainPage1")
 	public String main( @RequestParam(name="category", required=false) String category,
-						HttpSession session,Model model) {
+						HttpSession session,Model model, HttpServletRequest req) {
+		String ipAddress = req.getHeader("X-Forwarded-For");
+	    if (ipAddress == null || ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)) {
+	        ipAddress = req.getHeader("Proxy-Client-IP");
+	    }
+	    if (ipAddress == null || ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)) {
+	        ipAddress = req.getHeader("WL-Proxy-Client-IP");
+	    }
+	    if (ipAddress == null || ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)) {
+	        ipAddress = req.getHeader("HTTP_CLIENT_IP");
+	    }
+	    if (ipAddress == null || ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)) {
+	        ipAddress = req.getHeader("HTTP_X_FORWARDED_FOR");
+	    }
+	    if (ipAddress == null || ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)) {
+	        ipAddress = req.getRemoteAddr();
+	    }
+        System.out.println("접속자의 IP 주소는 : " + ipAddress);
+        
 		String user = (String) session.getAttribute("userId");
 		String store = (String) session.getAttribute("storeId");
 		

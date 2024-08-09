@@ -19,7 +19,7 @@
 			<b>등록된 메뉴가 없습니다</b>
 		<br><br><br>
 			<button type="button" class="button1 btn1Fade"
-				onclick="parent.changeParentUrl('http://localhost:8080/root/businessM/menu/menuRegister')">메뉴 등록하기</button>
+				onclick="parent.changeParentUrl('/root/businessM/menu/menuRegister')">메뉴 등록하기</button>
 		</div>
 		</c:when>
 		<c:otherwise>
@@ -48,7 +48,7 @@
 	           </table>
 	           <div class="center-box2">
 		<button type="button" class="button1 btn1Fade"
-			onclick="parent.changeParentUrl('http://localhost:8080/root/businessM/menu/menuRegister')">메뉴 수정하기</button>
+			onclick="parent.changeParentUrl('/root/businessM/menu/menuRegister')">메뉴 수정하기</button>
 		</div>
 		<br>
 		</c:otherwise>

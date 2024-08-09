@@ -1,0 +1,264 @@
+@charset "UTF-8";
+#board_body {
+	background-color: #cecece;
+}
+
+
+#board_wrapper {
+	width: 1200px;
+	display: flex;
+	margin: 50px auto 50px auto;
+	justify-content: center;
+	box-sizing: border-box;
+}
+
+#board_left_container {
+	width: 215px;
+}
+
+#board_left_myInfo {
+	width: 100%;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+	padding: 10px 5px 10px 5px;
+	box-sizing: border-box;
+}
+#board_left_myInfo h3 {
+	margin: 5px 5px 10px 5px;
+}
+#board_left_myInfo_img {
+	display: inline-block;
+	margin-bottom: 10px;
+}
+
+#board_left_myInfo_img img{
+	width: 40px;
+	height: 40px;
+	border-radius: 15px;
+	margin: 0 10px;
+}
+#board_left_myInfo_info {
+	display: inline-block;
+}
+#board_left_myInfo_info .nickname {
+	font-weight: bold;
+}
+#board_left_myInfo_info .myContent {
+	font-size : 14px;
+}
+#board_left_myInfo .myBoard {
+	display: inline-block;
+	text-align: center;
+	margin-left: 30px;
+}
+#board_left_myInfo .myReply {
+	display: inline-block;
+	text-align: center;
+}
+#board_left_myInfo #writeBoard {
+	width: 150px;
+	height: 30px;
+	margin: 10px 0 0 25px;
+	background-color: #cdd8fc;
+	border: none;
+	border-radius: 5px;
+	
+}
+
+
+
+
+#board_left_menu {
+	margin-top: 15px;
+	width: 100%;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+	padding: 10px 5px 10px 5px;
+	box-sizing: border-box;
+}
+#board_left_menu h3 {
+	margin: 5px 5px 20px 5px;
+}
+#board_left_menu img {
+	width: 30px;
+	height: 30px;
+	margin: 5px 0 15px 10px;
+	vertical-align: middle;
+}
+#board_left_menu .menu_content {
+	display: inline-block;
+	height: 30px;
+	margin: 5px 0 15px 10px;
+	line-height: 30px;
+	vertical-align: middle;
+}
+
+
+
+
+
+#board_right_container {
+	display: flex;
+	flex-wrap: wrap;
+	width: 900px;
+	gap : 4%;
+	box-sizing: border-box;
+	margin-left: 15px;
+}
+
+#board_main_notice {
+	width: 100%;
+}
+#board_main_notice_title {
+	width: 100%;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+	padding: 10px 5px 10px 5px;
+	box-sizing: border-box;
+	vertical-align: middle;
+	background-color: #FEFFE9;
+}
+#board_main_notice_content {
+	width: 100%;
+	max-height: 250px;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+	padding: 10px 15px;
+	box-sizing: border-box;
+	margin-top: 10px;
+}
+.main_notice_content_1 {
+	width: 100px;
+}
+.main_notice_content_2 {
+	width: 400px;
+}
+.main_notice_content_3 {
+	width: 100px;
+}
+.main_notice_content_4 {
+	width: 140px;
+}
+.main_notice_content_5 {
+	width: 100px;
+}
+
+
+
+
+
+
+
+
+
+
+
+#board_main_view {
+	align-content: flex-start;
+	align-items: flex-start;
+}
+#board_main_hit {
+	align-content: flex-start;
+	align-items: flex-start;
+}
+
+#board_main_view {
+	width: 48%;
+	height: 300px;
+	box-sizing: border-box;
+}
+#board_main_view_title {
+	width: 100%;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+	padding: 10px 5px 10px 5px;
+	box-sizing: border-box;
+	margin-top: 40px;
+	vertical-align: middle;
+	background-color: #FFD6D6;
+}
+#board_main_view_content {
+	width: 100%;
+	max-height: 250px;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+	padding: 10px 15px;
+	box-sizing: border-box;
+	margin-top: 10px;
+	
+}
+
+#board_main_hit {
+	width: 48%;
+	height: 300px;
+}
+#board_main_hit_title {
+	width: 100%;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+	padding: 10px 5px 10px 5px;
+	box-sizing: border-box;
+	margin-top: 40px;
+	background-color: #DBDEFF;
+}
+#board_main_hit_content {
+	width: 100%;
+	max-height: 250px;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+	padding: 10px 15px;
+	box-sizing: border-box;
+	margin-top: 10px;
+}
+
+
+
+
+
+.main_hitview_content_1 {
+	width: 60px;
+}
+.main_hitview_content_2 {
+	width: 250px;
+}
+.main_hitview_content_3 {
+	width: 70px;
+}
+
+
+
+
+
+
+
+
+.mainImg {
+	width: 40px;
+	height: 40px;
+	vertical-align: middle;
+	margin-left: 20px;
+	display: inline-block;
+	cursor: pointer;
+}
+.mainTitle {
+	font-size: 22px;
+	font-weight: bold;
+	display: inline-block;
+	padding-left: 25px;
+	vertical-align: middle;
+	cursor: pointer;
+	margin-left: -10px;
+}
+.main_content {
+	display: inline-block;
+	text-align: center;
+	padding: 5px 0;
+}

@@ -1,4 +1,4 @@
-package com.hub.root.board;
+package com.hub.root.board.dto;
 
 public class BoardDTO {
 	public int getBoard_id() {

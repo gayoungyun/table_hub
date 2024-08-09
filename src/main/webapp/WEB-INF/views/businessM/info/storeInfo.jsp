@@ -24,7 +24,7 @@ window.onload = function() {
 			<b>등록된 가게가 없습니다</b>
 		<br><br><br>
 			<button type="button" class="button1 btn1Fade" 
-				onclick="parent.changeParentUrl('http://localhost:8080/root/register01')">가게 등록하기</button>
+				onclick="parent.changeParentUrl('/root/register01')">가게 등록하기</button>
 		</div>
 		</c:when>
 		<c:otherwise>
@@ -91,7 +91,7 @@ window.onload = function() {
             </table>
             <div class="center-box">
 			<button type="button" class="button1 btn1Fade"
-				onclick="parent.changeParentUrl('http://localhost:8080/root/register01')">가게 정보 수정하기 </button><br>
+				onclick="parent.changeParentUrl('/root/register01')">가게 정보 수정하기 </button><br>
        		</div>
        		<br>
         </div>

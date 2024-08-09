@@ -322,12 +322,12 @@ public class businMService {
 	
 
 	// 구현 추가
-	public String DOWNLOAD_FOLDER = "C:/tablehub_image/businessM";
+	public String DOWNLOAD_FOLDER = "//leeguhyeon.iptime.org/TableHub_img/businessM";
 
 	//이미지 저장경로 \\\\192.168.42.40\\공유폴더\\tableHub\\businessM
 	// 업로드된 파일을 저장할 경로
 
-	private static String UPLOAD_FOLDER = "C:/tablehub_image/businessM";
+	private static String UPLOAD_FOLDER = "//leeguhyeon.iptime.org/TableHub_img/businessM";
 
 	//private static String UPLOAD_FOLDER = "C:/tablehub_image/businessM"; //수정
 

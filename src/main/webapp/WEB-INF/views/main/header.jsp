@@ -37,7 +37,7 @@
 				</c:if>
 			</div>
 			<div class="flex-item">
-				<a href="#" class="a-item">Board</a>
+				<a href="/root/board" class="a-item">Board</a>
 			</div>
 		</div>
 		

@@ -19,7 +19,7 @@
 					<b>등록된 사진이 없습니다</b>
 				<br><br><br>
 			<button type="button" class="button1 btn1Fade"
-				onclick="parent.changeParentUrl('http://localhost:8080/root/businessM/photo/photoRegister')">사진 등록 하기</button>
+				onclick="parent.changeParentUrl('/root/businessM/photo/photoRegister')">사진 등록 하기</button>
 			</div>
 			</c:when>
 			
@@ -48,7 +48,7 @@
 					</c:choose>
 					<br><br>
 					<button type="button" class="button1 btn1Fade" 
-						onclick="parent.changeParentUrl('http://localhost:8080/root/businessM/photo/photoRegister')">사진 수정하기</button>
+						onclick="parent.changeParentUrl('/root/businessM/photo/photoRegister')">사진 수정하기</button>
 					<br>
 				</div>
 			</c:otherwise>

@@ -45,6 +45,7 @@
 		</interceptor>
 		<interceptor>
 			<mapping path="/member/myPage/*"/>
+			<exclude-mapping path="/member/myPage/download"/>
 			<beans:ref bean="loginChk"/>
 		</interceptor>
 
